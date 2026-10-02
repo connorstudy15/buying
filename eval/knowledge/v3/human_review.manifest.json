@@ -1,0 +1,9 @@
+{
+  "stage": "human_review_ready",
+  "frozen_query_sha256": "83323d8fb4e84c546aab7821a33176e9a57b38dfe904265b40951ba6b6f236b6",
+  "stage_b_labels_sha256": "130da5d8fdffa72b60abf5b3f1ec8424b87988ac774d5455a5c1e82cfb3a51c4",
+  "candidate_count": 30,
+  "keep_count": 20,
+  "reject_count": 10,
+  "review_file_sha256": "e2fff28fad7051e7d808defda30f4d552061b640673ea0ca5715a77ba83a4327"
+}

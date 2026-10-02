@@ -1,0 +1,23 @@
+{
+  "stage": "query_generation_only",
+  "generated_at": "2026-09-29T21:55:00+08:00",
+  "model": "deepseek-v4.1-flash",
+  "knowledge_body_exposed": false,
+  "public_index_sha256": "44a5c7e71c954110dd8e13aacab94db5d1fa1281d3fb87b313da840c0952f113",
+  "prompt_sha256": "cf4d2b0ec72edd6d06cea689947b535e9580d1168963ddd76f74d9a30b18829f",
+  "output_sha256": "af0385760ca2c4d0b0406060ba1ea3b6e4d9a79b4d58127dfdb73137aa6d09a1",
+  "case_count": 30,
+  "kind_counts": {
+    "single_evidence": 18,
+    "cross_evidence": 8,
+    "unanswerable": 3,
+    "policy_boundary": 1
+  },
+  "forbidden_answer_fields": [
+    "answer",
+    "evidence",
+    "graded_relevance",
+    "hard_negatives",
+    "relevant"
+  ]
+}

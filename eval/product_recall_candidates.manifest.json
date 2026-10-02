@@ -1,0 +1,18 @@
+{
+  "dataset": "D:\\globex-agent-main\\eval\\product_recall.jsonl",
+  "catalog": "D:\\globex-agent-main\\data\\catalog-v1.jsonl",
+  "query_count": 67,
+  "top_n_per_strategy": 8,
+  "requested_strategies": [
+    "keyword_2gram",
+    "bm25",
+    "embedding_only"
+  ],
+  "actual_strategies": {
+    "keyword_2gram": "keyword_2gram",
+    "bm25": "bm25",
+    "embedding_only": "embedding_only"
+  },
+  "candidate_pairs": 766,
+  "note": "unjudged pool; judgment must be independent of retrieved_by ranks"
+}

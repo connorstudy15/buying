@@ -1,0 +1,49 @@
+.venv/
+.venv-eval/
+__pycache__/
+*.pyc
+.env
+.pytest_cache/
+# 运行态数据仍忽略；评测基准商品集必须随代码版本化。
+data/*
+!data/catalog-v1.jsonl
+eval/report-*.md
+# 召回评测报告同样是每次跑测的产物，不入库；标注集（eval/*.jsonl）要入库
+eval/recall-report-*.md
+eval/category-recall-report-*.md
+
+# Icecat 原始响应和下载缓存受供应商许可约束，仅留在本机。
+eval/icecat/raw/
+eval/icecat/cache/
+eval/icecat/private/
+
+# 课程资料与本地工具目录：只保留在本地，不入工程仓库
+.baoyu-skills/
+.idea/
+.qoder/
+/images/
+/learn-claude-code/
+/pi/
+node_modules/
+
+# 课程仓库内容（根目录）：只保留在本地 main 分支，不入工程仓库
+/*.md
+!/README.md
+/*.html
+/*.json
+/*.xml
+/*.png
+/*.jpg
+/.nojekyll
+/.env-example
+/.husky/
+/.vscode/
+/lib/
+/odps_task/
+/案例与源码-*/
+/实战项目-*/
+/项目实战-*/
+/LICENSE
+/commitlint.config.js
+/requirements.txt
+/repo-auth-service/

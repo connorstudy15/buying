@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "read_only": true,
+  "checked_at": "2026-09-29T08:45:01.669179+00:00",
+  "remote_trace_verified": true,
+  "project": {
+    "status": "ACCESS_VERIFIED",
+    "accessible_count": 1,
+    "project_id_sha256": "e13663d7dbba7967665d3f68"
+  },
+  "trace": {
+    "status": "VERIFIED",
+    "trace_id": "7af557b479ad1583ddff31d0ad97ac7e",
+    "observation_count": 10,
+    "component_counts": {
+      "agent": 1,
+      "api": 1,
+      "model": 4,
+      "tool": 4
+    },
+    "required_components": [
+      "agent",
+      "api",
+      "model",
+      "tool"
+    ],
+    "root_count": 1,
+    "parent_link_count": 9,
+    "missing_parent_count": 0,
+    "unfinished_count": 0,
+    "error_count": 0,
+    "usage_complete": true,
+    "input_tokens": 52043,
+    "output_tokens": 4277,
+    "cost_usd": null,
+    "issues": []
+  },
+  "status": "VERIFIED",
+  "read_attempts": 1
+}

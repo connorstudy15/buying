@@ -1,0 +1,14 @@
+{
+  "stage": "candidate_pool",
+  "query_sha256": "83323d8fb4e84c546aab7821a33176e9a57b38dfe904265b40951ba6b6f236b6",
+  "output_sha256": "5bdd003dc3df542ee745990dec0bf7f91b5dc9789fdd487ce72e2989c6b26a8c",
+  "strategies": [
+    "document_bm25_top10",
+    "raw_vector_document_top10",
+    "title_route"
+  ],
+  "query_count": 30,
+  "average_candidates": 14.53,
+  "embedding_model": "qwen3.7-text-embedding-flash",
+  "embedding_dimension": 1024
+}
