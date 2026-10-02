@@ -147,6 +147,8 @@ class QueryResult:
     hard_negative_hit: bool | None = None
     hard_negative_above_positive: bool | None = None
     graded_ndcg: float | None = None
+    pre_fusion_information_need_coverage: float | None = None
+    post_fusion_information_need_coverage: float | None = None
 
 
 @dataclass
@@ -199,6 +201,10 @@ class Aggregate:
     bucket_metrics: dict[str, dict[str, float | int | None]] = field(default_factory=dict)
     graded_ndcg_count: int = 0
     graded_ndcg: float | None = None
+    information_need_coverage_count: int = 0
+    pre_fusion_information_need_coverage: float | None = None
+    post_fusion_information_need_coverage: float | None = None
+    fusion_information_need_loss: float | None = None
 
 
 def evaluate(
@@ -261,6 +267,8 @@ def evaluate(
     path_count, path_success_rate = optional_mean("path_success")
     constraint_count, constraint_recall = optional_mean("constraint_recall")
     graded_ndcg_count, graded_ndcg = optional_mean("graded_ndcg")
+    need_coverage_count, pre_need_coverage = optional_mean("pre_fusion_information_need_coverage")
+    _, post_need_coverage = optional_mean("post_fusion_information_need_coverage")
     hard_negative_results = [result for result in results if result.hard_negative_hit is not None]
     hard_negative_above_results = [result for result in results if result.hard_negative_above_positive is not None]
 
@@ -272,7 +280,10 @@ def evaluate(
             "mrr": round(sum(item.mrr for item in bucket_results) / size, 4),
             "ndcg": round(sum(item.ndcg for item in bucket_results) / size, 4),
         }
-        for field_name in ("evidence_recall", "all_evidence_recall", "hop_recall", "constraint_recall", "graded_ndcg"):
+        for field_name in (
+            "evidence_recall", "all_evidence_recall", "hop_recall", "constraint_recall", "graded_ndcg",
+            "pre_fusion_information_need_coverage", "post_fusion_information_need_coverage",
+        ):
             values = [getattr(item, field_name) for item in bucket_results if getattr(item, field_name) is not None]
             summary[field_name] = None if not values else round(sum(float(value) for value in values) / len(values), 4)
         paths = [item.path_success for item in bucket_results if item.path_success is not None]
@@ -357,6 +368,13 @@ def evaluate(
         bucket_metrics=bucket_metrics,
         graded_ndcg_count=graded_ndcg_count,
         graded_ndcg=graded_ndcg,
+        information_need_coverage_count=need_coverage_count,
+        pre_fusion_information_need_coverage=pre_need_coverage,
+        post_fusion_information_need_coverage=post_need_coverage,
+        fusion_information_need_loss=(
+            None if pre_need_coverage is None or post_need_coverage is None
+            else round(pre_need_coverage - post_need_coverage, 4)
+        ),
     )
 
 

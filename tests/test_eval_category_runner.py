@@ -93,3 +93,26 @@ async def test_multi_hop_path_is_na_when_a_later_hop_belongs_to_product_search()
     assert aggregate.hop_recall == 1.0
     assert aggregate.path_success_rate is None
     assert aggregate.constraint_recall is None
+
+
+async def test_information_need_coverage_distinguishes_candidate_pool_from_final_top_k():
+    knowledge_base = FakeKnowledgeBase({
+        "双证据": [
+            _hit("a.md", 0.9, text="证据甲"),
+            _hit("b.md", 0.8, text="证据乙"),
+        ],
+    })
+    case = {
+        "id": "cross-1", "query": "双证据", "relevant": ["a.md", "b.md"],
+        "primary_kind": "cross_evidence", "graded_relevance": {"a.md": 3, "b.md": 3},
+        "evidence_ground_truth": [
+            {"evidence_id": "a#x", "source": "a.md", "quote": "证据甲", "grade": 3, "supports": ["answer"]},
+            {"evidence_id": "b#x", "source": "b.md", "quote": "证据乙", "grade": 3, "supports": ["answer"]},
+        ],
+    }
+    observations = []
+    aggregate = await run_dataset(knowledge_base, [case], top_k=1, observations=observations)
+    assert aggregate.pre_fusion_information_need_coverage == 1.0
+    assert aggregate.post_fusion_information_need_coverage == 0.5
+    assert aggregate.fusion_information_need_loss == 0.5
+    assert observations[0]["pre_fusion_retrieved_evidence_ids"] == ["a#x", "b#x"]

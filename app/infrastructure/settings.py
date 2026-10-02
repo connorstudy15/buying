@@ -123,6 +123,14 @@ class Settings:
     hybrid_recall_enabled: bool = False  # 冻结评测证明收益后再启用实验召回
     # Reranker 可使用独立凭据；空值时兼容旧配置并复用 LLM_API_KEY。
     reranker_api_key: str = field(default="", repr=False)
+    # 知识检索 Query Rewrite / Decomposition V1；关闭时逐字节沿用 legacy 路径。
+    knowledge_query_transform_enabled: bool = False
+    query_processor_base_url: str = ""  # 空 = 复用 LLM_BASE_URL
+    query_processor_api_key: str = field(default="", repr=False)  # 空 = 复用 LLM_API_KEY
+    query_processor_model: str = ""  # 空 = 复用 LLM_MODEL
+    query_processor_max_subqueries: int = 3
+    query_processor_disable_thinking: bool = False
+    knowledge_rrf_k: int = 60
 
 
 def load_settings() -> Settings:
@@ -145,6 +153,13 @@ def load_settings() -> Settings:
         llm_api_key=llm_api_key,
         llm_model=os.getenv("LLM_MODEL", "qwen3-max"),
         hybrid_recall_enabled=os.getenv("HYBRID_RECALL_ENABLED", "0") in ("1", "true", "True"),
+        knowledge_query_transform_enabled=os.getenv("KNOWLEDGE_QUERY_TRANSFORM_ENABLED", "0") in ("1", "true", "True"),
+        query_processor_base_url=os.getenv("QUERY_PROCESSOR_BASE_URL", ""),
+        query_processor_api_key=os.getenv("QUERY_PROCESSOR_API_KEY", ""),
+        query_processor_model=os.getenv("QUERY_PROCESSOR_MODEL", ""),
+        query_processor_max_subqueries=int(os.getenv("QUERY_PROCESSOR_MAX_SUBQUERIES", "3")),
+        query_processor_disable_thinking=os.getenv("QUERY_PROCESSOR_DISABLE_THINKING", "0") in ("1", "true", "True"),
+        knowledge_rrf_k=int(os.getenv("KNOWLEDGE_RRF_K", "60")),
         port=int(os.getenv("PORT", "8000")),
         log_level=os.getenv("LOG_LEVEL", "info"),
         # embedding 默认复用 LLM 网关（OpenAI 兼容 /v1/embeddings）

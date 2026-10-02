@@ -38,6 +38,8 @@ def build_category_insight_tool(
     knowledge_base: KnowledgeBase,
     bus: TradeEventBus,
     fallback_knowledge_dir: Path | None = None,
+    query_processor=None,
+    rrf_k: int = 60,
 ):
     async def category_insight_tool(question: str, top_k: int = 3) -> ToolChunk:
         """查询品类洞察知识库：热卖款型、关键属性判断口径、价格区间、避坑点、跨境通则。
@@ -58,8 +60,12 @@ def build_category_insight_tool(
             {"tool": "category_insight_tool", "args": {"question": question, "top_k": top_k}},
         )
         try:
-            from app.infrastructure.rag.knowledge_retrieval import search_knowledge
-            results = await search_knowledge(knowledge_base, question, top_k)
+            from app.infrastructure.rag.knowledge_retrieval import search_knowledge_with_trace
+            outcome = await search_knowledge_with_trace(
+                knowledge_base, question, top_k,
+                query_processor=query_processor, rrf_k=rrf_k,
+            )
+            results = outcome.hits
         except Exception as err:  # noqa: BLE001 —— 知识库不可用时如实降级，不编造洞察
             fallback = (
                 keyword_fallback_insights(question, fallback_knowledge_dir, top_k)
@@ -95,7 +101,13 @@ def build_category_insight_tool(
             bus.publish(
                 session_id,
                 "tool.result",
-                {"tool": "category_insight_tool", "hit_count": 0, "abstained": True, "reason": reason},
+                {
+                    "tool": "category_insight_tool", "hit_count": 0, "abstained": True, "reason": reason,
+                    "retrieval_mode": outcome.trace.mode,
+                    "query_variant_count": len(outcome.trace.variants) or 1,
+                    "candidate_count": len(outcome.trace.candidates),
+                    "query_processor_fallback": outcome.trace.processor_fallback_reason,
+                },
             )
             return ToolChunk(
                 content=[TextBlock(type="text", text=json.dumps({"insights": [], "unanswerable": True, "reason": reason}, ensure_ascii=False))],
@@ -124,6 +136,12 @@ def build_category_insight_tool(
             {
                 "tool": "category_insight_tool", "hit_count": len(insights), "abstained": False,
                 "policy_fact_statuses": [insight["policy_fact_status"] for insight in insights],
+                "retrieval_mode": outcome.trace.mode,
+                "query_variant_count": len(outcome.trace.variants) or 1,
+                "candidate_count": len(outcome.trace.candidates),
+                "query_processor_fallback": outcome.trace.processor_fallback_reason,
+                "pre_fusion_query_route_coverage": outcome.trace.pre_fusion_query_route_coverage,
+                "post_fusion_query_route_coverage": outcome.trace.post_fusion_query_route_coverage,
             },
         )
         return ToolChunk(

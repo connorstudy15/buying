@@ -19,12 +19,16 @@ import asyncio
 import json
 import sys
 import time
+from dataclasses import replace
 from datetime import datetime
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from app.infrastructure.rag.knowledge_retrieval import search_knowledge
+from app.infrastructure.rag.knowledge_retrieval import search_knowledge_with_trace
+from app.application.retrieval.query_processor import QueryProcessor
+from app.application.prompts.loader import load_prompts
+from app.infrastructure.llm import create_chat_model
 from app.infrastructure.rag.category_knowledge import (  # noqa: E402
     bootstrap_category_knowledge,
     build_category_knowledge_base,
@@ -92,13 +96,55 @@ def source_of(item) -> str:
     return item.document_id
 
 
-async def run_dataset(knowledge_base, cases: list[dict], top_k: int, *, observations: list[dict] | None = None) -> Aggregate:
+def information_need_groups(case: dict, gold_evidence_ids: list[str]) -> list[set[str]]:
+    """把冻结金标映射成必须覆盖的信息需求；不使用模型自报的 need ID 充当真值。"""
+    if not gold_evidence_ids:
+        return []
+    evidence = case.get("evidence_ground_truth") or []
+    retrievable_hop_ids = {
+        hop["id"] for hop in (case.get("hops") or []) if hop.get("relevant")
+    }
+    hop_groups = []
+    for hop_id in retrievable_hop_ids:
+        group = {
+            item["evidence_id"] for item in evidence
+            if int(item.get("grade") or 0) >= 2 and hop_id in (item.get("supports") or [])
+        }
+        if group:
+            hop_groups.append(group)
+    if hop_groups:
+        return hop_groups
+    if case.get("primary_kind") == "cross_evidence":
+        return [{evidence_id} for evidence_id in gold_evidence_ids]
+    return [set(gold_evidence_ids)]
+
+
+def information_need_coverage(retrieved_evidence_ids: list[str], groups: list[set[str]]) -> float | None:
+    if not groups:
+        return None
+    retrieved = set(retrieved_evidence_ids)
+    return sum(group.issubset(retrieved) for group in groups) / len(groups)
+
+
+async def run_dataset(
+    knowledge_base,
+    cases: list[dict],
+    top_k: int,
+    *,
+    observations: list[dict] | None = None,
+    query_processor: QueryProcessor | None = None,
+    rrf_k: int = 60,
+) -> Aggregate:
     results: list[QueryResult] = []
     empty_results: list[bool] = []
     policy_results: list[bool] = []
     for case in cases:
         started = time.perf_counter()
-        hits = await search_knowledge(knowledge_base, case["query"], top_k=top_k)
+        outcome = await search_knowledge_with_trace(
+            knowledge_base, case["query"], top_k=top_k,
+            query_processor=query_processor, rrf_k=rrf_k,
+        )
+        hits = outcome.hits
         latency_ms = (time.perf_counter() - started) * 1000
         # 同一篇文档可能命中多个 chunk：按首次出现保序去重，落到文档粒度
         retrieved: list[str] = []
@@ -114,6 +160,11 @@ async def run_dataset(knowledge_base, cases: list[dict], top_k: int, *, observat
         evidence = case.get("evidence_ground_truth") or []
         gold_evidence_ids = [item["evidence_id"] for item in evidence if int(item.get("grade") or 0) >= 2]
         retrieved_evidence_ids, evidence_ranks = matched_evidence_ids(hits, evidence)
+        candidate_items = [candidate.item for candidate in outcome.trace.candidates]
+        candidate_evidence_ids, _ = matched_evidence_ids(candidate_items, evidence)
+        need_groups = information_need_groups(case, gold_evidence_ids)
+        pre_need_coverage = information_need_coverage(candidate_evidence_ids, need_groups)
+        post_need_coverage = information_need_coverage(retrieved_evidence_ids, need_groups)
         evidence_recall = (
             recall_at_k(retrieved_evidence_ids, gold_evidence_ids, len(retrieved_evidence_ids) or top_k)
             if gold_evidence_ids else None
@@ -163,6 +214,20 @@ async def run_dataset(knowledge_base, cases: list[dict], top_k: int, *, observat
             "path_success": path_success,
             "constraint_recall": None,
             "latency_ms": round(latency_ms, 3),
+            "retrieval_mode": outcome.trace.mode,
+            "query_variants": outcome.trace.variants,
+            "candidate_count": len(outcome.trace.candidates),
+            "processor_fallback_reason": outcome.trace.processor_fallback_reason,
+            "pre_fusion_query_route_coverage": outcome.trace.pre_fusion_query_route_coverage,
+            "post_fusion_query_route_coverage": outcome.trace.post_fusion_query_route_coverage,
+            "pre_fusion_information_need_coverage": pre_need_coverage,
+            "post_fusion_information_need_coverage": post_need_coverage,
+            "fusion_information_need_loss": (
+                None
+                if pre_need_coverage is None or post_need_coverage is None
+                else round(pre_need_coverage - post_need_coverage, 4)
+            ),
+            "pre_fusion_retrieved_evidence_ids": candidate_evidence_ids,
         }
         if observations is not None:
             observations.append(observation)
@@ -205,6 +270,8 @@ async def run_dataset(knowledge_base, cases: list[dict], top_k: int, *, observat
                     graded_ndcg_at_k(retrieved, case.get("graded_relevance") or {}, top_k)
                     if case.get("graded_relevance") else None
                 ),
+                pre_fusion_information_need_coverage=pre_need_coverage,
+                post_fusion_information_need_coverage=post_need_coverage,
             ),
         )
     return evaluate(results, k=top_k, empty_results=empty_results, policy_results=policy_results)
@@ -241,6 +308,9 @@ def render_report(
         f"| Hop Recall | {'n/a' if agg.hop_recall is None else f'{agg.hop_recall:.3f}'} | 仅知识检索可验证 hop |",
         f"| Path Success | {'n/a' if agg.path_success_rate is None else f'{agg.path_success_rate:.3f}'} | 跨工具 hop 未接 Planner 时为 n/a |",
         f"| Constraint Recall | {'n/a' if agg.constraint_recall is None else f'{agg.constraint_recall:.3f}'} | 未接 Planner/trace 时为 n/a |",
+        f"| Pre-fusion information-need coverage | {'n/a' if agg.pre_fusion_information_need_coverage is None else f'{agg.pre_fusion_information_need_coverage:.3f}'} | 子查询候选池覆盖率 |",
+        f"| Post-fusion information-need coverage | {'n/a' if agg.post_fusion_information_need_coverage is None else f'{agg.post_fusion_information_need_coverage:.3f}'} | 最终 Top-K 覆盖率 |",
+        f"| Fusion information-need loss | {'n/a' if agg.fusion_information_need_loss is None else f'{agg.fusion_information_need_loss:.3f}'} | 越低越好 |",
         "",
         f"门禁结论：**{verdict}**",
         "",
@@ -248,14 +318,15 @@ def render_report(
     if reasons:
         lines += ["未达标项：", *[f"- {r}" for r in reasons], ""]
     if agg.bucket_metrics:
-        lines += ["## 分桶指标", "", "| 桶 | 数量 | Recall/拒答准确率 | MRR | NDCG | Graded nDCG | Evidence Recall | All-evidence | Hop Recall |", "|---|---:|---:|---:|---:|---:|---:|---:|---:|"]
+        lines += ["## 分桶指标", "", "| 桶 | 数量 | Recall/拒答准确率 | MRR | NDCG | Graded nDCG | Evidence Recall | All-evidence | Hop Recall | Pre-need | Post-need |", "|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|"]
         for name, bucket in agg.bucket_metrics.items():
             score = bucket.get("recall", bucket.get("rejection_accuracy"))
             fmt = lambda value: "n/a" if value is None else f"{float(value):.3f}"
             lines.append(
                 f"| {name} | {bucket.get('count', 0)} | {fmt(score)} | {fmt(bucket.get('mrr'))} | "
                 f"{fmt(bucket.get('ndcg'))} | {fmt(bucket.get('graded_ndcg'))} | {fmt(bucket.get('evidence_recall'))} | "
-                f"{fmt(bucket.get('all_evidence_recall'))} | {fmt(bucket.get('hop_recall'))} |"
+                f"{fmt(bucket.get('all_evidence_recall'))} | {fmt(bucket.get('hop_recall'))} | "
+                f"{fmt(bucket.get('pre_fusion_information_need_coverage'))} | {fmt(bucket.get('post_fusion_information_need_coverage'))} |"
             )
         lines.append("")
     lines += ["| query | Recall | Precision | MRR | NDCG | 召回文档 | 标注文档 |", "|---|---|---|---|---|---|---|"]
@@ -273,6 +344,11 @@ async def main(argv: list[str] | None = None) -> None:
     parser.add_argument("--split", choices=SPLITS, default="all", help="仅执行选中的 dev/release；默认 all 兼容旧集")
     parser.add_argument("--dry-run", action="store_true", help="只校验选集并写 NOT_RUN 证据，不调用 embedding/Qdrant")
     parser.add_argument("--top-k", type=int, default=5)
+    parser.add_argument(
+        "--strategy", choices=("legacy", "query-transform"), default="legacy",
+        help="legacy=冻结旧链路；query-transform=单次改写/分解 + 多路候选 + RRF",
+    )
+    parser.add_argument("--rrf-k", type=int, default=60, help="query-transform 的 RRF rank constant")
     parser.add_argument("--min-recall", type=float, default=0.75)
     parser.add_argument("--min-precision", type=float, default=0.45)
     parser.add_argument("--min-mrr", type=float, default=0.65)
@@ -306,7 +382,7 @@ async def main(argv: list[str] | None = None) -> None:
     manifest = build_manifest(
         runner="category_recall", dataset=Path(args.dataset), selection=selection, baseline=args.baseline_file,
         parameters={"formal_gates": args.formal_gates, "top_k": top_k, "thresholds": thresholds,
-                    "requested_strategies": ["category_vector_document_scope_v1"], "dry_run": args.dry_run,
+                    "requested_strategies": [args.strategy], "rrf_k": args.rrf_k, "dry_run": args.dry_run,
                     "gate_scope": "release" if args.split == "release" and args.formal_gates else "diagnostic"},
     )
     if args.dry_run:
@@ -319,9 +395,28 @@ async def main(argv: list[str] | None = None) -> None:
         knowledge_base = build_category_knowledge_base(settings)
         inserted = await bootstrap_category_knowledge(knowledge_base)
         print(f"知识库就绪（本次新增 {inserted} 篇）")
-        agg = await run_dataset(knowledge_base, cases, top_k, observations=observations)
+        query_processor = None
+        if args.strategy == "query-transform":
+            processor_settings = replace(
+                settings,
+                llm_base_url=settings.query_processor_base_url or settings.llm_base_url,
+                llm_api_key=settings.query_processor_api_key or settings.llm_api_key,
+                llm_model=settings.query_processor_model or settings.llm_model,
+                llm_fallback_model="",
+            )
+            query_processor = QueryProcessor(
+                create_chat_model(processor_settings, stream=False),
+                load_prompts()["query_processor"]["system_prompt"],
+                max_subqueries=settings.query_processor_max_subqueries,
+                disable_thinking=settings.query_processor_disable_thinking,
+            )
+        agg = await run_dataset(
+            knowledge_base, cases, top_k, observations=observations,
+            query_processor=query_processor, rrf_k=args.rrf_k,
+        )
     except Exception as err:
-        finish_manifest(manifest, actual_strategies=["category_vector_document_scope_v1"] if observations else [], gate="BLOCK", status="ERROR", observations=observations, error=f"{type(err).__name__}: {err}")
+        actual = sorted({item.get("retrieval_mode") for item in observations if item.get("retrieval_mode")})
+        finish_manifest(manifest, actual_strategies=actual, gate="BLOCK", status="ERROR", observations=observations, error=f"{type(err).__name__}: {err}")
         write_manifest(manifest, report_path)
         report_path.write_text(f"# 品类知识库评测未完成\n\n{type(err).__name__}: {err}" + manifest_report(manifest), encoding="utf-8")
         print(f"执行失败，已保存 BLOCK 证据：{report_path}")
@@ -333,7 +428,8 @@ async def main(argv: list[str] | None = None) -> None:
     )
 
     verdict, reasons = gate(agg, thresholds, baseline)
-    stable = finish_manifest(manifest, actual_strategies=["category_vector_document_scope_v1"], gate=verdict, metrics=agg, observations=observations, reasons=reasons)
+    actual = sorted({item.get("retrieval_mode") for item in observations if item.get("retrieval_mode")})
+    stable = finish_manifest(manifest, actual_strategies=actual, gate=verdict, metrics=agg, observations=observations, reasons=reasons)
     write_manifest(manifest, report_path)
     report_path.write_text(render_report(agg, thresholds, baseline, dataset=Path(args.dataset)) + manifest_report(manifest), encoding="utf-8")
     print(f"报告已写入 {report_path}")

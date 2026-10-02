@@ -11,6 +11,7 @@
 `build_tools()` 同时供 MainAgent 复用——主 Agent 持有同一批业务工具，可以不派发自己单干。
 """
 from __future__ import annotations
+from dataclasses import replace
 from app.infrastructure.context_governance import ContextAwareAgent
 
 from agentscope.agent import Agent, ReActConfig
@@ -35,6 +36,7 @@ from app.infrastructure.resilience import (
 )
 from app.infrastructure.settings import Settings
 from app.infrastructure.tracing import build_agent_middlewares
+from app.application.retrieval.query_processor import QueryProcessor
 
 
 class SearchAgentFactory:
@@ -55,6 +57,19 @@ class SearchAgentFactory:
         # 闸门由组装根下发，三个工厂必须共用同一个，否则各限一份等于没限
         self._throttle = throttle
         self.evidence_store = ContextEvidenceStore(settings.data_dir / "context_evidence.db")
+        self._query_processor_model = None
+        if settings.knowledge_query_transform_enabled:
+            processor_settings = replace(
+                settings,
+                llm_base_url=settings.query_processor_base_url or settings.llm_base_url,
+                llm_api_key=settings.query_processor_api_key or settings.llm_api_key,
+                llm_model=settings.query_processor_model or settings.llm_model,
+                # QueryProcessor 故障由知识检索精确回退 legacy，不再切换另一模型产生第二套改写。
+                llm_fallback_model="",
+            )
+            self._query_processor_model = create_chat_model(
+                processor_settings, stream=False, throttle=throttle, bus=bus,
+            )
 
     def _resilience(self) -> list:
         return [ToolResilienceMiddleware(self._circuit_registry, self._bus)]
@@ -64,6 +79,16 @@ class SearchAgentFactory:
 
         web_search_tool 按"有 TAVILY_API_KEY 才注册"设计，未配置时 Agent 看不到它。
         """
+        prompts = load_prompts()
+        query_processor = (
+            QueryProcessor(
+                self._query_processor_model,
+                prompts["query_processor"]["system_prompt"],
+                max_subqueries=self._settings.query_processor_max_subqueries,
+                disable_thinking=self._settings.query_processor_disable_thinking,
+            )
+            if self._query_processor_model is not None else None
+        )
         tools = [
             FunctionTool(
                 build_product_search_tool(self._catalog_search, self._bus, self.evidence_store, self._settings.context_strategy),
@@ -75,6 +100,8 @@ class SearchAgentFactory:
                     self._knowledge_base,
                     self._bus,
                     fallback_knowledge_dir=KNOWLEDGE_DIR,
+                    query_processor=query_processor,
+                    rrf_k=self._settings.knowledge_rrf_k,
                 ),
                 is_read_only=True,
                 middlewares=self._resilience(),
