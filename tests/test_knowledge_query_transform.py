@@ -1,3 +1,4 @@
+import asyncio
 from types import SimpleNamespace
 from unittest.mock import AsyncMock
 
@@ -12,6 +13,7 @@ from app.infrastructure.rag.knowledge_retrieval import (
     unsupported_fact_reason,
 )
 from scripts.eval.run_query_decompose_ablation import SharedPlanProcessor
+from scripts.eval.run_per_need_rerank_ablation import RetryingReranker
 
 
 def hit(document_id: str, text: str, *, section: str | None = None, score: float = 0.8):
@@ -166,6 +168,51 @@ async def test_paired_evaluation_can_reuse_exact_original_candidates():
     )
     assert experiment.hits == legacy.hits
     search.assert_awaited_once()
+
+
+@pytest.mark.asyncio
+async def test_per_need_reranker_scores_each_subquery_not_global_question():
+    distractor = hit("distractor", "通用旅行说明")
+    size = hit("size", "登机箱尺寸因航空公司而异")
+    battery = hit("battery", "移动电源航空运输容量限制")
+
+    async def search(queries, top_k):
+        return [distractor, size, battery]
+
+    class NeedReranker:
+        def __init__(self):
+            self.calls = []
+
+        async def rerank(self, query, documents):
+            self.calls.append(query)
+            if query == "登机箱尺寸":
+                return [0.0, 1.0, 0.1]
+            if query == "移动电源限制":
+                return [0.0, 0.1, 1.0]
+            raise AssertionError("不应使用完整原问题做全局重排")
+
+    plan = QueryPlan("箱子和充电宝能否登机", "", (
+        QueryVariant("subquery_1", "登机箱尺寸", "size", "subquery", "size"),
+        QueryVariant("subquery_2", "移动电源限制", "battery", "subquery", "battery"),
+    ), mode="DECOMPOSE")
+    reranker = NeedReranker()
+    outcome = await search_knowledge_with_trace(
+        SimpleNamespace(search=search), plan.original_query, 2,
+        query_processor=PlannedProcessor(plan), per_need_reranker=reranker,
+    )
+    assert {item.document_id for item in outcome.hits} == {"size", "battery"}
+    assert reranker.calls == ["登机箱尺寸", "移动电源限制"]
+    assert outcome.trace.per_need_rerank_applied is True
+    assert len(outcome.trace.per_need_rerank_calls) == 2
+
+
+@pytest.mark.asyncio
+async def test_experiment_reranker_retries_without_silent_fallback(monkeypatch):
+    monkeypatch.setattr(asyncio, "sleep", AsyncMock())
+    inner = SimpleNamespace(rerank=AsyncMock(side_effect=[OSError("temporary"), [0.9]]))
+    scores = await RetryingReranker(inner, attempts=2).rerank("问题", ["证据"])
+    assert scores == [0.9]
+    assert inner.rerank.await_count == 2
 
 
 @pytest.mark.asyncio

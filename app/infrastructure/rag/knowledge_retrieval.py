@@ -3,8 +3,10 @@ from __future__ import annotations
 
 import asyncio
 import hashlib
+import math
 import re
-from dataclasses import dataclass, field
+import time
+from dataclasses import dataclass, field, replace
 from typing import Any
 
 from agentscope.rag import KnowledgeBase
@@ -72,6 +74,8 @@ class KnowledgeCandidate:
     retrieval_route: str
     rank_in_source: int
     intent_group_id: str = "overall"
+    retrieval_rank_in_source: int | None = None
+    per_need_relevance_score: float | None = None
 
 
 @dataclass
@@ -91,6 +95,8 @@ class KnowledgeRetrievalTrace:
     rewrite_similarity: float | None = None
     rewrite_decision: str | None = None
     near_duplicate_decisions: list[dict[str, Any]] = field(default_factory=list)
+    per_need_rerank_applied: bool = False
+    per_need_rerank_calls: list[dict[str, Any]] = field(default_factory=list)
 
 
 @dataclass
@@ -147,7 +153,10 @@ async def retrieve_knowledge_candidates(
         ),
     )
     return [
-        KnowledgeCandidate(item, query_id, information_need_id, route, rank, intent_group_id)
+        KnowledgeCandidate(
+            item, query_id, information_need_id, route, rank, intent_group_id,
+            retrieval_rank_in_source=rank,
+        )
         for rank, (_, (item, route)) in enumerate(ordered, 1)
     ]
 
@@ -214,6 +223,7 @@ async def _retrieve_candidates(
         KnowledgeCandidate(
             template.item, query_id, information_need_id, template.retrieval_route,
             template.rank_in_source, intent_group_id,
+            retrieval_rank_in_source=(template.retrieval_rank_in_source or template.rank_in_source),
         )
         for template in templates
     ]
@@ -262,6 +272,36 @@ def _candidate_is_eligible(item: Any) -> bool:
         return False
 
 
+async def _rerank_information_need(
+    reranker, variant: QueryVariant, candidates: list[KnowledgeCandidate],
+) -> tuple[list[KnowledgeCandidate], dict[str, Any]]:
+    """只用当前子问题给它自己的候选重排；不拿完整原问题做全局重排。"""
+    started = time.perf_counter()
+    documents = [_chunk_text(candidate.item) for candidate in candidates]
+    scores = await reranker.rerank(variant.text, documents)
+    if len(scores) != len(candidates) or not all(math.isfinite(float(score)) for score in scores):
+        raise RuntimeError("per_need_reranker_invalid_scores")
+    ranked = sorted(
+        zip(candidates, (float(score) for score in scores)),
+        key=lambda pair: (-pair[1], pair[0].rank_in_source, _candidate_key(pair[0].item)),
+    )
+    output = [
+        replace(
+            candidate,
+            rank_in_source=rank,
+            retrieval_rank_in_source=(candidate.retrieval_rank_in_source or candidate.rank_in_source),
+            per_need_relevance_score=score,
+        )
+        for rank, (candidate, score) in enumerate(ranked, 1)
+    ]
+    return output, {
+        "query_id": variant.query_id,
+        "information_need_id": variant.information_need_id,
+        "document_count": len(documents),
+        "latency_ms": round((time.perf_counter() - started) * 1000, 3),
+    }
+
+
 def _rrf_fuse(
     candidates: list[KnowledgeCandidate], top_k: int, rrf_k: int, *,
     expected_needs: tuple[str, ...] = (), max_chunks_per_document: int = 2,
@@ -284,6 +324,8 @@ def _rrf_fuse(
             "intent_group_id": candidate.intent_group_id,
             "retrieval_route": candidate.retrieval_route,
             "rank_in_source": candidate.rank_in_source,
+            "retrieval_rank_in_source": getattr(candidate, "retrieval_rank_in_source", None),
+            "per_need_relevance_score": getattr(candidate, "per_need_relevance_score", None),
             "rrf_contribution": contribution,
         })
 
@@ -386,6 +428,7 @@ async def search_knowledge_with_trace(
     rrf_k: int = 60,
     execute_rewrite: bool = True,
     candidate_cache: dict[tuple[str, int, int], list[KnowledgeCandidate]] | None = None,
+    per_need_reranker=None,
 ) -> KnowledgeRetrievalOutcome:
     if type(top_k) is not int or not 1 <= top_k <= 10:
         raise ValueError("知识结果数须在1到10之间")
@@ -437,6 +480,16 @@ async def search_knowledge_with_trace(
             candidate_cache=candidate_cache,
         ) for variant in variants
     ))
+    rerank_calls: list[dict[str, Any]] = []
+    if effective_mode == "DECOMPOSE" and per_need_reranker is not None:
+        reranked = await asyncio.gather(*(
+            _rerank_information_need(per_need_reranker, variant, list(group))
+            if variant.kind == "subquery"
+            else asyncio.sleep(0, result=(list(group), None))
+            for variant, group in zip(variants, groups)
+        ))
+        groups = tuple(group for group, _ in reranked)
+        rerank_calls = [call for _, call in reranked if call is not None]
     candidates = [candidate for group in groups for candidate in group]
     expected_needs = tuple(dict.fromkeys(
         variant.information_need_id for variant in variants
@@ -470,6 +523,8 @@ async def search_knowledge_with_trace(
         rewrite_similarity=plan.rewrite_similarity,
         rewrite_decision=rewrite_decision,
         near_duplicate_decisions=duplicate_decisions,
+        per_need_rerank_applied=bool(rerank_calls),
+        per_need_rerank_calls=rerank_calls,
     ))
 
 
@@ -477,11 +532,13 @@ async def search_knowledge(
     knowledge_base, question: str, top_k: int = 3, *, query_processor=None,
     rrf_k: int = 60, execute_rewrite: bool = True,
     candidate_cache: dict[tuple[str, int, int], list[KnowledgeCandidate]] | None = None,
+    per_need_reranker=None,
 ):
     """兼容旧调用；需要诊断信息时使用 ``search_knowledge_with_trace``。"""
     outcome = await search_knowledge_with_trace(
         knowledge_base, question, top_k, query_processor=query_processor, rrf_k=rrf_k,
         execute_rewrite=execute_rewrite,
         candidate_cache=candidate_cache,
+        per_need_reranker=per_need_reranker,
     )
     return outcome.hits

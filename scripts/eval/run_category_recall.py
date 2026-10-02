@@ -136,6 +136,7 @@ async def run_dataset(
     rrf_k: int = 60,
     execute_rewrite: bool = True,
     candidate_cache: dict | None = None,
+    per_need_reranker=None,
 ) -> Aggregate:
     results: list[QueryResult] = []
     empty_results: list[bool] = []
@@ -146,6 +147,7 @@ async def run_dataset(
             knowledge_base, case["query"], top_k=top_k,
             query_processor=query_processor, rrf_k=rrf_k, execute_rewrite=execute_rewrite,
             candidate_cache=candidate_cache,
+            per_need_reranker=per_need_reranker,
         )
         hits = outcome.hits
         latency_ms = (time.perf_counter() - started) * 1000
@@ -226,6 +228,8 @@ async def run_dataset(
             "rewrite_decision": outcome.trace.rewrite_decision,
             "near_duplicate_decisions": outcome.trace.near_duplicate_decisions,
             "fusion_provenance": outcome.trace.fused,
+            "per_need_rerank_applied": outcome.trace.per_need_rerank_applied,
+            "per_need_rerank_calls": outcome.trace.per_need_rerank_calls,
             "candidate_count": len(outcome.trace.candidates),
             "processor_fallback_reason": outcome.trace.processor_fallback_reason,
             "pre_fusion_query_route_coverage": outcome.trace.pre_fusion_query_route_coverage,
