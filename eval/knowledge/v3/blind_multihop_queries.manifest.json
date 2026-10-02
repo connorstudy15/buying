@@ -1,0 +1,13 @@
+{
+  "stage": "blind_multihop_query_addendum",
+  "generated_at": "2026-10-02T16:54:21+08:00",
+  "model": "deepseek-v4.1-flash",
+  "knowledge_body_exposed": false,
+  "public_index_sha256": "d26c10babbc078eabdbb059b3eaf9ce958a08f91ab1baf4606a83774941c017e",
+  "prompt_sha256": "bf5d46f64694b4f7cfbaaaa475434de7c8eaacab40c0e3e2445a3821278ae07a",
+  "output_sha256": "cdbe5e0f9e06be3f2ea7389ea58781b19ea8e436dad29b0530cceba19be586a1",
+  "case_count": 2,
+  "kind_counts": {
+    "sequential_multi_hop": 2
+  }
+}

@@ -18,12 +18,25 @@ def load_jsonl(path: Path) -> list[dict]:
 
 
 def main() -> None:
-    query_path = ROOT / "blind_queries.jsonl"
-    label_path = ROOT / "stage_b_labels.jsonl"
+    query_paths = [ROOT / "blind_queries.jsonl"]
+    label_paths = [ROOT / "stage_b_labels.jsonl"]
+    multihop_queries = ROOT / "blind_multihop_queries.jsonl"
+    multihop_labels = ROOT / "stage_b_multihop_labels.jsonl"
+    if multihop_queries.exists() or multihop_labels.exists():
+        if not multihop_queries.exists() or not multihop_labels.exists():
+            raise ValueError("多跳 Query 与阶段 B 标注必须成对存在")
+        query_paths.append(multihop_queries)
+        label_paths.append(multihop_labels)
     output = ROOT / "human_review.csv"
-    queries = {row["id"]: row for row in load_jsonl(query_path)}
-    labels = load_jsonl(label_path)
+    query_rows = [row for path in query_paths for row in load_jsonl(path)]
+    label_rows = [row for path in label_paths for row in load_jsonl(path)]
+    queries = {row["id"]: row for row in query_rows}
+    labels = label_rows
     problems: list[str] = []
+    if len(queries) != len(query_rows):
+        problems.append("冻结 Query 存在重复 id")
+    if len({row["id"] for row in labels}) != len(labels):
+        problems.append("阶段 B 标注存在重复 id")
     if len(labels) != len(queries) or {row["id"] for row in labels} != set(queries):
         problems.append("阶段 B 必须逐条覆盖冻结 Query")
     for row in labels:
@@ -48,12 +61,29 @@ def main() -> None:
             source_path = PROJECT_ROOT / "knowledge" / item["source"]
             if not source_path.is_file() or item["quote"] not in source_path.read_text(encoding="utf-8"):
                 problems.append(f"{case_id}: evidence 无法逐字回指 {item['source']}")
+        hops = row.get("hops") or []
+        if row.get("original_kind") == "sequential_multi_hop":
+            if len(hops) < 2:
+                problems.append(f"{case_id}: sequential_multi_hop 至少需要两跳")
+            known_hops: set[str] = set()
+            for hop in hops:
+                hop_id = hop.get("id")
+                if not hop_id or hop_id in known_hops:
+                    problems.append(f"{case_id}: hop id 缺失或重复")
+                    continue
+                dependencies = hop.get("depends_on") or []
+                if any(dependency not in known_hops for dependency in dependencies):
+                    problems.append(f"{case_id}: {hop_id} 依赖未定义的前序 hop")
+                known_hops.add(hop_id)
+            if not row.get("must_cover") or not row.get("forbidden_inferences"):
+                problems.append(f"{case_id}: 多跳标注缺少覆盖点或禁止推断")
     if problems:
         raise ValueError("阶段 B 校验失败：\n- " + "\n- ".join(problems))
 
     kept = [row for row in labels if row["label_decision"] == "keep"]
-    columns = ["id", "decision", "original_kind", "answerability", "query", "relevant", "evidence",
-               "graded_relevance", "hard_negatives", "label_reason", "label_confidence",
+    columns = ["id", "decision", "original_kind", "answerability", "query", "dependency_hint",
+               "relevant", "evidence", "graded_relevance", "hard_negatives", "hops", "must_cover",
+               "forbidden_inferences", "label_reason", "label_confidence",
                "corrected_relevant", "corrected_grades", "corrected_evidence", "reviewer_notes"]
     with output.open("w", encoding="utf-8-sig", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=columns)
@@ -62,17 +92,27 @@ def main() -> None:
             writer.writerow({
                 "id": row["id"], "decision": "", "original_kind": row["original_kind"],
                 "answerability": row["answerability"], "query": row["query"],
+                "dependency_hint": queries[row["id"]].get("dependency_hint", ""),
                 "relevant": " | ".join(row.get("relevant") or []),
                 "evidence": " || ".join(f"[{item['source']}][{item['section']}] {item['quote']}" for item in row.get("evidence") or []),
                 "graded_relevance": " | ".join(f"{source}={grade}" for source, grade in row.get("graded_relevance", {}).items()),
                 "hard_negatives": " || ".join(f"[{item['source']}][{item['type']}] {item['reason']}" for item in row.get("hard_negatives") or []),
+                "hops": json.dumps(row.get("hops") or [], ensure_ascii=False),
+                "must_cover": " | ".join(row.get("must_cover") or []),
+                "forbidden_inferences": " | ".join(row.get("forbidden_inferences") or []),
                 "label_reason": row["label_reason"], "label_confidence": row["label_confidence"],
                 "corrected_relevant": "", "corrected_grades": "", "corrected_evidence": "", "reviewer_notes": "",
             })
     manifest = {
         "stage": "human_review_ready",
-        "frozen_query_sha256": hashlib.sha256(query_path.read_bytes()).hexdigest(),
-        "stage_b_labels_sha256": hashlib.sha256(label_path.read_bytes()).hexdigest(),
+        "frozen_query_sources": {
+            path.name: hashlib.sha256(path.read_bytes()).hexdigest() for path in query_paths
+        },
+        "stage_b_label_sources": {
+            path.name: hashlib.sha256(path.read_bytes()).hexdigest() for path in label_paths
+        },
+        "frozen_query_sha256": hashlib.sha256(b"".join(path.read_bytes() for path in query_paths)).hexdigest(),
+        "stage_b_labels_sha256": hashlib.sha256(b"".join(path.read_bytes() for path in label_paths)).hexdigest(),
         "candidate_count": len(labels), "keep_count": len(kept), "reject_count": len(labels) - len(kept),
         "review_file_sha256": hashlib.sha256(output.read_bytes()).hexdigest(),
     }
