@@ -146,6 +146,50 @@ def _telemetry(runs, strategy: str) -> dict[str, float | int | None]:
     }
 
 
+def _decompose_trigger_metrics(runs, dataset: Path) -> dict[str, Any]:
+    """评价“是否应该拆”的分类质量；优先使用人工策略标签，旧集才按问题桶兼容推导。"""
+    cases = {str(row["id"]): row for row in load_dataset(dataset)}
+    rows = []
+    inferred_count = 0
+    for run in runs:
+        for observation in run["decompose_per_need_rerank"]["observations"]:
+            if observation.get("expected_unanswerable"):
+                continue  # unsupported gate 在 QueryProcessor 之前，不能算分类器的 DIRECT。
+            case = cases[str(observation["case_id"])]
+            expected_strategy = str(case.get("expected_query_strategy") or "").upper()
+            if expected_strategy not in {"DIRECT", "DECOMPOSE"}:
+                inferred_count += 1
+                expected_strategy = (
+                    "DECOMPOSE"
+                    if str(case.get("primary_kind")) in {"cross_evidence", "implicit_constraint_multi_hop"}
+                    else "DIRECT"
+                )
+            rows.append({
+                "case_id": str(observation["case_id"]),
+                "expected": expected_strategy == "DECOMPOSE",
+                "predicted": observation.get("processor_plan_mode") == "DECOMPOSE",
+            })
+    tp = sum(row["expected"] and row["predicted"] for row in rows)
+    fp = sum(not row["expected"] and row["predicted"] for row in rows)
+    fn = sum(row["expected"] and not row["predicted"] for row in rows)
+    tn = sum(not row["expected"] and not row["predicted"] for row in rows)
+    ids = lambda predicate: sorted({row["case_id"] for row in rows if predicate(row)})
+    return {
+        "tp": tp, "fp": fp, "fn": fn, "tn": tn,
+        "precision": tp / (tp + fp) if tp + fp else None,
+        "recall": tp / (tp + fn) if tp + fn else None,
+        "false_trigger_rate": fp / (fp + tn) if fp + tn else None,
+        "direct_preservation_accuracy": tn / (tn + fp) if tn + fp else None,
+        "false_positive_ids": ids(lambda row: not row["expected"] and row["predicted"]),
+        "false_negative_ids": ids(lambda row: row["expected"] and not row["predicted"]),
+        "judgement_source": (
+            "explicit_expected_query_strategy"
+            if inferred_count == 0 else "legacy_primary_kind_inference"
+        ),
+        "inferred_observation_count": inferred_count,
+    }
+
+
 def _render(runs, dataset: Path, rrf_k: int, reranker_model: str) -> str:
     strategies = ("legacy", "decompose_rrf", "decompose_per_need_rerank")
     labels = {
@@ -210,6 +254,26 @@ def _render(runs, dataset: Path, rrf_k: int, reranker_model: str) -> str:
         "",
         "费用按华北2公开原价估算，不含免费额度、缓存折扣和活动优惠：DeepSeek V4.1 Flash 输入闲/忙 1/2 元、输出 4/8 元/百万 token；Qwen3.7 Text Rerank 输入 0.5 元/百万 token。",
     ]
+
+    trigger = _decompose_trigger_metrics(runs, dataset)
+    lines += [
+        "", "## DECOMPOSE 触发准确性", "",
+        "`DECOMPOSE Trigger Precision` 表示：所有被模型判为需要拆分的问题中，真正应该拆分的比例。",
+        "", "| 指标 | 值 |", "|---|---:|",
+        f"| Trigger Precision | {_fmt(trigger['precision'])} |",
+        f"| Trigger Recall | {_fmt(trigger['recall'])} |",
+        f"| False Trigger Rate | {_fmt(trigger['false_trigger_rate'])} |",
+        f"| DIRECT 保持准确率 | {_fmt(trigger['direct_preservation_accuracy'])} |",
+        f"| TP / FP / FN / TN | {trigger['tp']} / {trigger['fp']} / {trigger['fn']} / {trigger['tn']} |",
+        "",
+        f"- 误拆 case：`{','.join(trigger['false_positive_ids']) or '无'}`",
+        f"- 漏拆 case：`{','.join(trigger['false_negative_ids']) or '无'}`",
+        f"- 判定真值来源：`{trigger['judgement_source']}`。",
+    ]
+    if trigger["inferred_observation_count"]:
+        lines.append(
+            "- 注意：旧冻结集没有显式 `expected_query_strategy`，这里暂按问题桶推导；下一版必须由人工审批 DIRECT/DECOMPOSE 后再作为正式门禁。"
+        )
 
     lines += [
         "", "## 关键分桶（多轮中位数）", "",

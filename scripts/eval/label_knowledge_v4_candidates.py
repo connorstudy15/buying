@@ -65,6 +65,8 @@ hard negative 是容易误召回或误用、但 grade 只能为0或1的来源。
 
 输出一个 JSON 对象，字段必须为：
 - id、query、original_kind（照抄）；
+- expected_query_strategy：DIRECT 或 DECOMPOSE；只有存在两个以上可独立检索的信息需求才选 DECOMPOSE；
+- decomposition_reason：为什么需要或不需要拆分；
 - label_decision：keep 或 reject。只有题意重复、无法形成明确评测口径时才 reject；
 - answerability：answerable、conditional 或 unanswerable；
 - graded_relevance：仅列经过判断的 source 到 0..3 整数；至少覆盖所有 evidence 和 hard negative；
@@ -95,6 +97,10 @@ def _validate(row: dict, proposal: dict) -> list[str]:
         issues.append("label_decision 非法")
     if proposal.get("answerability") not in {"answerable", "conditional", "unanswerable"}:
         issues.append("answerability 非法")
+    if proposal.get("expected_query_strategy") not in {"DIRECT", "DECOMPOSE"}:
+        issues.append("expected_query_strategy 非法")
+    if not str(proposal.get("decomposition_reason") or "").strip():
+        issues.append("缺少 decomposition_reason")
     grades = proposal.get("graded_relevance") or {}
     if not isinstance(grades, dict) or any(type(value) is not int or not 0 <= value <= 3 for value in grades.values()):
         issues.append("graded_relevance 非法")
@@ -155,7 +161,8 @@ def _enrich(row: dict, proposal: dict) -> dict:
 def _write_review(rows: list[dict], path: Path) -> None:
     columns = [
         "id", "original_kind", "query", "answerability", "relevant", "evidence_summary",
-        "hard_negatives", "label_confidence", "label_reason", "review_decision", "reviewer_notes",
+        "hard_negatives", "expected_query_strategy", "decomposition_reason",
+        "label_confidence", "label_reason", "review_decision", "reviewer_notes",
     ]
     with path.open("w", encoding="utf-8-sig", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=columns)
@@ -170,6 +177,8 @@ def _write_review(rows: list[dict], path: Path) -> None:
                     for item in row.get("evidence_ground_truth") or []
                 ),
                 "hard_negatives": " | ".join(item["source"] for item in row.get("hard_negatives") or []),
+                "expected_query_strategy": row.get("expected_query_strategy"),
+                "decomposition_reason": row.get("decomposition_reason"),
                 "label_confidence": row.get("label_confidence"), "label_reason": row.get("label_reason"),
                 "review_decision": "", "reviewer_notes": "",
             })
