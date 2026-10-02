@@ -1,4 +1,4 @@
-# Knowledge benchmark v4（扩充候选，待人工审批）
+# Knowledge benchmark v4（扩充候选，阶段 B 已审核、尚未冻结）
 
 ## 目标
 
@@ -26,10 +26,17 @@
 
 ## 当前状态
 
-- 60 条盲 Query：已生成并完成结构自检。
+- 60 条盲 Query：已生成并完成结构自检；阶段 A 文件与 manifest 哈希保持冻结。
 - 候选池：已生成，平均每题 14.38 个候选来源。
-- 阶段 B 标签：等待用户明确授权把候选知识正文发送给配置的阿里云百炼模型。
-- 人工审批：尚未开始。
+- 阶段 B 标签：独立审核已完成，45 条保留、15 条拒绝。
+- 合并候选集：旧 Core 22 条 + 本轮保留 45 条，共 67 条；仍未冻结为正式 benchmark。
+- Query 策略：8 条 implicit case 经用户终审从 DIRECT 改为 DECOMPOSE，详见 `QUERY_STRATEGY_ADJUDICATION.md`。
+
+## DIRECT / DECOMPOSE 终审口径
+
+即使用户只有一个最终判断目标，如果该判断必须组合两个可独立检索、可独立失败的 gold evidence needs，也应标为 `DECOMPOSE`。
+
+这条口径判断的是证据需求结构，不是句子里出现了几个商品，也不是最终答案只有几个结论。
 
 ## 文件
 
@@ -39,5 +46,9 @@
 - `candidate_pool.manifest.json`：候选池参数与哈希。
 - `stage_b_proposed_labels.jsonl`：阶段 B 成功后生成，仍是待审候选。
 - `human_review_increment.csv`：给人工审批使用。
+- `stage_b_reviewed_labels.jsonl`：阶段 B 全部 60 条的审核结果，包含拒绝项。
+- `knowledge_eval_candidates.reviewed.jsonl`：旧 Core 与本轮 45 条保留项的合并候选集。
+- `query_strategy_adjudication.jsonl`：机器可读的阶段 B 后策略裁决记录。
+- `QUERY_STRATEGY_ADJUDICATION.md`：人工可读的策略裁决说明。
 
 旧 22 条 Core 始终保留在 `eval/knowledge/v3/knowledge_eval_candidates.jsonl`，不会被本目录覆盖。

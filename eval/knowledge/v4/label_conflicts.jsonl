@@ -1,0 +1,23 @@
+{"id": "v4-004", "review_decision": "model_rejected", "issues": ["缺少完整原文证据；知识库没有速干毛巾折叠尺寸，不能以通用品类收纳原则代替。", "label_confidence < 0.85"], "requested_decision": "确认是否从新增评测候选中移除或补充经核验的资料后重新审核"}
+{"id": "v4-009", "review_decision": "model_rejected", "issues": ["缺少完整原文证据；没有数据线接口、协议或具体兼容条件证据。", "label_confidence < 0.85"], "requested_decision": "确认是否从新增评测候选中移除或补充经核验的资料后重新审核"}
+{"id": "v4-012", "review_decision": "model_rejected", "issues": ["缺少完整原文证据；没有磁吸无线充功率数据或标称功率判断口径。", "label_confidence < 0.85"], "requested_decision": "确认是否从新增评测候选中移除或补充经核验的资料后重新审核"}
+{"id": "v4-015", "review_decision": "model_rejected", "issues": ["缺少完整原文证据；没有棉麻缩水的直接资料。", "label_confidence < 0.85"], "requested_decision": "确认是否从新增评测候选中移除或补充经核验的资料后重新审核"}
+{"id": "v4-019", "review_decision": "model_rejected", "issues": ["缺少完整原文证据；没有轻量天幕本身重量，跨证据第一项无法标正例。", "cross 信息需求的正证据不完整", "label_confidence < 0.85", "阶段 A cross 分类有结构依据，但商品重量正证据缺失"], "requested_decision": "确认是否从新增评测候选中移除或补充经核验的资料后重新审核"}
+{"id": "v4-025", "review_decision": "model_rejected", "issues": ["缺少完整原文证据；没有蓝牙音箱续航资料，跨证据第二项无法完成。", "cross 信息需求的正证据不完整", "label_confidence < 0.85"], "requested_decision": "确认是否从新增评测候选中移除或补充经核验的资料后重新审核"}
+{"id": "v4-033", "review_decision": "model_rejected", "issues": ["缺少完整原文证据；没有速干毛巾收纳体积资料，跨证据第二项无法完成。", "cross 信息需求的正证据不完整", "label_confidence < 0.85"], "requested_decision": "确认是否从新增评测候选中移除或补充经核验的资料后重新审核"}
+{"id": "v4-036", "review_decision": "model_rejected", "issues": ["缺少完整原文证据；没有蓝牙音箱续航和数据线接口适配资料。", "cross 信息需求的正证据不完整", "label_confidence < 0.85"], "requested_decision": "确认是否从新增评测候选中移除或补充经核验的资料后重新审核"}
+{"id": "v4-039", "review_decision": "model_rejected", "issues": ["缺少完整原文证据；没有棉麻桌布缩水资料，跨证据第二项无法完成。", "cross 信息需求的正证据不完整", "label_confidence < 0.85"], "requested_decision": "确认是否从新增评测候选中移除或补充经核验的资料后重新审核"}
+{"id": "v4-044", "review_decision": "model_revised", "issues": ["label_confidence < 0.85", "条件性答案边界需人工确认"], "requested_decision": "确认条件性或证据边界；不得自动冻结"}
+{"id": "v4-045", "review_decision": "model_revised", "issues": ["label_confidence < 0.85", "条件性答案边界需人工确认"], "requested_decision": "确认条件性或证据边界；不得自动冻结"}
+{"id": "v4-047", "review_decision": "model_revised", "issues": ["label_confidence < 0.85", "条件性答案边界需人工确认"], "requested_decision": "确认条件性或证据边界；不得自动冻结"}
+{"id": "v4-050", "review_decision": "model_rejected", "issues": ["缺少完整原文证据；资料仅说明通用防水等级，没有海边沙尘、盐雾或具体露营灯适用证据。", "隐含约束信息需求的正证据不完整", "label_confidence < 0.85", "条件性答案边界需人工确认"], "requested_decision": "确认是否从新增评测候选中移除或补充经核验的资料后重新审核"}
+{"id": "v4-060", "review_decision": "model_revised", "issues": ["演示资料只能证明不可作为当前权威政策"], "requested_decision": "确认条件性或证据边界；不得自动冻结"}
+{"id": "v4-r001", "review_decision": "model_rejected", "issues": ["缺少完整原文证据；没有登机箱拉链和箱体保养方法。", "label_confidence < 0.85"], "requested_decision": "确认是否从新增评测候选中移除或补充经核验的资料后重新审核"}
+{"id": "v4-r003", "review_decision": "model_rejected", "issues": ["缺少完整原文证据；只有桑蚕丝内胆清洗方法，没有收纳方法。", "label_confidence < 0.85"], "requested_decision": "确认是否从新增评测候选中移除或补充经核验的资料后重新审核"}
+{"id": "v4-r004", "review_decision": "model_rejected", "issues": ["缺少完整原文证据；只有速干毛巾材质，没有与普通毛巾比较的资料。", "label_confidence < 0.85"], "requested_decision": "确认是否从新增评测候选中移除或补充经核验的资料后重新审核"}
+{"id": "v4-r005", "review_decision": "model_rejected", "issues": ["缺少完整原文证据；旅行三件套材质仅提帆布/再生尼龙联名款，没有日常打理方法。", "label_confidence < 0.85"], "requested_decision": "确认是否从新增评测候选中移除或补充经核验的资料后重新审核"}
+{"id": "v4-r009", "review_decision": "model_revised", "issues": ["label_confidence < 0.85", "条件性答案边界需人工确认"], "requested_decision": "确认条件性或证据边界；不得自动冻结"}
+{"id": "v4-r011", "review_decision": "model_revised", "issues": ["候选池疑似漏掉正例：cross-border-guide.md", "label_confidence < 0.85"], "requested_decision": "确认条件性或证据边界；不得自动冻结"}
+{"id": "v4-r012", "review_decision": "model_revised", "issues": ["label_confidence < 0.85", "条件性答案边界需人工确认"], "requested_decision": "确认条件性或证据边界；不得自动冻结"}
+{"id": "v4-r013", "review_decision": "model_rejected", "issues": ["缺少完整原文证据；没有棉麻桌布洗后变形的资料，跨证据第一项无法完成。", "cross 信息需求的正证据不完整", "label_confidence < 0.85"], "requested_decision": "确认是否从新增评测候选中移除或补充经核验的资料后重新审核"}
+{"id": "v4-r014", "review_decision": "model_revised", "issues": ["候选池疑似漏掉正例：cross-border-guide.md"], "requested_decision": "确认条件性或证据边界；不得自动冻结"}

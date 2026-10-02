@@ -1,0 +1,36 @@
+{
+  "schema_version": "knowledge-v4-approved-blind-query-v1",
+  "stage": "stage_a_frozen",
+  "frozen_at_utc": "2026-10-02T20:17:37.695578+00:00",
+  "source_file": "blind_increment_queries.jsonl",
+  "source_sha256": "ab86dc08d8ed2e91cf1f80f71c9eeb552297fe73090a0f5c5231ef6aa3f5d265",
+  "approved_file": "blind_queries_approved.jsonl",
+  "approved_sha256": "67b452193c53dcccc63fe5a15916e4ab19997125bd6eb1088fd6807268578767",
+  "audit_file": "blind_query_audit.jsonl",
+  "audit_sha256": "26083ea4bb62a84162ae6b6492c0132b1f4c6bd227bc0e5530cac94569ede303",
+  "knowledge_body_exposed_before_freeze": false,
+  "candidate_pool_exposed_before_freeze": false,
+  "existing_results_exposed_before_freeze": false,
+  "approved_count": 60,
+  "audit_count": 77,
+  "original_decision_counts": {
+    "reject": 17,
+    "revise": 27,
+    "approve": 16
+  },
+  "replacement_count": 17,
+  "kind_counts": {
+    "single_evidence": 22,
+    "cross_evidence": 20,
+    "implicit_constraint": 10,
+    "unanswerable": 7,
+    "policy_boundary": 1
+  },
+  "strategy_counts": {
+    "DIRECT": 33,
+    "DECOMPOSE": 20,
+    "BYPASS": 7
+  },
+  "all_revisions_applied": true,
+  "acceptance_met": true
+}

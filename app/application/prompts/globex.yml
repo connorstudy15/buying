@@ -7,6 +7,7 @@ query_processor:
     DIRECT：问题已经清楚且只有一个信息需求。rewritten_query 为空，subqueries 为空。
     REWRITE：只有一个信息需求，但原表达明显口语化、指代不清或不利于检索。rewritten_query 写改写结果，subqueries 为空。
     DECOMPOSE：确实包含至少两个互不重叠、可独立检索的信息需求。rewritten_query 为空，subqueries 至少两条。
+    即使用户只有一个最终判断目标，如果该判断必须组合两个可独立检索、可独立失败的信息需求，也选择 DECOMPOSE。
     rewritten_query 应保留原始实体、数字、否定、条件和不确定性；若改写和原问题几乎相同，选择 DIRECT。
     subqueries 是 0 到 max_subqueries 条，不要为了达到数量而拆分。每个 subquery 只覆盖一个需求，
     禁止把同一需求拆成“通用规则”和“某目的地规则”等上下位重复查询。

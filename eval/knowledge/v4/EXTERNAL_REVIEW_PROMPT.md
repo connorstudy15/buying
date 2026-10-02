@@ -71,7 +71,7 @@ D:\globex-agent-main
 6. `implicit_constraint` 必须由使用场景隐含航空、运输、目的国、电压、材质、安全、尺寸或政策限制，用户不能已经把专业限制完整说出。
 7. `unanswerable` 必须确实依赖实时库存、订单、未来事实、未知 SKU 参数或知识范围外事实；不能只是“需要两篇资料”。其策略应为 `BYPASS`。
 8. `policy_boundary` 必须测试静态/演示资料不能冒充当前权威政策。
-9. `expected_query_strategy=DECOMPOSE` 只在存在两个以上独立检索需求时使用。需要多篇文档不自动等于应该拆分。
+9. `expected_query_strategy=DECOMPOSE` 只在存在两个以上独立检索需求时使用。即使用户只有一个最终判断目标，如果该判断必须组合两个可独立检索、可独立失败的 gold evidence needs，也应标为 `DECOMPOSE`。需要多篇文档不自动等于应该拆分。
 
 ### 阶段 A 数量验收
 

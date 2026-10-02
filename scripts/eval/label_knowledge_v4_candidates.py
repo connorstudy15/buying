@@ -65,7 +65,7 @@ hard negative 是容易误召回或误用、但 grade 只能为0或1的来源。
 
 输出一个 JSON 对象，字段必须为：
 - id、query、original_kind（照抄）；
-- expected_query_strategy：DIRECT 或 DECOMPOSE；只有存在两个以上可独立检索的信息需求才选 DECOMPOSE；
+- expected_query_strategy：DIRECT 或 DECOMPOSE；只有存在两个以上可独立检索的信息需求才选 DECOMPOSE。即使用户只有一个最终判断目标，如果该判断必须组合两个可独立检索、可独立失败的 gold evidence needs，也应选 DECOMPOSE；
 - decomposition_reason：为什么需要或不需要拆分；
 - label_decision：keep 或 reject。只有题意重复、无法形成明确评测口径时才 reject；
 - answerability：answerable、conditional 或 unanswerable；

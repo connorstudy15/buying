@@ -5,6 +5,7 @@ from unittest.mock import AsyncMock
 import pytest
 from agentscope.message import TextBlock
 
+from app.application.prompts.loader import load_prompts
 from app.application.retrieval.query_processor import QueryPlan, QueryProcessor, QueryProcessorError, QueryVariant
 from app.infrastructure.rag.knowledge_retrieval import (
     _rrf_fuse,
@@ -36,6 +37,12 @@ class PlannedProcessor:
         if self.error:
             raise self.error
         return self.plan
+
+
+def test_query_processor_prompt_decomposes_single_goal_with_independent_evidence_needs():
+    prompt = load_prompts()["query_processor"]["system_prompt"]
+    assert "只有一个最终判断目标" in prompt
+    assert "两个可独立检索、可独立失败的信息需求" in prompt
 
 
 @pytest.mark.asyncio
