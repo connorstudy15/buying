@@ -40,10 +40,16 @@ class RetryingReranker:
         self._attempts = attempts
 
     async def rerank(self, query: str, documents: list[str]) -> list[float]:
+        scores, _ = await self.rerank_with_metadata(query, documents)
+        return scores
+
+    async def rerank_with_metadata(self, query: str, documents: list[str]):
         last_error = None
         for attempt in range(1, self._attempts + 1):
             try:
-                return await self._inner.rerank(query, documents)
+                if hasattr(self._inner, "rerank_with_metadata"):
+                    return await self._inner.rerank_with_metadata(query, documents)
+                return await self._inner.rerank(query, documents), {}
             except Exception as err:  # noqa: BLE001 - 最终仍抛错，不静默降级
                 last_error = err
                 if attempt < self._attempts:
@@ -65,6 +71,79 @@ def _bucket_median(runs, strategy: str, bucket: str, metric: str):
 
 def _fmt(value):
     return "n/a" if value is None else f"{value:.4f}"
+
+
+def _percentile(values: list[float], percentile: float) -> float | None:
+    if not values:
+        return None
+    ordered = sorted(values)
+    position = (len(ordered) - 1) * percentile
+    lower = int(position)
+    upper = min(lower + 1, len(ordered) - 1)
+    weight = position - lower
+    return ordered[lower] * (1 - weight) + ordered[upper] * weight
+
+
+def _telemetry(runs, strategy: str) -> dict[str, float | int | None]:
+    observations = [row for run in runs for row in run[strategy]["observations"]]
+    total_latencies = [float(row["latency_ms"]) for row in observations]
+    processor_latencies = [
+        float(row["query_processor_latency_ms"])
+        for row in observations if row.get("query_processor_latency_ms") is not None
+    ]
+    rerank_calls = [call for row in observations for call in row.get("per_need_rerank_calls") or []]
+    rerank_call_latencies = [float(call["latency_ms"]) for call in rerank_calls]
+    # 子查询重排并发执行，因此一次 Query 的重排墙钟代价取最慢调用，而不是把各调用相加。
+    rerank_query_wall = [
+        max((float(call["latency_ms"]) for call in row.get("per_need_rerank_calls") or []), default=0.0)
+        for row in observations
+    ]
+    triggered = [row for row in observations if row.get("per_need_rerank_calls")]
+    triggered_query_wall = [
+        max(float(call["latency_ms"]) for call in row["per_need_rerank_calls"])
+        for row in triggered
+    ]
+    processor_input = sum(int((row.get("query_processor_usage") or {}).get("input_tokens") or 0) for row in observations)
+    processor_output = sum(int((row.get("query_processor_usage") or {}).get("output_tokens") or 0) for row in observations)
+    reranker_tokens = sum(int((call.get("usage") or {}).get("total_tokens") or 0) for call in rerank_calls)
+    triggered_processor_input = sum(int((row.get("query_processor_usage") or {}).get("input_tokens") or 0) for row in triggered)
+    triggered_processor_output = sum(int((row.get("query_processor_usage") or {}).get("output_tokens") or 0) for row in triggered)
+    count = len(observations)
+    # 华北2公开原价：DeepSeek V4.1 Flash 闲/忙输入 1/2 元、输出 4/8 元；Qwen rerank 输入 0.5 元/百万 token。
+    idle_cost = (processor_input * 1 + processor_output * 4 + reranker_tokens * 0.5) / 1_000_000
+    busy_cost = (processor_input * 2 + processor_output * 8 + reranker_tokens * 0.5) / 1_000_000
+    triggered_count = len(triggered)
+    triggered_idle_cost = (
+        triggered_processor_input * 1 + triggered_processor_output * 4 + reranker_tokens * 0.5
+    ) / 1_000_000
+    triggered_busy_cost = (
+        triggered_processor_input * 2 + triggered_processor_output * 8 + reranker_tokens * 0.5
+    ) / 1_000_000
+    return {
+        "observation_count": count,
+        "total_p50_ms": _percentile(total_latencies, 0.5),
+        "total_p95_ms": _percentile(total_latencies, 0.95),
+        "query_processor_p50_ms": _percentile(processor_latencies, 0.5),
+        "query_processor_p95_ms": _percentile(processor_latencies, 0.95),
+        "reranker_call_p50_ms": _percentile(rerank_call_latencies, 0.5),
+        "reranker_call_p95_ms": _percentile(rerank_call_latencies, 0.95),
+        "reranker_query_wall_p50_ms": _percentile(rerank_query_wall, 0.5),
+        "reranker_query_wall_p95_ms": _percentile(rerank_query_wall, 0.95),
+        "triggered_query_count": triggered_count,
+        "triggered_reranker_wall_p50_ms": _percentile(triggered_query_wall, 0.5),
+        "triggered_reranker_wall_p95_ms": _percentile(triggered_query_wall, 0.95),
+        "reranker_call_count": len(rerank_calls),
+        "reranker_calls_per_query": len(rerank_calls) / count if count else 0.0,
+        "reranker_calls_per_triggered_query": len(rerank_calls) / triggered_count if triggered_count else 0.0,
+        "processor_input_tokens_per_query": processor_input / count if count else 0.0,
+        "processor_output_tokens_per_query": processor_output / count if count else 0.0,
+        "reranker_tokens_per_query": reranker_tokens / count if count else 0.0,
+        "reranker_tokens_per_triggered_query": reranker_tokens / triggered_count if triggered_count else 0.0,
+        "estimated_idle_cny_per_query": idle_cost / count if count else 0.0,
+        "estimated_busy_cny_per_query": busy_cost / count if count else 0.0,
+        "estimated_idle_cny_per_triggered_query": triggered_idle_cost / triggered_count if triggered_count else 0.0,
+        "estimated_busy_cny_per_triggered_query": triggered_busy_cost / triggered_count if triggered_count else 0.0,
+    }
 
 
 def _render(runs, dataset: Path, rrf_k: int, reranker_model: str) -> str:
@@ -109,6 +188,28 @@ def _render(runs, dataset: Path, rrf_k: int, reranker_model: str) -> str:
             f"| {label} | {_fmt(values['legacy'])} | {_fmt(values['decompose_rrf'])} | "
             f"{_fmt(values['decompose_per_need_rerank'])} | {_fmt(delta)} |"
         )
+
+    a_telemetry = _telemetry(runs, "decompose_rrf")
+    b_telemetry = _telemetry(runs, "decompose_per_need_rerank")
+    lines += [
+        "", "## 延迟、调用量与估算费用", "",
+        "| 指标 | 实验 A | 实验 B |",
+        "|---|---:|---:|",
+        f"| 全部调用合并后的端到端 P50 / P95 | {_fmt(a_telemetry['total_p50_ms'])} / {_fmt(a_telemetry['total_p95_ms'])} ms | {_fmt(b_telemetry['total_p50_ms'])} / {_fmt(b_telemetry['total_p95_ms'])} ms |",
+        f"| QueryProcessor P50 / P95 | {_fmt(a_telemetry['query_processor_p50_ms'])} / {_fmt(a_telemetry['query_processor_p95_ms'])} ms | {_fmt(b_telemetry['query_processor_p50_ms'])} / {_fmt(b_telemetry['query_processor_p95_ms'])} ms |",
+        f"| 每个 Query 的并发 reranker 墙钟 P50 / P95 | 0 / 0 ms | {_fmt(b_telemetry['reranker_query_wall_p50_ms'])} / {_fmt(b_telemetry['reranker_query_wall_p95_ms'])} ms |",
+        f"| 仅触发拆分的 Query：reranker 墙钟 P50 / P95 | n/a | {_fmt(b_telemetry['triggered_reranker_wall_p50_ms'])} / {_fmt(b_telemetry['triggered_reranker_wall_p95_ms'])} ms |",
+        f"| 单次 reranker 调用 P50 / P95 | n/a | {_fmt(b_telemetry['reranker_call_p50_ms'])} / {_fmt(b_telemetry['reranker_call_p95_ms'])} ms |",
+        f"| reranker 调用总数 / 平均每 Query | 0 / 0 | {b_telemetry['reranker_call_count']} / {_fmt(b_telemetry['reranker_calls_per_query'])} |",
+        f"| 触发拆分的 Query 数 / 平均调用数 | 0 / 0 | {b_telemetry['triggered_query_count']} / {_fmt(b_telemetry['reranker_calls_per_triggered_query'])} |",
+        f"| QueryProcessor 输入 / 输出 token（每 Query） | {_fmt(a_telemetry['processor_input_tokens_per_query'])} / {_fmt(a_telemetry['processor_output_tokens_per_query'])} | {_fmt(b_telemetry['processor_input_tokens_per_query'])} / {_fmt(b_telemetry['processor_output_tokens_per_query'])} |",
+        f"| reranker token（每 Query） | 0 | {_fmt(b_telemetry['reranker_tokens_per_query'])} |",
+        f"| reranker token（每个触发拆分的 Query） | 0 | {_fmt(b_telemetry['reranker_tokens_per_triggered_query'])} |",
+        f"| API 估算成本（闲时 / 忙时，每 Query） | ¥{a_telemetry['estimated_idle_cny_per_query']:.6f} / ¥{a_telemetry['estimated_busy_cny_per_query']:.6f} | ¥{b_telemetry['estimated_idle_cny_per_query']:.6f} / ¥{b_telemetry['estimated_busy_cny_per_query']:.6f} |",
+        f"| API 估算成本（每个触发拆分的 Query） | n/a | ¥{b_telemetry['estimated_idle_cny_per_triggered_query']:.6f} / ¥{b_telemetry['estimated_busy_cny_per_triggered_query']:.6f} |",
+        "",
+        "费用按华北2公开原价估算，不含免费额度、缓存折扣和活动优惠：DeepSeek V4.1 Flash 输入闲/忙 1/2 元、输出 4/8 元/百万 token；Qwen3.7 Text Rerank 输入 0.5 元/百万 token。",
+    ]
 
     lines += [
         "", "## 关键分桶（多轮中位数）", "",
@@ -275,6 +376,14 @@ async def main(argv: list[str] | None = None) -> None:
             "shared_candidate_pool_within_repetition": True,
             "global_original_query_rerank": False,
             "method": "rerank each subquery candidate list, keep all candidates, then existing RRF",
+            "pricing_cny_per_million_tokens": {
+                "query_processor_input_idle": 1.0,
+                "query_processor_input_busy": 2.0,
+                "query_processor_output_idle": 4.0,
+                "query_processor_output_busy": 8.0,
+                "reranker_input": 0.5,
+                "as_of": "2026-10-03",
+            },
         },
         "runs": runs,
     }

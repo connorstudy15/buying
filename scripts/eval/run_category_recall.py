@@ -230,6 +230,8 @@ async def run_dataset(
             "fusion_provenance": outcome.trace.fused,
             "per_need_rerank_applied": outcome.trace.per_need_rerank_applied,
             "per_need_rerank_calls": outcome.trace.per_need_rerank_calls,
+            "query_processor_latency_ms": outcome.trace.query_processor_latency_ms,
+            "query_processor_usage": outcome.trace.query_processor_usage,
             "candidate_count": len(outcome.trace.candidates),
             "processor_fallback_reason": outcome.trace.processor_fallback_reason,
             "pre_fusion_query_route_coverage": outcome.trace.pre_fusion_query_route_coverage,

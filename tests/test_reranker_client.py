@@ -71,6 +71,7 @@ async def test_dashscope_text_rerank_uses_independent_key_and_nested_contract(mo
 
         def json(self) -> dict:
             return {
+                "usage": {"prompt_tokens": 321, "total_tokens": 321},
                 "output": {
                     "results": [
                         {"index": 1, "relevance_score": 0.2},
@@ -98,9 +99,10 @@ async def test_dashscope_text_rerank_uses_independent_key_and_nested_contract(mo
     monkeypatch.setenv("DATA_DIR", str(tmp_path))
     monkeypatch.setattr(http_reranker.httpx, "AsyncClient", lambda **_: FakeClient())
 
-    scores = await HttpReranker(load_settings()).rerank("办公电脑", ["轻薄本", "游戏本"])
+    scores, usage = await HttpReranker(load_settings()).rerank_with_metadata("办公电脑", ["轻薄本", "游戏本"])
 
     assert scores == [0.8, 0.2]
+    assert usage == {"prompt_tokens": 321, "total_tokens": 321, "document_count": 2}
     assert captured["url"] == endpoint
     assert captured["headers"] == {"Authorization": "Bearer reranker-key"}
     assert captured["json"] == {

@@ -30,9 +30,17 @@ class HttpReranker(Reranker):
         self.last_usage: dict[str, int] = {}
 
     async def rerank(self, query: str, documents: list[str]) -> list[float]:
+        scores, usage = await self.rerank_with_metadata(query, documents)
+        self.last_usage = usage
+        return scores
+
+    async def rerank_with_metadata(
+        self, query: str, documents: list[str],
+    ) -> tuple[list[float], dict[str, int]]:
         if not documents:
-            self.last_usage = {"prompt_tokens": 0, "total_tokens": 0, "document_count": 0}
-            return []
+            usage = {"prompt_tokens": 0, "total_tokens": 0, "document_count": 0}
+            self.last_usage = usage
+            return [], usage
         async with httpx.AsyncClient(timeout=self._timeout) as client:
             payload = (
                 {
@@ -51,11 +59,12 @@ class HttpReranker(Reranker):
             response.raise_for_status()
             body = response.json()
         usage = body.get("usage") if isinstance(body.get("usage"), dict) else {}
-        self.last_usage = {
+        usage_data = {
             "prompt_tokens": int(usage.get("prompt_tokens") or 0),
             "total_tokens": int(usage.get("total_tokens") or usage.get("prompt_tokens") or 0),
             "document_count": len(documents),
         }
+        self.last_usage = usage_data
         # 兼容 {results:[{index, relevance_score}]} 协议（Jina/TEI/vLLM rerank 通用形态）
         results = (body.get("output") or {}).get("results") if self._dashscope_text_rerank else body.get("results")
         if not isinstance(results, list) or len(results) != len(documents):
@@ -63,4 +72,4 @@ class HttpReranker(Reranker):
         scores = [0.0] * len(documents)
         for item in results:
             scores[item["index"]] = float(item.get("relevance_score", item.get("score", 0.0)))
-        return scores
+        return scores, usage_data

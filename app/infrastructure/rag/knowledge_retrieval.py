@@ -97,6 +97,8 @@ class KnowledgeRetrievalTrace:
     near_duplicate_decisions: list[dict[str, Any]] = field(default_factory=list)
     per_need_rerank_applied: bool = False
     per_need_rerank_calls: list[dict[str, Any]] = field(default_factory=list)
+    query_processor_latency_ms: float | None = None
+    query_processor_usage: dict[str, int] = field(default_factory=dict)
 
 
 @dataclass
@@ -176,6 +178,8 @@ async def _legacy_outcome(
     rewrite_similarity: float | None = None,
     rewrite_decision: str | None = None,
     candidate_cache: dict[tuple[str, int, int], list[KnowledgeCandidate]] | None = None,
+    query_processor_latency_ms: float | None = None,
+    query_processor_usage: dict[str, Any] | None = None,
 ) -> KnowledgeRetrievalOutcome:
     """关闭、回退和 DIRECT 共用同一条旧检索实现，避免三份代码逐渐产生差异。"""
     candidates = await _retrieve_candidates(
@@ -198,6 +202,11 @@ async def _legacy_outcome(
             query_plan_mode=effective_plan_mode,
             rewrite_similarity=rewrite_similarity,
             rewrite_decision=rewrite_decision,
+            query_processor_latency_ms=query_processor_latency_ms,
+            query_processor_usage={
+                key: int((query_processor_usage or {}).get(key) or 0)
+                for key in ("input_tokens", "output_tokens", "total_tokens")
+            },
         ),
     )
 
@@ -278,7 +287,11 @@ async def _rerank_information_need(
     """只用当前子问题给它自己的候选重排；不拿完整原问题做全局重排。"""
     started = time.perf_counter()
     documents = [_chunk_text(candidate.item) for candidate in candidates]
-    scores = await reranker.rerank(variant.text, documents)
+    if hasattr(reranker, "rerank_with_metadata"):
+        scores, usage = await reranker.rerank_with_metadata(variant.text, documents)
+    else:
+        scores = await reranker.rerank(variant.text, documents)
+        usage = {}
     if len(scores) != len(candidates) or not all(math.isfinite(float(score)) for score in scores):
         raise RuntimeError("per_need_reranker_invalid_scores")
     ranked = sorted(
@@ -299,6 +312,7 @@ async def _rerank_information_need(
         "information_need_id": variant.information_need_id,
         "document_count": len(documents),
         "latency_ms": round((time.perf_counter() - started) * 1000, 3),
+        "usage": usage,
     }
 
 
@@ -443,12 +457,21 @@ async def search_knowledge_with_trace(
             candidate_cache=candidate_cache,
         )
 
+    processor_started = time.perf_counter()
+    processor_metadata: dict[str, Any] = {}
     try:
-        plan: QueryPlan = await query_processor.process(question)
+        if hasattr(query_processor, "process_with_metadata"):
+            plan, processor_metadata = await query_processor.process_with_metadata(question)
+        else:
+            plan = await query_processor.process(question)
+        processor_metadata.setdefault(
+            "latency_ms", round((time.perf_counter() - processor_started) * 1000, 3),
+        )
     except Exception as err:  # noqa: BLE001 - 精确回到 legacy，不走新管线 original-only
         return await _legacy_outcome(
             knowledge_base, question, depth, top_k, trace_mode="legacy_fallback",
             processor_fallback_reason=str(err), candidate_cache=candidate_cache,
+            query_processor_latency_ms=round((time.perf_counter() - processor_started) * 1000, 3),
         )
 
     processor_mode = plan.mode
@@ -469,6 +492,8 @@ async def search_knowledge_with_trace(
             rewrite_similarity=plan.rewrite_similarity,
             rewrite_decision=rewrite_decision,
             candidate_cache=candidate_cache,
+            query_processor_latency_ms=processor_metadata.get("latency_ms"),
+            query_processor_usage=processor_metadata,
         )
 
     variants: tuple[QueryVariant, ...] = plan.variants()
@@ -525,6 +550,11 @@ async def search_knowledge_with_trace(
         near_duplicate_decisions=duplicate_decisions,
         per_need_rerank_applied=bool(rerank_calls),
         per_need_rerank_calls=rerank_calls,
+        query_processor_latency_ms=processor_metadata.get("latency_ms"),
+        query_processor_usage={
+            key: int(processor_metadata.get(key) or 0)
+            for key in ("input_tokens", "output_tokens", "total_tokens")
+        },
     ))
 
 

@@ -262,9 +262,15 @@ def test_query_processor_rejects_dropped_numeric_or_universal_constraint():
 async def test_query_processor_calls_model_once_and_accepts_fenced_json():
     model = AsyncMock(return_value=SimpleNamespace(content=[TextBlock(text='''```json
 {"mode":"REWRITE","rewritten_query":"20寸登机箱 任意航空公司规则","subqueries":[]}
-```''')]))
-    plan = await QueryProcessor(model, "prompt", disable_thinking=True).process("20寸登机箱适用于任意航空公司吗")
+```''')], usage={"prompt_tokens": 120, "completion_tokens": 30, "total_tokens": 150}))
+    plan, metadata = await QueryProcessor(model, "prompt", disable_thinking=True).process_with_metadata(
+        "20寸登机箱适用于任意航空公司吗",
+    )
     assert plan.rewritten_query.startswith("20寸")
+    assert metadata["input_tokens"] == 120
+    assert metadata["output_tokens"] == 30
+    assert metadata["total_tokens"] == 150
+    assert metadata["latency_ms"] >= 0
     model.assert_awaited_once()
     assert model.await_args.kwargs["extra_body"] == {"enable_thinking": False}
     assert model.await_args.kwargs["temperature"] == 0

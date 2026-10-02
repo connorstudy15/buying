@@ -39,24 +39,37 @@ class SharedPlanProcessor:
         self._inner = inner
         self._cache: dict[str, QueryPlan | Exception] = {}
         self._latency: dict[str, float] = {}
+        self._metadata: dict[str, dict[str, Any]] = {}
 
     async def process(self, question: str) -> QueryPlan:
+        plan, _ = await self.process_with_metadata(question)
+        return plan
+
+    async def process_with_metadata(self, question: str) -> tuple[QueryPlan, dict[str, Any]]:
         if question in self._cache:
             await asyncio.sleep(self._latency[question])
             value = self._cache[question]
             if isinstance(value, Exception):
                 raise type(value)(str(value))
-            return value
+            return value, dict(self._metadata.get(question) or {})
         started = time.perf_counter()
         try:
-            value = await self._inner.process(question)
+            if hasattr(self._inner, "process_with_metadata"):
+                value, metadata = await self._inner.process_with_metadata(question)
+            else:
+                value = await self._inner.process(question)
+                metadata = {}
         except Exception as err:  # noqa: BLE001 - 两个实验组必须回放同一个失败
             self._latency[question] = time.perf_counter() - started
             self._cache[question] = err
             raise
         self._latency[question] = time.perf_counter() - started
         self._cache[question] = value
-        return value
+        self._metadata[question] = {
+            **metadata,
+            "latency_ms": round(self._latency[question] * 1000, 3),
+        }
+        return value, dict(self._metadata[question])
 
     def snapshot(self) -> dict[str, dict[str, Any]]:
         rows = {}
@@ -65,6 +78,7 @@ class SharedPlanProcessor:
                 "latency_ms": round(self._latency[question] * 1000, 3),
                 "error": str(value) if isinstance(value, Exception) else None,
                 "plan": None if isinstance(value, Exception) else asdict(value),
+                "usage": self._metadata.get(question, {}),
             }
         return rows
 

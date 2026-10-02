@@ -8,6 +8,7 @@ from __future__ import annotations
 import asyncio
 import json
 import re
+import time
 from dataclasses import dataclass
 
 from agentscope.message import Msg, TextBlock
@@ -60,7 +61,13 @@ class QueryProcessor:
         self._disable_thinking = disable_thinking
 
     async def process(self, question: str) -> QueryPlan:
-        """恰好调用模型一次，并严格校验结构与原问题语义锚点。"""
+        """兼容旧调用；需要调用计量时使用 ``process_with_metadata``。"""
+        plan, _ = await self.process_with_metadata(question)
+        return plan
+
+    async def process_with_metadata(self, question: str) -> tuple[QueryPlan, dict]:
+        """恰好调用模型一次，并返回延迟与 API usage，不把计量混入检索计划。"""
+        started = time.perf_counter()
         try:
             request_kwargs = {"max_tokens": 1000, "temperature": 0}
             if self._disable_thinking:
@@ -84,7 +91,23 @@ class QueryProcessor:
                 raw = raw.split("\n", 1)[1].rsplit("```", 1)[0]
             raw = re.sub(r"^json\s*", "", raw.strip(), flags=re.IGNORECASE)
             payload = json.loads(raw)
-            return self._validate(question, payload)
+            usage = getattr(response, "usage", None)
+            if isinstance(usage, dict):
+                usage_data = usage
+            else:
+                usage_data = {
+                    key: getattr(usage, key, None)
+                    for key in ("prompt_tokens", "completion_tokens", "input_tokens", "output_tokens", "total_tokens")
+                } if usage is not None else {}
+            input_tokens = int(usage_data.get("input_tokens") or usage_data.get("prompt_tokens") or 0)
+            output_tokens = int(usage_data.get("output_tokens") or usage_data.get("completion_tokens") or 0)
+            total_tokens = int(usage_data.get("total_tokens") or input_tokens + output_tokens)
+            return self._validate(question, payload), {
+                "latency_ms": round((time.perf_counter() - started) * 1000, 3),
+                "input_tokens": input_tokens,
+                "output_tokens": output_tokens,
+                "total_tokens": total_tokens,
+            }
         except QueryProcessorError:
             raise
         except Exception as err:  # noqa: BLE001 - 任何模型/格式故障均触发精确 legacy fallback
