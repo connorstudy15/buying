@@ -1,0 +1,31 @@
+{
+  "schema_version": "knowledge-v4-blind-query-v1",
+  "stage": "query_generation_only",
+  "generated_at": "2026-10-03T03:45:49+08:00",
+  "model": "deepseek-v4.1-flash",
+  "knowledge_body_exposed": false,
+  "public_index_sha256": "d26c10babbc078eabdbb059b3eaf9ce958a08f91ab1baf4606a83774941c017e",
+  "prompt_sha256": "80b2668eb64abb4278ebbb51bb30daa7eb0d7d3f8d14a29d219c499ac4747cdf",
+  "output_sha256": "ab86dc08d8ed2e91cf1f80f71c9eeb552297fe73090a0f5c5231ef6aa3f5d265",
+  "case_count": 60,
+  "kind_counts": {
+    "single_evidence": 22,
+    "cross_evidence": 20,
+    "implicit_constraint": 10,
+    "unanswerable": 7,
+    "policy_boundary": 1
+  },
+  "api_usage": {
+    "prompt_tokens": 863,
+    "total_tokens": 10548,
+    "completion_tokens": 9685,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "text_tokens": 863
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 5838,
+      "text_tokens": 3847
+    }
+  }
+}

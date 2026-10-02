@@ -8,9 +8,12 @@ import hashlib
 import json
 import math
 import re
+import sys
 from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from app.infrastructure.rag.category_knowledge import build_category_knowledge_base
 from app.infrastructure.rag.knowledge_retrieval import targeted_documents
