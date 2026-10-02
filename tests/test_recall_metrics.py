@@ -12,6 +12,7 @@ from scripts.eval.metrics import (
     Thresholds,
     evaluate,
     gate,
+    graded_ndcg_at_k,
     mrr,
     ndcg_at_k,
     precision_at_k,
@@ -112,6 +113,13 @@ class TestNDCGAtK:
         """标注多于 K 时，理想 DCG 也只取前 K，避免分母被无法触及的项拉大。"""
         assert ndcg_at_k(["a", "b"], ["a", "b", "c", "d"], k=2) == pytest.approx(1.0)
 
+    def test_graded_ndcg_rewards_grade_three_before_grade_one(self):
+        grades = {"best": 3, "partial": 2, "distractor": 1, "irrelevant": 0}
+        good = graded_ndcg_at_k(["best", "partial", "distractor"], grades, 3)
+        bad = graded_ndcg_at_k(["distractor", "partial", "best"], grades, 3)
+        assert good == pytest.approx(1.0)
+        assert good > bad
+
 
 def _qr(recall: float, m: float, n: float, filter_ok=None, precision: float = 0.0) -> QueryResult:
     return QueryResult(
@@ -185,6 +193,28 @@ class TestAggregate:
             "candidate_generation_miss": 1,
             "rerank_miss": 1,
         }
+
+    def test_evidence_and_bucket_metrics_are_separate(self):
+        direct = _qr(1, 1, 1)
+        direct.dimensions["primary_kind"] = "single_evidence"
+        direct.evidence_recall = 1.0
+        direct.all_evidence_recall = 1.0
+        direct.hard_negative_hit = False
+        cross = _qr(0.5, 0.5, 0.5)
+        cross.dimensions["primary_kind"] = "cross_evidence"
+        cross.evidence_recall = 0.5
+        cross.all_evidence_recall = 0.0
+        cross.hard_negative_hit = True
+        cross.hard_negative_above_positive = True
+
+        agg = evaluate([direct, cross], k=3, empty_results=[True])
+
+        assert agg.evidence_recall == 0.75
+        assert agg.all_evidence_recall == 0.5
+        assert agg.hard_negative_hit_rate == 0.5
+        assert agg.hard_negative_above_positive_rate == 1.0
+        assert agg.bucket_metrics["cross_evidence"]["all_evidence_recall"] == 0.0
+        assert agg.bucket_metrics["unanswerable"]["rejection_accuracy"] == 1.0
 
 
 class TestGate:

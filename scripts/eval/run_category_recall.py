@@ -1,15 +1,11 @@
 # -*- coding: utf-8 -*-
 """品类知识库（CategoryInsight）召回评测 —— 见教程 13-1 §5。
 
-与商品检索评测共用 `scripts/eval/metrics.py` 的三个指标，区别只在**标注单位**：
+与商品检索评测共用 `scripts/eval/metrics.py`。旧数据仍按文档名评分；v3 数据同时按
+稳定证据（source + section + quote）评分，避免把“命中文档但命错 chunk”算作成功。
 
     商品检索      标注单位 = product_id
-    品类知识库    标注单位 = 知识文档名（如 travel-gear.md）
-
-标注单位为什么是文档名而不是 chunk id：`bootstrap_category_knowledge` 用
-`ApproxTokenChunker(chunk_size=512, overlap=50)` 切片，chunk 边界会随 chunk_size
-或文档内容变动而漂移，拿 chunk id 当标注会导致「改了一句话就要重标一遍」。
-文档名稳定，且「该问题该由哪篇文档回答」本身就是运营能稳定判断的粒度。
+    品类知识库    文档诊断 = source；正式真值 = section + 原文 quote
 
 用法（项目根目录执行，需 embedding 凭据 + Qdrant）：
 
@@ -42,11 +38,13 @@ from scripts.eval.metrics import (  # noqa: E402
     Thresholds,
     evaluate,
     gate,
+    graded_ndcg_at_k,
     mrr,
     ndcg_at_k,
     precision_at_k,
     recall_at_k,
 )
+from scripts.eval.knowledge_evidence import matched_evidence_ids  # noqa: E402
 from scripts.eval.run_manifest import (  # noqa: E402
     SPLITS, build_manifest, finish_manifest, manifest_report, select_cases,
     validate_baseline_selection, write_manifest,
@@ -109,17 +107,66 @@ async def run_dataset(knowledge_base, cases: list[dict], top_k: int, *, observat
             if src not in retrieved:
                 retrieved.append(src)
 
-        relevant = case["relevant"]
+        relevant = case.get("relevant") or []
+        expected_unanswerable = bool(
+            case.get("expected_unanswerable") or case.get("answerability") == "unanswerable"
+        )
+        evidence = case.get("evidence_ground_truth") or []
+        gold_evidence_ids = [item["evidence_id"] for item in evidence if item.get("grade") == 3]
+        retrieved_evidence_ids, evidence_ranks = matched_evidence_ids(hits, evidence)
+        evidence_recall = (
+            recall_at_k(retrieved_evidence_ids, gold_evidence_ids, len(retrieved_evidence_ids) or top_k)
+            if gold_evidence_ids else None
+        )
+        all_evidence_recall = (
+            float(set(gold_evidence_ids).issubset(retrieved_evidence_ids)) if gold_evidence_ids else None
+        )
+
+        hard_negative_sources = [item["source"] for item in case.get("hard_negatives") or []]
+        hard_negative_hit = bool(set(retrieved) & set(hard_negative_sources)) if hard_negative_sources else None
+        first_negative_rank = next((i for i, src in enumerate(retrieved, 1) if src in hard_negative_sources), None)
+        positive_sources = {source for source, grade in (case.get("graded_relevance") or {}).items() if grade == 3}
+        first_positive_rank = next((i for i, src in enumerate(retrieved, 1) if src in positive_sources), None)
+        hard_negative_above_positive = (
+            first_negative_rank is not None and (first_positive_rank is None or first_negative_rank < first_positive_rank)
+            if hard_negative_sources else None
+        )
+
+        hops = case.get("hops") or []
+        retrievable_hops = [hop for hop in hops if hop.get("relevant")]
+        hop_scores: list[float] = []
+        for hop in retrievable_hops:
+            hop_evidence = [
+                item["evidence_id"] for item in evidence
+                if item.get("grade") == 3 and hop["id"] in (item.get("supports") or [])
+            ]
+            if hop_evidence:
+                hop_scores.append(float(set(hop_evidence).issubset(retrieved_evidence_ids)))
+            else:
+                hop_scores.append(float(set(hop["relevant"]).issubset(retrieved)))
+        hop_recall = sum(hop_scores) / len(hop_scores) if hop_scores else None
+        # 若任何 hop 属于商品检索/规划层，裸知识 runner 不能伪造端到端 Path Success。
+        path_success = bool(hop_scores and all(hop_scores)) if hops and len(retrievable_hops) == len(hops) else None
         observation = {
             "case_id": case.get("id"), "query": case["query"], "split": case.get("split"),
             "retrieved": retrieved, "relevant": relevant,
-            "expected_unanswerable": bool(case.get("expected_unanswerable")),
-            "unanswerable_pass": not has_answerable_knowledge(hits) if case.get("expected_unanswerable") else None,
+            "expected_unanswerable": expected_unanswerable,
+            "unanswerable_pass": not has_answerable_knowledge(hits) if expected_unanswerable else None,
+            "retrieved_evidence_ids": retrieved_evidence_ids,
+            "gold_evidence_ids": gold_evidence_ids,
+            "evidence_ranks": evidence_ranks,
+            "evidence_recall": evidence_recall,
+            "all_evidence_recall": all_evidence_recall,
+            "hard_negative_hit": hard_negative_hit,
+            "hard_negative_above_positive": hard_negative_above_positive,
+            "hop_recall": hop_recall,
+            "path_success": path_success,
+            "constraint_recall": None,
             "latency_ms": round(latency_ms, 3),
         }
         if observations is not None:
             observations.append(observation)
-        if case.get("expected_unanswerable"):
+        if expected_unanswerable:
             # Qdrant 即使没有语义证据也会给出“最近邻”；必须按可回答阈值拒答。
             empty_results.append(not has_answerable_knowledge(hits))
             continue
@@ -142,8 +189,22 @@ async def run_dataset(knowledge_base, cases: list[dict], top_k: int, *, observat
                 ndcg=ndcg_at_k(retrieved, relevant, top_k),
                 precision=precision_at_k(retrieved, relevant, top_k),
                 kind=case.get("kind", "knowledge"),
-                dimensions={"split": str(case.get("split") or "ALL")},
+                dimensions={
+                    "split": str(case.get("split") or "ALL"),
+                    "primary_kind": str(case.get("primary_kind") or case.get("original_kind") or case.get("kind") or "knowledge"),
+                },
                 latency_ms=latency_ms,
+                evidence_recall=evidence_recall,
+                all_evidence_recall=all_evidence_recall,
+                hop_recall=hop_recall,
+                path_success=path_success,
+                constraint_recall=None,
+                hard_negative_hit=hard_negative_hit,
+                hard_negative_above_positive=hard_negative_above_positive,
+                graded_ndcg=(
+                    graded_ndcg_at_k(retrieved, case.get("graded_relevance") or {}, top_k)
+                    if case.get("graded_relevance") else None
+                ),
             ),
         )
     return evaluate(results, k=top_k, empty_results=empty_results, policy_results=policy_results)
@@ -159,7 +220,7 @@ def render_report(
     lines = [
         f"# 品类知识库召回评测报告（{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}）",
         "",
-        f"标注集 `{dataset}`，正例 {agg.count} 条。标注单位为知识文档名。",
+        f"标注集 `{dataset}`，正例 {agg.count} 条。兼容文档级指标；存在 evidence_ground_truth 时同时按原文证据评分。",
         "",
         f"| 指标 | 值 | 阈值 |",
         "|---|---|---|",
@@ -168,16 +229,35 @@ def render_report(
         f"{('观察项（未穷举金标，不阻断）' if thresholds.precision is None else f'≥ {thresholds.precision}（阻断）')} |",
         f"| MRR | {agg.mrr:.3f} | ≥ {thresholds.mrr}（阻断） |",
         f"| NDCG@{agg.k} | {agg.ndcg:.3f} | ≥ {thresholds.ndcg}（阻断） |",
+        f"| Graded nDCG@{agg.k} | {'n/a' if agg.graded_ndcg is None else f'{agg.graded_ndcg:.3f}'} | 0–3 级相关性，观察项 |",
         f"| 不可回答准确率 | {'n/a' if agg.empty_accuracy is None else f'{agg.empty_accuracy:.3f}'} | "
         f"{('未启用' if thresholds.empty_accuracy is None else f'≥ {thresholds.empty_accuracy}（阻断）') } |",
         f"| 政策拒答准确率 | {'n/a' if agg.policy_rejection_accuracy is None else f'{agg.policy_rejection_accuracy:.3f}'} | "
         f"{('未启用' if thresholds.policy_rejection_accuracy is None else f'≥ {thresholds.policy_rejection_accuracy}（阻断）') } |",
+        f"| Evidence Recall | {'n/a' if agg.evidence_recall is None else f'{agg.evidence_recall:.3f}'} | 观察项 |",
+        f"| All-evidence Recall | {'n/a' if agg.all_evidence_recall is None else f'{agg.all_evidence_recall:.3f}'} | 观察项 |",
+        f"| Hard-negative hit rate | {'n/a' if agg.hard_negative_hit_rate is None else f'{agg.hard_negative_hit_rate:.3f}'} | 越低越好 |",
+        f"| Hard negative 高于正证据 | {'n/a' if agg.hard_negative_above_positive_rate is None else f'{agg.hard_negative_above_positive_rate:.3f}'} | 越低越好 |",
+        f"| Hop Recall | {'n/a' if agg.hop_recall is None else f'{agg.hop_recall:.3f}'} | 仅知识检索可验证 hop |",
+        f"| Path Success | {'n/a' if agg.path_success_rate is None else f'{agg.path_success_rate:.3f}'} | 跨工具 hop 未接 Planner 时为 n/a |",
+        f"| Constraint Recall | {'n/a' if agg.constraint_recall is None else f'{agg.constraint_recall:.3f}'} | 未接 Planner/trace 时为 n/a |",
         "",
         f"门禁结论：**{verdict}**",
         "",
     ]
     if reasons:
         lines += ["未达标项：", *[f"- {r}" for r in reasons], ""]
+    if agg.bucket_metrics:
+        lines += ["## 分桶指标", "", "| 桶 | 数量 | Recall/拒答准确率 | MRR | NDCG | Graded nDCG | Evidence Recall | All-evidence | Hop Recall |", "|---|---:|---:|---:|---:|---:|---:|---:|---:|"]
+        for name, bucket in agg.bucket_metrics.items():
+            score = bucket.get("recall", bucket.get("rejection_accuracy"))
+            fmt = lambda value: "n/a" if value is None else f"{float(value):.3f}"
+            lines.append(
+                f"| {name} | {bucket.get('count', 0)} | {fmt(score)} | {fmt(bucket.get('mrr'))} | "
+                f"{fmt(bucket.get('ndcg'))} | {fmt(bucket.get('graded_ndcg'))} | {fmt(bucket.get('evidence_recall'))} | "
+                f"{fmt(bucket.get('all_evidence_recall'))} | {fmt(bucket.get('hop_recall'))} |"
+            )
+        lines.append("")
     lines += ["| query | Recall | Precision | MRR | NDCG | 召回文档 | 标注文档 |", "|---|---|---|---|---|---|---|"]
     for r in agg.per_query:
         lines.append(

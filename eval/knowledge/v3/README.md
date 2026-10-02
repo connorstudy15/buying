@@ -27,7 +27,20 @@
 - `stage_b_human_multihop_labels.jsonl`：人工题的逐跳标注。第一题测试主动发现充电宝航空限制，第二题测试拒绝“任意航空公司均适用”的无依据保证。
 - `blind_multihop_queries.*` 与 `stage_b_multihop_labels.jsonl`：被人工题替换的机器增补实验，仅保留审计，不再进入正式审批表。
 - `human_review.csv`：合并原阶段 B 与多跳增补后的人工审批表；当前 32 个候选中 22 条进入审批，10 条被机器预标为 reject。
+- `LABELING_CONTRACT.md`：统一 `grade=0..3`、hard negative 与各分桶指标的定义。
+- `knowledge_eval_candidates.jsonl`：由保留题编译出的 evidence-level 可执行候选集；当前均为 `pending_human_review`，不能冒充正式金标。
+- `evidence_mapping_review.csv`：原文、章节或等级契约无法自动确认时的异常清单；当前只有表头，表示机械映射没有发现冲突。
+
+当前 22 条候选的分布为：single evidence 13、cross evidence 3、unanswerable 3、policy boundary 1、implicit-constraint multi-hop 2。它适合先跑开发基线，但尚未达到建议的正式集规模；尤其 semantic/paraphrase、hard-negative 专桶、context-dependent 和纯知识 true multi-hop 仍需后续补题。
 
 ## 阶段 B 输出要求
 
 每条冻结 Query 应输出：`label_decision`、`answerability`、`relevant`、`evidence`、`graded_relevance`、`hard_negatives`、理由和置信度。顺序多跳题还必须输出 `hops`、`depends_on`、`must_cover` 与 `forbidden_inferences`。只有 `label_decision=keep` 的条目进入人工审核表。
+
+重新生成 evidence-level 候选集：
+
+```powershell
+uv run python scripts/eval/enrich_knowledge_v3_labels.py
+```
+
+人工审批前仅允许 `--dry-run`；审批后才把候选集作为基线输入。跨到商品检索的多跳题在 Query Planner/Agent trace 接入前，`Path Success` 与 `Constraint Recall` 必须保持 `n/a`。

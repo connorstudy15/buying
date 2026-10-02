@@ -90,6 +90,20 @@ def ndcg_at_k(retrieved: Sequence[str], relevant: Sequence[str], k: int) -> floa
     return dcg / ideal if ideal else 0.0
 
 
+def graded_ndcg_at_k(retrieved: Sequence[str], relevance_grades: Mapping[str, int], k: int) -> float:
+    """使用 0..3 人工等级的标准 graded nDCG，gain = 2^grade - 1。"""
+    if k <= 0 or not relevance_grades:
+        return 0.0
+    grades = {item: int(grade) for item, grade in relevance_grades.items() if int(grade) > 0}
+    if not grades:
+        return 0.0
+    ranked = _dedup_keep_order(retrieved)[:k]
+    dcg = sum(((2 ** grades.get(item, 0)) - 1) / math.log2(index + 2) for index, item in enumerate(ranked))
+    ideal_grades = sorted(grades.values(), reverse=True)[:k]
+    ideal = sum(((2 ** grade) - 1) / math.log2(index + 2) for index, grade in enumerate(ideal_grades))
+    return dcg / ideal if ideal else 0.0
+
+
 @dataclass
 class QueryResult:
     """单条 query 的评测结果。"""
@@ -123,6 +137,16 @@ class QueryResult:
     miss_stage: str = "none"
     # 正式评测必须能按场景与业务约束拆分；缺失的维度由运行器显式填为 ALL。
     dimensions: dict[str, str] = field(default_factory=dict)
+    # 知识库 v3：稳定证据（source + section + quote）粒度指标。
+    evidence_recall: float | None = None
+    all_evidence_recall: float | None = None
+    hop_recall: float | None = None
+    path_success: bool | None = None
+    # 只有 Query Planner/Agent trace 能证明隐含约束已识别并传递；裸检索时必须为 None。
+    constraint_recall: float | None = None
+    hard_negative_hit: bool | None = None
+    hard_negative_above_positive: bool | None = None
+    graded_ndcg: float | None = None
 
 
 @dataclass
@@ -158,6 +182,23 @@ class Aggregate:
     # 本轮实际走到的召回策略；正式主链不能把静默降级当作向量+精排的成绩。
     recall_strategies: frozenset[str] = field(default_factory=frozenset)
     per_query: list[QueryResult] = field(default_factory=list)
+    evidence_recall_count: int = 0
+    evidence_recall: float | None = None
+    all_evidence_count: int = 0
+    all_evidence_recall: float | None = None
+    hop_recall_count: int = 0
+    hop_recall: float | None = None
+    path_success_count: int = 0
+    path_success_rate: float | None = None
+    constraint_recall_count: int = 0
+    constraint_recall: float | None = None
+    hard_negative_count: int = 0
+    hard_negative_hit_rate: float | None = None
+    hard_negative_above_positive_rate: float | None = None
+    # primary_kind -> 指标。值保持 JSON 可序列化，便于写入 manifest/report。
+    bucket_metrics: dict[str, dict[str, float | int | None]] = field(default_factory=dict)
+    graded_ndcg_count: int = 0
+    graded_ndcg: float | None = None
 
 
 def evaluate(
@@ -210,6 +251,44 @@ def evaluate(
     filter_accuracy = (
         sum(1 for r in checked if r.filter_ok) / len(checked) if checked else None
     )
+    def optional_mean(field_name: str) -> tuple[int, float | None]:
+        values = [getattr(result, field_name) for result in results if getattr(result, field_name) is not None]
+        return len(values), (None if not values else round(sum(float(value) for value in values) / len(values), 4))
+
+    evidence_count, evidence_recall = optional_mean("evidence_recall")
+    all_evidence_count, all_evidence_recall = optional_mean("all_evidence_recall")
+    hop_count, hop_recall = optional_mean("hop_recall")
+    path_count, path_success_rate = optional_mean("path_success")
+    constraint_count, constraint_recall = optional_mean("constraint_recall")
+    graded_ndcg_count, graded_ndcg = optional_mean("graded_ndcg")
+    hard_negative_results = [result for result in results if result.hard_negative_hit is not None]
+    hard_negative_above_results = [result for result in results if result.hard_negative_above_positive is not None]
+
+    def summarize_bucket(bucket_results: Sequence[QueryResult]) -> dict[str, float | int | None]:
+        size = len(bucket_results)
+        summary: dict[str, float | int | None] = {
+            "count": size,
+            "recall": round(sum(item.recall for item in bucket_results) / size, 4),
+            "mrr": round(sum(item.mrr for item in bucket_results) / size, 4),
+            "ndcg": round(sum(item.ndcg for item in bucket_results) / size, 4),
+        }
+        for field_name in ("evidence_recall", "all_evidence_recall", "hop_recall", "constraint_recall", "graded_ndcg"):
+            values = [getattr(item, field_name) for item in bucket_results if getattr(item, field_name) is not None]
+            summary[field_name] = None if not values else round(sum(float(value) for value in values) / len(values), 4)
+        paths = [item.path_success for item in bucket_results if item.path_success is not None]
+        summary["path_success_rate"] = None if not paths else round(sum(bool(value) for value in paths) / len(paths), 4)
+        negative_hits = [item.hard_negative_hit for item in bucket_results if item.hard_negative_hit is not None]
+        summary["hard_negative_hit_rate"] = None if not negative_hits else round(sum(bool(value) for value in negative_hits) / len(negative_hits), 4)
+        return summary
+
+    buckets: dict[str, list[QueryResult]] = {}
+    for result in results:
+        bucket = result.dimensions.get("primary_kind", result.kind or "ALL")
+        buckets.setdefault(bucket, []).append(result)
+    bucket_metrics = {name: summarize_bucket(items) for name, items in sorted(buckets.items())}
+    if empty_count:
+        bucket_metrics["unanswerable"] = {"count": empty_count, "rejection_accuracy": empty_accuracy}
+
     return Aggregate(
         k=k,
         count=count,
@@ -253,6 +332,31 @@ def evaluate(
         miss_stage_counts=miss_stage_counts,
         recall_strategies=frozenset(recall_strategies),
         per_query=list(results),
+        evidence_recall_count=evidence_count,
+        evidence_recall=evidence_recall,
+        all_evidence_count=all_evidence_count,
+        all_evidence_recall=all_evidence_recall,
+        hop_recall_count=hop_count,
+        hop_recall=hop_recall,
+        path_success_count=path_count,
+        path_success_rate=path_success_rate,
+        constraint_recall_count=constraint_count,
+        constraint_recall=constraint_recall,
+        hard_negative_count=len(hard_negative_results),
+        hard_negative_hit_rate=(
+            None if not hard_negative_results else round(
+                sum(bool(result.hard_negative_hit) for result in hard_negative_results) / len(hard_negative_results), 4,
+            )
+        ),
+        hard_negative_above_positive_rate=(
+            None if not hard_negative_above_results else round(
+                sum(bool(result.hard_negative_above_positive) for result in hard_negative_above_results)
+                / len(hard_negative_above_results), 4,
+            )
+        ),
+        bucket_metrics=bucket_metrics,
+        graded_ndcg_count=graded_ndcg_count,
+        graded_ndcg=graded_ndcg,
     )
 
 
