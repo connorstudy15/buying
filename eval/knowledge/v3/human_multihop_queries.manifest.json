@@ -1,0 +1,13 @@
+{
+  "stage": "human_authored_multihop_query_addendum",
+  "authored_on": "2026-10-02",
+  "author": "user",
+  "knowledge_body_exposed": false,
+  "source_scope": "query_generation_index_summary_only",
+  "public_index_sha256": "d26c10babbc078eabdbb059b3eaf9ce958a08f91ab1baf4606a83774941c017e",
+  "output_sha256": "c7c7ce599a088ee858335a30032caaabf1e34ca0444d3d37a15c2c7853568844",
+  "case_count": 2,
+  "kind_counts": {
+    "implicit_constraint_multi_hop": 2
+  }
+}

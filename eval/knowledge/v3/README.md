@@ -23,6 +23,9 @@
 - `blind_multihop_queries.manifest.json`：多跳增补集的独立 Prompt、索引与输出哈希；仍记录 `knowledge_body_exposed=false`。
 - `candidate_pool_multihop.jsonl`：两条多跳题的独立 BM25、向量与标题路由候选池。
 - `stage_b_multihop_labels.jsonl`：逐跳依赖、证据、覆盖点与禁止推断标注。两题均为条件式可回答，不能在缺少具体航司、航线或 SKU 参数时给确定结论。
+- `human_multihop_queries.jsonl`：用户只根据知识索引摘要亲自编写的 2 条隐式约束多跳题；正式审批使用这一版。
+- `stage_b_human_multihop_labels.jsonl`：人工题的逐跳标注。第一题测试主动发现充电宝航空限制，第二题测试拒绝“任意航空公司均适用”的无依据保证。
+- `blind_multihop_queries.*` 与 `stage_b_multihop_labels.jsonl`：被人工题替换的机器增补实验，仅保留审计，不再进入正式审批表。
 - `human_review.csv`：合并原阶段 B 与多跳增补后的人工审批表；当前 32 个候选中 22 条进入审批，10 条被机器预标为 reject。
 
 ## 阶段 B 输出要求

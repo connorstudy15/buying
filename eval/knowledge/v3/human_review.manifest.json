@@ -2,16 +2,16 @@
   "stage": "human_review_ready",
   "frozen_query_sources": {
     "blind_queries.jsonl": "83323d8fb4e84c546aab7821a33176e9a57b38dfe904265b40951ba6b6f236b6",
-    "blind_multihop_queries.jsonl": "cdbe5e0f9e06be3f2ea7389ea58781b19ea8e436dad29b0530cceba19be586a1"
+    "human_multihop_queries.jsonl": "c7c7ce599a088ee858335a30032caaabf1e34ca0444d3d37a15c2c7853568844"
   },
   "stage_b_label_sources": {
     "stage_b_labels.jsonl": "130da5d8fdffa72b60abf5b3f1ec8424b87988ac774d5455a5c1e82cfb3a51c4",
-    "stage_b_multihop_labels.jsonl": "ef49e35b28edf1f66d6ec8badeff6bb7b7caa4d29b1591d9f2f875901bcee746"
+    "stage_b_human_multihop_labels.jsonl": "5e770117aa6da5a41d23b7b3726ab83fd66698945c2c8c406f6d87cb65fa06fd"
   },
-  "frozen_query_sha256": "2569be9777a003a654471a7b9b7497f130a47cbcf94310818d79b0e282363a34",
-  "stage_b_labels_sha256": "731a6f31264250112f7fa30df1b3268a5a2662e5b0f24c9ace33aa3de2b372f3",
+  "frozen_query_sha256": "01853bec7593d7b0f2b1b66e3e405e48dacd258e43237fe3b53d37ab89706342",
+  "stage_b_labels_sha256": "d184548af4e70c9aee9fd08d0ad106e775775096c02e9728b229360961526ca8",
   "candidate_count": 32,
   "keep_count": 22,
   "reject_count": 10,
-  "review_file_sha256": "08d2db3b8cf3ff289d6226538955ca836d7994a9f7d790d34b116b7c3999a06c"
+  "review_file_sha256": "9c7d6e4ae00bcc8e9b19dff3562f03123313d3dc65af7aecf6a93e3ad3fd3cbd"
 }

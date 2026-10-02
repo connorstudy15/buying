@@ -20,13 +20,21 @@ def load_jsonl(path: Path) -> list[dict]:
 def main() -> None:
     query_paths = [ROOT / "blind_queries.jsonl"]
     label_paths = [ROOT / "stage_b_labels.jsonl"]
-    multihop_queries = ROOT / "blind_multihop_queries.jsonl"
-    multihop_labels = ROOT / "stage_b_multihop_labels.jsonl"
-    if multihop_queries.exists() or multihop_labels.exists():
-        if not multihop_queries.exists() or not multihop_labels.exists():
-            raise ValueError("多跳 Query 与阶段 B 标注必须成对存在")
-        query_paths.append(multihop_queries)
-        label_paths.append(multihop_labels)
+    human_multihop_queries = ROOT / "human_multihop_queries.jsonl"
+    human_multihop_labels = ROOT / "stage_b_human_multihop_labels.jsonl"
+    machine_multihop_queries = ROOT / "blind_multihop_queries.jsonl"
+    machine_multihop_labels = ROOT / "stage_b_multihop_labels.jsonl"
+    # 人工题存在时替换机器增补题；机器文件仍保留审计，但不得重复进入审批表。
+    if human_multihop_queries.exists() or human_multihop_labels.exists():
+        if not human_multihop_queries.exists() or not human_multihop_labels.exists():
+            raise ValueError("人工多跳 Query 与阶段 B 标注必须成对存在")
+        query_paths.append(human_multihop_queries)
+        label_paths.append(human_multihop_labels)
+    elif machine_multihop_queries.exists() or machine_multihop_labels.exists():
+        if not machine_multihop_queries.exists() or not machine_multihop_labels.exists():
+            raise ValueError("机器多跳 Query 与阶段 B 标注必须成对存在")
+        query_paths.append(machine_multihop_queries)
+        label_paths.append(machine_multihop_labels)
     output = ROOT / "human_review.csv"
     query_rows = [row for path in query_paths for row in load_jsonl(path)]
     label_rows = [row for path in label_paths for row in load_jsonl(path)]
@@ -62,7 +70,7 @@ def main() -> None:
             if not source_path.is_file() or item["quote"] not in source_path.read_text(encoding="utf-8"):
                 problems.append(f"{case_id}: evidence 无法逐字回指 {item['source']}")
         hops = row.get("hops") or []
-        if row.get("original_kind") == "sequential_multi_hop":
+        if row.get("original_kind") in {"sequential_multi_hop", "implicit_constraint_multi_hop"}:
             if len(hops) < 2:
                 problems.append(f"{case_id}: sequential_multi_hop 至少需要两跳")
             known_hops: set[str] = set()

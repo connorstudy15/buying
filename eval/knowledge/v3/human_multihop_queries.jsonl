@@ -1,0 +1,2 @@
+{"id":"human-mh-001","kind":"implicit_constraint_multi_hop","query":"我要买个充电宝带着飞日本","scenario_hint":"用户计划前往日本，需要购买旅行途中使用的移动电源，但没有主动说明航空携带限制或产品参数。","dependency_hint":"先从出行场景识别移动电源的隐含航空运输约束并检索判断口径，再将得到的约束用于商品推荐或必要的参数澄清。"}
+{"id":"human-mh-002","kind":"implicit_constraint_multi_hop","query":"我想买个登机箱，再配一个折叠背包带上任意航空公司的飞机","scenario_hint":"用户希望购买登机箱和折叠背包组成一套可搭乘任何航空公司的随身行李方案。","dependency_hint":"先识别不同航司尺寸与件数规则可能不同并检索核验边界，再决定能否给出通用推荐，或要求用户补充具体航司信息。"}
