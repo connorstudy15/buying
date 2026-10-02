@@ -83,6 +83,10 @@ class KnowledgeRetrievalTrace:
     processor_fallback_reason: str | None = None
     pre_fusion_query_route_coverage: float | None = None
     post_fusion_query_route_coverage: float | None = None
+    # processor_plan_mode 是模型原始选择；effective_plan_mode 是执行策略实际采用的模式。
+    # query_plan_mode 暂作 effective_plan_mode 的兼容别名。
+    processor_plan_mode: str | None = None
+    effective_plan_mode: str | None = None
     query_plan_mode: str | None = None
     rewrite_similarity: float | None = None
     rewrite_decision: str | None = None
@@ -153,6 +157,66 @@ def _legacy_finalize(candidates: list[KnowledgeCandidate], top_k: int) -> list[A
     for candidate in candidates:
         documents.setdefault(candidate.item.document_id, candidate.item)
     return list(documents.values())[:top_k]
+
+
+async def _legacy_outcome(
+    knowledge_base, question: str, depth: int, top_k: int, *, trace_mode: str,
+    processor_fallback_reason: str | None = None,
+    processor_plan_mode: str | None = None,
+    effective_plan_mode: str | None = None,
+    rewrite_similarity: float | None = None,
+    rewrite_decision: str | None = None,
+    candidate_cache: dict[tuple[str, int, int], list[KnowledgeCandidate]] | None = None,
+) -> KnowledgeRetrievalOutcome:
+    """关闭、回退和 DIRECT 共用同一条旧检索实现，避免三份代码逐渐产生差异。"""
+    candidates = await _retrieve_candidates(
+        knowledge_base, question, depth, target_limit=top_k,
+        candidate_cache=candidate_cache,
+    )
+    variants = []
+    if processor_plan_mode is not None:
+        variants = [{
+            "query_id": "original", "text": question, "information_need_id": "overall",
+            "intent_group_id": "global", "kind": "original",
+        }]
+    return KnowledgeRetrievalOutcome(
+        _legacy_finalize(candidates, top_k),
+        KnowledgeRetrievalTrace(
+            trace_mode, variants=variants, candidates=candidates,
+            processor_fallback_reason=processor_fallback_reason,
+            processor_plan_mode=processor_plan_mode,
+            effective_plan_mode=effective_plan_mode,
+            query_plan_mode=effective_plan_mode,
+            rewrite_similarity=rewrite_similarity,
+            rewrite_decision=rewrite_decision,
+        ),
+    )
+
+
+async def _retrieve_candidates(
+    knowledge_base, question: str, depth: int, *, target_limit: int,
+    query_id: str = "original", information_need_id: str = "overall",
+    intent_group_id: str = "overall",
+    candidate_cache: dict[tuple[str, int, int], list[KnowledgeCandidate]] | None = None,
+) -> list[KnowledgeCandidate]:
+    """可选地复用原始候选，只用于严格配对评测；线上默认不传缓存。"""
+    key = (question, depth, target_limit)
+    templates = candidate_cache.get(key) if candidate_cache is not None else None
+    if templates is None:
+        templates = await retrieve_knowledge_candidates(
+            knowledge_base, question, depth, target_limit=target_limit,
+            query_id="candidate_cache", information_need_id="candidate_cache",
+            intent_group_id="candidate_cache",
+        )
+        if candidate_cache is not None:
+            candidate_cache[key] = templates
+    return [
+        KnowledgeCandidate(
+            template.item, query_id, information_need_id, template.retrieval_route,
+            template.rank_in_source, intent_group_id,
+        )
+        for template in templates
+    ]
 
 
 def _chunk_text(item: Any) -> str:
@@ -320,6 +384,8 @@ async def search_knowledge_with_trace(
     *,
     query_processor: QueryProcessor | None = None,
     rrf_k: int = 60,
+    execute_rewrite: bool = True,
+    candidate_cache: dict[tuple[str, int, int], list[KnowledgeCandidate]] | None = None,
 ) -> KnowledgeRetrievalOutcome:
     if type(top_k) is not int or not 1 <= top_k <= 10:
         raise ValueError("知识结果数须在1到10之间")
@@ -329,41 +395,46 @@ async def search_knowledge_with_trace(
 
     depth = min(80, top_k * 8)
     if query_processor is None:
-        candidates = await retrieve_knowledge_candidates(knowledge_base, question, depth, target_limit=top_k)
-        return KnowledgeRetrievalOutcome(
-            _legacy_finalize(candidates, top_k), KnowledgeRetrievalTrace("legacy", candidates=candidates),
+        return await _legacy_outcome(
+            knowledge_base, question, depth, top_k, trace_mode="legacy",
+            candidate_cache=candidate_cache,
         )
 
     try:
         plan: QueryPlan = await query_processor.process(question)
     except Exception as err:  # noqa: BLE001 - 精确回到 legacy，不走新管线 original-only
-        candidates = await retrieve_knowledge_candidates(knowledge_base, question, depth, target_limit=top_k)
-        return KnowledgeRetrievalOutcome(
-            _legacy_finalize(candidates, top_k),
-            KnowledgeRetrievalTrace("legacy_fallback", candidates=candidates, processor_fallback_reason=str(err)),
+        return await _legacy_outcome(
+            knowledge_base, question, depth, top_k, trace_mode="legacy_fallback",
+            processor_fallback_reason=str(err), candidate_cache=candidate_cache,
         )
 
-    # DIRECT 的排序结果与旧链路完全一致，只增加一次查询分类的模型调用。
-    if plan.mode == "DIRECT":
-        candidates = await retrieve_knowledge_candidates(knowledge_base, question, depth, target_limit=top_k)
-        return KnowledgeRetrievalOutcome(
-            _legacy_finalize(candidates, top_k),
-            KnowledgeRetrievalTrace(
-                "query_transform_direct", candidates=candidates, query_plan_mode=plan.mode,
-                rewrite_similarity=plan.rewrite_similarity, rewrite_decision=plan.rewrite_decision,
-                variants=[{
-                    "query_id": "original", "text": question, "information_need_id": "overall",
-                    "intent_group_id": "global", "kind": "original",
-                }],
-            ),
+    processor_mode = plan.mode
+    effective_mode = "DIRECT" if processor_mode == "REWRITE" and not execute_rewrite else processor_mode
+    rewrite_decision = (
+        "disabled_by_experiment"
+        if processor_mode == "REWRITE" and not execute_rewrite
+        else plan.rewrite_decision
+    )
+
+    # DIRECT 与“实验中禁用 REWRITE”都逐字复用旧链路；仅多出前置模型分类时间。
+    if effective_mode == "DIRECT":
+        return await _legacy_outcome(
+            knowledge_base, question, depth, top_k,
+            trace_mode=("query_decompose_rewrite_disabled" if processor_mode == "REWRITE" else "query_transform_direct"),
+            processor_plan_mode=processor_mode,
+            effective_plan_mode=effective_mode,
+            rewrite_similarity=plan.rewrite_similarity,
+            rewrite_decision=rewrite_decision,
+            candidate_cache=candidate_cache,
         )
 
     variants: tuple[QueryVariant, ...] = plan.variants()
     groups = await asyncio.gather(*(
-        retrieve_knowledge_candidates(
+        _retrieve_candidates(
             knowledge_base, variant.text, depth, target_limit=top_k,
             query_id=variant.query_id, information_need_id=variant.information_need_id,
             intent_group_id=variant.intent_group_id,
+            candidate_cache=candidate_cache,
         ) for variant in variants
     ))
     candidates = [candidate for group in groups for candidate in group]
@@ -383,7 +454,7 @@ async def search_knowledge_with_trace(
     pre_coverage = len(expected_need_set & pre_needs) / len(expected_need_set) if expected_need_set else None
     post_coverage = len(expected_need_set & post_needs) / len(expected_need_set) if expected_need_set else None
     return KnowledgeRetrievalOutcome(hits, KnowledgeRetrievalTrace(
-        "query_transform_rewrite" if plan.mode == "REWRITE" else "query_transform_decompose",
+        "query_transform_rewrite" if effective_mode == "REWRITE" else "query_transform_decompose",
         variants=[{
             "query_id": variant.query_id, "text": variant.text,
             "information_need_id": variant.information_need_id,
@@ -393,16 +464,24 @@ async def search_knowledge_with_trace(
         fused=fused,
         pre_fusion_query_route_coverage=pre_coverage,
         post_fusion_query_route_coverage=post_coverage,
-        query_plan_mode=plan.mode,
+        processor_plan_mode=processor_mode,
+        effective_plan_mode=effective_mode,
+        query_plan_mode=effective_mode,
         rewrite_similarity=plan.rewrite_similarity,
-        rewrite_decision=plan.rewrite_decision,
+        rewrite_decision=rewrite_decision,
         near_duplicate_decisions=duplicate_decisions,
     ))
 
 
-async def search_knowledge(knowledge_base, question: str, top_k: int = 3, *, query_processor=None, rrf_k: int = 60):
+async def search_knowledge(
+    knowledge_base, question: str, top_k: int = 3, *, query_processor=None,
+    rrf_k: int = 60, execute_rewrite: bool = True,
+    candidate_cache: dict[tuple[str, int, int], list[KnowledgeCandidate]] | None = None,
+):
     """兼容旧调用；需要诊断信息时使用 ``search_knowledge_with_trace``。"""
     outcome = await search_knowledge_with_trace(
         knowledge_base, question, top_k, query_processor=query_processor, rrf_k=rrf_k,
+        execute_rewrite=execute_rewrite,
+        candidate_cache=candidate_cache,
     )
     return outcome.hits

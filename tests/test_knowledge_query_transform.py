@@ -11,6 +11,7 @@ from app.infrastructure.rag.knowledge_retrieval import (
     search_knowledge_with_trace,
     unsupported_fact_reason,
 )
+from scripts.eval.run_query_decompose_ablation import SharedPlanProcessor
 
 
 def hit(document_id: str, text: str, *, section: str | None = None, score: float = 0.8):
@@ -97,7 +98,74 @@ async def test_direct_plan_uses_exact_legacy_ranking():
     outcome = await search_knowledge_with_trace(kb, "怎么挑", 2, query_processor=PlannedProcessor(plan))
     assert [item.document_id for item in outcome.hits] == ["a", "b"]
     assert outcome.trace.mode == "query_transform_direct"
+    assert outcome.trace.processor_plan_mode == "DIRECT"
+    assert outcome.trace.effective_plan_mode == "DIRECT"
     assert kb.search.await_count == 1
+
+
+@pytest.mark.asyncio
+async def test_experiment_can_disable_rewrite_without_changing_processor_plan():
+    original_hits = [hit("a", "original"), hit("b", "other")]
+    rewritten_hits = [hit("c", "rewritten"), hit("a", "original")]
+
+    async def search(queries, top_k):
+        return rewritten_hits if queries[0] == "清晰改写" else original_hits
+
+    plan = QueryPlan("口语问题", "清晰改写", (), mode="REWRITE", rewrite_decision="used")
+    processor = PlannedProcessor(plan)
+    outcome = await search_knowledge_with_trace(
+        SimpleNamespace(search=search), "口语问题", 2,
+        query_processor=processor, execute_rewrite=False,
+    )
+    assert [item.document_id for item in outcome.hits] == ["a", "b"]
+    assert outcome.trace.processor_plan_mode == "REWRITE"
+    assert outcome.trace.effective_plan_mode == "DIRECT"
+    assert outcome.trace.rewrite_decision == "disabled_by_experiment"
+    assert outcome.trace.mode == "query_decompose_rewrite_disabled"
+    assert processor.calls == ["口语问题"]
+
+
+@pytest.mark.asyncio
+async def test_v2_still_executes_rewrite_with_the_same_plan():
+    calls = []
+
+    async def search(queries, top_k):
+        calls.append(queries[0])
+        return [hit("a", queries[0])]
+
+    plan = QueryPlan("口语问题", "清晰改写", (), mode="REWRITE", rewrite_decision="used")
+    outcome = await search_knowledge_with_trace(
+        SimpleNamespace(search=search), "口语问题", 1,
+        query_processor=PlannedProcessor(plan), execute_rewrite=True,
+    )
+    assert calls == ["口语问题", "清晰改写"]
+    assert outcome.trace.processor_plan_mode == "REWRITE"
+    assert outcome.trace.effective_plan_mode == "REWRITE"
+
+
+@pytest.mark.asyncio
+async def test_ablation_reuses_one_query_plan_for_both_strategies():
+    plan = QueryPlan("口语问题", "清晰改写", (), mode="REWRITE")
+    inner = SimpleNamespace(process=AsyncMock(return_value=plan))
+    shared = SharedPlanProcessor(inner)
+    assert await shared.process("口语问题") is plan
+    assert await shared.process("口语问题") is plan
+    inner.process.assert_awaited_once_with("口语问题")
+
+
+@pytest.mark.asyncio
+async def test_paired_evaluation_can_reuse_exact_original_candidates():
+    search = AsyncMock(return_value=[hit("a", "a"), hit("b", "b")])
+    kb = SimpleNamespace(search=search)
+    cache = {}
+    legacy = await search_knowledge_with_trace(kb, "同一问题", 2, candidate_cache=cache)
+    plan = QueryPlan("同一问题", "改写问题", (), mode="REWRITE")
+    experiment = await search_knowledge_with_trace(
+        kb, "同一问题", 2, query_processor=PlannedProcessor(plan),
+        execute_rewrite=False, candidate_cache=cache,
+    )
+    assert experiment.hits == legacy.hits
+    search.assert_awaited_once()
 
 
 @pytest.mark.asyncio

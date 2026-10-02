@@ -134,6 +134,8 @@ async def run_dataset(
     observations: list[dict] | None = None,
     query_processor: QueryProcessor | None = None,
     rrf_k: int = 60,
+    execute_rewrite: bool = True,
+    candidate_cache: dict | None = None,
 ) -> Aggregate:
     results: list[QueryResult] = []
     empty_results: list[bool] = []
@@ -142,7 +144,8 @@ async def run_dataset(
         started = time.perf_counter()
         outcome = await search_knowledge_with_trace(
             knowledge_base, case["query"], top_k=top_k,
-            query_processor=query_processor, rrf_k=rrf_k,
+            query_processor=query_processor, rrf_k=rrf_k, execute_rewrite=execute_rewrite,
+            candidate_cache=candidate_cache,
         )
         hits = outcome.hits
         latency_ms = (time.perf_counter() - started) * 1000
@@ -215,6 +218,8 @@ async def run_dataset(
             "constraint_recall": None,
             "latency_ms": round(latency_ms, 3),
             "retrieval_mode": outcome.trace.mode,
+            "processor_plan_mode": outcome.trace.processor_plan_mode,
+            "effective_plan_mode": outcome.trace.effective_plan_mode,
             "query_plan_mode": outcome.trace.query_plan_mode,
             "query_variants": outcome.trace.variants,
             "rewrite_similarity": outcome.trace.rewrite_similarity,
@@ -351,8 +356,9 @@ async def main(argv: list[str] | None = None) -> None:
     parser.add_argument("--dry-run", action="store_true", help="只校验选集并写 NOT_RUN 证据，不调用 embedding/Qdrant")
     parser.add_argument("--top-k", type=int, default=5)
     parser.add_argument(
-        "--strategy", choices=("legacy", "query-transform"), default="legacy",
-        help="legacy=冻结旧链路；query-transform=单次改写/分解 + 多路候选 + RRF",
+        "--strategy", choices=("legacy", "query-transform", "query-decompose"), default="legacy",
+        help=("legacy=冻结旧链路；query-transform=V2 原样执行；"
+              "query-decompose=复用 V2 计划，但把 REWRITE 映射为 DIRECT"),
     )
     parser.add_argument("--rrf-k", type=int, default=60, help="query-transform 的 RRF rank constant")
     parser.add_argument("--min-recall", type=float, default=0.75)
@@ -402,7 +408,7 @@ async def main(argv: list[str] | None = None) -> None:
         inserted = await bootstrap_category_knowledge(knowledge_base)
         print(f"知识库就绪（本次新增 {inserted} 篇）")
         query_processor = None
-        if args.strategy == "query-transform":
+        if args.strategy in {"query-transform", "query-decompose"}:
             processor_settings = replace(
                 settings,
                 llm_base_url=settings.query_processor_base_url or settings.llm_base_url,
@@ -419,6 +425,7 @@ async def main(argv: list[str] | None = None) -> None:
         agg = await run_dataset(
             knowledge_base, cases, top_k, observations=observations,
             query_processor=query_processor, rrf_k=args.rrf_k,
+            execute_rewrite=args.strategy != "query-decompose",
         )
     except Exception as err:
         actual = sorted({item.get("retrieval_mode") for item in observations if item.get("retrieval_mode")})
