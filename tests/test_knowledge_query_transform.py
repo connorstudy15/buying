@@ -5,14 +5,22 @@ import pytest
 from agentscope.message import TextBlock
 
 from app.application.retrieval.query_processor import QueryPlan, QueryProcessor, QueryProcessorError, QueryVariant
-from app.infrastructure.rag.knowledge_retrieval import search_knowledge, search_knowledge_with_trace
+from app.infrastructure.rag.knowledge_retrieval import (
+    _rrf_fuse,
+    search_knowledge,
+    search_knowledge_with_trace,
+    unsupported_fact_reason,
+)
 
 
-def hit(document_id: str, text: str):
+def hit(document_id: str, text: str, *, section: str | None = None, score: float = 0.8):
+    metadata = {"source": document_id}
+    if section:
+        metadata["section"] = section
     return SimpleNamespace(
         document_id=document_id,
-        score=0.8,
-        chunk=SimpleNamespace(content=SimpleNamespace(text=text), metadata={"source": document_id}),
+        score=score,
+        chunk=SimpleNamespace(content=SimpleNamespace(text=text), metadata=metadata),
     )
 
 
@@ -66,26 +74,60 @@ async def test_rrf_keeps_provenance_and_exposes_fusion_coverage():
     async def search(queries, top_k):
         return [a, b] if queries[0] == "原问题" else [b, a]
 
-    plan = QueryPlan("原问题", "移动电源 航空限制", (
+    plan = QueryPlan("原问题", "", (
         QueryVariant("subquery_1", "充电宝容量限制", "battery_limit", "subquery"),
         QueryVariant("subquery_2", "航空公司携带规则", "airline_rule", "subquery"),
-    ))
+    ), mode="DECOMPOSE")
     outcome = await search_knowledge_with_trace(
         SimpleNamespace(search=search), "原问题", 2,
         query_processor=PlannedProcessor(plan), rrf_k=60,
     )
-    assert outcome.trace.mode == "query_transform_rrf"
-    assert len(outcome.trace.variants) == 4
+    assert outcome.trace.mode == "query_transform_decompose"
+    assert len(outcome.trace.variants) == 3
     assert outcome.trace.pre_fusion_query_route_coverage == 1.0
     assert outcome.trace.post_fusion_query_route_coverage == 1.0
     assert all(item["provenance"] for item in outcome.trace.fused)
+
+
+@pytest.mark.asyncio
+async def test_direct_plan_uses_exact_legacy_ranking():
+    values = [hit("a", "a1"), hit("a", "a2"), hit("b", "b")]
+    kb = SimpleNamespace(search=AsyncMock(return_value=values))
+    plan = QueryPlan("怎么挑", "", (), mode="DIRECT")
+    outcome = await search_knowledge_with_trace(kb, "怎么挑", 2, query_processor=PlannedProcessor(plan))
+    assert [item.document_id for item in outcome.hits] == ["a", "b"]
+    assert outcome.trace.mode == "query_transform_direct"
+    assert kb.search.await_count == 1
+
+
+@pytest.mark.asyncio
+async def test_decompose_can_keep_two_sections_from_same_document():
+    size = hit("travel", "登机箱尺寸因航司而异", section="避坑点")
+    bag = hit("travel", "折叠背包可作为第二件行李", section="当前热卖款型")
+
+    async def search(queries, top_k):
+        if "尺寸" in queries[0]:
+            return [size, bag]
+        if "背包" in queries[0]:
+            return [bag, size]
+        return [size, bag]
+
+    plan = QueryPlan("箱子和背包", "", (
+        QueryVariant("subquery_1", "登机箱尺寸", "size", "subquery", "size"),
+        QueryVariant("subquery_2", "折叠背包规则", "bag", "subquery", "bag"),
+    ), mode="DECOMPOSE")
+    outcome = await search_knowledge_with_trace(
+        SimpleNamespace(search=search), "箱子和背包", 2, query_processor=PlannedProcessor(plan),
+    )
+    assert {item.chunk.metadata["section"] for item in outcome.hits} == {"避坑点", "当前热卖款型"}
+    assert outcome.trace.post_fusion_query_route_coverage == 1.0
 
 
 def test_query_processor_rejects_duplicate_information_need_ids():
     processor = QueryProcessor(None, "prompt")
     with pytest.raises(QueryProcessorError):
         processor._validate("登机箱", {
-            "rewritten_query": "航空 登机箱",
+            "mode": "DECOMPOSE", "rewritten_query": "",
             "subqueries": [
                 {"information_need_id": "size", "query": "航司尺寸"},
                 {"information_need_id": "size", "query": "不同航司尺寸"},
@@ -97,17 +139,46 @@ def test_query_processor_rejects_dropped_numeric_or_universal_constraint():
     processor = QueryProcessor(None, "prompt")
     with pytest.raises(QueryProcessorError, match="drift"):
         processor._validate("20寸登机箱适用于任意航空公司吗", {
-            "rewritten_query": "登机箱航空规则",
-            "subqueries": [],
+            "mode": "REWRITE", "rewritten_query": "登机箱航空规则", "subqueries": [],
         })
 
 
 @pytest.mark.asyncio
 async def test_query_processor_calls_model_once_and_accepts_fenced_json():
     model = AsyncMock(return_value=SimpleNamespace(content=[TextBlock(text='''```json
-{"rewritten_query":"20寸登机箱 任意航空公司规则","subqueries":[]}
+{"mode":"REWRITE","rewritten_query":"20寸登机箱 任意航空公司规则","subqueries":[]}
 ```''')]))
     plan = await QueryProcessor(model, "prompt", disable_thinking=True).process("20寸登机箱适用于任意航空公司吗")
     assert plan.rewritten_query.startswith("20寸")
     model.assert_awaited_once()
     assert model.await_args.kwargs["extra_body"] == {"enable_thinking": False}
+    assert model.await_args.kwargs["temperature"] == 0
+
+
+def test_near_identical_rewrite_is_downgraded_to_direct():
+    plan = QueryProcessor(None, "prompt")._validate("旅行箱怎么挑？", {
+        "mode": "REWRITE", "rewritten_query": "旅行箱怎么挑", "subqueries": [],
+    })
+    assert plan.mode == "DIRECT"
+    assert plan.rewrite_decision == "skipped_near_duplicate"
+    assert [variant.kind for variant in plan.variants()] == ["original"]
+
+
+def test_same_intent_original_and_rewrite_do_not_double_vote():
+    item = hit("travel", "行李箱尺寸规则")
+    candidates = [
+        # 两路都属于 overall，同一个候选只能取其中最大的一次贡献。
+        SimpleNamespace(item=item, query_id="original", information_need_id="overall", retrieval_route="vector", rank_in_source=1, intent_group_id="overall"),
+        SimpleNamespace(item=item, query_id="rewrite", information_need_id="overall", retrieval_route="vector", rank_in_source=2, intent_group_id="overall"),
+    ]
+    _, fused, _ = _rrf_fuse(candidates, 1, 60)
+    assert fused[0]["rrf_score"] == pytest.approx(1 / 61)
+
+
+@pytest.mark.parametrize("question", [
+    "我昨天下的单怎么还没发货，现在到哪了？帮我查下物流。",
+    "你们那个折叠双肩包黑色现在还有现货吗？我下单能不能今天就发？",
+    "下个月国际运费会不会降，锂电池政策会不会松一点？帮我预测下。",
+])
+def test_live_or_future_questions_are_rejected_before_static_retrieval(question):
+    assert unsupported_fact_reason(question) is not None

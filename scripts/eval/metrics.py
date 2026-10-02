@@ -296,6 +296,9 @@ def evaluate(
     for result in results:
         bucket = result.dimensions.get("primary_kind", result.kind or "ALL")
         buckets.setdefault(bucket, []).append(result)
+        plan_mode = result.dimensions.get("query_plan_mode")
+        if plan_mode:
+            buckets.setdefault(f"query_plan:{plan_mode}", []).append(result)
     bucket_metrics = {name: summarize_bucket(items) for name, items in sorted(buckets.items())}
     if empty_count:
         bucket_metrics["unanswerable"] = {"count": empty_count, "rejection_accuracy": empty_accuracy}

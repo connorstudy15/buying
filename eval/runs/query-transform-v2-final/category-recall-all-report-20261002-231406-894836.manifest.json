@@ -1,0 +1,4044 @@
+{
+  "code": {
+    "file_count": 332,
+    "files": [
+      {
+        "bytes": 24,
+        "path": "app\\__init__.py",
+        "sha256": "8b084a9f378124b2b1a51563bf3c22444eb7ff33692017da28b2136ae56987ed"
+      },
+      {
+        "bytes": 24,
+        "path": "app\\application\\__init__.py",
+        "sha256": "8b084a9f378124b2b1a51563bf3c22444eb7ff33692017da28b2136ae56987ed"
+      },
+      {
+        "bytes": 24,
+        "path": "app\\application\\agents\\__init__.py",
+        "sha256": "8b084a9f378124b2b1a51563bf3c22444eb7ff33692017da28b2136ae56987ed"
+      },
+      {
+        "bytes": 16053,
+        "path": "app\\application\\agents\\ag_ui_adapter.py",
+        "sha256": "b2eae3fea465a30bba7f7bdb52f85ba8834b38923c3fd6526b80dc6cd2ae007d"
+      },
+      {
+        "bytes": 3288,
+        "path": "app\\application\\agents\\context_policy.py",
+        "sha256": "44ecc368c82ea5d7958a7a7991b00c1cd52d9527ec687c993dcc89ff74e7863e"
+      },
+      {
+        "bytes": 6923,
+        "path": "app\\application\\agents\\context_service.py",
+        "sha256": "5e0a50909746782c1419173db701fa1bd4a3e9b4d053a261259761370e286890"
+      },
+      {
+        "bytes": 12595,
+        "path": "app\\application\\agents\\main_agent.py",
+        "sha256": "a61998a025dd59355aba5fe6b0794a8d786348b9feb78a93835bdb4d05aa494c"
+      },
+      {
+        "bytes": 36125,
+        "path": "app\\application\\agents\\orchestrator.py",
+        "sha256": "be4f4a97e07e0596c49d4a2f3c070c807759d3488079591d1ae2aaf7e5cce565"
+      },
+      {
+        "bytes": 1570,
+        "path": "app\\application\\agents\\permissions.py",
+        "sha256": "a5610b6d89e89d909b4569027832407a965e72b8bf95d507524fd141cf59c9e5"
+      },
+      {
+        "bytes": 822,
+        "path": "app\\application\\agents\\personal_skill_context.py",
+        "sha256": "0ca1f4eb85d032e90117fd1b8ebb7b3d7ab693cbf652d99c10a2a4f3a34d18b0"
+      },
+      {
+        "bytes": 3959,
+        "path": "app\\application\\agents\\product_candidate_projection.py",
+        "sha256": "e4f31cb6f0412294de22cacbd498ccebcef3f765a6b8324413796d67a6c7d39a"
+      },
+      {
+        "bytes": 6188,
+        "path": "app\\application\\agents\\search_agent.py",
+        "sha256": "8eadf3fdf5613751b7221811d99041f5263f0713651c7e9e0c6d33783febfb67"
+      },
+      {
+        "bytes": 5536,
+        "path": "app\\application\\agents\\selected_skill.py",
+        "sha256": "4c078adfc42eee22c546462be26ed1e75cbde4ee0d665a032c0665c5847d9ce8"
+      },
+      {
+        "bytes": 3024,
+        "path": "app\\application\\agents\\tool_confirmation.py",
+        "sha256": "939c66fc4c714a0a4cf3a3fba4b29799016e36624f2f26a998915039f7efa98e"
+      },
+      {
+        "bytes": 3591,
+        "path": "app\\application\\agents\\trade_agent.py",
+        "sha256": "c61c59d47b8b5a20405342d367014995c88580bf6e2cc59ea70f1c83931e5787"
+      },
+      {
+        "bytes": 556,
+        "path": "app\\application\\harness\\__init__.py",
+        "sha256": "3335d1a654f804cf5c49471bfd8848f690e6f96673920ee598e5256cb678f29f"
+      },
+      {
+        "bytes": 5567,
+        "path": "app\\application\\harness\\assertions.py",
+        "sha256": "279620a0320420807aed1f57e12d502fc88ad18b4baed8875064b8845c69e29b"
+      },
+      {
+        "bytes": 7387,
+        "path": "app\\application\\harness\\drift_detector.py",
+        "sha256": "d471678a1a717027cac7f8f2511c2dfee32e305d4eefb3886ebaccae7ccf8a40"
+      },
+      {
+        "bytes": 3232,
+        "path": "app\\application\\harness\\loop_detector.py",
+        "sha256": "d0e6af6e7c43758bb72fd21449ac6d65493431c9ebd7160dd8640ac0af674b63"
+      },
+      {
+        "bytes": 476,
+        "path": "app\\application\\memory\\__init__.py",
+        "sha256": "522e2c6fef9be7eca418f03528d2c02138900187d169d09fd262953113a3d3ba"
+      },
+      {
+        "bytes": 1761,
+        "path": "app\\application\\memory\\middleware.py",
+        "sha256": "31af16c8af45b23dcc01e15da11f44697c9e39322cdb75dbf8b4d76ea9b09d8b"
+      },
+      {
+        "bytes": 6999,
+        "path": "app\\application\\memory\\preference_selector.py",
+        "sha256": "ad0d196a392a05160c8757e51c132b2802be783c5b4e28a5011126a1f226a393"
+      },
+      {
+        "bytes": 24,
+        "path": "app\\application\\prompts\\__init__.py",
+        "sha256": "8b084a9f378124b2b1a51563bf3c22444eb7ff33692017da28b2136ae56987ed"
+      },
+      {
+        "bytes": 13457,
+        "path": "app\\application\\prompts\\globex.yml",
+        "sha256": "761a327db8d7965238beb450e378d2d1051d6ec129fb6bfbc4916af5f02e57b7"
+      },
+      {
+        "bytes": 997,
+        "path": "app\\application\\prompts\\loader.py",
+        "sha256": "a1f77f6ec46d3b86688bb20c433be2b06473c48e4a5cfbbdde8d17799d56c5b7"
+      },
+      {
+        "bytes": 37,
+        "path": "app\\application\\retrieval\\__init__.py",
+        "sha256": "c98d5ea9c687388bd9ab0081b3f6bb7a7a91219f9488b2b1923de4d2f412133d"
+      },
+      {
+        "bytes": 8427,
+        "path": "app\\application\\retrieval\\query_processor.py",
+        "sha256": "7f3cf0284f3bf109aeae23d999e17b134fc61b752664d3c642adf0936d37b617"
+      },
+      {
+        "bytes": 24,
+        "path": "app\\application\\tools\\__init__.py",
+        "sha256": "8b084a9f378124b2b1a51563bf3c22444eb7ff33692017da28b2136ae56987ed"
+      },
+      {
+        "bytes": 5557,
+        "path": "app\\application\\tools\\capability_tools.py",
+        "sha256": "3a150f3388e20fecdaff7c70f9a40a1ad0855ca958a531129268626ea8bbbe73"
+      },
+      {
+        "bytes": 6835,
+        "path": "app\\application\\tools\\category_insight_tool.py",
+        "sha256": "d886a03c0673ef0095d74713c3f6679e118304a9e878ec9fb0708ec4e84a3f38"
+      },
+      {
+        "bytes": 4996,
+        "path": "app\\application\\tools\\conversation_fact_lookup.py",
+        "sha256": "d55418be07a21fb4b02ca98c72b995df4d064834e313f327dc3cb1245bab864e"
+      },
+      {
+        "bytes": 4844,
+        "path": "app\\application\\tools\\forget_preference_tool.py",
+        "sha256": "d0b132c1644e06a238184bd15bb6811c0c88d2bdab1c984132f2c0fef8b1b3b0"
+      },
+      {
+        "bytes": 6652,
+        "path": "app\\application\\tools\\order_tools.py",
+        "sha256": "9710cb5d0942359b07ef6953a55c43c8e470c935625464983ec7e40a96c0bcc8"
+      },
+      {
+        "bytes": 9326,
+        "path": "app\\application\\tools\\product_search_tool.py",
+        "sha256": "ca4165fb0e99c52d31f887e2e4d57923577a235faab3f5378e79c95430c66ee6"
+      },
+      {
+        "bytes": 2852,
+        "path": "app\\application\\tools\\remember_preference_tool.py",
+        "sha256": "1088ae23dda1b9274d75d7408b99cda16f66d358e291c06e5d9c9649902ef09f"
+      },
+      {
+        "bytes": 7798,
+        "path": "app\\application\\tools\\task_dispatch_tool.py",
+        "sha256": "4dd367ca849740911a70c66a118d82bca8989621046c232effbf718c38a73a9c"
+      },
+      {
+        "bytes": 3400,
+        "path": "app\\application\\tools\\update_preference_tool.py",
+        "sha256": "109bedb9c80845ecf1e770b382cbd66046a6ea532884ba5cafccf76d8c335ac6"
+      },
+      {
+        "bytes": 2779,
+        "path": "app\\application\\tools\\web_search_tool.py",
+        "sha256": "009ae8b74b4e60e18cc631c4e1d4d429d090c018ef13008c80b893448911462d"
+      },
+      {
+        "bytes": 24,
+        "path": "app\\application\\usecases\\__init__.py",
+        "sha256": "8b084a9f378124b2b1a51563bf3c22444eb7ff33692017da28b2136ae56987ed"
+      },
+      {
+        "bytes": 23639,
+        "path": "app\\application\\usecases\\catalog_search.py",
+        "sha256": "a09563b202e9f879bebd0be6f7088662afbf6af3df1d88cbf045b486367cf8a9"
+      },
+      {
+        "bytes": 9162,
+        "path": "app\\application\\usecases\\confirmation_service.py",
+        "sha256": "5213b0d5951bef5e52f5fd83e896e3033a38717de69c1807cb4e9edb8e8d9183"
+      },
+      {
+        "bytes": 2461,
+        "path": "app\\application\\usecases\\order_usecases.py",
+        "sha256": "d96871c459b1d352cf1690cf0b2818f29e8a689821c38e09322d4a8442b948ad"
+      },
+      {
+        "bytes": 1017,
+        "path": "app\\application\\usecases\\product_media.py",
+        "sha256": "bd6f69d7defd373b5a958d49e820747b4e3b95c286c17ad731f15a3e9c84f1e0"
+      },
+      {
+        "bytes": 15987,
+        "path": "app\\composition.py",
+        "sha256": "5c1cad009f06a5617b44dccb8b5e334bbcba9bd7bc16e4035d2ea9a514cfff54"
+      },
+      {
+        "bytes": 24,
+        "path": "app\\domain\\__init__.py",
+        "sha256": "8b084a9f378124b2b1a51563bf3c22444eb7ff33692017da28b2136ae56987ed"
+      },
+      {
+        "bytes": 24,
+        "path": "app\\domain\\buyer\\__init__.py",
+        "sha256": "8b084a9f378124b2b1a51563bf3c22444eb7ff33692017da28b2136ae56987ed"
+      },
+      {
+        "bytes": 24,
+        "path": "app\\domain\\buyer\\ports\\__init__.py",
+        "sha256": "8b084a9f378124b2b1a51563bf3c22444eb7ff33692017da28b2136ae56987ed"
+      },
+      {
+        "bytes": 2677,
+        "path": "app\\domain\\buyer\\preference.py",
+        "sha256": "bd3c2a34a6c53369de7c563b224ab890d5e3fa9f1e5e7ebc029de74e33df70e6"
+      },
+      {
+        "bytes": 24,
+        "path": "app\\domain\\catalog\\__init__.py",
+        "sha256": "8b084a9f378124b2b1a51563bf3c22444eb7ff33692017da28b2136ae56987ed"
+      },
+      {
+        "bytes": 1536,
+        "path": "app\\domain\\catalog\\exchange_rate.py",
+        "sha256": "cacc09ade154d88f5f7112d51f5b94ec306fd8360b8fea53d4dc3025f5409147"
+      },
+      {
+        "bytes": 2028,
+        "path": "app\\domain\\catalog\\money.py",
+        "sha256": "54efad36795333cc9352ec40a64aff18f1cc172a82293e1423195bab78109d78"
+      },
+      {
+        "bytes": 24,
+        "path": "app\\domain\\catalog\\ports\\__init__.py",
+        "sha256": "8b084a9f378124b2b1a51563bf3c22444eb7ff33692017da28b2136ae56987ed"
+      },
+      {
+        "bytes": 636,
+        "path": "app\\domain\\catalog\\ports\\product_repository.py",
+        "sha256": "0a3dd7ce4c230adb8f947087e966f92c988e3914b8d26ede0df3ad1a910ce116"
+      },
+      {
+        "bytes": 1478,
+        "path": "app\\domain\\catalog\\ports\\retrieval_ports.py",
+        "sha256": "2f6a5f4a657461ae3c9c34e1d61689dcc1adae5a7f64834608c3183b08065013"
+      },
+      {
+        "bytes": 2636,
+        "path": "app\\domain\\catalog\\product.py",
+        "sha256": "a9483c1de63a0109144a26b7a7a552dc3fc7a130ba3ac1636071114dff580304"
+      },
+      {
+        "bytes": 1780,
+        "path": "app\\domain\\catalog\\product_search_spec.py",
+        "sha256": "ade23a5f5d8be62393a91d212164095fbdd44f58688bf8b501c00e79c6d371e5"
+      },
+      {
+        "bytes": 1116,
+        "path": "app\\domain\\catalog\\sku.py",
+        "sha256": "ed9471bdb9e05afa4ad261214767e3e0440fc2796bd96ce719df1ef052825c5a"
+      },
+      {
+        "bytes": 24,
+        "path": "app\\domain\\order\\__init__.py",
+        "sha256": "8b084a9f378124b2b1a51563bf3c22444eb7ff33692017da28b2136ae56987ed"
+      },
+      {
+        "bytes": 757,
+        "path": "app\\domain\\order\\address.py",
+        "sha256": "031f0c8594ac183f33ba5da9678b061faf11f42de58c40da97d3710cef6faee9"
+      },
+      {
+        "bytes": 3845,
+        "path": "app\\domain\\order\\order.py",
+        "sha256": "0b51596fc3b9d137b89021e765accd0472b3e283cfd6522c0deb93be19157c5c"
+      },
+      {
+        "bytes": 651,
+        "path": "app\\domain\\order\\order_line.py",
+        "sha256": "0d497d5ee76794fcf078b4186747fb3e1a094ec85e8a354222fc21149b9c7f5e"
+      },
+      {
+        "bytes": 24,
+        "path": "app\\domain\\order\\ports\\__init__.py",
+        "sha256": "8b084a9f378124b2b1a51563bf3c22444eb7ff33692017da28b2136ae56987ed"
+      },
+      {
+        "bytes": 579,
+        "path": "app\\domain\\order\\ports\\order_repository.py",
+        "sha256": "a8ad6fe73dae999b894d1518f809a552ac9aa9517f700010ba6fbd39b9e52793"
+      },
+      {
+        "bytes": 1859,
+        "path": "app\\domain\\order\\ports\\trade_store.py",
+        "sha256": "57f3a06084a42ed2e66844dc6afcf8e8aca18dc1dd8246bf7d714019fcde9cc9"
+      },
+      {
+        "bytes": 24,
+        "path": "app\\domain\\queue\\__init__.py",
+        "sha256": "8b084a9f378124b2b1a51563bf3c22444eb7ff33692017da28b2136ae56987ed"
+      },
+      {
+        "bytes": 24,
+        "path": "app\\domain\\queue\\ports\\__init__.py",
+        "sha256": "8b084a9f378124b2b1a51563bf3c22444eb7ff33692017da28b2136ae56987ed"
+      },
+      {
+        "bytes": 3431,
+        "path": "app\\domain\\queue\\ports\\task_queue.py",
+        "sha256": "66baf8a80af79edd2a4d91392a0721974f402865ae3d0af5d8c6289016c4d4e0"
+      },
+      {
+        "bytes": 24,
+        "path": "app\\domain\\session\\__init__.py",
+        "sha256": "8b084a9f378124b2b1a51563bf3c22444eb7ff33692017da28b2136ae56987ed"
+      },
+      {
+        "bytes": 24,
+        "path": "app\\domain\\session\\ports\\__init__.py",
+        "sha256": "8b084a9f378124b2b1a51563bf3c22444eb7ff33692017da28b2136ae56987ed"
+      },
+      {
+        "bytes": 2580,
+        "path": "app\\domain\\session\\ports\\conversation_store.py",
+        "sha256": "01c7dfdf738161bb1e61d638cdafe1e450f82087609df21c5d7de377286b283a"
+      },
+      {
+        "bytes": 2475,
+        "path": "app\\domain\\session\\ports\\session_store.py",
+        "sha256": "b0077c7e61e1306e50b9eb1d5ee363a0a6efcd20f55923b90991018a17428d49"
+      },
+      {
+        "bytes": 24,
+        "path": "app\\domain\\shipping\\__init__.py",
+        "sha256": "8b084a9f378124b2b1a51563bf3c22444eb7ff33692017da28b2136ae56987ed"
+      },
+      {
+        "bytes": 4263,
+        "path": "app\\domain\\shipping\\tariff_schedule.py",
+        "sha256": "0bccab0d719a079eb830a31e631f5d551e44fd607d19723c2ce8d789cd8dd039"
+      },
+      {
+        "bytes": 24,
+        "path": "app\\infrastructure\\__init__.py",
+        "sha256": "8b084a9f378124b2b1a51563bf3c22444eb7ff33692017da28b2136ae56987ed"
+      },
+      {
+        "bytes": 18159,
+        "path": "app\\infrastructure\\ag_ui_journal.py",
+        "sha256": "f154bb3d4df9cad553f17c34c2afeef3cacc5a1ee18dfaeb3853c9034051dfe2"
+      },
+      {
+        "bytes": 6600,
+        "path": "app\\infrastructure\\budget.py",
+        "sha256": "ccff57e7ddcc303793182e2c104903fce8091a004dd563f4d5c2af89a81d26e6"
+      },
+      {
+        "bytes": 1984,
+        "path": "app\\infrastructure\\buyer_favorites.py",
+        "sha256": "4f118619eeb88761f5ab1e5308e4e57e5e0c03896273584639a804f37276cb5d"
+      },
+      {
+        "bytes": 5361,
+        "path": "app\\infrastructure\\buyer_skills.py",
+        "sha256": "66c95ee81975a5b28af5a5daae0340a8f467a6d11126c465fca4e9b4c5261d68"
+      },
+      {
+        "bytes": 24,
+        "path": "app\\infrastructure\\cache\\__init__.py",
+        "sha256": "8b084a9f378124b2b1a51563bf3c22444eb7ff33692017da28b2136ae56987ed"
+      },
+      {
+        "bytes": 3093,
+        "path": "app\\infrastructure\\cache\\cached_embedding_client.py",
+        "sha256": "a968d4d89f7da550caf7bb3b12d7d5a23fbedb6555b3aac0d3997d25da3507fc"
+      },
+      {
+        "bytes": 5077,
+        "path": "app\\infrastructure\\cache\\redis_cache.py",
+        "sha256": "4fd295205421e726d98f287638cd8f3243307ff1065357ed596def0c3d9433a0"
+      },
+      {
+        "bytes": 7461,
+        "path": "app\\infrastructure\\cache\\semantic_cache.py",
+        "sha256": "5917bb11918dbfbc57db64d75c0f95666daa2f284d44ff69651f5c18ff23c7e4"
+      },
+      {
+        "bytes": 17342,
+        "path": "app\\infrastructure\\capability_registry.py",
+        "sha256": "29e801491ca38a7c60781623875d2be6da622dae041c95e8e6c05ef1d2b6ed7b"
+      },
+      {
+        "bytes": 3008,
+        "path": "app\\infrastructure\\context.py",
+        "sha256": "53262feb890e6eb34c8f9125c5056b81c8fcf6c6aeb44d928ae1198077c9d582"
+      },
+      {
+        "bytes": 3217,
+        "path": "app\\infrastructure\\context_compaction.py",
+        "sha256": "8d3562f0c52b739258c42ad77d3f9414a587ad31c7cea6945cf6231339866503"
+      },
+      {
+        "bytes": 31266,
+        "path": "app\\infrastructure\\context_governance.py",
+        "sha256": "75b106eb6831dabbd3b5debf344bf4ffb3b45031de637f4d1cffc6b7f2c47d1b"
+      },
+      {
+        "bytes": 6749,
+        "path": "app\\infrastructure\\context_products.py",
+        "sha256": "68b01ce6bc548276c2e3a38b319cf722cdc510fda2494c20450c86e91daa98a5"
+      },
+      {
+        "bytes": 992,
+        "path": "app\\infrastructure\\context_usage.py",
+        "sha256": "196d72ff28a7770794f6408857636cf64c9f9701ea488cda229e10884d30bd79"
+      },
+      {
+        "bytes": 24,
+        "path": "app\\infrastructure\\embedding\\__init__.py",
+        "sha256": "8b084a9f378124b2b1a51563bf3c22444eb7ff33692017da28b2136ae56987ed"
+      },
+      {
+        "bytes": 3226,
+        "path": "app\\infrastructure\\embedding\\openai_embedding_client.py",
+        "sha256": "58bf960c5b13968ed3c83a3008b8a611e74a331cd219e9a89354dcd7439fa87a"
+      },
+      {
+        "bytes": 5952,
+        "path": "app\\infrastructure\\eventbus.py",
+        "sha256": "2fc74f5e23d94bb90a9b80cce757c0de893d84a5ffa67c3516ce1faf113bb442"
+      },
+      {
+        "bytes": 6965,
+        "path": "app\\infrastructure\\harness_middleware.py",
+        "sha256": "640f8b47d48d2d8bc18c9abd58a007e4c371d3bf2aad4aae8ce24caf794b9c6b"
+      },
+      {
+        "bytes": 3447,
+        "path": "app\\infrastructure\\identity.py",
+        "sha256": "5b3d390c1876b259c9e17017bf4c851eba9bae2cd21a51ec5f8a78fc0f00f4f2"
+      },
+      {
+        "bytes": 3759,
+        "path": "app\\infrastructure\\langfuse_config.py",
+        "sha256": "9d7a1a0b7d5437467518d19b1c1f2a3019370b7e998c3ba1816382641ceeea5b"
+      },
+      {
+        "bytes": 21233,
+        "path": "app\\infrastructure\\llm.py",
+        "sha256": "6cb207efc2d747c6cff157eec69407997064536f886b951e559e6f467ccde537"
+      },
+      {
+        "bytes": 3667,
+        "path": "app\\infrastructure\\model_stream.py",
+        "sha256": "8fccbe91b17679405ddb12fe1caed436d705a53bb7cac0c545d2057535fd333f"
+      },
+      {
+        "bytes": 9489,
+        "path": "app\\infrastructure\\operational_metrics.py",
+        "sha256": "556c32f2f53866d8eac933ef65451fc4c06c6186a6ff952a579a383c73bd0650"
+      },
+      {
+        "bytes": 24,
+        "path": "app\\infrastructure\\persistence\\__init__.py",
+        "sha256": "8b084a9f378124b2b1a51563bf3c22444eb7ff33692017da28b2136ae56987ed"
+      },
+      {
+        "bytes": 6135,
+        "path": "app\\infrastructure\\persistence\\context_evidence.py",
+        "sha256": "152fa22052ddc1bfb00536970479786991a24d09c2224deeb423ab9b24e200f5"
+      },
+      {
+        "bytes": 2569,
+        "path": "app\\infrastructure\\persistence\\in_memory_repositories.py",
+        "sha256": "fb7933e0a2c0734423b07937701b8e89d62418d44b16acfe8f6e12dd4ee37bf0"
+      },
+      {
+        "bytes": 12955,
+        "path": "app\\infrastructure\\persistence\\json_file_stores.py",
+        "sha256": "c920a98cf0e7c52425b1c0b743eafed95c741f9f4350ed3575547f9ad3059681"
+      },
+      {
+        "bytes": 25178,
+        "path": "app\\infrastructure\\persistence\\seed_products.py",
+        "sha256": "ad6c5162dd2f8ffbc853e331bc41e211f451c2ac85baccc9d9feaceeae306d52"
+      },
+      {
+        "bytes": 24,
+        "path": "app\\infrastructure\\persistence\\sql\\__init__.py",
+        "sha256": "8b084a9f378124b2b1a51563bf3c22444eb7ff33692017da28b2136ae56987ed"
+      },
+      {
+        "bytes": 14704,
+        "path": "app\\infrastructure\\persistence\\sql\\repositories.py",
+        "sha256": "b2b6616a0264294c31bc1fe91c512f7e6812539dfeff750cf77311039344f665"
+      },
+      {
+        "bytes": 17434,
+        "path": "app\\infrastructure\\persistence\\sql\\session_store.py",
+        "sha256": "9e5574c48f787b60601538caba36f0c5e70e5be0e93248755b637cb151509681"
+      },
+      {
+        "bytes": 5346,
+        "path": "app\\infrastructure\\persistence\\sql\\tables.py",
+        "sha256": "2c05be1a0fa265beb9406be01758d97adcdcce27c3b83079c508b703cf3054e9"
+      },
+      {
+        "bytes": 23306,
+        "path": "app\\infrastructure\\persistence\\sql\\trade_store.py",
+        "sha256": "e37ab9a993b8271601063cdf434052dbfb8eb4cdc2efb9f2ca3a91c78f215f98"
+      },
+      {
+        "bytes": 2429,
+        "path": "app\\infrastructure\\persistence\\sql\\trade_tables.py",
+        "sha256": "812d0e7758593bc826d60d5f8c7697500a320d95a3611a865ec61be3a5fd7bee"
+      },
+      {
+        "bytes": 13993,
+        "path": "app\\infrastructure\\prompt_registry.py",
+        "sha256": "a7bbf20129edfbb6faf75e43d32c429d66bcba1259bc2fb970461fb53ab01399"
+      },
+      {
+        "bytes": 7064,
+        "path": "app\\infrastructure\\prompt_release.py",
+        "sha256": "fe0967f07255ba6b76030c56f8d20e7cd7a30f6f72e53f05d6707e5ec54c4bba"
+      },
+      {
+        "bytes": 24,
+        "path": "app\\infrastructure\\queue\\__init__.py",
+        "sha256": "8b084a9f378124b2b1a51563bf3c22444eb7ff33692017da28b2136ae56987ed"
+      },
+      {
+        "bytes": 3403,
+        "path": "app\\infrastructure\\queue\\archive.py",
+        "sha256": "0d2b60cf8c9236930d0aa96c17596b34b20bc1d578b7bb78a5af3b5bd6e78083"
+      },
+      {
+        "bytes": 8507,
+        "path": "app\\infrastructure\\queue\\maintenance.py",
+        "sha256": "1e4ed83814da8601703d0f759c0347021b44438b7d0aaf05a069a5d07369a9ec"
+      },
+      {
+        "bytes": 26401,
+        "path": "app\\infrastructure\\queue\\redis_stream_queue.py",
+        "sha256": "238e256b9afd0c380a0f03a712a5f2f7ca9c259d961b39400fbb606c407dad1e"
+      },
+      {
+        "bytes": 24,
+        "path": "app\\infrastructure\\rag\\__init__.py",
+        "sha256": "8b084a9f378124b2b1a51563bf3c22444eb7ff33692017da28b2136ae56987ed"
+      },
+      {
+        "bytes": 11515,
+        "path": "app\\infrastructure\\rag\\category_knowledge.py",
+        "sha256": "6bc6a34d39a7d0b0d67606f6aa344fd73d858266447ae77c31ca2fcf73fe6832"
+      },
+      {
+        "bytes": 18760,
+        "path": "app\\infrastructure\\rag\\knowledge_retrieval.py",
+        "sha256": "e5ca04e14ebcb4cf8bbdd622281aa6894294adbb853609e6319195bae185b711"
+      },
+      {
+        "bytes": 24,
+        "path": "app\\infrastructure\\rerank\\__init__.py",
+        "sha256": "8b084a9f378124b2b1a51563bf3c22444eb7ff33692017da28b2136ae56987ed"
+      },
+      {
+        "bytes": 3082,
+        "path": "app\\infrastructure\\rerank\\http_reranker.py",
+        "sha256": "e7005e04e9bcff43164c1641a24d1ad52eefd0612c715842fa75e024c2ebcbd5"
+      },
+      {
+        "bytes": 8938,
+        "path": "app\\infrastructure\\resilience.py",
+        "sha256": "97efc57ebd59200f7d002d10f48544f231cfba8f1057657bcebe46f7d15a274a"
+      },
+      {
+        "bytes": 2681,
+        "path": "app\\infrastructure\\retrieval\\bm25.py",
+        "sha256": "266365b5947dac1cc0c2aa4acd256582a104ad674b2944afc64253e0e872d70f"
+      },
+      {
+        "bytes": 603,
+        "path": "app\\infrastructure\\runtime_version.py",
+        "sha256": "fcec7aa7f165552da39e911240151e334e3e7cec5efbdd7a075e07f0efaa19a1"
+      },
+      {
+        "bytes": 905,
+        "path": "app\\infrastructure\\security\\__init__.py",
+        "sha256": "916cca36c5608ea89a62c3ca413081a5262880cbe42d663d0a017c191e5c2472"
+      },
+      {
+        "bytes": 2038,
+        "path": "app\\infrastructure\\security\\content_filter.py",
+        "sha256": "373565fd7a7f37422e3d330c0647457ad03c5d9cd37e4a4d7412d709aaa28f53"
+      },
+      {
+        "bytes": 2241,
+        "path": "app\\infrastructure\\security\\output_guard.py",
+        "sha256": "0f46a53c6a9740b75fa7d97c7e988f5e8e85f071eca51cd0f26f44230f9c9053"
+      },
+      {
+        "bytes": 18115,
+        "path": "app\\infrastructure\\semantic_memory.py",
+        "sha256": "75195ac3fb06d57f835405ab6694cbff4075ce38e90716ad53b76f8db3b7b66d"
+      },
+      {
+        "bytes": 13984,
+        "path": "app\\infrastructure\\settings.py",
+        "sha256": "9d01bbdc5a390db87a29b94e83f1b43f82f2283478e84cf0a5a29d28a554e3f8"
+      },
+      {
+        "bytes": 4675,
+        "path": "app\\infrastructure\\shared_breaker.py",
+        "sha256": "f89821ec11677ea1accefc1bfc9468bd2dffa5e69517bc41b972aa0896324997"
+      },
+      {
+        "bytes": 9356,
+        "path": "app\\infrastructure\\shared_throttle.py",
+        "sha256": "d23b90b5271d404355287345d176868ac62032a1c6cc10912335bceb78ffda66"
+      },
+      {
+        "bytes": 1919,
+        "path": "app\\infrastructure\\throttle.py",
+        "sha256": "d2aa69e5c838c65d538a9cbe00fe043e7dff8452fa5a40126427a8a7dcaf4287"
+      },
+      {
+        "bytes": 21512,
+        "path": "app\\infrastructure\\tracing.py",
+        "sha256": "78cddef31de950563cc7779dd37d3645cbeef2b8ad8d38eaeb722026eb74edc3"
+      },
+      {
+        "bytes": 1125,
+        "path": "app\\infrastructure\\transient.py",
+        "sha256": "0c914c13c4b17dfc16ec05df6255967cdcffc6a43541e2a3c7d65390748eb51b"
+      },
+      {
+        "bytes": 24,
+        "path": "app\\infrastructure\\vector\\__init__.py",
+        "sha256": "8b084a9f378124b2b1a51563bf3c22444eb7ff33692017da28b2136ae56987ed"
+      },
+      {
+        "bytes": 1470,
+        "path": "app\\infrastructure\\vector\\index_bootstrap.py",
+        "sha256": "8ec26909b98b07679dd9220b50d04b2c07210ffd07cd3bc3218d245df66cee18"
+      },
+      {
+        "bytes": 2830,
+        "path": "app\\infrastructure\\vector\\qdrant_product_index.py",
+        "sha256": "857c74b922d57f6317981e84b00395a694e8fea1400c7be71d05cfa0746b3591"
+      },
+      {
+        "bytes": 24,
+        "path": "app\\presentation\\__init__.py",
+        "sha256": "8b084a9f378124b2b1a51563bf3c22444eb7ff33692017da28b2136ae56987ed"
+      },
+      {
+        "bytes": 12364,
+        "path": "app\\presentation\\ag_ui.py",
+        "sha256": "cfd33742a373d87ca54f742ef2bb3e4b34f7c48a6ae1bba53f84a2aaf7f94d61"
+      },
+      {
+        "bytes": 7418,
+        "path": "app\\presentation\\ag_ui_runtime.py",
+        "sha256": "a2f14d95d66b68c5a5224fa7bffb00a37db53f815c53717034eebeec4d35c116"
+      },
+      {
+        "bytes": 6299,
+        "path": "app\\presentation\\buyer_workspace.py",
+        "sha256": "6cd66ef55006664aa399de2ac31cf8bd7c137281f24a8f1d10208fdf8043b24e"
+      },
+      {
+        "bytes": 4483,
+        "path": "app\\presentation\\confirmations.py",
+        "sha256": "811bcb0bd45ef42c36a6b426ed215e3722bb68a8fd92bcfd40f465c4641750a9"
+      },
+      {
+        "bytes": 3083,
+        "path": "app\\presentation\\connection.py",
+        "sha256": "e51de116d759cd8549eb85fbcb52868d4d8f8374c806a4294bef110d56c7c5b0"
+      },
+      {
+        "bytes": 2057,
+        "path": "app\\presentation\\context_workspace.py",
+        "sha256": "48590d0712152ae3c3ba1904b454a6f993b3965360e3081a84d9d7e7f9c7d807"
+      },
+      {
+        "bytes": 1030,
+        "path": "app\\presentation\\dto.py",
+        "sha256": "6a9b2bc8df63d0ba9b8ee0b05909cc2e9730d99516259f266097ea8ab6af1554"
+      },
+      {
+        "bytes": 1505,
+        "path": "app\\presentation\\favorites.py",
+        "sha256": "3505bffe7860e979604de457cb438673cb16a520b7d3d08c23b407f612153712"
+      },
+      {
+        "bytes": 4508,
+        "path": "app\\presentation\\identity.py",
+        "sha256": "8384adcdb9860269f8cdcf19853e08e57f457da80e06fd4125163486d604e166"
+      },
+      {
+        "bytes": 17308,
+        "path": "app\\presentation\\server.py",
+        "sha256": "e460d6cc6b0ff525d44f3ed2af5e19462bd3b2055db14d4c56e837122cd3b20a"
+      },
+      {
+        "bytes": 3941,
+        "path": "app\\worker.py",
+        "sha256": "e9d7f3013f59e7793dca19657b51b5049b9570c4a1c1c6af4d60e23321554eca"
+      },
+      {
+        "bytes": 7097,
+        "path": "docker\\docker-compose.yaml",
+        "sha256": "654fcded1b9d887d1096c49cf4eb97fed794dc7d6505b7d0e0ce9391b964c358"
+      },
+      {
+        "bytes": 160773,
+        "path": "frontend\\package-lock.json",
+        "sha256": "e70e5f58d977593900c0cf56ee25e05772533c57a2a8b71005eddf9c0754c86b"
+      },
+      {
+        "bytes": 734,
+        "path": "frontend\\package.json",
+        "sha256": "c2e3247413945b6d2f602883f65bc30c59672bf11a176daf24be9f18a4ea6d45"
+      },
+      {
+        "bytes": 32870,
+        "path": "frontend\\src\\App.tsx",
+        "sha256": "7edf604b2eb554b496b2013f5f916c8067d4b1f4c253ae3bd0e714623f75cbdf"
+      },
+      {
+        "bytes": 4754,
+        "path": "frontend\\src\\components\\buyerWorkspace.css",
+        "sha256": "9ea5c3caa23d25e5a5250ba50f98be6adf7365ef248eccc9304fb5cf2dd39ff8"
+      },
+      {
+        "bytes": 12725,
+        "path": "frontend\\src\\components\\BuyerWorkspace.tsx",
+        "sha256": "b7510b87e5275eca1740ed1093b0a71d6ac407e367d587786fb5e83aaa735bc3"
+      },
+      {
+        "bytes": 11196,
+        "path": "frontend\\src\\components\\ConfirmationCards.tsx",
+        "sha256": "f998a512e372ceaf93057e681bf71126f9e9a112ed0d8999da9c014bc3ca53ed"
+      },
+      {
+        "bytes": 8429,
+        "path": "frontend\\src\\components\\confirmations.css",
+        "sha256": "4a713ea9d39b3c4e94902daf14464a911d2573b5fa3ba9af28bb3d9094586b85"
+      },
+      {
+        "bytes": 790,
+        "path": "frontend\\src\\components\\contextWorkspace.css",
+        "sha256": "eafe03c057077f5ba223988341423a1f620d98f1e3299dfb1ee0c20efd7bc9f8"
+      },
+      {
+        "bytes": 4654,
+        "path": "frontend\\src\\components\\ContextWorkspace.tsx",
+        "sha256": "ed76af2f10998769a647e6ba0b3ffe7113639b33bac411ed08af2588ab66f778"
+      },
+      {
+        "bytes": 2226,
+        "path": "frontend\\src\\components\\EventTimeline.tsx",
+        "sha256": "a760e7c1478fedeb4a28e15afce963fe97ed052910705e0b504974d6bcbd8069"
+      },
+      {
+        "bytes": 1902,
+        "path": "frontend\\src\\components\\Icon.tsx",
+        "sha256": "110c85a1379a12e5f4802f9ba747e892599ff3e3010785ac0a291779c7cfc99f"
+      },
+      {
+        "bytes": 1899,
+        "path": "frontend\\src\\components\\Markdown.tsx",
+        "sha256": "e18e1505d173436ffa6f8ff065a56568b8b7bdc91509110efa2c32b26a1a38c7"
+      },
+      {
+        "bytes": 2045,
+        "path": "frontend\\src\\components\\Modal.tsx",
+        "sha256": "82fbda429af9487fa9e245b8ee2cb721c4ad4694ae27e4959bbd8413501089f1"
+      },
+      {
+        "bytes": 1649,
+        "path": "frontend\\src\\components\\myOrders.css",
+        "sha256": "d437c01cd558253586c1b06d3a815af37b9289fdfcbfc1883215f9212389f3f8"
+      },
+      {
+        "bytes": 5536,
+        "path": "frontend\\src\\components\\MyOrders.tsx",
+        "sha256": "1be47fb64ba74c0e2c26d27fb16cb4bb684c43e5075dfacaa67a06bbfcbfa07b"
+      },
+      {
+        "bytes": 8053,
+        "path": "frontend\\src\\components\\OrderIntentForm.tsx",
+        "sha256": "f184b1d8383e66ac7becf5eec263394bbc2e3676ceeb74503070d30cc3945205"
+      },
+      {
+        "bytes": 5510,
+        "path": "frontend\\src\\components\\ProductCards.tsx",
+        "sha256": "91fb6a059b3c092679e052cc54c5011ef26b9b4458c528fcc221f5bf2f147109"
+      },
+      {
+        "bytes": 2878,
+        "path": "frontend\\src\\components\\ProductComparison.tsx",
+        "sha256": "66af7b1570578c3486a3d3f99f3e86ebe2036899d162e6f7fd52c720c111df71"
+      },
+      {
+        "bytes": 5589,
+        "path": "frontend\\src\\components\\ProductDetail.tsx",
+        "sha256": "e078b074d70acff5f3b559f784c662d7e53dd8e046c42ba90a9c0625e380d681"
+      },
+      {
+        "bytes": 6256,
+        "path": "frontend\\src\\components\\shoppingPlans.css",
+        "sha256": "dc7c54ef5cce7f8adc7e051215b35e681bf062f48c8b38e23357160ec3c77bde"
+      },
+      {
+        "bytes": 3491,
+        "path": "frontend\\src\\components\\ShoppingPlans.tsx",
+        "sha256": "88ce6b8e3753b0a850d1babb46d9d60b8bff552572258377f803e8d6671ef76c"
+      },
+      {
+        "bytes": 6370,
+        "path": "frontend\\src\\components\\SkillQueryInput.tsx",
+        "sha256": "1a516a9ee4891a05be2c11271c8758ef80905c233ef6dcb3ed8eb90600ec1fde"
+      },
+      {
+        "bytes": 1578,
+        "path": "frontend\\src\\components\\ToolApprovalCards.tsx",
+        "sha256": "700275937e505816840790ed60d18a1aaa8fba25008dd8874f488ba12ce5e7cd"
+      },
+      {
+        "bytes": 1542,
+        "path": "frontend\\src\\hooks\\useCommerceAgent.ts",
+        "sha256": "4e1235fc31424272a25737ecd28be9c00501580e3d699b626c1683654950bab9"
+      },
+      {
+        "bytes": 38095,
+        "path": "frontend\\src\\lib\\commerceClient.ts",
+        "sha256": "54ccf21a9fcd97773f6aa0fe2751b6e5ba59eff1a8fdae42480369ff415780ee"
+      },
+      {
+        "bytes": 3956,
+        "path": "frontend\\src\\lib\\confirmations.ts",
+        "sha256": "c10e5ea84d8f368fa4583f6ef7326dcbf4ba4be1df5b4a95789ee31435a24619"
+      },
+      {
+        "bytes": 5689,
+        "path": "frontend\\src\\lib\\recoveringFetch.ts",
+        "sha256": "1f1f4ee1f0ef15f7e6ffe411c004bc2b8e82d3ed4d61427b44f7f1e2ba1a43fc"
+      },
+      {
+        "bytes": 4293,
+        "path": "frontend\\src\\lib\\skills.ts",
+        "sha256": "847c0ec6b9eda92220b3d5be3b5ef88a75a22694531fd714a27338422addbdeb"
+      },
+      {
+        "bytes": 238,
+        "path": "frontend\\src\\main.tsx",
+        "sha256": "41431cb94a112ca05f90ca6037229d09d4bb8ecc1c27ae3bb3740ace8f01d2a6"
+      },
+      {
+        "bytes": 41907,
+        "path": "frontend\\src\\styles.css",
+        "sha256": "f8195700355c1a91ed68b05707f5c7b4ae349f3f62236867e9ee5db20b77cee0"
+      },
+      {
+        "bytes": 4363,
+        "path": "frontend\\src\\types.ts",
+        "sha256": "50b907a1803dd49f2bc3351c088b0abfc6a8fbfa5fcd4ed105654a26d73a2625"
+      },
+      {
+        "bytes": 8274,
+        "path": "frontend\\tests\\buyerWorkspace.test.tsx",
+        "sha256": "6ff518c63b47e0da1a5c59cdad6cbb443c13d4f0877df410b1e2902c1bd32a1c"
+      },
+      {
+        "bytes": 7967,
+        "path": "frontend\\tests\\commerceClient.test.ts",
+        "sha256": "cbff7b69abd9f347cbd8bbb22d3bae0f42d66c703d5d22de5e1838389a041dc5"
+      },
+      {
+        "bytes": 7703,
+        "path": "frontend\\tests\\confirmationCards.test.tsx",
+        "sha256": "749063d36e2672720854a83ad0309088c90c8f4e22670baf29582e46b9928746"
+      },
+      {
+        "bytes": 9801,
+        "path": "frontend\\tests\\confirmations.test.ts",
+        "sha256": "acf2756d15dc8ff7aad3f4e958e4dee1914c31a01457e2f5801458cf41ad26dd"
+      },
+      {
+        "bytes": 2193,
+        "path": "frontend\\tests\\contextWorkspace.test.tsx",
+        "sha256": "959e7faa27f35e952e452999f07653c991d9257c5b1e322c3ff0203934b6a63b"
+      },
+      {
+        "bytes": 1978,
+        "path": "frontend\\tests\\myOrders.test.tsx",
+        "sha256": "2f2ffbb7333b727a85b1a075ee91b5145451f96afe1d66e649fa7399262b627a"
+      },
+      {
+        "bytes": 6120,
+        "path": "frontend\\tests\\productContract.test.ts",
+        "sha256": "9ba8d527ede617f84f4fd4bf2f6a616b930086ff1a0c97653cd0d930718362cb"
+      },
+      {
+        "bytes": 14615,
+        "path": "frontend\\tests\\runRecovery.test.ts",
+        "sha256": "77545bec2b3dd74f90241f71e16a3b787d0c93112f47a1eef05f53f9492ce224"
+      },
+      {
+        "bytes": 12680,
+        "path": "frontend\\tests\\shoppingPlans.test.tsx",
+        "sha256": "45dd171d81ae6bc1b787055c85991a177311caf28cb3797d9cb7d269f0416781"
+      },
+      {
+        "bytes": 10078,
+        "path": "frontend\\tests\\skillSlashInteraction.test.tsx",
+        "sha256": "b4cbec12693d383f3166a11bff9c5183ed120e6af50300c2d8ef870bfa2a81db"
+      },
+      {
+        "bytes": 1168,
+        "path": "frontend\\tests\\toolApprovals.test.tsx",
+        "sha256": "9f551cc75e44a8ff3205ab21c4390167d8aa6b7db2f8f104ac80a6c1748d960d"
+      },
+      {
+        "bytes": 526,
+        "path": "frontend\\tsconfig.json",
+        "sha256": "5ef18e1e733ca6998c62ab11be2e7a86e71b0e3f66024c9c0d0ed10c684b876b"
+      },
+      {
+        "bytes": 771,
+        "path": "frontend\\vite.config.ts",
+        "sha256": "fd59f9656e47de378dfe38c7bda6bae8ee881ca44b67f406a3bda4733a57b249"
+      },
+      {
+        "bytes": 1028,
+        "path": "pyproject.toml",
+        "sha256": "681cd8722111074a1da73f63b4fb1cc882fef302019f856fb15615680118c5f8"
+      },
+      {
+        "bytes": 309,
+        "path": "scripts\\__init__.py",
+        "sha256": "39245db74a9d4792ced414285f7656ba65e3fb19401f6305af4c2cd353ffbd03"
+      },
+      {
+        "bytes": 2512,
+        "path": "scripts\\capabilities.py",
+        "sha256": "01a392c20399b1a4bcb7cd16f701a0305966679f8e44d4fcc41c1e49e7d0ebea"
+      },
+      {
+        "bytes": 797,
+        "path": "scripts\\eval\\__init__.py",
+        "sha256": "55599849189d3288bb7023fd304f65a932f596419525ae9156c286f3b76551e6"
+      },
+      {
+        "bytes": 70,
+        "path": "scripts\\eval\\baselines\\__init__.py",
+        "sha256": "d761d48dcb5006750f8173c41f38a110210e6ee7dd13518021d882e63b0ade0d"
+      },
+      {
+        "bytes": 4157,
+        "path": "scripts\\eval\\baselines\\lookup_v1.py",
+        "sha256": "0fe96f48ebbe359e64880a9c12d18afbc2dd735780db5458d51b8084bccf0349"
+      },
+      {
+        "bytes": 4030,
+        "path": "scripts\\eval\\baselines\\products_v1.py",
+        "sha256": "441fd96261190b3e92384c38f725e822d7d7663ea67b4d4d2994cc9f3174d857"
+      },
+      {
+        "bytes": 25305,
+        "path": "scripts\\eval\\build_icecat_product_eval.py",
+        "sha256": "0183e26af570d751aca6e41faa23ea751cc5b20d284843a84967fcfdb2247233"
+      },
+      {
+        "bytes": 6111,
+        "path": "scripts\\eval\\build_knowledge_v3_candidate_pool.py",
+        "sha256": "f4ee0c06d8b15de25ba32d38777969ff84b409c1260a588724c4ed6c8426dcb5"
+      },
+      {
+        "bytes": 6267,
+        "path": "scripts\\eval\\build_product_judgment_pool.py",
+        "sha256": "5238965d29d1f701ad7f2d986727e69ddb6922c9f8bbe460af71c1e4f02e4b90"
+      },
+      {
+        "bytes": 2592,
+        "path": "scripts\\eval\\compare_lexical.py",
+        "sha256": "3738ff89347f01dc993205d297fedb113b809b9af5df2e58d512f27e60545421"
+      },
+      {
+        "bytes": 5439,
+        "path": "scripts\\eval\\context_cases.py",
+        "sha256": "864e8afb563f32bfcd96558c68057dfda45181011fd3780d0788b4b69bfd66e5"
+      },
+      {
+        "bytes": 4412,
+        "path": "scripts\\eval\\context_cases_v2.py",
+        "sha256": "b11d1c6e4a066108c86bb6ba46f7196a03e65ea7378dc0b4e9592bce1cc60741"
+      },
+      {
+        "bytes": 3699,
+        "path": "scripts\\eval\\contracts.py",
+        "sha256": "fc5aaacf390b8abf064c5c624ca825116cd2c9f109ac1dee07ff23352cf630af"
+      },
+      {
+        "bytes": 5153,
+        "path": "scripts\\eval\\data_quality.py",
+        "sha256": "e36bac489f4bfc5e7e15e3b8a5d3dd07c5e8d5deacc3dd8868145672e04d996f"
+      },
+      {
+        "bytes": 5460,
+        "path": "scripts\\eval\\enrich_knowledge_v3_labels.py",
+        "sha256": "42940bb60bf2be85616479b1e0443750d1ec13246c0d74e06aa2b2e5891d8a2b"
+      },
+      {
+        "bytes": 12399,
+        "path": "scripts\\eval\\eval_quality.py",
+        "sha256": "62ca5b8cec3048a61b740d8f59a6e5e0998acbe5a626ebf70d4db17018c1a913"
+      },
+      {
+        "bytes": 13290,
+        "path": "scripts\\eval\\evidence.py",
+        "sha256": "2f6bf0cde440683d0a974afafa6a2c5e67f0c36e1b4e06dfa0087ecc920ae525"
+      },
+      {
+        "bytes": 12737,
+        "path": "scripts\\eval\\feedback.py",
+        "sha256": "3c3790b5027e14912de891f3edca1efbf8ef379c2d4459e9a352328ed1a811c5"
+      },
+      {
+        "bytes": 6547,
+        "path": "scripts\\eval\\generate_blind_knowledge_queries.py",
+        "sha256": "505a35214fc01de07a8a344ad8d82e2fb16768f3df293763ab105e29d6c667fe"
+      },
+      {
+        "bytes": 5514,
+        "path": "scripts\\eval\\generate_blind_multihop_queries.py",
+        "sha256": "5e217ace03ab18d7d8419ac609205b5d48bca944d91c2f9e98cd90a7ad179f25"
+      },
+      {
+        "bytes": 2467,
+        "path": "scripts\\eval\\hard_constraints.py",
+        "sha256": "a253cd4979a2e769447530f6651a449f9c1e0be9af3707371386fcb47d421865"
+      },
+      {
+        "bytes": 9372,
+        "path": "scripts\\eval\\http_actions.py",
+        "sha256": "8e50f07378236d64937d71d084a216b4fa51f89c2dd9fbd8be075a9d56b09d20"
+      },
+      {
+        "bytes": 5716,
+        "path": "scripts\\eval\\icecat_preflight.py",
+        "sha256": "2ee45ecec362c18c7c2722aa24be7ded557db1c1f58e4683c105761e9d5020ec"
+      },
+      {
+        "bytes": 4505,
+        "path": "scripts\\eval\\knowledge_evidence.py",
+        "sha256": "9e03b3e1989ad945b4711aea1975847241d69ffdb8cddb79e20a9c79ec81c851"
+      },
+      {
+        "bytes": 3925,
+        "path": "scripts\\eval\\knowledge_quality.py",
+        "sha256": "c15bfeeffa1fdeab69954667bd7732513f6cd0d837cdc6b872df4a964f3cf9f9"
+      },
+      {
+        "bytes": 22915,
+        "path": "scripts\\eval\\metrics.py",
+        "sha256": "d8387431e18149c13cfe3e39b6de720b5f08e7ffa6732f9e05a29e3f40e5421e"
+      },
+      {
+        "bytes": 2653,
+        "path": "scripts\\eval\\metrics_evidence.py",
+        "sha256": "28294b0c341fbe70a376d334e2779369752eda65fb6f8455c8263cb7a364c03b"
+      },
+      {
+        "bytes": 3794,
+        "path": "scripts\\eval\\package_context.py",
+        "sha256": "30e3477dc0e51145efb938948137a499c7495a6097c38ac75794f99f01ffdfa4"
+      },
+      {
+        "bytes": 7836,
+        "path": "scripts\\eval\\prepare_knowledge_v3_review.py",
+        "sha256": "03d765325b279cc77522dba816f8ad970df915c4442ea122e4a8261cad6a0638"
+      },
+      {
+        "bytes": 17503,
+        "path": "scripts\\eval\\report_context.py",
+        "sha256": "6dbd0f9f6d435f1767a06ddb94567b79dd9d901f52df12155a2c19792dbb2049"
+      },
+      {
+        "bytes": 23964,
+        "path": "scripts\\eval\\run_category_recall.py",
+        "sha256": "28f3f6ee12310aeb728e5b74ae11bec9317ab872b7ca8c12ce6714fa18c59ba9"
+      },
+      {
+        "bytes": 19274,
+        "path": "scripts\\eval\\run_context.py",
+        "sha256": "a12f7a7b90fc3bfe31b5bf72890b5e6630afdee76e97d24e83ba718611968bf8"
+      },
+      {
+        "bytes": 11487,
+        "path": "scripts\\eval\\run_manifest.py",
+        "sha256": "fd0e1cd0dcfcc296efabc98e5898a452bf227e29cb0e3f4416603e3b4d4a6aee"
+      },
+      {
+        "bytes": 35834,
+        "path": "scripts\\eval\\run_product_recall.py",
+        "sha256": "f6c4b1f7cd121517f7572ffd70347ec01b69f6f8b0c83168fd9c07c136000ad5"
+      },
+      {
+        "bytes": 7162,
+        "path": "scripts\\eval\\snapshot_knowledge_corpus.py",
+        "sha256": "4125c893f0d550fcc2339432d15bce8a8c631ce4a2413b9bc22239123d6530a2"
+      },
+      {
+        "bytes": 4379,
+        "path": "scripts\\eval\\summarize_hybrid_experiment.py",
+        "sha256": "56afe036885e62ab7616b819dce793a41f8461c016811a893bee4c4efaaa06e6"
+      },
+      {
+        "bytes": 18893,
+        "path": "scripts\\eval\\tune_rrf.py",
+        "sha256": "41d0179b039afd70e241577a4215f5f5d2d2d6daf5494a0e51e580ee81b6da22"
+      },
+      {
+        "bytes": 13775,
+        "path": "scripts\\eval\\tune_rrf_full.py",
+        "sha256": "75ffb8249fd68aa151b1df3ac39fc3e74ee9568a354bcc787c72e5bcd8bf1ea3"
+      },
+      {
+        "bytes": 9889,
+        "path": "scripts\\eval\\validate_datasets.py",
+        "sha256": "c06de1151bc796b883c5ee145c156db1129a06ba154068b38a0ff87c7d835e45"
+      },
+      {
+        "bytes": 3603,
+        "path": "scripts\\eval\\validate_knowledge_v2.py",
+        "sha256": "488928f0cefc3a1648bb2d0d851e9aabd7e7e0b7a6fefebeaa6e02b7dc4bab30"
+      },
+      {
+        "bytes": 31556,
+        "path": "scripts\\eval_regression.py",
+        "sha256": "b81b88b83d11dccf29c3588beb31821d577e332b0081fed7e728cf8c33863c8a"
+      },
+      {
+        "bytes": 2448,
+        "path": "scripts\\evaluate_memory.py",
+        "sha256": "e56f260486703d5455d2dc4dbed447263c3064ded0e51aa306de6a3f622878cd"
+      },
+      {
+        "bytes": 7683,
+        "path": "scripts\\generate_catalog_fixture.py",
+        "sha256": "3d51bf78e9a07b064cd18ab0a8cebfc0cda4ec0e0d573a9dc698b0d601e70bb9"
+      },
+      {
+        "bytes": 24328,
+        "path": "scripts\\generate_eval_v1.py",
+        "sha256": "410cd0e3d4a08a4297c46121737951af98e489152842e55c5ace3b775ed2d651"
+      },
+      {
+        "bytes": 9198,
+        "path": "scripts\\generate_knowledge_fixture.py",
+        "sha256": "0a955f0c9cde2d7b02f8655b5436f54e4eb7459eaef1a221b60d3b8e27c5ae5e"
+      },
+      {
+        "bytes": 688,
+        "path": "scripts\\issue_identity_token.py",
+        "sha256": "fffba772e1cba5e87b713dd02dcc67aa98ada3375cb13a934625b0f916b2d92c"
+      },
+      {
+        "bytes": 3289,
+        "path": "scripts\\loadtest.py",
+        "sha256": "c79dd9126de76018f43fcc0e4ce42492971a0d1b1b1e5dd35b1721c78c86d450"
+      },
+      {
+        "bytes": 2801,
+        "path": "scripts\\locustfile.py",
+        "sha256": "67e81bcfa361a257ddc57c74da7b8160422cf89ffb740760af90da7a22a0a114"
+      },
+      {
+        "bytes": 4777,
+        "path": "scripts\\migrate_local_buyer.py",
+        "sha256": "5a5de29d6ce324c0a1f929c92b3f2f7f6e4f38b8e141652dd988913f554ddd2e"
+      },
+      {
+        "bytes": 2676,
+        "path": "scripts\\prompt_release.py",
+        "sha256": "d982a47cb4c50c6500005ce56e540b4e645de3113362953f8d184193e0e763ab"
+      },
+      {
+        "bytes": 1556,
+        "path": "scripts\\queue_maintenance.py",
+        "sha256": "40b4cee40d12a8459e3e1a2a1b3bff1441d6600b3660d5c06163592da043e8ce"
+      },
+      {
+        "bytes": 3727,
+        "path": "scripts\\smoke_e2e.py",
+        "sha256": "61ed8f831a3141e5487c2bc40a53f3f1469cb16882422882266c6bb3ebee391a"
+      },
+      {
+        "bytes": 14541,
+        "path": "scripts\\verify_ag_ui.py",
+        "sha256": "b15c0178200739dcc7d787af857a2f55f83c2fb00494ad982e5c3470aa609ce8"
+      },
+      {
+        "bytes": 14698,
+        "path": "scripts\\verify_langfuse.py",
+        "sha256": "a40755fe7354f4030dcaa444b038d84cc19788dafe80ab7ea140400b8c7e698a"
+      },
+      {
+        "bytes": 5940,
+        "path": "scripts\\verify_parallel.py",
+        "sha256": "ebf1771ec8247be2ff460fccd1de5414b6114801f2099cb2b6de063e7d7bc47c"
+      },
+      {
+        "bytes": 24,
+        "path": "tests\\__init__.py",
+        "sha256": "8b084a9f378124b2b1a51563bf3c22444eb7ff33692017da28b2136ae56987ed"
+      },
+      {
+        "bytes": 16326,
+        "path": "tests\\test_ag_ui.py",
+        "sha256": "773ef18ca3b2f51fc966997c1463f6e315bce19933be838e44981cdb4655ac5d"
+      },
+      {
+        "bytes": 8051,
+        "path": "tests\\test_ag_ui_confirmations.py",
+        "sha256": "e06f50db0fc92013e6c45f5cd7088f3c86e2831329430bb8b5941ad4a86cfade"
+      },
+      {
+        "bytes": 13603,
+        "path": "tests\\test_ag_ui_journal.py",
+        "sha256": "409e3a6b3294be7930f2874fa73e7f7c31c348104216ab051633f956e8def2a8"
+      },
+      {
+        "bytes": 2493,
+        "path": "tests\\test_ag_ui_journal_initialization.py",
+        "sha256": "66230f7a4aa7e603bc471d600a20c9e464e062f5d3f13c4bcac403e898f116b4"
+      },
+      {
+        "bytes": 4485,
+        "path": "tests\\test_budget_settlement.py",
+        "sha256": "624c76bbfdae82cf2031bed572e69e3cafe27b00b4108061940d1b3505010899"
+      },
+      {
+        "bytes": 8624,
+        "path": "tests\\test_buyer_skills.py",
+        "sha256": "adab290c43fd8e752c98e2ab993aa42c4522f14241885931caa1467b92daedd6"
+      },
+      {
+        "bytes": 12155,
+        "path": "tests\\test_buyer_workspace.py",
+        "sha256": "9397c487fc96f4a4020089a30c3c63b8af2997d070e68d1cd39abccf3fee3e1f"
+      },
+      {
+        "bytes": 10621,
+        "path": "tests\\test_capability_registry.py",
+        "sha256": "5dca771a0cd16c8bc19e7fa763ed04e04985d5cedeb7045650262cc3215fc10a"
+      },
+      {
+        "bytes": 2220,
+        "path": "tests\\test_catalog_data_quality.py",
+        "sha256": "3d7f6c5739cd4e5a92c3786102f97f332bd0409bda4b710c87f4c97578bd8866"
+      },
+      {
+        "bytes": 2801,
+        "path": "tests\\test_catalog_fixture.py",
+        "sha256": "37705d00357562362f9730eaaad6fe51b050baf549cf6e2246e7788981261abd"
+      },
+      {
+        "bytes": 9838,
+        "path": "tests\\test_confirmation_routes.py",
+        "sha256": "6df39a02ec677566a291bb3b34772bac81848943ce7668aac1e83a767a1c397a"
+      },
+      {
+        "bytes": 12335,
+        "path": "tests\\test_confirmation_service.py",
+        "sha256": "279bd2a97361db7f9681fda9dcfc98866d13b916c9995585e842a1aed6c77852"
+      },
+      {
+        "bytes": 6959,
+        "path": "tests\\test_context_evaluation_report.py",
+        "sha256": "104c4734176c1531cc6ecfd91010a827b898c56fa4f9ac835d95bbdbd2815c2c"
+      },
+      {
+        "bytes": 11474,
+        "path": "tests\\test_context_governance.py",
+        "sha256": "c7afa9475dc070a8f5eb0f3b6ef9ad69f6f525fcb4caf17e2c28fdaf687ab25c"
+      },
+      {
+        "bytes": 9903,
+        "path": "tests\\test_context_v2.py",
+        "sha256": "368c116d9d1ee1de751724644a3574202a8a172b1f26504d9f323680f4b9fa3d"
+      },
+      {
+        "bytes": 3287,
+        "path": "tests\\test_domain.py",
+        "sha256": "c83ee7eff0c9c783eeb2a5691fda6efd1372bb9a69de39f48aa171d4a9b1585f"
+      },
+      {
+        "bytes": 4900,
+        "path": "tests\\test_embedding_client.py",
+        "sha256": "563e19e5090a63ed69dfc8e0d3dc2f80bc7a6b4354d6c01d3a92c5f91e00c42b"
+      },
+      {
+        "bytes": 5072,
+        "path": "tests\\test_eval_category_runner.py",
+        "sha256": "a58d65874e19d82c80502072b99c3aa44c4b711fbd2f67d832becfbc99a61a35"
+      },
+      {
+        "bytes": 6105,
+        "path": "tests\\test_eval_contracts.py",
+        "sha256": "99fe809bb34ac159673fe8cc34f7bf371f018c305b4e31a1d54c444ecefb908a"
+      },
+      {
+        "bytes": 6319,
+        "path": "tests\\test_eval_evidence.py",
+        "sha256": "44aedc1eccbe5191d68e1bc008920dfabb139b346cc2b6d7a9c164aeb0d0d230"
+      },
+      {
+        "bytes": 7510,
+        "path": "tests\\test_eval_feedback.py",
+        "sha256": "843d2431e0a94cd98fae61183e58c2e6bc45ae292642a11a916f47143337d624"
+      },
+      {
+        "bytes": 7902,
+        "path": "tests\\test_eval_http_actions.py",
+        "sha256": "f13b024cb4fcdc8e3a677c9bf7eb557cce1bc4c8dcbd7d7127c965ffb1ec72f3"
+      },
+      {
+        "bytes": 1145,
+        "path": "tests\\test_eval_metrics_evidence.py",
+        "sha256": "a970db042ac19cc8cb81c174ebeb478bc5a229bea10830d26976ee172b7111e6"
+      },
+      {
+        "bytes": 6598,
+        "path": "tests\\test_eval_product_runner.py",
+        "sha256": "00e96b58b8cd05a6c98a64e704ad2bd82e30dc20f83e23a09841a51aaa9428ee"
+      },
+      {
+        "bytes": 2795,
+        "path": "tests\\test_eval_profiles.py",
+        "sha256": "706cc52f085005f009666b452dd69a3c0e31236924b16782649b91525e3d0d99"
+      },
+      {
+        "bytes": 6580,
+        "path": "tests\\test_eval_regression_contract.py",
+        "sha256": "34f234e4384553dc240629774f055773f8a68295a47c0339e944b1d090f92cdb"
+      },
+      {
+        "bytes": 11903,
+        "path": "tests\\test_eval_selection_manifest.py",
+        "sha256": "4a523c2baaf1dca5e88fe18d7762e9055df984036062b2e63a0eae17aec537f0"
+      },
+      {
+        "bytes": 7435,
+        "path": "tests\\test_eval_v1_fixture.py",
+        "sha256": "c393cae2b83a14b7ad8b538ceda4d11decbd77a291d56dbb86d69fc2e17a10fa"
+      },
+      {
+        "bytes": 2397,
+        "path": "tests\\test_fixed_buyer_persistence.py",
+        "sha256": "a28dc5b2a8a76ed34b5357414a484cae58a0aa2c4b2a59d5ac51a531f0483212"
+      },
+      {
+        "bytes": 6380,
+        "path": "tests\\test_harness_drift.py",
+        "sha256": "5d8b8aa30fbf1f379027e0afc0dae66660bdaba056c707d2cb314175347a624b"
+      },
+      {
+        "bytes": 11147,
+        "path": "tests\\test_harness_guards.py",
+        "sha256": "63969ab3366b665acf73532609afc85f2061a25dad7595fd7dff6bacf1d0da16"
+      },
+      {
+        "bytes": 7347,
+        "path": "tests\\test_harness_infra.py",
+        "sha256": "429883aacbfffcdce644021454afe35adfd17dbc610a49ce0465e85c394d19b9"
+      },
+      {
+        "bytes": 7680,
+        "path": "tests\\test_harness_middleware.py",
+        "sha256": "2e59151be3c1f5c097cfeb49ac12c123522a0f1968512456bfad20ebcef64167"
+      },
+      {
+        "bytes": 10456,
+        "path": "tests\\test_hybrid_retrieval.py",
+        "sha256": "fa5d190982da766dbe1053bcc8b35ccb6208de25539703c38d743e5023877eb7"
+      },
+      {
+        "bytes": 3070,
+        "path": "tests\\test_icecat_eval_builder.py",
+        "sha256": "fe27211c11ad3a3272da659e873b91e9a10025ac60234afa5df4d485ce316d19"
+      },
+      {
+        "bytes": 12272,
+        "path": "tests\\test_identity.py",
+        "sha256": "cfee9b49b51ec6073995306c3be34950e9ebd8f8d6eed646932f9f81fc99d5c7"
+      },
+      {
+        "bytes": 4260,
+        "path": "tests\\test_knowledge_evidence.py",
+        "sha256": "4d1952d318b4e147b80a042a70f2e214187cee18b62094557a0b9d1e5ed37069"
+      },
+      {
+        "bytes": 3104,
+        "path": "tests\\test_knowledge_fixture.py",
+        "sha256": "f34fbe27165772bcb5c061d267f09831028eece62029b2b01b6db7a0e1ab684f"
+      },
+      {
+        "bytes": 8049,
+        "path": "tests\\test_knowledge_query_transform.py",
+        "sha256": "eb4cbedf5aa7de3d4555e4bbc4a7a5ebecabc35f2295d0ccbc95e87471162775"
+      },
+      {
+        "bytes": 4326,
+        "path": "tests\\test_langfuse_parentage.py",
+        "sha256": "71385280c8bfc11b6bb1af5873fe5dcc1c49af43b46a0088b074d78d32aeac6b"
+      },
+      {
+        "bytes": 15564,
+        "path": "tests\\test_langfuse_verification.py",
+        "sha256": "9050b3c3c4f7fe0f908b806a9a0a3e001575194d89b3f7a8abe2a9efdf6ee003"
+      },
+      {
+        "bytes": 20165,
+        "path": "tests\\test_layered_context.py",
+        "sha256": "4a4153cf274941c356dab6349b17b7109db52200305863322dc556b4b6dd979d"
+      },
+      {
+        "bytes": 6117,
+        "path": "tests\\test_memory_persistence.py",
+        "sha256": "6d2f2ed5738aaf84b1b293c0f9d6ab8315db4dad49ffacd65d0c09f2f70aae19"
+      },
+      {
+        "bytes": 6283,
+        "path": "tests\\test_memory_upgrade.py",
+        "sha256": "6956b74b4712163cc99dc2920e9e2a49100f05b2adb7671e94e344f8b46f22ef"
+      },
+      {
+        "bytes": 5058,
+        "path": "tests\\test_model_cancellation.py",
+        "sha256": "ae5795858a9d7f6989f5df68b627e0521d14119d25744e3eb064055fa609079b"
+      },
+      {
+        "bytes": 4984,
+        "path": "tests\\test_model_stream_lifecycle.py",
+        "sha256": "b0acc35bf10bfefb87aee80fab81501cd8eede1ea7f2ee8fab3ca5f973bdbe3b"
+      },
+      {
+        "bytes": 4361,
+        "path": "tests\\test_native_memory_confirmation.py",
+        "sha256": "126f237aa5451d69198c14f41f34352aaebc8c761b285ee3534565222752fa8c"
+      },
+      {
+        "bytes": 4244,
+        "path": "tests\\test_operational_metrics.py",
+        "sha256": "cbbbe03ae88a9c4193e347251266928ca40272440b0c6859bfcfb7a3284552d4"
+      },
+      {
+        "bytes": 12146,
+        "path": "tests\\test_phase3.py",
+        "sha256": "0817acbd604292ca265554bee83b9501446561c1e9a0216eb183a3b7f541b51d"
+      },
+      {
+        "bytes": 10093,
+        "path": "tests\\test_phase4_cache.py",
+        "sha256": "0bf5c8b6b92a5882c8b58c8060a8d73c76624c5f31219d2aca8031fa34707831"
+      },
+      {
+        "bytes": 6334,
+        "path": "tests\\test_phase4_model.py",
+        "sha256": "dcce708a96a258e11c88a35c10811bf0061bf527c7dc583b4346437e3ec6155d"
+      },
+      {
+        "bytes": 13349,
+        "path": "tests\\test_phase4_queue.py",
+        "sha256": "9473fdd168ead8a4cf114656e9eac0658d21a48e33d8ef1faf6270c43902eafe"
+      },
+      {
+        "bytes": 11045,
+        "path": "tests\\test_phase4_sql.py",
+        "sha256": "97b728ab6683e4e62efbfd3c3dc60acb1070d4706df16d931906e0b4a27e6706"
+      },
+      {
+        "bytes": 3013,
+        "path": "tests\\test_phase4_throttle.py",
+        "sha256": "4b2f73585515a3dd1650a7e026a0fc6078d354f1ee7a3497a65ba5fc94dcfa81"
+      },
+      {
+        "bytes": 8325,
+        "path": "tests\\test_preference_selector.py",
+        "sha256": "c8f5dc7719db98a2cdd112f0f73c97defa9f8535e214610f54155cc9305131b3"
+      },
+      {
+        "bytes": 5809,
+        "path": "tests\\test_preference_tools.py",
+        "sha256": "e85c31f27d8c759f4d5f07be1573afec803e8419cc136cc9a3fd32d77daa4c72"
+      },
+      {
+        "bytes": 3901,
+        "path": "tests\\test_pricing.py",
+        "sha256": "5b0005196284aee47570227df7248f247c8906bf9e7fedb945902e8c46caf3c6"
+      },
+      {
+        "bytes": 6802,
+        "path": "tests\\test_product_candidate_projection.py",
+        "sha256": "0845c461e04c82380ab6a4688dbfd45df4dd73fa9be5daac142bedfd94298c68"
+      },
+      {
+        "bytes": 4496,
+        "path": "tests\\test_product_card_presentation.py",
+        "sha256": "410ac2078714344e29011d4f36093dcd7853c9bf942e8439d946ff9ae247a7b8"
+      },
+      {
+        "bytes": 13991,
+        "path": "tests\\test_prompt_registry.py",
+        "sha256": "bd1dc7b171f5246ce18248add084e3a9a1c19c5912460a73b8970c311a1eb833"
+      },
+      {
+        "bytes": 6270,
+        "path": "tests\\test_queue_api.py",
+        "sha256": "e0dd8eba83b9b1e66561dcf3bd09a9fcc6b56410c79b33ce3eb1ea43a5848b6e"
+      },
+      {
+        "bytes": 4441,
+        "path": "tests\\test_queue_redis_restart.py",
+        "sha256": "e31ea49caa2b0f4265c65edf65c88b309996c618a2d75a49a29541bdb3497856"
+      },
+      {
+        "bytes": 17176,
+        "path": "tests\\test_queue_reliability.py",
+        "sha256": "23400952d24adc457e893459253b5cfdffb4d9ae64a3e2932a6e381e19d7b326"
+      },
+      {
+        "bytes": 6637,
+        "path": "tests\\test_queue_retention.py",
+        "sha256": "b7c2d2c73cbeb1e9d60256ea495c84be07f607799c69ece1dcc5d3c510fbd475"
+      },
+      {
+        "bytes": 13096,
+        "path": "tests\\test_recall_metrics.py",
+        "sha256": "1e6c7ab84f28da3705c6486fdf0f344b59ebd46c41443c0366a53715bb36578c"
+      },
+      {
+        "bytes": 3795,
+        "path": "tests\\test_reranker_client.py",
+        "sha256": "edf177bff9c737ea2913182bab97201d6c2fd701ccd774bccc0f95ced9de52b7"
+      },
+      {
+        "bytes": 14813,
+        "path": "tests\\test_retrieval.py",
+        "sha256": "dc9f89a9e1834bf29432b6867e072e09551288012878df34c30b9efbc052ce86"
+      },
+      {
+        "bytes": 1672,
+        "path": "tests\\test_runtime_distribution.py",
+        "sha256": "173727fcf2014e4a4702adb4de3afd9476f3bc1791911695d4ee129da10317a9"
+      },
+      {
+        "bytes": 2239,
+        "path": "tests\\test_runtime_validation_scripts.py",
+        "sha256": "0c00e32686ff8516a0897be3698195ac3597f10800a0f3ea8b5f1ffd25594dfc"
+      },
+      {
+        "bytes": 13448,
+        "path": "tests\\test_selected_skill.py",
+        "sha256": "f85eb9a6b15d32ddd8d361da96bc163e0d3689770383feb5c7a6e666d8656948"
+      },
+      {
+        "bytes": 4945,
+        "path": "tests\\test_semantic_memory.py",
+        "sha256": "4af3f0d95b9ba8e46ac35496528c93ee398fe9b24d61a9b0917faed721675e36"
+      },
+      {
+        "bytes": 10252,
+        "path": "tests\\test_session_fencing.py",
+        "sha256": "5035c4e501bba82a4b42f464cc6ecb783a747effa59117ac9f1e6118a3c2d71f"
+      },
+      {
+        "bytes": 8493,
+        "path": "tests\\test_shared_throttle.py",
+        "sha256": "8c0d621539003e300db7ab8e7c5bdaa55b1d00bb8d15ee4b09d69986f55d0f1a"
+      },
+      {
+        "bytes": 7942,
+        "path": "tests\\test_structured_model_usage.py",
+        "sha256": "5c0342ee186e1d214b00bda8b887e70978c6d1bcece901bcee9a95d289a63cdc"
+      },
+      {
+        "bytes": 8135,
+        "path": "tests\\test_subagent_preference_inject.py",
+        "sha256": "3b1e6f60c6e9fa7ccabd7849d8cdcc1d9a65723e23d0e890dbb9513c1f8defc0"
+      },
+      {
+        "bytes": 10557,
+        "path": "tests\\test_tools_and_eventbus.py",
+        "sha256": "5fc69bb48f6728a5f2ab5a3ab2052b2c4457b3e37879d63ab9192d89827e29d7"
+      },
+      {
+        "bytes": 18065,
+        "path": "tests\\test_tracing.py",
+        "sha256": "a4eeb12d5261e1a3ec27b0ad82d173d30e77949ef52dcb03477f42b674379bb4"
+      },
+      {
+        "bytes": 20964,
+        "path": "tests\\test_trade_store.py",
+        "sha256": "00bfeefc2f91c96c2e33e3def876a5b14910f9dddc9eca0eb3f117acb4052d75"
+      },
+      {
+        "bytes": 5522,
+        "path": "tests\\test_usecases.py",
+        "sha256": "3918b0db34585ce6f7bfc8d3421b993bb6f35fa891aa699e54e101d777d484c9"
+      },
+      {
+        "bytes": 4885,
+        "path": "tests\\test_verify_ag_ui.py",
+        "sha256": "35e8da7d0c5942b10b5ac6ad1a0030204b41c7321440a6687dcd638ea18080d6"
+      },
+      {
+        "bytes": 2444,
+        "path": "tests\\test_working_state_questions.py",
+        "sha256": "05471f2769ea640b96795de964d1506ae0fc1b7f9ff44085c3374b7332acdaab"
+      },
+      {
+        "bytes": 1428,
+        "path": "tests\\trade_test_helpers.py",
+        "sha256": "2f5bfe8dd8a6a915d427520acacc38cb38b5adfcca19a45e7c5d5cb15fbd5de7"
+      },
+      {
+        "bytes": 418331,
+        "path": "uv.lock",
+        "sha256": "eb33ab2c6f5dc6e45617476f0e7cca671fbd0759ab41f5d96d961397c925524c"
+      }
+    ],
+    "git_commit": null,
+    "git_dirty": null,
+    "scope": {
+      "directories": [
+        "app",
+        "scripts",
+        "tests",
+        "frontend/src",
+        "frontend/tests",
+        "docker",
+        ".github"
+      ],
+      "files": [
+        "pyproject.toml",
+        "uv.lock",
+        "frontend/package.json",
+        "frontend/package-lock.json",
+        "frontend/vite.config.ts",
+        "frontend/tsconfig.json"
+      ],
+      "suffixes": [
+        ".css",
+        ".json",
+        ".lock",
+        ".py",
+        ".sh",
+        ".toml",
+        ".ts",
+        ".tsx",
+        ".yaml",
+        ".yml"
+      ]
+    },
+    "sha256": "69d98a9da9252370ca38f15c6c7a3bd9be80f150fa43a8262bce3d54255da3c7"
+  },
+  "data": {
+    "file_count": 48,
+    "files": [
+      {
+        "bytes": 447264,
+        "path": "data\\catalog-v1.jsonl",
+        "sha256": "56917f7d1d28c0c9488a0b9d27a69b7019a7b5174515090db086e3b75b4a6383"
+      },
+      {
+        "bytes": 37377,
+        "path": "eval\\knowledge\\v3\\knowledge_eval_candidates.jsonl",
+        "sha256": "ac686e08b9114ebfcc8282e4fd80e7d709a777c65d7f1cb707eef321a3321c4c"
+      },
+      {
+        "bytes": 2133,
+        "path": "knowledge\\cross-border-guide.md",
+        "sha256": "4b282a52738d69fc32a4f3f5786c124b590eb54908376ef86e38b5b89550e29b"
+      },
+      {
+        "bytes": 2254,
+        "path": "knowledge\\digital-accessories.md",
+        "sha256": "574292334f569c7dda4d7e5ac5a569e461f3b42045141d21df49748bb6534a4d"
+      },
+      {
+        "bytes": 5821,
+        "path": "knowledge\\eval-baby-pet-价格与预算.md",
+        "sha256": "a3ec0b43da7a69be111d227a9a6e956ca14087c4a92d8453c2291e8db73b291e"
+      },
+      {
+        "bytes": 5725,
+        "path": "knowledge\\eval-baby-pet-参数判断.md",
+        "sha256": "d0e968bdc05c6013e95853a7ee01f8bd2c775d262408068ed8503e27f678c3b7"
+      },
+      {
+        "bytes": 5533,
+        "path": "knowledge\\eval-baby-pet-概览.md",
+        "sha256": "fa2fd182968db1c5fd70cb5ffb580ba48f292193c55da5c805666818aa7be395"
+      },
+      {
+        "bytes": 5821,
+        "path": "knowledge\\eval-baby-pet-避坑与合规.md",
+        "sha256": "2a4cfbfe399a80309e12d1b34aed7e0ce77a1aafc2a374c53fcde876a4f1cfb2"
+      },
+      {
+        "bytes": 5821,
+        "path": "knowledge\\eval-beauty-care-价格与预算.md",
+        "sha256": "ea1e8efe21519bbeae1d86d6c94afe5e5a3d141d367bafa427f9cec7400e30b6"
+      },
+      {
+        "bytes": 5725,
+        "path": "knowledge\\eval-beauty-care-参数判断.md",
+        "sha256": "07bf102d17b0d7736d472d59ca32c716544f412f6291a2432e220e5429ec0f48"
+      },
+      {
+        "bytes": 5533,
+        "path": "knowledge\\eval-beauty-care-概览.md",
+        "sha256": "189bfb57fef73bcae8eb3712660f8efd15703ee0a843650f1616218c0e648599"
+      },
+      {
+        "bytes": 5821,
+        "path": "knowledge\\eval-beauty-care-避坑与合规.md",
+        "sha256": "1f38ba94265bef5f581cce0a2418d865e728a3da0c936b083911ea374935c08f"
+      },
+      {
+        "bytes": 5683,
+        "path": "knowledge\\eval-digital-accessories-价格与预算.md",
+        "sha256": "1df1b6eaa5b48b56d738bab29a4e177c0832b6162abaeb598fcc15106bd9c67e"
+      },
+      {
+        "bytes": 5587,
+        "path": "knowledge\\eval-digital-accessories-参数判断.md",
+        "sha256": "ffbeaf4e922ae3f136899ba97f5d0ab12829c482ec40bd36bd10e56e49927c3d"
+      },
+      {
+        "bytes": 5395,
+        "path": "knowledge\\eval-digital-accessories-概览.md",
+        "sha256": "abfe178bbe305552e76c8ee7a40ffa47d58ed4bd2420c958bc496ebd229fd253"
+      },
+      {
+        "bytes": 5683,
+        "path": "knowledge\\eval-digital-accessories-避坑与合规.md",
+        "sha256": "1bfdcf0ad978016647bdbcbe3faba3cb261bc456c3b73c6966da57e697ddfd82"
+      },
+      {
+        "bytes": 5821,
+        "path": "knowledge\\eval-home-living-价格与预算.md",
+        "sha256": "79a352f5cf0f126f03be8c15c74f5d59a876e57328776af53746118d2e5e9cb2"
+      },
+      {
+        "bytes": 5725,
+        "path": "knowledge\\eval-home-living-参数判断.md",
+        "sha256": "abdbf01d0e27c9b03c304f2453422e4a91090635bdce08c090dfcc53d748459e"
+      },
+      {
+        "bytes": 5533,
+        "path": "knowledge\\eval-home-living-概览.md",
+        "sha256": "c73c8ec7e79d1c9838836089262c04352e282adf14da422d62f31fcf5666c353"
+      },
+      {
+        "bytes": 5821,
+        "path": "knowledge\\eval-home-living-避坑与合规.md",
+        "sha256": "5d46ad1b6723c87cf9c2597d5f6903f5ce394163b849e050197a7fd3b2eae806"
+      },
+      {
+        "bytes": 5821,
+        "path": "knowledge\\eval-kitchen-dining-价格与预算.md",
+        "sha256": "1e406570ad62603942d604a894b30e45e340a29f3774e6f247e446740409b2d2"
+      },
+      {
+        "bytes": 5725,
+        "path": "knowledge\\eval-kitchen-dining-参数判断.md",
+        "sha256": "c79e227733153eee3dd764c4550e874ed2d8fa226a61d69a6a539f8283898bb8"
+      },
+      {
+        "bytes": 5533,
+        "path": "knowledge\\eval-kitchen-dining-概览.md",
+        "sha256": "b7209ed01128bd96b4bad3ff579579a1d970f962f1860aa320f7beb1ef6f411e"
+      },
+      {
+        "bytes": 5821,
+        "path": "knowledge\\eval-kitchen-dining-避坑与合规.md",
+        "sha256": "e7117a3f007e8189fe1a09f15876096c568cdd8fc7daca3b01bcd8c37c1b191d"
+      },
+      {
+        "bytes": 5821,
+        "path": "knowledge\\eval-office-study-价格与预算.md",
+        "sha256": "57d1f367a030230f1b0868362b47ea771c1bba6144691e4684ea08584cb1d5dc"
+      },
+      {
+        "bytes": 5725,
+        "path": "knowledge\\eval-office-study-参数判断.md",
+        "sha256": "f1e885eeea8d6b3535071e114582a71dcef5d5a941b712d86a8f64539faa1d73"
+      },
+      {
+        "bytes": 5533,
+        "path": "knowledge\\eval-office-study-概览.md",
+        "sha256": "035272703feb20f9c253c761011dfb57aefce84b76d077e208713e8d07e980b5"
+      },
+      {
+        "bytes": 5821,
+        "path": "knowledge\\eval-office-study-避坑与合规.md",
+        "sha256": "7da8b61c61c1a5ad63a7743801ac1b269ae3680de80e61ded8da223e975cbc5a"
+      },
+      {
+        "bytes": 5821,
+        "path": "knowledge\\eval-outdoor-sports-价格与预算.md",
+        "sha256": "1c810c3d6a1d54cdbb87236e8f6e30a44d7f78e311971fde645c676712e3c2fd"
+      },
+      {
+        "bytes": 5725,
+        "path": "knowledge\\eval-outdoor-sports-参数判断.md",
+        "sha256": "066f2e24d24a8cc44f38645e01db14ff5a8e14b2009d9a80a5894d42d1f1c0d2"
+      },
+      {
+        "bytes": 5533,
+        "path": "knowledge\\eval-outdoor-sports-概览.md",
+        "sha256": "81d74c6efef13017f2c4e5b17f012a22ef8bff68426f6ff44414987db1409002"
+      },
+      {
+        "bytes": 5821,
+        "path": "knowledge\\eval-outdoor-sports-避坑与合规.md",
+        "sha256": "3384ceba2f7c6ffe2bd8ba1bc098c1fcc326426d80e27291b5e03aa8e0b34a97"
+      },
+      {
+        "bytes": 6799,
+        "path": "knowledge\\eval-policy-battery.md",
+        "sha256": "4b6e79c125fca79b19eacbec2cda36cbc20a6cc5a27eec94a90cfda8c641b9f8"
+      },
+      {
+        "bytes": 6154,
+        "path": "knowledge\\eval-policy-cn.md",
+        "sha256": "74660aa2b8dd3dba3134280e0e348f4c6e7fb70d74cbd318d50399b28b80927a"
+      },
+      {
+        "bytes": 6154,
+        "path": "knowledge\\eval-policy-eu.md",
+        "sha256": "2990c0498495eeefab15eae6b8ff88b235a810e86e3e1fb75694f51869f20903"
+      },
+      {
+        "bytes": 6967,
+        "path": "knowledge\\eval-policy-global-shipping.md",
+        "sha256": "b06475b928198dd1c0d03b3f3b3df3c596ebad7baabb41b611212bb517eb2acc"
+      },
+      {
+        "bytes": 6154,
+        "path": "knowledge\\eval-policy-jp.md",
+        "sha256": "cb390614a251e0b998f5b7d063a9f24feec549023da341dcdce30c7b0c4cdec0"
+      },
+      {
+        "bytes": 6799,
+        "path": "knowledge\\eval-policy-material.md",
+        "sha256": "78eb0cfe974e7e48052df6fe3a5961035e10444abd877d0d742ab3288f00dceb"
+      },
+      {
+        "bytes": 6154,
+        "path": "knowledge\\eval-policy-sg.md",
+        "sha256": "445b0d2302bed7c9ab1bc5a4807438d8a7c208bd77a654ea06196fe1dceb7239"
+      },
+      {
+        "bytes": 6154,
+        "path": "knowledge\\eval-policy-us.md",
+        "sha256": "8e98b87eef0b569e872cfbe2e58f540e490cecef2022c43ae3c9be80b9164447"
+      },
+      {
+        "bytes": 5821,
+        "path": "knowledge\\eval-travel-gear-价格与预算.md",
+        "sha256": "9e28c842b6baa8853dd5eecf6c6387504ad692450e547c65ba3a73789af00882"
+      },
+      {
+        "bytes": 5725,
+        "path": "knowledge\\eval-travel-gear-参数判断.md",
+        "sha256": "6b841747f08229227d21c745630e374e941f5ec87cddef8dfc7bebdb34a7f90f"
+      },
+      {
+        "bytes": 5533,
+        "path": "knowledge\\eval-travel-gear-概览.md",
+        "sha256": "fddef9f7343bb3bc1e29530c2e08cbcdffa318fc1dd1c994cc69a679cfc1f9e6"
+      },
+      {
+        "bytes": 5821,
+        "path": "knowledge\\eval-travel-gear-避坑与合规.md",
+        "sha256": "e7a8bd0f290a131db2a8f45d1ae7dd9e6cc963f27a646fc7085362c0f14b313e"
+      },
+      {
+        "bytes": 2019,
+        "path": "knowledge\\home-living.md",
+        "sha256": "f73552e5e50a9fda96678e8cb6f08bd8de4c673a20cc95db46177bc01709a7a1"
+      },
+      {
+        "bytes": 17722,
+        "path": "knowledge\\manifest.jsonl",
+        "sha256": "5eba275ae031ef8e47a5b233ce353c4723e8a9d898484bc4192d466ee0c8f7f3"
+      },
+      {
+        "bytes": 2226,
+        "path": "knowledge\\outdoor-sports.md",
+        "sha256": "caaa87e82c4294f05035f0b6c2d30cb907cf206828012f48ff9a55ccb3b34ca5"
+      },
+      {
+        "bytes": 2685,
+        "path": "knowledge\\travel-gear.md",
+        "sha256": "75089473219e7da2e0c32b7737867364422c86a18f6fcc7d46cc70dc34941dc4"
+      }
+    ],
+    "sha256": "79403f6fa75634601537cbea0b9434a4ec4ed2ea4a03c50476c02986879d74a9"
+  },
+  "execution": {
+    "actual_strategies": [
+      "legacy",
+      "unsupported"
+    ],
+    "data_sha256_at_end": "79403f6fa75634601537cbea0b9434a4ec4ed2ea4a03c50476c02986879d74a9",
+    "finished_at": "2026-10-02T15:14:10.063882+00:00",
+    "gate": "BLOCK",
+    "inputs_unchanged": true,
+    "metrics": {
+      "all_evidence_count": 19,
+      "all_evidence_recall": 0.4211,
+      "bucket_metrics": {
+        "cross_evidence": {
+          "all_evidence_recall": 0.0,
+          "constraint_recall": null,
+          "count": 4,
+          "evidence_recall": 0.5,
+          "graded_ndcg": 0.5747,
+          "hard_negative_hit_rate": 1.0,
+          "hop_recall": null,
+          "mrr": 0.875,
+          "ndcg": 0.6575,
+          "path_success_rate": null,
+          "post_fusion_information_need_coverage": 0.5,
+          "pre_fusion_information_need_coverage": 0.75,
+          "recall": 0.4583
+        },
+        "implicit_constraint_multi_hop": {
+          "all_evidence_recall": 0.0,
+          "constraint_recall": null,
+          "count": 2,
+          "evidence_recall": 0.5,
+          "graded_ndcg": 0.7814,
+          "hard_negative_hit_rate": 0.5,
+          "hop_recall": 0.0,
+          "mrr": 1.0,
+          "ndcg": 0.8801,
+          "path_success_rate": null,
+          "post_fusion_information_need_coverage": 0.0,
+          "pre_fusion_information_need_coverage": 0.5,
+          "recall": 0.75
+        },
+        "policy_boundary": {
+          "all_evidence_recall": 0.0,
+          "constraint_recall": null,
+          "count": 1,
+          "evidence_recall": 0.0,
+          "graded_ndcg": 0.7343,
+          "hard_negative_hit_rate": 0.0,
+          "hop_recall": null,
+          "mrr": 1.0,
+          "ndcg": 0.63,
+          "path_success_rate": null,
+          "post_fusion_information_need_coverage": 0.0,
+          "pre_fusion_information_need_coverage": 0.0,
+          "recall": 0.3333
+        },
+        "query_plan:legacy": {
+          "all_evidence_recall": 0.4211,
+          "constraint_recall": null,
+          "count": 19,
+          "evidence_recall": 0.6053,
+          "graded_ndcg": 0.7353,
+          "hard_negative_hit_rate": 0.5263,
+          "hop_recall": 0.0,
+          "mrr": 0.8333,
+          "ndcg": 0.7642,
+          "path_success_rate": null,
+          "post_fusion_information_need_coverage": 0.5263,
+          "pre_fusion_information_need_coverage": 0.8421,
+          "recall": 0.7193
+        },
+        "single_evidence": {
+          "all_evidence_recall": 0.6667,
+          "constraint_recall": null,
+          "count": 12,
+          "evidence_recall": 0.7083,
+          "graded_ndcg": 0.7812,
+          "hard_negative_hit_rate": 0.4167,
+          "hop_recall": null,
+          "mrr": 0.7778,
+          "ndcg": 0.7917,
+          "path_success_rate": null,
+          "post_fusion_information_need_coverage": 0.6667,
+          "pre_fusion_information_need_coverage": 1.0,
+          "recall": 0.8333
+        },
+        "unanswerable": {
+          "count": 3,
+          "rejection_accuracy": 1.0
+        }
+      },
+      "candidate_depth": null,
+      "candidate_recall": null,
+      "candidate_recall_count": 0,
+      "canonical_duplicate_rate": null,
+      "constraint_recall": null,
+      "constraint_recall_count": 0,
+      "count": 19,
+      "empty_accuracy": 1.0,
+      "empty_count": 3,
+      "evidence_recall": 0.6053,
+      "evidence_recall_count": 19,
+      "filter_accuracy": null,
+      "fusion_information_need_loss": 0.3158,
+      "graded_ndcg": 0.7353,
+      "graded_ndcg_count": 19,
+      "hard_constraint_checked_hits": 0,
+      "hard_constraint_violation_count": 0,
+      "hard_constraint_violation_rate": null,
+      "hard_negative_above_positive_rate": 0.1053,
+      "hard_negative_count": 19,
+      "hard_negative_hit_rate": 0.5263,
+      "hop_recall": 0.0,
+      "hop_recall_count": 2,
+      "information_need_coverage_count": 19,
+      "k": 3,
+      "latency_count": 19,
+      "latency_p50_ms": 103.099,
+      "latency_p95_ms": 262.371,
+      "miss_stage_counts": {
+        "none": 19
+      },
+      "mrr": 0.8333,
+      "ndcg": 0.7642,
+      "path_success_count": 0,
+      "path_success_rate": null,
+      "per_query": [
+        {
+          "all_evidence_recall": 1.0,
+          "candidate_depth": null,
+          "candidate_recall": null,
+          "canonical_duplicate_rate": null,
+          "constraint_recall": null,
+          "dimensions": {
+            "primary_kind": "single_evidence",
+            "query_plan_mode": "legacy",
+            "split": "ALL"
+          },
+          "evidence_recall": 1.0,
+          "filter_ok": null,
+          "graded_ndcg": 1.0,
+          "hard_constraint_checked_hits": 0,
+          "hard_constraint_violations": 0,
+          "hard_negative_above_positive": false,
+          "hard_negative_hit": true,
+          "hop_recall": null,
+          "kind": "knowledge",
+          "latency_ms": 262.3712999993586,
+          "miss_stage": "none",
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "note": "",
+          "path_success": null,
+          "post_fusion_information_need_coverage": 1.0,
+          "pre_fusion_information_need_coverage": 1.0,
+          "precision": 0.3333333333333333,
+          "query": "我想买个能带上飞机的登机箱，20寸那种，一般得看哪些航司尺寸要求啊？",
+          "recall": 1.0,
+          "relevant": [
+            "travel-gear.md"
+          ],
+          "retrieved": [
+            "travel-gear.md",
+            "cross-border-guide.md",
+            "digital-accessories.md"
+          ],
+          "rewrite_drift": null,
+          "rewrite_note": ""
+        },
+        {
+          "all_evidence_recall": 1.0,
+          "candidate_depth": null,
+          "candidate_recall": null,
+          "canonical_duplicate_rate": null,
+          "constraint_recall": null,
+          "dimensions": {
+            "primary_kind": "single_evidence",
+            "query_plan_mode": "legacy",
+            "split": "ALL"
+          },
+          "evidence_recall": 1.0,
+          "filter_ok": null,
+          "graded_ndcg": 0.9173194127129571,
+          "hard_constraint_checked_hits": 0,
+          "hard_constraint_violations": 0,
+          "hard_negative_above_positive": false,
+          "hard_negative_hit": false,
+          "hop_recall": null,
+          "kind": "knowledge",
+          "latency_ms": 100.67879999769502,
+          "miss_stage": "none",
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "note": "",
+          "path_success": null,
+          "post_fusion_information_need_coverage": 1.0,
+          "pre_fusion_information_need_coverage": 1.0,
+          "precision": 0.3333333333333333,
+          "query": "折叠双肩包平时塞行李箱里备用，材质选哪种更耐造一点？",
+          "recall": 1.0,
+          "relevant": [
+            "travel-gear.md"
+          ],
+          "retrieved": [
+            "travel-gear.md",
+            "eval-travel-gear-参数判断.md",
+            "eval-travel-gear-概览.md"
+          ],
+          "rewrite_drift": null,
+          "rewrite_note": ""
+        },
+        {
+          "all_evidence_recall": 1.0,
+          "candidate_depth": null,
+          "candidate_recall": null,
+          "canonical_duplicate_rate": null,
+          "constraint_recall": null,
+          "dimensions": {
+            "primary_kind": "single_evidence",
+            "query_plan_mode": "legacy",
+            "split": "ALL"
+          },
+          "evidence_recall": 1.0,
+          "filter_ok": null,
+          "graded_ndcg": 0.5,
+          "hard_constraint_checked_hits": 0,
+          "hard_constraint_violations": 0,
+          "hard_negative_above_positive": false,
+          "hard_negative_hit": false,
+          "hop_recall": null,
+          "kind": "knowledge",
+          "latency_ms": 103.68500000186032,
+          "miss_stage": "none",
+          "mrr": 0.3333333333333333,
+          "ndcg": 0.5,
+          "note": "",
+          "path_success": null,
+          "post_fusion_information_need_coverage": 1.0,
+          "pre_fusion_information_need_coverage": 1.0,
+          "precision": 0.3333333333333333,
+          "query": "旅行三件套收纳起来到底省不省地方，适合小箱子吗？",
+          "recall": 1.0,
+          "relevant": [
+            "travel-gear.md"
+          ],
+          "retrieved": [
+            "eval-travel-gear-价格与预算.md",
+            "eval-travel-gear-避坑与合规.md",
+            "travel-gear.md"
+          ],
+          "rewrite_drift": null,
+          "rewrite_note": ""
+        },
+        {
+          "all_evidence_recall": 0.0,
+          "candidate_depth": null,
+          "candidate_recall": null,
+          "canonical_duplicate_rate": null,
+          "constraint_recall": null,
+          "dimensions": {
+            "primary_kind": "single_evidence",
+            "query_plan_mode": "legacy",
+            "split": "ALL"
+          },
+          "evidence_recall": 0.0,
+          "filter_ok": null,
+          "graded_ndcg": 0.0,
+          "hard_constraint_checked_hits": 0,
+          "hard_constraint_violations": 0,
+          "hard_negative_above_positive": false,
+          "hard_negative_hit": false,
+          "hop_recall": null,
+          "kind": "knowledge",
+          "latency_ms": 98.30789999978151,
+          "miss_stage": "none",
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "note": "",
+          "path_success": null,
+          "post_fusion_information_need_coverage": 0.0,
+          "pre_fusion_information_need_coverage": 1.0,
+          "precision": 0.0,
+          "query": "收纳用品如果买一套，重量上会不会给行李增加很多负担？",
+          "recall": 0.0,
+          "relevant": [
+            "travel-gear.md"
+          ],
+          "retrieved": [
+            "eval-travel-gear-避坑与合规.md",
+            "eval-travel-gear-价格与预算.md",
+            "eval-travel-gear-概览.md"
+          ],
+          "rewrite_drift": null,
+          "rewrite_note": ""
+        },
+        {
+          "all_evidence_recall": 1.0,
+          "candidate_depth": null,
+          "candidate_recall": null,
+          "canonical_duplicate_rate": null,
+          "constraint_recall": null,
+          "dimensions": {
+            "primary_kind": "single_evidence",
+            "query_plan_mode": "legacy",
+            "split": "ALL"
+          },
+          "evidence_recall": 1.0,
+          "filter_ok": null,
+          "graded_ndcg": 1.0,
+          "hard_constraint_checked_hits": 0,
+          "hard_constraint_violations": 0,
+          "hard_negative_above_positive": false,
+          "hard_negative_hit": false,
+          "hop_recall": null,
+          "kind": "knowledge",
+          "latency_ms": 105.4035000015574,
+          "miss_stage": "none",
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "note": "",
+          "path_success": null,
+          "post_fusion_information_need_coverage": 1.0,
+          "pre_fusion_information_need_coverage": 1.0,
+          "precision": 0.3333333333333333,
+          "query": "氮化镓充电器多口同时用的时候，功率是怎么分配的？",
+          "recall": 1.0,
+          "relevant": [
+            "digital-accessories.md"
+          ],
+          "retrieved": [
+            "digital-accessories.md",
+            "eval-digital-accessories-概览.md",
+            "eval-digital-accessories-避坑与合规.md"
+          ],
+          "rewrite_drift": null,
+          "rewrite_note": ""
+        },
+        {
+          "all_evidence_recall": 0.0,
+          "candidate_depth": null,
+          "candidate_recall": null,
+          "canonical_duplicate_rate": null,
+          "constraint_recall": null,
+          "dimensions": {
+            "primary_kind": "cross_evidence",
+            "query_plan_mode": "legacy",
+            "split": "ALL"
+          },
+          "evidence_recall": 0.5,
+          "filter_ok": null,
+          "graded_ndcg": 0.45453820448088517,
+          "hard_constraint_checked_hits": 0,
+          "hard_constraint_violations": 0,
+          "hard_negative_above_positive": true,
+          "hard_negative_hit": true,
+          "hop_recall": null,
+          "kind": "knowledge",
+          "latency_ms": 96.04100000069593,
+          "miss_stage": "none",
+          "mrr": 0.5,
+          "ndcg": 0.4796249331362629,
+          "note": "",
+          "path_success": null,
+          "post_fusion_information_need_coverage": 0.5,
+          "pre_fusion_information_need_coverage": 0.5,
+          "precision": 0.3333333333333333,
+          "query": "移动电源带出门坐飞机，锂电池运输这块一般有什么讲究？",
+          "recall": 0.5,
+          "relevant": [
+            "digital-accessories.md",
+            "cross-border-guide.md"
+          ],
+          "retrieved": [
+            "eval-policy-battery.md",
+            "digital-accessories.md",
+            "eval-digital-accessories-避坑与合规.md"
+          ],
+          "rewrite_drift": null,
+          "rewrite_note": ""
+        },
+        {
+          "all_evidence_recall": 0.0,
+          "candidate_depth": null,
+          "candidate_recall": null,
+          "canonical_duplicate_rate": null,
+          "constraint_recall": null,
+          "dimensions": {
+            "primary_kind": "single_evidence",
+            "query_plan_mode": "legacy",
+            "split": "ALL"
+          },
+          "evidence_recall": 0.0,
+          "filter_ok": null,
+          "graded_ndcg": 1.0,
+          "hard_constraint_checked_hits": 0,
+          "hard_constraint_violations": 0,
+          "hard_negative_above_positive": false,
+          "hard_negative_hit": true,
+          "hop_recall": null,
+          "kind": "knowledge",
+          "latency_ms": 103.49679999853834,
+          "miss_stage": "none",
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "note": "",
+          "path_success": null,
+          "post_fusion_information_need_coverage": 0.0,
+          "pre_fusion_information_need_coverage": 1.0,
+          "precision": 0.3333333333333333,
+          "query": "降噪耳机在地铁里用，降噪效果主要看哪些方面？",
+          "recall": 1.0,
+          "relevant": [
+            "digital-accessories.md"
+          ],
+          "retrieved": [
+            "digital-accessories.md",
+            "eval-digital-accessories-参数判断.md",
+            "eval-beauty-care-参数判断.md"
+          ],
+          "rewrite_drift": null,
+          "rewrite_note": ""
+        },
+        {
+          "all_evidence_recall": 0.0,
+          "candidate_depth": null,
+          "candidate_recall": null,
+          "canonical_duplicate_rate": null,
+          "constraint_recall": null,
+          "dimensions": {
+            "primary_kind": "single_evidence",
+            "query_plan_mode": "legacy",
+            "split": "ALL"
+          },
+          "evidence_recall": 0.5,
+          "filter_ok": null,
+          "graded_ndcg": 1.0,
+          "hard_constraint_checked_hits": 0,
+          "hard_constraint_violations": 0,
+          "hard_negative_above_positive": false,
+          "hard_negative_hit": true,
+          "hop_recall": null,
+          "kind": "knowledge",
+          "latency_ms": 97.37459999814746,
+          "miss_stage": "none",
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "note": "",
+          "path_success": null,
+          "post_fusion_information_need_coverage": 0.0,
+          "pre_fusion_information_need_coverage": 1.0,
+          "precision": 0.3333333333333333,
+          "query": "磁吸无线充跟不同手机壳、机型兼容性怎么样？",
+          "recall": 1.0,
+          "relevant": [
+            "digital-accessories.md"
+          ],
+          "retrieved": [
+            "digital-accessories.md",
+            "eval-digital-accessories-避坑与合规.md",
+            "eval-policy-battery.md"
+          ],
+          "rewrite_drift": null,
+          "rewrite_note": ""
+        },
+        {
+          "all_evidence_recall": 1.0,
+          "candidate_depth": null,
+          "candidate_recall": null,
+          "canonical_duplicate_rate": null,
+          "constraint_recall": null,
+          "dimensions": {
+            "primary_kind": "single_evidence",
+            "query_plan_mode": "legacy",
+            "split": "ALL"
+          },
+          "evidence_recall": 1.0,
+          "filter_ok": null,
+          "graded_ndcg": 0.9173194127129571,
+          "hard_constraint_checked_hits": 0,
+          "hard_constraint_violations": 0,
+          "hard_negative_above_positive": false,
+          "hard_negative_hit": false,
+          "hop_recall": null,
+          "kind": "knowledge",
+          "latency_ms": 96.717999997054,
+          "miss_stage": "none",
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "note": "",
+          "path_success": null,
+          "post_fusion_information_need_coverage": 1.0,
+          "pre_fusion_information_need_coverage": 1.0,
+          "precision": 0.3333333333333333,
+          "query": "粗陶茶具寄快递容易碎，包装上该怎么注意？",
+          "recall": 1.0,
+          "relevant": [
+            "home-living.md"
+          ],
+          "retrieved": [
+            "home-living.md",
+            "eval-home-living-避坑与合规.md",
+            "eval-home-living-参数判断.md"
+          ],
+          "rewrite_drift": null,
+          "rewrite_note": ""
+        },
+        {
+          "all_evidence_recall": 0.0,
+          "candidate_depth": null,
+          "candidate_recall": null,
+          "canonical_duplicate_rate": null,
+          "constraint_recall": null,
+          "dimensions": {
+            "primary_kind": "single_evidence",
+            "query_plan_mode": "legacy",
+            "split": "ALL"
+          },
+          "evidence_recall": 0.0,
+          "filter_ok": null,
+          "graded_ndcg": 0.12298716509766383,
+          "hard_constraint_checked_hits": 0,
+          "hard_constraint_violations": 0,
+          "hard_negative_above_positive": true,
+          "hard_negative_hit": true,
+          "hop_recall": null,
+          "kind": "knowledge",
+          "latency_ms": 103.09940000297502,
+          "miss_stage": "none",
+          "mrr": 0.0,
+          "ndcg": 0.0,
+          "note": "",
+          "path_success": null,
+          "post_fusion_information_need_coverage": 0.0,
+          "pre_fusion_information_need_coverage": 1.0,
+          "precision": 0.0,
+          "query": "竹木陶餐具直接接触吃的，食品接触安全这块怎么看？",
+          "recall": 0.0,
+          "relevant": [
+            "home-living.md"
+          ],
+          "retrieved": [
+            "eval-kitchen-dining-避坑与合规.md",
+            "eval-kitchen-dining-参数判断.md",
+            "eval-kitchen-dining-概览.md"
+          ],
+          "rewrite_drift": null,
+          "rewrite_note": ""
+        },
+        {
+          "all_evidence_recall": 1.0,
+          "candidate_depth": null,
+          "candidate_recall": null,
+          "canonical_duplicate_rate": null,
+          "constraint_recall": null,
+          "dimensions": {
+            "primary_kind": "single_evidence",
+            "query_plan_mode": "legacy",
+            "split": "ALL"
+          },
+          "evidence_recall": 1.0,
+          "filter_ok": null,
+          "graded_ndcg": 1.0,
+          "hard_constraint_checked_hits": 0,
+          "hard_constraint_violations": 0,
+          "hard_negative_above_positive": false,
+          "hard_negative_hit": false,
+          "hop_recall": null,
+          "kind": "knowledge",
+          "latency_ms": 99.74009999859845,
+          "miss_stage": "none",
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "note": "",
+          "path_success": null,
+          "post_fusion_information_need_coverage": 1.0,
+          "pre_fusion_information_need_coverage": 1.0,
+          "precision": 0.3333333333333333,
+          "query": "露营灯亮度怎么看，晚上在帐篷边够不够用？",
+          "recall": 1.0,
+          "relevant": [
+            "outdoor-sports.md"
+          ],
+          "retrieved": [
+            "outdoor-sports.md",
+            "eval-office-study-价格与预算.md",
+            "eval-office-study-避坑与合规.md"
+          ],
+          "rewrite_drift": null,
+          "rewrite_note": ""
+        },
+        {
+          "all_evidence_recall": 1.0,
+          "candidate_depth": null,
+          "candidate_recall": null,
+          "canonical_duplicate_rate": null,
+          "constraint_recall": null,
+          "dimensions": {
+            "primary_kind": "single_evidence",
+            "query_plan_mode": "legacy",
+            "split": "ALL"
+          },
+          "evidence_recall": 1.0,
+          "filter_ok": null,
+          "graded_ndcg": 0.9173194127129571,
+          "hard_constraint_checked_hits": 0,
+          "hard_constraint_violations": 0,
+          "hard_negative_above_positive": false,
+          "hard_negative_hit": false,
+          "hop_recall": null,
+          "kind": "knowledge",
+          "latency_ms": 105.7924999986426,
+          "miss_stage": "none",
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "note": "",
+          "path_success": null,
+          "post_fusion_information_need_coverage": 1.0,
+          "pre_fusion_information_need_coverage": 1.0,
+          "precision": 0.3333333333333333,
+          "query": "头灯续航如果开强光，一般能撑多久？",
+          "recall": 1.0,
+          "relevant": [
+            "outdoor-sports.md"
+          ],
+          "retrieved": [
+            "outdoor-sports.md",
+            "eval-office-study-概览.md",
+            "eval-office-study-价格与预算.md"
+          ],
+          "rewrite_drift": null,
+          "rewrite_note": ""
+        },
+        {
+          "all_evidence_recall": 1.0,
+          "candidate_depth": null,
+          "candidate_recall": null,
+          "canonical_duplicate_rate": null,
+          "constraint_recall": null,
+          "dimensions": {
+            "primary_kind": "single_evidence",
+            "query_plan_mode": "legacy",
+            "split": "ALL"
+          },
+          "evidence_recall": 1.0,
+          "filter_ok": null,
+          "graded_ndcg": 1.0,
+          "hard_constraint_checked_hits": 0,
+          "hard_constraint_violations": 0,
+          "hard_negative_above_positive": false,
+          "hard_negative_hit": true,
+          "hop_recall": null,
+          "kind": "knowledge",
+          "latency_ms": 105.57400000107009,
+          "miss_stage": "none",
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "note": "",
+          "path_success": null,
+          "post_fusion_information_need_coverage": 1.0,
+          "pre_fusion_information_need_coverage": 1.0,
+          "precision": 0.3333333333333333,
+          "query": "折叠登山杖收起来有多长，能塞进登机箱吗？",
+          "recall": 1.0,
+          "relevant": [
+            "outdoor-sports.md"
+          ],
+          "retrieved": [
+            "outdoor-sports.md",
+            "travel-gear.md",
+            "eval-travel-gear-价格与预算.md"
+          ],
+          "rewrite_drift": null,
+          "rewrite_note": ""
+        },
+        {
+          "all_evidence_recall": 0.0,
+          "candidate_depth": null,
+          "candidate_recall": null,
+          "canonical_duplicate_rate": null,
+          "constraint_recall": null,
+          "dimensions": {
+            "primary_kind": "cross_evidence",
+            "query_plan_mode": "legacy",
+            "split": "ALL"
+          },
+          "evidence_recall": 0.5,
+          "filter_ok": null,
+          "graded_ndcg": 0.5907889029375734,
+          "hard_constraint_checked_hits": 0,
+          "hard_constraint_violations": 0,
+          "hard_negative_above_positive": false,
+          "hard_negative_hit": true,
+          "hop_recall": null,
+          "kind": "knowledge",
+          "latency_ms": 111.97370000081719,
+          "miss_stage": "none",
+          "mrr": 1.0,
+          "ndcg": 0.6300059872618923,
+          "note": "",
+          "path_success": null,
+          "post_fusion_information_need_coverage": 0.5,
+          "pre_fusion_information_need_coverage": 1.0,
+          "precision": 0.3333333333333333,
+          "query": "我打算带20寸登机箱，还想把移动电源放里面上飞机，箱子尺寸和电池运输这两块是不是都得管？",
+          "recall": 0.3333333333333333,
+          "relevant": [
+            "travel-gear.md",
+            "digital-accessories.md",
+            "cross-border-guide.md"
+          ],
+          "retrieved": [
+            "travel-gear.md",
+            "eval-policy-battery.md",
+            "eval-travel-gear-避坑与合规.md"
+          ],
+          "rewrite_drift": null,
+          "rewrite_note": ""
+        },
+        {
+          "all_evidence_recall": 0.0,
+          "candidate_depth": null,
+          "candidate_recall": null,
+          "canonical_duplicate_rate": null,
+          "constraint_recall": null,
+          "dimensions": {
+            "primary_kind": "cross_evidence",
+            "query_plan_mode": "legacy",
+            "split": "ALL"
+          },
+          "evidence_recall": 0.5,
+          "filter_ok": null,
+          "graded_ndcg": 0.6403662530558959,
+          "hard_constraint_checked_hits": 0,
+          "hard_constraint_violations": 0,
+          "hard_negative_above_positive": false,
+          "hard_negative_hit": true,
+          "hop_recall": null,
+          "kind": "knowledge",
+          "latency_ms": 98.99799999766401,
+          "miss_stage": "none",
+          "mrr": 1.0,
+          "ndcg": 0.7601875334318685,
+          "note": "",
+          "path_success": null,
+          "post_fusion_information_need_coverage": 0.5,
+          "pre_fusion_information_need_coverage": 1.0,
+          "precision": 0.3333333333333333,
+          "query": "我买了一套粗陶茶具想寄到国外送人，包装和运费体积重是不是都要先弄清楚？",
+          "recall": 0.5,
+          "relevant": [
+            "home-living.md",
+            "cross-border-guide.md"
+          ],
+          "retrieved": [
+            "home-living.md",
+            "eval-policy-global-shipping.md",
+            "eval-home-living-概览.md"
+          ],
+          "rewrite_drift": null,
+          "rewrite_note": ""
+        },
+        {
+          "all_evidence_recall": 0.0,
+          "candidate_depth": null,
+          "candidate_recall": null,
+          "canonical_duplicate_rate": null,
+          "constraint_recall": null,
+          "dimensions": {
+            "primary_kind": "cross_evidence",
+            "query_plan_mode": "legacy",
+            "split": "ALL"
+          },
+          "evidence_recall": 0.5,
+          "filter_ok": null,
+          "graded_ndcg": 0.6131471927654584,
+          "hard_constraint_checked_hits": 0,
+          "hard_constraint_violations": 0,
+          "hard_negative_above_positive": false,
+          "hard_negative_hit": true,
+          "hop_recall": null,
+          "kind": "knowledge",
+          "latency_ms": 94.98529999837046,
+          "miss_stage": "none",
+          "mrr": 1.0,
+          "ndcg": 0.7601875334318685,
+          "note": "",
+          "path_success": null,
+          "post_fusion_information_need_coverage": 0.5,
+          "pre_fusion_information_need_coverage": 0.5,
+          "precision": 0.3333333333333333,
+          "query": "磁吸无线充带到国外用，电器电压和手机兼容性是不是都得确认？",
+          "recall": 0.5,
+          "relevant": [
+            "digital-accessories.md",
+            "cross-border-guide.md"
+          ],
+          "retrieved": [
+            "digital-accessories.md",
+            "eval-digital-accessories-避坑与合规.md",
+            "eval-office-study-避坑与合规.md"
+          ],
+          "rewrite_drift": null,
+          "rewrite_note": ""
+        },
+        {
+          "all_evidence_recall": 0.0,
+          "candidate_depth": null,
+          "candidate_recall": null,
+          "canonical_duplicate_rate": null,
+          "constraint_recall": null,
+          "dimensions": {
+            "primary_kind": "policy_boundary",
+            "query_plan_mode": "legacy",
+            "split": "ALL"
+          },
+          "evidence_recall": 0.0,
+          "filter_ok": null,
+          "graded_ndcg": 0.7342523322797491,
+          "hard_constraint_checked_hits": 0,
+          "hard_constraint_violations": 0,
+          "hard_negative_above_positive": false,
+          "hard_negative_hit": false,
+          "hop_recall": null,
+          "kind": "knowledge",
+          "latency_ms": 93.64079999795649,
+          "miss_stage": "none",
+          "mrr": 1.0,
+          "ndcg": 0.6300059872618923,
+          "note": "",
+          "path_success": null,
+          "post_fusion_information_need_coverage": 0.0,
+          "pre_fusion_information_need_coverage": 0.0,
+          "precision": 0.3333333333333333,
+          "query": "我在网上翻到一份演示用的地区政策资料，版本好像是旧的，我能拿它当现在海关政策的权威结论吗？",
+          "recall": 0.3333333333333333,
+          "relevant": [
+            "eval-policy-us.md",
+            "eval-policy-eu.md",
+            "eval-policy-cn.md"
+          ],
+          "retrieved": [
+            "eval-policy-us.md",
+            "eval-policy-battery.md",
+            "eval-policy-material.md"
+          ],
+          "rewrite_drift": null,
+          "rewrite_note": ""
+        },
+        {
+          "all_evidence_recall": 0.0,
+          "candidate_depth": null,
+          "candidate_recall": null,
+          "canonical_duplicate_rate": null,
+          "constraint_recall": null,
+          "dimensions": {
+            "primary_kind": "implicit_constraint_multi_hop",
+            "query_plan_mode": "legacy",
+            "split": "ALL"
+          },
+          "evidence_recall": 0.5,
+          "filter_ok": null,
+          "graded_ndcg": 0.6403662530558959,
+          "hard_constraint_checked_hits": 0,
+          "hard_constraint_violations": 0,
+          "hard_negative_above_positive": false,
+          "hard_negative_hit": false,
+          "hop_recall": 0.0,
+          "kind": "knowledge",
+          "latency_ms": 110.30399999799556,
+          "miss_stage": "none",
+          "mrr": 1.0,
+          "ndcg": 0.7601875334318685,
+          "note": "",
+          "path_success": null,
+          "post_fusion_information_need_coverage": 0.0,
+          "pre_fusion_information_need_coverage": 0.0,
+          "precision": 0.3333333333333333,
+          "query": "我要买个充电宝带着飞日本",
+          "recall": 0.5,
+          "relevant": [
+            "digital-accessories.md",
+            "cross-border-guide.md"
+          ],
+          "retrieved": [
+            "digital-accessories.md",
+            "eval-digital-accessories-避坑与合规.md",
+            "eval-digital-accessories-价格与预算.md"
+          ],
+          "rewrite_drift": null,
+          "rewrite_note": ""
+        },
+        {
+          "all_evidence_recall": 0.0,
+          "candidate_depth": null,
+          "candidate_recall": null,
+          "canonical_duplicate_rate": null,
+          "constraint_recall": null,
+          "dimensions": {
+            "primary_kind": "implicit_constraint_multi_hop",
+            "query_plan_mode": "legacy",
+            "split": "ALL"
+          },
+          "evidence_recall": 0.5,
+          "filter_ok": null,
+          "graded_ndcg": 0.9224037382324788,
+          "hard_constraint_checked_hits": 0,
+          "hard_constraint_violations": 0,
+          "hard_negative_above_positive": false,
+          "hard_negative_hit": true,
+          "hop_recall": 0.0,
+          "kind": "knowledge",
+          "latency_ms": 105.76009999931557,
+          "miss_stage": "none",
+          "mrr": 1.0,
+          "ndcg": 1.0,
+          "note": "",
+          "path_success": null,
+          "post_fusion_information_need_coverage": 0.0,
+          "pre_fusion_information_need_coverage": 1.0,
+          "precision": 0.3333333333333333,
+          "query": "我想买个登机箱，再配一个折叠背包带上任意航空公司的飞机",
+          "recall": 1.0,
+          "relevant": [
+            "travel-gear.md"
+          ],
+          "retrieved": [
+            "travel-gear.md",
+            "eval-travel-gear-价格与预算.md",
+            "eval-travel-gear-避坑与合规.md"
+          ],
+          "rewrite_drift": null,
+          "rewrite_note": ""
+        }
+      ],
+      "policy_count": 1,
+      "policy_rejection_accuracy": 1.0,
+      "post_fusion_information_need_coverage": 0.5263,
+      "pre_fusion_information_need_coverage": 0.8421,
+      "precision": 0.2982,
+      "recall": 0.7193,
+      "recall_strategies": [],
+      "rewrite_count": 0,
+      "rewrite_drift_rate": null
+    },
+    "observations": [
+      {
+        "all_evidence_recall": 1.0,
+        "candidate_count": 24,
+        "case_id": "blind-001",
+        "constraint_recall": null,
+        "evidence_ranks": {
+          "travel-gear.md#避坑点#da17c26d967c": 1
+        },
+        "evidence_recall": 1.0,
+        "expected_unanswerable": false,
+        "fusion_information_need_loss": 0.0,
+        "fusion_provenance": [],
+        "gold_evidence_ids": [
+          "travel-gear.md#避坑点#da17c26d967c"
+        ],
+        "hard_negative_above_positive": false,
+        "hard_negative_hit": true,
+        "hop_recall": null,
+        "latency_ms": 262.371,
+        "near_duplicate_decisions": [],
+        "path_success": null,
+        "post_fusion_information_need_coverage": 1.0,
+        "post_fusion_query_route_coverage": null,
+        "pre_fusion_information_need_coverage": 1.0,
+        "pre_fusion_query_route_coverage": null,
+        "pre_fusion_retrieved_evidence_ids": [
+          "travel-gear.md#避坑点#da17c26d967c"
+        ],
+        "processor_fallback_reason": null,
+        "query": "我想买个能带上飞机的登机箱，20寸那种，一般得看哪些航司尺寸要求啊？",
+        "query_plan_mode": null,
+        "query_variants": [],
+        "relevant": [
+          "travel-gear.md"
+        ],
+        "retrieval_mode": "legacy",
+        "retrieved": [
+          "travel-gear.md",
+          "cross-border-guide.md",
+          "digital-accessories.md"
+        ],
+        "retrieved_evidence_ids": [
+          "travel-gear.md#避坑点#da17c26d967c"
+        ],
+        "rewrite_decision": null,
+        "rewrite_similarity": null,
+        "split": null,
+        "unanswerable_pass": null
+      },
+      {
+        "all_evidence_recall": 1.0,
+        "candidate_count": 24,
+        "case_id": "blind-002",
+        "constraint_recall": null,
+        "evidence_ranks": {
+          "travel-gear.md#关键属性与判断口径#6c0b5b589183": 1
+        },
+        "evidence_recall": 1.0,
+        "expected_unanswerable": false,
+        "fusion_information_need_loss": 0.0,
+        "fusion_provenance": [],
+        "gold_evidence_ids": [
+          "travel-gear.md#关键属性与判断口径#6c0b5b589183"
+        ],
+        "hard_negative_above_positive": false,
+        "hard_negative_hit": false,
+        "hop_recall": null,
+        "latency_ms": 100.679,
+        "near_duplicate_decisions": [],
+        "path_success": null,
+        "post_fusion_information_need_coverage": 1.0,
+        "post_fusion_query_route_coverage": null,
+        "pre_fusion_information_need_coverage": 1.0,
+        "pre_fusion_query_route_coverage": null,
+        "pre_fusion_retrieved_evidence_ids": [
+          "travel-gear.md#关键属性与判断口径#6c0b5b589183"
+        ],
+        "processor_fallback_reason": null,
+        "query": "折叠双肩包平时塞行李箱里备用，材质选哪种更耐造一点？",
+        "query_plan_mode": null,
+        "query_variants": [],
+        "relevant": [
+          "travel-gear.md"
+        ],
+        "retrieval_mode": "legacy",
+        "retrieved": [
+          "travel-gear.md",
+          "eval-travel-gear-参数判断.md",
+          "eval-travel-gear-概览.md"
+        ],
+        "retrieved_evidence_ids": [
+          "travel-gear.md#关键属性与判断口径#6c0b5b589183"
+        ],
+        "rewrite_decision": null,
+        "rewrite_similarity": null,
+        "split": null,
+        "unanswerable_pass": null
+      },
+      {
+        "all_evidence_recall": 1.0,
+        "candidate_count": 24,
+        "case_id": "blind-005",
+        "constraint_recall": null,
+        "evidence_ranks": {
+          "travel-gear.md#关键属性与判断口径#8399e109d5dd": 3
+        },
+        "evidence_recall": 1.0,
+        "expected_unanswerable": false,
+        "fusion_information_need_loss": 0.0,
+        "fusion_provenance": [],
+        "gold_evidence_ids": [
+          "travel-gear.md#关键属性与判断口径#8399e109d5dd"
+        ],
+        "hard_negative_above_positive": false,
+        "hard_negative_hit": false,
+        "hop_recall": null,
+        "latency_ms": 103.685,
+        "near_duplicate_decisions": [],
+        "path_success": null,
+        "post_fusion_information_need_coverage": 1.0,
+        "post_fusion_query_route_coverage": null,
+        "pre_fusion_information_need_coverage": 1.0,
+        "pre_fusion_query_route_coverage": null,
+        "pre_fusion_retrieved_evidence_ids": [
+          "travel-gear.md#关键属性与判断口径#8399e109d5dd"
+        ],
+        "processor_fallback_reason": null,
+        "query": "旅行三件套收纳起来到底省不省地方，适合小箱子吗？",
+        "query_plan_mode": null,
+        "query_variants": [],
+        "relevant": [
+          "travel-gear.md"
+        ],
+        "retrieval_mode": "legacy",
+        "retrieved": [
+          "eval-travel-gear-价格与预算.md",
+          "eval-travel-gear-避坑与合规.md",
+          "travel-gear.md"
+        ],
+        "retrieved_evidence_ids": [
+          "travel-gear.md#关键属性与判断口径#8399e109d5dd"
+        ],
+        "rewrite_decision": null,
+        "rewrite_similarity": null,
+        "split": null,
+        "unanswerable_pass": null
+      },
+      {
+        "all_evidence_recall": 0.0,
+        "candidate_count": 24,
+        "case_id": "blind-006",
+        "constraint_recall": null,
+        "evidence_ranks": {},
+        "evidence_recall": 0.0,
+        "expected_unanswerable": false,
+        "fusion_information_need_loss": 1.0,
+        "fusion_provenance": [],
+        "gold_evidence_ids": [
+          "travel-gear.md#关键属性与判断口径#3cc9021c0b71"
+        ],
+        "hard_negative_above_positive": false,
+        "hard_negative_hit": false,
+        "hop_recall": null,
+        "latency_ms": 98.308,
+        "near_duplicate_decisions": [],
+        "path_success": null,
+        "post_fusion_information_need_coverage": 0.0,
+        "post_fusion_query_route_coverage": null,
+        "pre_fusion_information_need_coverage": 1.0,
+        "pre_fusion_query_route_coverage": null,
+        "pre_fusion_retrieved_evidence_ids": [
+          "travel-gear.md#关键属性与判断口径#3cc9021c0b71"
+        ],
+        "processor_fallback_reason": null,
+        "query": "收纳用品如果买一套，重量上会不会给行李增加很多负担？",
+        "query_plan_mode": null,
+        "query_variants": [],
+        "relevant": [
+          "travel-gear.md"
+        ],
+        "retrieval_mode": "legacy",
+        "retrieved": [
+          "eval-travel-gear-避坑与合规.md",
+          "eval-travel-gear-价格与预算.md",
+          "eval-travel-gear-概览.md"
+        ],
+        "retrieved_evidence_ids": [],
+        "rewrite_decision": null,
+        "rewrite_similarity": null,
+        "split": null,
+        "unanswerable_pass": null
+      },
+      {
+        "all_evidence_recall": 1.0,
+        "candidate_count": 24,
+        "case_id": "blind-007",
+        "constraint_recall": null,
+        "evidence_ranks": {
+          "digital-accessories.md#关键属性与判断口径#9f98a1a32c70": 1
+        },
+        "evidence_recall": 1.0,
+        "expected_unanswerable": false,
+        "fusion_information_need_loss": 0.0,
+        "fusion_provenance": [],
+        "gold_evidence_ids": [
+          "digital-accessories.md#关键属性与判断口径#9f98a1a32c70"
+        ],
+        "hard_negative_above_positive": false,
+        "hard_negative_hit": false,
+        "hop_recall": null,
+        "latency_ms": 105.404,
+        "near_duplicate_decisions": [],
+        "path_success": null,
+        "post_fusion_information_need_coverage": 1.0,
+        "post_fusion_query_route_coverage": null,
+        "pre_fusion_information_need_coverage": 1.0,
+        "pre_fusion_query_route_coverage": null,
+        "pre_fusion_retrieved_evidence_ids": [
+          "digital-accessories.md#关键属性与判断口径#9f98a1a32c70"
+        ],
+        "processor_fallback_reason": null,
+        "query": "氮化镓充电器多口同时用的时候，功率是怎么分配的？",
+        "query_plan_mode": null,
+        "query_variants": [],
+        "relevant": [
+          "digital-accessories.md"
+        ],
+        "retrieval_mode": "legacy",
+        "retrieved": [
+          "digital-accessories.md",
+          "eval-digital-accessories-概览.md",
+          "eval-digital-accessories-避坑与合规.md"
+        ],
+        "retrieved_evidence_ids": [
+          "digital-accessories.md#关键属性与判断口径#9f98a1a32c70"
+        ],
+        "rewrite_decision": null,
+        "rewrite_similarity": null,
+        "split": null,
+        "unanswerable_pass": null
+      },
+      {
+        "all_evidence_recall": 0.0,
+        "candidate_count": 24,
+        "case_id": "blind-008",
+        "constraint_recall": null,
+        "evidence_ranks": {
+          "digital-accessories.md#当前热卖款型#b365042193b2": 2
+        },
+        "evidence_recall": 0.5,
+        "expected_unanswerable": false,
+        "fusion_information_need_loss": 0.0,
+        "fusion_provenance": [],
+        "gold_evidence_ids": [
+          "digital-accessories.md#当前热卖款型#b365042193b2",
+          "cross-border-guide.md#材质与合规#f6bfddbb08fc"
+        ],
+        "hard_negative_above_positive": true,
+        "hard_negative_hit": true,
+        "hop_recall": null,
+        "latency_ms": 96.041,
+        "near_duplicate_decisions": [],
+        "path_success": null,
+        "post_fusion_information_need_coverage": 0.5,
+        "post_fusion_query_route_coverage": null,
+        "pre_fusion_information_need_coverage": 0.5,
+        "pre_fusion_query_route_coverage": null,
+        "pre_fusion_retrieved_evidence_ids": [
+          "digital-accessories.md#当前热卖款型#b365042193b2"
+        ],
+        "processor_fallback_reason": null,
+        "query": "移动电源带出门坐飞机，锂电池运输这块一般有什么讲究？",
+        "query_plan_mode": null,
+        "query_variants": [],
+        "relevant": [
+          "digital-accessories.md",
+          "cross-border-guide.md"
+        ],
+        "retrieval_mode": "legacy",
+        "retrieved": [
+          "eval-policy-battery.md",
+          "digital-accessories.md",
+          "eval-digital-accessories-避坑与合规.md"
+        ],
+        "retrieved_evidence_ids": [
+          "digital-accessories.md#当前热卖款型#b365042193b2"
+        ],
+        "rewrite_decision": null,
+        "rewrite_similarity": null,
+        "split": null,
+        "unanswerable_pass": null
+      },
+      {
+        "all_evidence_recall": 0.0,
+        "candidate_count": 24,
+        "case_id": "blind-010",
+        "constraint_recall": null,
+        "evidence_ranks": {},
+        "evidence_recall": 0.0,
+        "expected_unanswerable": false,
+        "fusion_information_need_loss": 1.0,
+        "fusion_provenance": [],
+        "gold_evidence_ids": [
+          "digital-accessories.md#关键属性与判断口径#392e8f8f1822"
+        ],
+        "hard_negative_above_positive": false,
+        "hard_negative_hit": true,
+        "hop_recall": null,
+        "latency_ms": 103.497,
+        "near_duplicate_decisions": [],
+        "path_success": null,
+        "post_fusion_information_need_coverage": 0.0,
+        "post_fusion_query_route_coverage": null,
+        "pre_fusion_information_need_coverage": 1.0,
+        "pre_fusion_query_route_coverage": null,
+        "pre_fusion_retrieved_evidence_ids": [
+          "digital-accessories.md#关键属性与判断口径#392e8f8f1822"
+        ],
+        "processor_fallback_reason": null,
+        "query": "降噪耳机在地铁里用，降噪效果主要看哪些方面？",
+        "query_plan_mode": null,
+        "query_variants": [],
+        "relevant": [
+          "digital-accessories.md"
+        ],
+        "retrieval_mode": "legacy",
+        "retrieved": [
+          "digital-accessories.md",
+          "eval-digital-accessories-参数判断.md",
+          "eval-beauty-care-参数判断.md"
+        ],
+        "retrieved_evidence_ids": [],
+        "rewrite_decision": null,
+        "rewrite_similarity": null,
+        "split": null,
+        "unanswerable_pass": null
+      },
+      {
+        "all_evidence_recall": 0.0,
+        "candidate_count": 24,
+        "case_id": "blind-012",
+        "constraint_recall": null,
+        "evidence_ranks": {
+          "digital-accessories.md#避坑点#ec2521f64fb2": 1
+        },
+        "evidence_recall": 0.5,
+        "expected_unanswerable": false,
+        "fusion_information_need_loss": 1.0,
+        "fusion_provenance": [],
+        "gold_evidence_ids": [
+          "digital-accessories.md#当前热卖款型#93430049f89a",
+          "digital-accessories.md#避坑点#ec2521f64fb2"
+        ],
+        "hard_negative_above_positive": false,
+        "hard_negative_hit": true,
+        "hop_recall": null,
+        "latency_ms": 97.375,
+        "near_duplicate_decisions": [],
+        "path_success": null,
+        "post_fusion_information_need_coverage": 0.0,
+        "post_fusion_query_route_coverage": null,
+        "pre_fusion_information_need_coverage": 1.0,
+        "pre_fusion_query_route_coverage": null,
+        "pre_fusion_retrieved_evidence_ids": [
+          "digital-accessories.md#避坑点#ec2521f64fb2",
+          "digital-accessories.md#当前热卖款型#93430049f89a"
+        ],
+        "processor_fallback_reason": null,
+        "query": "磁吸无线充跟不同手机壳、机型兼容性怎么样？",
+        "query_plan_mode": null,
+        "query_variants": [],
+        "relevant": [
+          "digital-accessories.md"
+        ],
+        "retrieval_mode": "legacy",
+        "retrieved": [
+          "digital-accessories.md",
+          "eval-digital-accessories-避坑与合规.md",
+          "eval-policy-battery.md"
+        ],
+        "retrieved_evidence_ids": [
+          "digital-accessories.md#避坑点#ec2521f64fb2"
+        ],
+        "rewrite_decision": null,
+        "rewrite_similarity": null,
+        "split": null,
+        "unanswerable_pass": null
+      },
+      {
+        "all_evidence_recall": 1.0,
+        "candidate_count": 24,
+        "case_id": "blind-013",
+        "constraint_recall": null,
+        "evidence_ranks": {
+          "home-living.md#关键属性与判断口径#f5ec7a5abc96": 1
+        },
+        "evidence_recall": 1.0,
+        "expected_unanswerable": false,
+        "fusion_information_need_loss": 0.0,
+        "fusion_provenance": [],
+        "gold_evidence_ids": [
+          "home-living.md#关键属性与判断口径#f5ec7a5abc96"
+        ],
+        "hard_negative_above_positive": false,
+        "hard_negative_hit": false,
+        "hop_recall": null,
+        "latency_ms": 96.718,
+        "near_duplicate_decisions": [],
+        "path_success": null,
+        "post_fusion_information_need_coverage": 1.0,
+        "post_fusion_query_route_coverage": null,
+        "pre_fusion_information_need_coverage": 1.0,
+        "pre_fusion_query_route_coverage": null,
+        "pre_fusion_retrieved_evidence_ids": [
+          "home-living.md#关键属性与判断口径#f5ec7a5abc96"
+        ],
+        "processor_fallback_reason": null,
+        "query": "粗陶茶具寄快递容易碎，包装上该怎么注意？",
+        "query_plan_mode": null,
+        "query_variants": [],
+        "relevant": [
+          "home-living.md"
+        ],
+        "retrieval_mode": "legacy",
+        "retrieved": [
+          "home-living.md",
+          "eval-home-living-避坑与合规.md",
+          "eval-home-living-参数判断.md"
+        ],
+        "retrieved_evidence_ids": [
+          "home-living.md#关键属性与判断口径#f5ec7a5abc96"
+        ],
+        "rewrite_decision": null,
+        "rewrite_similarity": null,
+        "split": null,
+        "unanswerable_pass": null
+      },
+      {
+        "all_evidence_recall": 0.0,
+        "candidate_count": 24,
+        "case_id": "blind-014",
+        "constraint_recall": null,
+        "evidence_ranks": {},
+        "evidence_recall": 0.0,
+        "expected_unanswerable": false,
+        "fusion_information_need_loss": 1.0,
+        "fusion_provenance": [],
+        "gold_evidence_ids": [
+          "home-living.md#避坑点#cc9519301550"
+        ],
+        "hard_negative_above_positive": true,
+        "hard_negative_hit": true,
+        "hop_recall": null,
+        "latency_ms": 103.099,
+        "near_duplicate_decisions": [],
+        "path_success": null,
+        "post_fusion_information_need_coverage": 0.0,
+        "post_fusion_query_route_coverage": null,
+        "pre_fusion_information_need_coverage": 1.0,
+        "pre_fusion_query_route_coverage": null,
+        "pre_fusion_retrieved_evidence_ids": [
+          "home-living.md#避坑点#cc9519301550"
+        ],
+        "processor_fallback_reason": null,
+        "query": "竹木陶餐具直接接触吃的，食品接触安全这块怎么看？",
+        "query_plan_mode": null,
+        "query_variants": [],
+        "relevant": [
+          "home-living.md"
+        ],
+        "retrieval_mode": "legacy",
+        "retrieved": [
+          "eval-kitchen-dining-避坑与合规.md",
+          "eval-kitchen-dining-参数判断.md",
+          "eval-kitchen-dining-概览.md"
+        ],
+        "retrieved_evidence_ids": [],
+        "rewrite_decision": null,
+        "rewrite_similarity": null,
+        "split": null,
+        "unanswerable_pass": null
+      },
+      {
+        "all_evidence_recall": 1.0,
+        "candidate_count": 24,
+        "case_id": "blind-016",
+        "constraint_recall": null,
+        "evidence_ranks": {
+          "outdoor-sports.md#避坑点#8b8289737644": 1
+        },
+        "evidence_recall": 1.0,
+        "expected_unanswerable": false,
+        "fusion_information_need_loss": 0.0,
+        "fusion_provenance": [],
+        "gold_evidence_ids": [
+          "outdoor-sports.md#避坑点#8b8289737644"
+        ],
+        "hard_negative_above_positive": false,
+        "hard_negative_hit": false,
+        "hop_recall": null,
+        "latency_ms": 99.74,
+        "near_duplicate_decisions": [],
+        "path_success": null,
+        "post_fusion_information_need_coverage": 1.0,
+        "post_fusion_query_route_coverage": null,
+        "pre_fusion_information_need_coverage": 1.0,
+        "pre_fusion_query_route_coverage": null,
+        "pre_fusion_retrieved_evidence_ids": [
+          "outdoor-sports.md#避坑点#8b8289737644"
+        ],
+        "processor_fallback_reason": null,
+        "query": "露营灯亮度怎么看，晚上在帐篷边够不够用？",
+        "query_plan_mode": null,
+        "query_variants": [],
+        "relevant": [
+          "outdoor-sports.md"
+        ],
+        "retrieval_mode": "legacy",
+        "retrieved": [
+          "outdoor-sports.md",
+          "eval-office-study-价格与预算.md",
+          "eval-office-study-避坑与合规.md"
+        ],
+        "retrieved_evidence_ids": [
+          "outdoor-sports.md#避坑点#8b8289737644"
+        ],
+        "rewrite_decision": null,
+        "rewrite_similarity": null,
+        "split": null,
+        "unanswerable_pass": null
+      },
+      {
+        "all_evidence_recall": 1.0,
+        "candidate_count": 24,
+        "case_id": "blind-017",
+        "constraint_recall": null,
+        "evidence_ranks": {
+          "outdoor-sports.md#关键属性与判断口径#fa3c198e9502": 1
+        },
+        "evidence_recall": 1.0,
+        "expected_unanswerable": false,
+        "fusion_information_need_loss": 0.0,
+        "fusion_provenance": [],
+        "gold_evidence_ids": [
+          "outdoor-sports.md#关键属性与判断口径#fa3c198e9502"
+        ],
+        "hard_negative_above_positive": false,
+        "hard_negative_hit": false,
+        "hop_recall": null,
+        "latency_ms": 105.792,
+        "near_duplicate_decisions": [],
+        "path_success": null,
+        "post_fusion_information_need_coverage": 1.0,
+        "post_fusion_query_route_coverage": null,
+        "pre_fusion_information_need_coverage": 1.0,
+        "pre_fusion_query_route_coverage": null,
+        "pre_fusion_retrieved_evidence_ids": [
+          "outdoor-sports.md#关键属性与判断口径#fa3c198e9502"
+        ],
+        "processor_fallback_reason": null,
+        "query": "头灯续航如果开强光，一般能撑多久？",
+        "query_plan_mode": null,
+        "query_variants": [],
+        "relevant": [
+          "outdoor-sports.md"
+        ],
+        "retrieval_mode": "legacy",
+        "retrieved": [
+          "outdoor-sports.md",
+          "eval-office-study-概览.md",
+          "eval-office-study-价格与预算.md"
+        ],
+        "retrieved_evidence_ids": [
+          "outdoor-sports.md#关键属性与判断口径#fa3c198e9502"
+        ],
+        "rewrite_decision": null,
+        "rewrite_similarity": null,
+        "split": null,
+        "unanswerable_pass": null
+      },
+      {
+        "all_evidence_recall": 1.0,
+        "candidate_count": 24,
+        "case_id": "blind-018",
+        "constraint_recall": null,
+        "evidence_ranks": {
+          "outdoor-sports.md#当前热卖款型#1f7549d85ee9": 1
+        },
+        "evidence_recall": 1.0,
+        "expected_unanswerable": false,
+        "fusion_information_need_loss": 0.0,
+        "fusion_provenance": [],
+        "gold_evidence_ids": [
+          "outdoor-sports.md#当前热卖款型#1f7549d85ee9"
+        ],
+        "hard_negative_above_positive": false,
+        "hard_negative_hit": true,
+        "hop_recall": null,
+        "latency_ms": 105.574,
+        "near_duplicate_decisions": [],
+        "path_success": null,
+        "post_fusion_information_need_coverage": 1.0,
+        "post_fusion_query_route_coverage": null,
+        "pre_fusion_information_need_coverage": 1.0,
+        "pre_fusion_query_route_coverage": null,
+        "pre_fusion_retrieved_evidence_ids": [
+          "outdoor-sports.md#当前热卖款型#1f7549d85ee9"
+        ],
+        "processor_fallback_reason": null,
+        "query": "折叠登山杖收起来有多长，能塞进登机箱吗？",
+        "query_plan_mode": null,
+        "query_variants": [],
+        "relevant": [
+          "outdoor-sports.md"
+        ],
+        "retrieval_mode": "legacy",
+        "retrieved": [
+          "outdoor-sports.md",
+          "travel-gear.md",
+          "eval-travel-gear-价格与预算.md"
+        ],
+        "retrieved_evidence_ids": [
+          "outdoor-sports.md#当前热卖款型#1f7549d85ee9"
+        ],
+        "rewrite_decision": null,
+        "rewrite_similarity": null,
+        "split": null,
+        "unanswerable_pass": null
+      },
+      {
+        "all_evidence_recall": 0.0,
+        "candidate_count": 24,
+        "case_id": "blind-019",
+        "constraint_recall": null,
+        "evidence_ranks": {
+          "travel-gear.md#避坑点#da17c26d967c": 1
+        },
+        "evidence_recall": 0.5,
+        "expected_unanswerable": false,
+        "fusion_information_need_loss": 0.5,
+        "fusion_provenance": [],
+        "gold_evidence_ids": [
+          "travel-gear.md#避坑点#da17c26d967c",
+          "digital-accessories.md#当前热卖款型#b365042193b2"
+        ],
+        "hard_negative_above_positive": false,
+        "hard_negative_hit": true,
+        "hop_recall": null,
+        "latency_ms": 111.974,
+        "near_duplicate_decisions": [],
+        "path_success": null,
+        "post_fusion_information_need_coverage": 0.5,
+        "post_fusion_query_route_coverage": null,
+        "pre_fusion_information_need_coverage": 1.0,
+        "pre_fusion_query_route_coverage": null,
+        "pre_fusion_retrieved_evidence_ids": [
+          "travel-gear.md#避坑点#da17c26d967c",
+          "digital-accessories.md#当前热卖款型#b365042193b2"
+        ],
+        "processor_fallback_reason": null,
+        "query": "我打算带20寸登机箱，还想把移动电源放里面上飞机，箱子尺寸和电池运输这两块是不是都得管？",
+        "query_plan_mode": null,
+        "query_variants": [],
+        "relevant": [
+          "travel-gear.md",
+          "digital-accessories.md",
+          "cross-border-guide.md"
+        ],
+        "retrieval_mode": "legacy",
+        "retrieved": [
+          "travel-gear.md",
+          "eval-policy-battery.md",
+          "eval-travel-gear-避坑与合规.md"
+        ],
+        "retrieved_evidence_ids": [
+          "travel-gear.md#避坑点#da17c26d967c"
+        ],
+        "rewrite_decision": null,
+        "rewrite_similarity": null,
+        "split": null,
+        "unanswerable_pass": null
+      },
+      {
+        "all_evidence_recall": 0.0,
+        "candidate_count": 24,
+        "case_id": "blind-021",
+        "constraint_recall": null,
+        "evidence_ranks": {
+          "home-living.md#关键属性与判断口径#f5ec7a5abc96": 1
+        },
+        "evidence_recall": 0.5,
+        "expected_unanswerable": false,
+        "fusion_information_need_loss": 0.5,
+        "fusion_provenance": [],
+        "gold_evidence_ids": [
+          "home-living.md#关键属性与判断口径#f5ec7a5abc96",
+          "cross-border-guide.md#运费口径#a9e7150b3956"
+        ],
+        "hard_negative_above_positive": false,
+        "hard_negative_hit": true,
+        "hop_recall": null,
+        "latency_ms": 98.998,
+        "near_duplicate_decisions": [],
+        "path_success": null,
+        "post_fusion_information_need_coverage": 0.5,
+        "post_fusion_query_route_coverage": null,
+        "pre_fusion_information_need_coverage": 1.0,
+        "pre_fusion_query_route_coverage": null,
+        "pre_fusion_retrieved_evidence_ids": [
+          "home-living.md#关键属性与判断口径#f5ec7a5abc96",
+          "cross-border-guide.md#运费口径#a9e7150b3956"
+        ],
+        "processor_fallback_reason": null,
+        "query": "我买了一套粗陶茶具想寄到国外送人，包装和运费体积重是不是都要先弄清楚？",
+        "query_plan_mode": null,
+        "query_variants": [],
+        "relevant": [
+          "home-living.md",
+          "cross-border-guide.md"
+        ],
+        "retrieval_mode": "legacy",
+        "retrieved": [
+          "home-living.md",
+          "eval-policy-global-shipping.md",
+          "eval-home-living-概览.md"
+        ],
+        "retrieved_evidence_ids": [
+          "home-living.md#关键属性与判断口径#f5ec7a5abc96"
+        ],
+        "rewrite_decision": null,
+        "rewrite_similarity": null,
+        "split": null,
+        "unanswerable_pass": null
+      },
+      {
+        "all_evidence_recall": 0.0,
+        "candidate_count": 24,
+        "case_id": "blind-025",
+        "constraint_recall": null,
+        "evidence_ranks": {
+          "digital-accessories.md#当前热卖款型#93430049f89a": 1
+        },
+        "evidence_recall": 0.5,
+        "expected_unanswerable": false,
+        "fusion_information_need_loss": 0.0,
+        "fusion_provenance": [],
+        "gold_evidence_ids": [
+          "digital-accessories.md#当前热卖款型#93430049f89a",
+          "cross-border-guide.md#材质与合规#ec2498127b7d"
+        ],
+        "hard_negative_above_positive": false,
+        "hard_negative_hit": true,
+        "hop_recall": null,
+        "latency_ms": 94.985,
+        "near_duplicate_decisions": [],
+        "path_success": null,
+        "post_fusion_information_need_coverage": 0.5,
+        "post_fusion_query_route_coverage": null,
+        "pre_fusion_information_need_coverage": 0.5,
+        "pre_fusion_query_route_coverage": null,
+        "pre_fusion_retrieved_evidence_ids": [
+          "digital-accessories.md#当前热卖款型#93430049f89a"
+        ],
+        "processor_fallback_reason": null,
+        "query": "磁吸无线充带到国外用，电器电压和手机兼容性是不是都得确认？",
+        "query_plan_mode": null,
+        "query_variants": [],
+        "relevant": [
+          "digital-accessories.md",
+          "cross-border-guide.md"
+        ],
+        "retrieval_mode": "legacy",
+        "retrieved": [
+          "digital-accessories.md",
+          "eval-digital-accessories-避坑与合规.md",
+          "eval-office-study-避坑与合规.md"
+        ],
+        "retrieved_evidence_ids": [
+          "digital-accessories.md#当前热卖款型#93430049f89a"
+        ],
+        "rewrite_decision": null,
+        "rewrite_similarity": null,
+        "split": null,
+        "unanswerable_pass": null
+      },
+      {
+        "all_evidence_recall": null,
+        "candidate_count": 0,
+        "case_id": "blind-027",
+        "constraint_recall": null,
+        "evidence_ranks": {},
+        "evidence_recall": null,
+        "expected_unanswerable": true,
+        "fusion_information_need_loss": null,
+        "fusion_provenance": [],
+        "gold_evidence_ids": [],
+        "hard_negative_above_positive": false,
+        "hard_negative_hit": false,
+        "hop_recall": null,
+        "latency_ms": 0.01,
+        "near_duplicate_decisions": [],
+        "path_success": null,
+        "post_fusion_information_need_coverage": null,
+        "post_fusion_query_route_coverage": null,
+        "pre_fusion_information_need_coverage": null,
+        "pre_fusion_query_route_coverage": null,
+        "pre_fusion_retrieved_evidence_ids": [],
+        "processor_fallback_reason": "requires_live_order_logistics",
+        "query": "我昨天下的单怎么还没发货，现在到哪了？帮我查下物流。",
+        "query_plan_mode": null,
+        "query_variants": [],
+        "relevant": [],
+        "retrieval_mode": "unsupported",
+        "retrieved": [],
+        "retrieved_evidence_ids": [],
+        "rewrite_decision": null,
+        "rewrite_similarity": null,
+        "split": null,
+        "unanswerable_pass": true
+      },
+      {
+        "all_evidence_recall": null,
+        "candidate_count": 0,
+        "case_id": "blind-028",
+        "constraint_recall": null,
+        "evidence_ranks": {},
+        "evidence_recall": null,
+        "expected_unanswerable": true,
+        "fusion_information_need_loss": null,
+        "fusion_provenance": [],
+        "gold_evidence_ids": [],
+        "hard_negative_above_positive": false,
+        "hard_negative_hit": false,
+        "hop_recall": null,
+        "latency_ms": 0.005,
+        "near_duplicate_decisions": [],
+        "path_success": null,
+        "post_fusion_information_need_coverage": null,
+        "post_fusion_query_route_coverage": null,
+        "pre_fusion_information_need_coverage": null,
+        "pre_fusion_query_route_coverage": null,
+        "pre_fusion_retrieved_evidence_ids": [],
+        "processor_fallback_reason": "requires_live_inventory_or_fulfillment",
+        "query": "你们那个折叠双肩包黑色现在还有现货吗？我下单能不能今天就发？",
+        "query_plan_mode": null,
+        "query_variants": [],
+        "relevant": [],
+        "retrieval_mode": "unsupported",
+        "retrieved": [],
+        "retrieved_evidence_ids": [],
+        "rewrite_decision": null,
+        "rewrite_similarity": null,
+        "split": null,
+        "unanswerable_pass": true
+      },
+      {
+        "all_evidence_recall": null,
+        "candidate_count": 0,
+        "case_id": "blind-029",
+        "constraint_recall": null,
+        "evidence_ranks": {},
+        "evidence_recall": null,
+        "expected_unanswerable": true,
+        "fusion_information_need_loss": null,
+        "fusion_provenance": [],
+        "gold_evidence_ids": [],
+        "hard_negative_above_positive": false,
+        "hard_negative_hit": false,
+        "hop_recall": null,
+        "latency_ms": 0.003,
+        "near_duplicate_decisions": [],
+        "path_success": null,
+        "post_fusion_information_need_coverage": null,
+        "post_fusion_query_route_coverage": null,
+        "pre_fusion_information_need_coverage": null,
+        "pre_fusion_query_route_coverage": null,
+        "pre_fusion_retrieved_evidence_ids": [],
+        "processor_fallback_reason": "future_fact_not_available",
+        "query": "下个月国际运费会不会降，锂电池政策会不会松一点？帮我预测下。",
+        "query_plan_mode": null,
+        "query_variants": [],
+        "relevant": [],
+        "retrieval_mode": "unsupported",
+        "retrieved": [],
+        "retrieved_evidence_ids": [],
+        "rewrite_decision": null,
+        "rewrite_similarity": null,
+        "split": null,
+        "unanswerable_pass": true
+      },
+      {
+        "all_evidence_recall": 0.0,
+        "candidate_count": 24,
+        "case_id": "blind-030",
+        "constraint_recall": null,
+        "evidence_ranks": {},
+        "evidence_recall": 0.0,
+        "expected_unanswerable": false,
+        "fusion_information_need_loss": 0.0,
+        "fusion_provenance": [],
+        "gold_evidence_ids": [
+          "eval-policy-us.md#适用范围#70ca23bcc1bc"
+        ],
+        "hard_negative_above_positive": false,
+        "hard_negative_hit": false,
+        "hop_recall": null,
+        "latency_ms": 93.641,
+        "near_duplicate_decisions": [],
+        "path_success": null,
+        "policy_pass": true,
+        "policy_statuses": [
+          "non_authoritative_source"
+        ],
+        "post_fusion_information_need_coverage": 0.0,
+        "post_fusion_query_route_coverage": null,
+        "pre_fusion_information_need_coverage": 0.0,
+        "pre_fusion_query_route_coverage": null,
+        "pre_fusion_retrieved_evidence_ids": [],
+        "processor_fallback_reason": null,
+        "query": "我在网上翻到一份演示用的地区政策资料，版本好像是旧的，我能拿它当现在海关政策的权威结论吗？",
+        "query_plan_mode": null,
+        "query_variants": [],
+        "relevant": [
+          "eval-policy-us.md",
+          "eval-policy-eu.md",
+          "eval-policy-cn.md"
+        ],
+        "retrieval_mode": "legacy",
+        "retrieved": [
+          "eval-policy-us.md",
+          "eval-policy-battery.md",
+          "eval-policy-material.md"
+        ],
+        "retrieved_evidence_ids": [],
+        "rewrite_decision": null,
+        "rewrite_similarity": null,
+        "split": null,
+        "unanswerable_pass": null
+      },
+      {
+        "all_evidence_recall": 0.0,
+        "candidate_count": 24,
+        "case_id": "human-mh-001",
+        "constraint_recall": null,
+        "evidence_ranks": {
+          "digital-accessories.md#当前热卖款型#b365042193b2": 1
+        },
+        "evidence_recall": 0.5,
+        "expected_unanswerable": false,
+        "fusion_information_need_loss": 0.0,
+        "fusion_provenance": [],
+        "gold_evidence_ids": [
+          "digital-accessories.md#当前热卖款型#b365042193b2",
+          "cross-border-guide.md#材质与合规#f6bfddbb08fc"
+        ],
+        "hard_negative_above_positive": false,
+        "hard_negative_hit": false,
+        "hop_recall": 0.0,
+        "latency_ms": 110.304,
+        "near_duplicate_decisions": [],
+        "path_success": null,
+        "post_fusion_information_need_coverage": 0.0,
+        "post_fusion_query_route_coverage": null,
+        "pre_fusion_information_need_coverage": 0.0,
+        "pre_fusion_query_route_coverage": null,
+        "pre_fusion_retrieved_evidence_ids": [
+          "digital-accessories.md#当前热卖款型#b365042193b2"
+        ],
+        "processor_fallback_reason": null,
+        "query": "我要买个充电宝带着飞日本",
+        "query_plan_mode": null,
+        "query_variants": [],
+        "relevant": [
+          "digital-accessories.md",
+          "cross-border-guide.md"
+        ],
+        "retrieval_mode": "legacy",
+        "retrieved": [
+          "digital-accessories.md",
+          "eval-digital-accessories-避坑与合规.md",
+          "eval-digital-accessories-价格与预算.md"
+        ],
+        "retrieved_evidence_ids": [
+          "digital-accessories.md#当前热卖款型#b365042193b2"
+        ],
+        "rewrite_decision": null,
+        "rewrite_similarity": null,
+        "split": null,
+        "unanswerable_pass": null
+      },
+      {
+        "all_evidence_recall": 0.0,
+        "candidate_count": 24,
+        "case_id": "human-mh-002",
+        "constraint_recall": null,
+        "evidence_ranks": {
+          "travel-gear.md#避坑点#da17c26d967c": 1
+        },
+        "evidence_recall": 0.5,
+        "expected_unanswerable": false,
+        "fusion_information_need_loss": 1.0,
+        "fusion_provenance": [],
+        "gold_evidence_ids": [
+          "travel-gear.md#避坑点#da17c26d967c",
+          "travel-gear.md#当前热卖款型#36bc545a10ef"
+        ],
+        "hard_negative_above_positive": false,
+        "hard_negative_hit": true,
+        "hop_recall": 0.0,
+        "latency_ms": 105.76,
+        "near_duplicate_decisions": [],
+        "path_success": null,
+        "post_fusion_information_need_coverage": 0.0,
+        "post_fusion_query_route_coverage": null,
+        "pre_fusion_information_need_coverage": 1.0,
+        "pre_fusion_query_route_coverage": null,
+        "pre_fusion_retrieved_evidence_ids": [
+          "travel-gear.md#避坑点#da17c26d967c",
+          "travel-gear.md#当前热卖款型#36bc545a10ef"
+        ],
+        "processor_fallback_reason": null,
+        "query": "我想买个登机箱，再配一个折叠背包带上任意航空公司的飞机",
+        "query_plan_mode": null,
+        "query_variants": [],
+        "relevant": [
+          "travel-gear.md"
+        ],
+        "retrieval_mode": "legacy",
+        "retrieved": [
+          "travel-gear.md",
+          "eval-travel-gear-价格与预算.md",
+          "eval-travel-gear-避坑与合规.md"
+        ],
+        "retrieved_evidence_ids": [
+          "travel-gear.md#避坑点#da17c26d967c"
+        ],
+        "rewrite_decision": null,
+        "rewrite_similarity": null,
+        "split": null,
+        "unanswerable_pass": null
+      }
+    ],
+    "reasons": [
+      "Recall@3 0.7193 < 0.75",
+      "Precision@3 0.2982 < 0.45"
+    ],
+    "status": "COMPLETED",
+    "worktree_sha256_at_end": "69d98a9da9252370ca38f15c6c7a3bd9be80f150fa43a8262bce3d54255da3c7"
+  },
+  "models": {
+    "embedding_configured": "qwen3.7-text-embedding-flash",
+    "embedding_dimension_configured": "1024",
+    "fallback_configured": "qwen-plus",
+    "judge_requested": "deepseek-v4.1-flash",
+    "main_configured": "deepseek-v4.1-flash",
+    "reranker_configured": "qwen3.7-text-rerank"
+  },
+  "parameters": {
+    "dry_run": false,
+    "formal_gates": false,
+    "gate_scope": "diagnostic",
+    "requested_strategies": [
+      "legacy"
+    ],
+    "rrf_k": 60,
+    "thresholds": {
+      "empty_accuracy": null,
+      "filter_accuracy": null,
+      "max_hard_constraint_violation_rate": null,
+      "max_latency_p95_ms": null,
+      "max_rewrite_drift_rate": null,
+      "mrr": 0.65,
+      "ndcg": 0.7,
+      "policy_rejection_accuracy": null,
+      "precision": 0.45,
+      "recall": 0.75,
+      "required_recall_strategies": null
+    },
+    "top_k": 3
+  },
+  "prompts": {
+    "file_count": 1,
+    "files": [
+      {
+        "bytes": 13457,
+        "path": "app\\application\\prompts\\globex.yml",
+        "sha256": "761a327db8d7965238beb450e378d2d1051d6ec129fb6bfbc4916af5f02e57b7"
+      }
+    ],
+    "sha256": "0f4e90fe4e3d5fe927e6d0ef569485888771591a0e8b8f0808d589c5f744adc9"
+  },
+  "runner": "category_recall",
+  "runtime": {
+    "dependencies": {
+      "agentscope": "2.0.9",
+      "httpx": "0.28.1",
+      "pyyaml": "6.0.3",
+      "qdrant-client": "1.19.1"
+    },
+    "python": "3.12.14"
+  },
+  "schema_version": 1,
+  "selection": {
+    "bucket_counts": {
+      "unspecified": 22
+    },
+    "case_ids": [
+      "blind-001",
+      "blind-002",
+      "blind-005",
+      "blind-006",
+      "blind-007",
+      "blind-008",
+      "blind-010",
+      "blind-012",
+      "blind-013",
+      "blind-014",
+      "blind-016",
+      "blind-017",
+      "blind-018",
+      "blind-019",
+      "blind-021",
+      "blind-025",
+      "blind-027",
+      "blind-028",
+      "blind-029",
+      "blind-030",
+      "human-mh-001",
+      "human-mh-002"
+    ],
+    "complete_split": true,
+    "only": null,
+    "selected_content_sha256": "95724ce00a698e5bbd1751a1c4fd8deaac0238509a13898380f60635b157eabe",
+    "selected_count": 22,
+    "source_count": 22,
+    "split": "all",
+    "split_count": 22,
+    "split_counts": {
+      "unlabelled": 22
+    }
+  },
+  "services_configured": {
+    "embedding_endpoint": "https://ws-f7ttk20hw8j6xq54.cn-beijing.maas.aliyuncs.com/compatible-mode/v1",
+    "llm_endpoint": "https://ws-f7ttk20hw8j6xq54.cn-beijing.maas.aliyuncs.com/compatible-mode/v1",
+    "qdrant_category_collection": "globex_category_kb",
+    "qdrant_endpoint": "local_embedded",
+    "qdrant_product_collection": "globex_products",
+    "reranker_endpoint": "https://ws-f7ttk20hw8j6xq54.cn-beijing.maas.aliyuncs.com/api/v1/services/rerank/text-rerank/text-rerank"
+  },
+  "started_at": "2026-10-02T15:14:06.970210+00:00"
+}
