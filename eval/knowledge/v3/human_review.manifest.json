@@ -5,13 +5,13 @@
     "human_multihop_queries.jsonl": "c7c7ce599a088ee858335a30032caaabf1e34ca0444d3d37a15c2c7853568844"
   },
   "stage_b_label_sources": {
-    "stage_b_labels.jsonl": "130da5d8fdffa72b60abf5b3f1ec8424b87988ac774d5455a5c1e82cfb3a51c4",
+    "stage_b_labels.jsonl": "5dac44a241b94921440a7412f0fe6d34636733a7040ecc01333a993f510fad76",
     "stage_b_human_multihop_labels.jsonl": "5e770117aa6da5a41d23b7b3726ab83fd66698945c2c8c406f6d87cb65fa06fd"
   },
   "frozen_query_sha256": "01853bec7593d7b0f2b1b66e3e405e48dacd258e43237fe3b53d37ab89706342",
-  "stage_b_labels_sha256": "d184548af4e70c9aee9fd08d0ad106e775775096c02e9728b229360961526ca8",
+  "stage_b_labels_sha256": "21cd7ef12aaf479e7e6cd69f5383bb9bb30c92ab771c7648574477e174a8b715",
   "candidate_count": 32,
   "keep_count": 22,
   "reject_count": 10,
-  "review_file_sha256": "9c7d6e4ae00bcc8e9b19dff3562f03123313d3dc65af7aecf6a93e3ad3fd3cbd"
+  "review_file_sha256": "c4ab01d5225bbe54681dd003c92d4f02e353bc1288f7b59a8bf8c226463a7f85"
 }

@@ -5,7 +5,10 @@ from __future__ import annotations
 import csv
 import hashlib
 import json
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from app.infrastructure.settings import PROJECT_ROOT
 
@@ -56,10 +59,13 @@ def main() -> None:
         relevant = row.get("relevant") or []
         grades = row.get("graded_relevance") or {}
         evidence = row.get("evidence") or []
+        derived_relevant = [source for source, grade in grades.items() if isinstance(grade, int) and grade >= 2]
+        if relevant != derived_relevant:
+            problems.append(
+                f"{case_id}: relevant 必须严格由 graded_relevance>=2 派生；"
+                f"期望 {derived_relevant}，实际 {relevant}",
+            )
         if row.get("label_decision") == "keep" and row.get("answerability") != "unanswerable":
-            for source in relevant:
-                if grades.get(source) != 3:
-                    problems.append(f"{case_id}: relevant {source} 必须 grade=3")
             if not relevant or not evidence:
                 problems.append(f"{case_id}: 可回答 keep 条目缺少 relevant/evidence")
         for source, grade in grades.items():

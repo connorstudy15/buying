@@ -31,6 +31,8 @@ def primary_kind(row: dict) -> str:
 
 def enrich(row: dict) -> tuple[dict, list[dict]]:
     grades = row.get("graded_relevance") or {}
+    # graded_relevance 是唯一文档级真值；relevant 只是兼容旧 runner 的确定性派生视图。
+    canonical_relevant = [source for source, grade in grades.items() if isinstance(grade, int) and grade >= 2]
     issues: list[dict] = []
     evidence_ground_truth: list[dict] = []
     for item in row.get("evidence") or []:
@@ -65,8 +67,8 @@ def enrich(row: dict) -> tuple[dict, list[dict]]:
         negative_issues: list[str] = []
         if grade is None:
             negative_issues.append("hard_negative_grade_missing")
-        elif grade == 3:
-            negative_issues.append("hard_negative_cannot_be_grade_3")
+        elif grade >= 2:
+            negative_issues.append("hard_negative_cannot_be_positive_grade")
         if negative_issues:
             issues.append({
                 "id": row["id"], "query": row["query"], "source": source,
@@ -74,13 +76,10 @@ def enrich(row: dict) -> tuple[dict, list[dict]]:
                 "quote": item.get("reason", ""),
             })
 
-    relevant_sources = set(row.get("relevant") or [])
-    grade3_sources = {source for source, grade in grades.items() if grade == 3}
-    evidence_sources = {item["source"] for item in evidence_ground_truth if item.get("grade") == 3}
+    stored_relevant = list(row.get("relevant") or [])
     for issue_name, sources in (
-        ("relevant_without_grade_3", relevant_sources - grade3_sources),
-        ("grade_3_not_in_relevant", grade3_sources - relevant_sources),
-        ("relevant_without_evidence", relevant_sources - evidence_sources),
+        ("stored_relevant_missing_positive", set(canonical_relevant) - set(stored_relevant)),
+        ("stored_relevant_contains_non_positive", set(stored_relevant) - set(canonical_relevant)),
     ):
         for source in sorted(sources):
             issues.append({
@@ -90,6 +89,7 @@ def enrich(row: dict) -> tuple[dict, list[dict]]:
 
     result = {
         **row,
+        "relevant": canonical_relevant,
         "schema_version": "knowledge-eval-v3-evidence-1",
         "primary_kind": primary_kind(row),
         "tags": sorted(set([str(row.get("original_kind") or "knowledge")]
@@ -97,7 +97,8 @@ def enrich(row: dict) -> tuple[dict, list[dict]]:
                            + (["implicit_constraint"] if row.get("original_kind") == "implicit_constraint_multi_hop" else []))),
         "evidence_ground_truth": evidence_ground_truth,
         "hard_negatives": hard_negatives,
-        "label_status": "pending_human_review",
+        "label_status": "frozen_v1",
+        "positive_grade_threshold": 2,
     }
     return result, issues
 

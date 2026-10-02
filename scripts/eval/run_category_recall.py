@@ -112,7 +112,7 @@ async def run_dataset(knowledge_base, cases: list[dict], top_k: int, *, observat
             case.get("expected_unanswerable") or case.get("answerability") == "unanswerable"
         )
         evidence = case.get("evidence_ground_truth") or []
-        gold_evidence_ids = [item["evidence_id"] for item in evidence if item.get("grade") == 3]
+        gold_evidence_ids = [item["evidence_id"] for item in evidence if int(item.get("grade") or 0) >= 2]
         retrieved_evidence_ids, evidence_ranks = matched_evidence_ids(hits, evidence)
         evidence_recall = (
             recall_at_k(retrieved_evidence_ids, gold_evidence_ids, len(retrieved_evidence_ids) or top_k)
@@ -125,7 +125,7 @@ async def run_dataset(knowledge_base, cases: list[dict], top_k: int, *, observat
         hard_negative_sources = [item["source"] for item in case.get("hard_negatives") or []]
         hard_negative_hit = bool(set(retrieved) & set(hard_negative_sources)) if hard_negative_sources else None
         first_negative_rank = next((i for i, src in enumerate(retrieved, 1) if src in hard_negative_sources), None)
-        positive_sources = {source for source, grade in (case.get("graded_relevance") or {}).items() if grade == 3}
+        positive_sources = {source for source, grade in (case.get("graded_relevance") or {}).items() if grade >= 2}
         first_positive_rank = next((i for i, src in enumerate(retrieved, 1) if src in positive_sources), None)
         hard_negative_above_positive = (
             first_negative_rank is not None and (first_positive_rank is None or first_negative_rank < first_positive_rank)
@@ -138,7 +138,7 @@ async def run_dataset(knowledge_base, cases: list[dict], top_k: int, *, observat
         for hop in retrievable_hops:
             hop_evidence = [
                 item["evidence_id"] for item in evidence
-                if item.get("grade") == 3 and hop["id"] in (item.get("supports") or [])
+                if int(item.get("grade") or 0) >= 2 and hop["id"] in (item.get("supports") or [])
             ]
             if hop_evidence:
                 hop_scores.append(float(set(hop_evidence).issubset(retrieved_evidence_ids)))

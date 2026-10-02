@@ -2,22 +2,25 @@
 
 ## 相关性等级
 
-- `grade=3`：答案必需或可直接支撑结论的证据；属于正例。
-- `grade=2`：实质相关、可提供部分支持，但单独不足以回答完整问题。
-- `grade=1`：主题或词面相近，但不能支撑答案。
-- `grade=0`：无关、冲突或明显错误范围。
+- `grade=3 (core)`：直接、核心地支撑答案。
+- `grade=2 (supporting)`：能够实质支撑答案的一部分，但通常不能单独完成回答。
+- `grade=1 (topical but non-supporting)`：主题或词面相关，但不能支撑答案。
+- `grade=0 (irrelevant)`：无关、冲突或错误范围。
 
-`relevant` 必须且只能列出本题的 `grade=3` 文档。证据级真值放在
-`evidence_ground_truth`，其稳定 ID 由 `source + section + quote` 生成，不依赖 chunk 边界。
+正例阈值固定为 `grade >= 2`。
+
+`graded_relevance` 是唯一的文档级 ground truth。`relevant` 不是第二套人工标注，必须由
+`graded_relevance` 中所有 `grade >= 2` 的 source 按原顺序自动生成，仅用于兼容旧 runner。
+任何不一致都由生成器/校验器阻断。证据级真值放在 `evidence_ground_truth`，其稳定 ID
+由 `source + section + quote` 生成，不依赖 chunk 边界。
 
 ## Hard negative
 
 `hard_negative` 是独立判断，不等于 `grade=1`。它表示该候选很容易被系统误召回或误用：
 
-- 可以是 `grade=0`：词面相似但完全错误；
+- 可以是 `grade=0`：词面相似但无关；
 - 可以是 `grade=1`：同主题但不能支持答案；
-- 可以是 `grade=2`：只支持局部结论，若被当成完整答案会误导；
-- 不允许是 `grade=3`。
+- 不允许是 `grade=2/3`，因为正例阈值已经固定为 `grade >= 2`。
 
 因此同时报告 hard-negative 命中率，以及 hard negative 是否排在首个正证据之前。
 

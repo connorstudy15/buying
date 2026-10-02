@@ -1,0 +1,39 @@
+{
+  "benchmark": "knowledge-eval-v1",
+  "status": "frozen",
+  "frozen_at": "2026-10-02",
+  "freeze_policy": "Do not edit v1 cases in place. Add regression cases separately or create a new benchmark version.",
+  "document_ground_truth": {
+    "canonical_field": "graded_relevance",
+    "grades": {
+      "3": "core",
+      "2": "supporting",
+      "1": "topical_but_non_supporting",
+      "0": "irrelevant"
+    },
+    "positive_threshold": 2,
+    "relevant_field": "derived_compatibility_view_of_grade_gte_2"
+  },
+  "counts": {
+    "stage_b_candidates": 32,
+    "kept": 22,
+    "rejected": 10,
+    "primary_kind": {
+      "single_evidence": 12,
+      "cross_evidence": 4,
+      "unanswerable": 3,
+      "policy_boundary": 1,
+      "implicit_constraint_multi_hop": 2
+    }
+  },
+  "review_exceptions": 0,
+  "hash_algorithm": "sha256_after_crlf_to_lf_normalization",
+  "sha256": {
+    "stage_b_labels.jsonl": "5dac44a241b94921440a7412f0fe6d34636733a7040ecc01333a993f510fad76",
+    "stage_b_human_multihop_labels.jsonl": "5e770117aa6da5a41d23b7b3726ab83fd66698945c2c8c406f6d87cb65fa06fd",
+    "knowledge_eval_candidates.jsonl": "0b9276b0b573f46352e01878d3d66a3ee2dbfbb23b8d3ac8a29eb322c49708f1",
+    "LABELING_CONTRACT.md": "94f3f095ccdcefcf389ad3fac6d7712158b4f1bfc2a99c11332274ad7f784a65",
+    "human_review.csv": "1389fc045a4f643d556f85bb87870491e86a8bbf84c04aa061791ab203f78386",
+    "human_review.manifest.json": "96e0bd003f90fdd08a62f6298efb300c81bed86de9e34fdbaf49aa95b2abf6b8"
+  }
+}

@@ -2,7 +2,7 @@
 
 ## 状态
 
-阶段 A 与机器预标注阶段 B 已完成，仍需人工审批才能成为最终金标。`blind_queries*.jsonl` 只有问题和场景，不包含答案，不应直接交给召回评测器。
+阶段 A、阶段 B 与口径审核已完成。`knowledge-eval-v1` 已于 2026-10-02 冻结；冻结范围和文件哈希见 `FROZEN_V1_MANIFEST.json`。`blind_queries*.jsonl` 只有问题和场景，不包含答案，不应直接交给召回评测器。
 
 ## 隔离规则
 
@@ -28,10 +28,11 @@
 - `blind_multihop_queries.*` 与 `stage_b_multihop_labels.jsonl`：被人工题替换的机器增补实验，仅保留审计，不再进入正式审批表。
 - `human_review.csv`：合并原阶段 B 与多跳增补后的人工审批表；当前 32 个候选中 22 条进入审批，10 条被机器预标为 reject。
 - `LABELING_CONTRACT.md`：统一 `grade=0..3`、hard negative 与各分桶指标的定义。
-- `knowledge_eval_candidates.jsonl`：由保留题编译出的 evidence-level 可执行候选集；当前均为 `pending_human_review`，不能冒充正式金标。
+- `knowledge_eval_candidates.jsonl`：由保留题编译出的 evidence-level 可执行金标集；当前均为 `frozen_v1`。
 - `evidence_mapping_review.csv`：原文、章节或等级契约无法自动确认时的异常清单；当前只有表头，表示机械映射没有发现冲突。
+- `FROZEN_V1_MANIFEST.json`：冻结版本、唯一真值规则、样本分布与关键文件 SHA-256。后续新增题不得原地改写 v1，应进入新的增量集或升级版本。
 
-当前 22 条候选的分布为：single evidence 13、cross evidence 3、unanswerable 3、policy boundary 1、implicit-constraint multi-hop 2。它适合先跑开发基线，但尚未达到建议的正式集规模；尤其 semantic/paraphrase、hard-negative 专桶、context-dependent 和纯知识 true multi-hop 仍需后续补题。
+当前 22 条候选的分布为：single evidence 12、cross evidence 4、unanswerable 3、policy boundary 1、implicit-constraint multi-hop 2。`blind-008` 经阶段 B 审核由 single evidence 修正为 cross evidence；盲生成原始文件不回写，保留初始分类供审计。它适合先跑开发基线，但尚未达到建议的正式集规模；尤其 semantic/paraphrase、hard-negative 专桶、context-dependent 和纯知识 true multi-hop 仍需后续补题。
 
 ## 阶段 B 输出要求
 
@@ -43,4 +44,4 @@
 uv run python scripts/eval/enrich_knowledge_v3_labels.py
 ```
 
-人工审批前仅允许 `--dry-run`；审批后才把候选集作为基线输入。跨到商品检索的多跳题在 Query Planner/Agent trace 接入前，`Path Success` 与 `Constraint Recall` 必须保持 `n/a`。
+冻结后的 v1 可以作为基线输入。跨到商品检索的多跳题在 Query Planner/Agent trace 接入前，`Path Success` 与 `Constraint Recall` 必须保持 `n/a`。
