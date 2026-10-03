@@ -1,0 +1,37 @@
+{
+  "schema_version": "knowledge-eval-v5-1",
+  "source_reviewed_candidates_sha256": "13fb22fa716cc00adc775ad9ce66ac3a46a80d458750fac8f4d575f8753705f9",
+  "source_phase_a_sha256": "30b2ce8acf7a83327fef0c92fca69eb93138a7da8fc20afab35e0303ea6b6490",
+  "source_phase_b_sha256": "73e4551f862b1a3151d2665f6a21c19db952e5d5fcbc3fc7faf6c0441ac74a95",
+  "outputs": {
+    "knowledge_eval_core_61.jsonl": {
+      "count": 61,
+      "sha256": "eec721e9eae52b18139ffa4ae4aa87001649f2d45c6e358babaaf2cfc73083eb"
+    },
+    "knowledge_eval_partial_coverage_2.jsonl": {
+      "count": 2,
+      "sha256": "cb10a8b2cd6ab5b08cbc41c19000988a302143a21d81e43a95a5c188bc91da15"
+    },
+    "knowledge_eval_knowledge_gap_4.jsonl": {
+      "count": 4,
+      "sha256": "11efdba546ec4f7495bc1ae479a05281c488304e37896a36381ab6a11fb4ab78"
+    }
+  },
+  "adjudication": {
+    "stable_core_add": [
+      "v4-045",
+      "v4-060"
+    ],
+    "partial_coverage": [
+      "v4-044",
+      "v4-047"
+    ],
+    "knowledge_gap": [
+      "v4-r009",
+      "v4-r011",
+      "v4-r012",
+      "v4-r014"
+    ],
+    "v4-r009_override": "n2 packaging methods lack grade>=2 evidence; moved to partial knowledge_gap"
+  }
+}

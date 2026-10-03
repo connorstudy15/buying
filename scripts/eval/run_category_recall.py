@@ -40,6 +40,7 @@ from scripts.eval.metrics import (  # noqa: E402
     Aggregate,
     QueryResult,
     Thresholds,
+    attach_partial_coverage_metrics,
     evaluate,
     gate,
     graded_ndcg_at_k,
@@ -55,6 +56,10 @@ from scripts.eval.run_manifest import (  # noqa: E402
 )
 
 _DATASET = Path("eval/category_recall.jsonl")
+_COVERAGE_VALUES = {"complete", "partial", "none"}
+_MISSING_REASONS = {
+    None, "knowledge_gap", "missing_user_context", "realtime_required", "external_authority_required",
+}
 
 
 def formal_thresholds() -> Thresholds:
@@ -66,11 +71,66 @@ def formal_thresholds() -> Thresholds:
 
 
 def load_dataset(path: Path) -> list[dict]:
-    return [
+    rows = [
         json.loads(raw)
         for raw in path.read_text(encoding="utf-8").splitlines()
         if raw.strip()
     ]
+    for row in rows:
+        validate_coverage_contract(row)
+    return rows
+
+
+def coverage_status(case: dict) -> str:
+    """兼容旧评测集；新数据显式使用 complete/partial/none。"""
+    value = case.get("answerability")
+    if value in _COVERAGE_VALUES:
+        return str(value)
+    if case.get("expected_unanswerable") or value == "unanswerable":
+        return "none"
+    return "complete"
+
+
+def validate_coverage_contract(case: dict) -> None:
+    """校验 v5 覆盖契约；没有 required_information_needs 的旧数据继续兼容。"""
+    needs = case.get("required_information_needs")
+    if needs is None:
+        return
+    case_id = str(case.get("id") or case.get("query") or "unknown")
+    status = coverage_status(case)
+    if case.get("answerability") not in _COVERAGE_VALUES:
+        raise ValueError(f"{case_id}: 新覆盖契约的 answerability 必须是 complete/partial/none")
+    reason = case.get("missing_reason")
+    if reason not in _MISSING_REASONS:
+        raise ValueError(f"{case_id}: missing_reason 非法：{reason}")
+    if status == "complete" and reason is not None:
+        raise ValueError(f"{case_id}: complete 不得声明 missing_reason")
+    if status != "complete" and reason is None:
+        raise ValueError(f"{case_id}: partial/none 必须声明 missing_reason")
+    if not isinstance(needs, list) or not needs:
+        raise ValueError(f"{case_id}: required_information_needs 必须为非空数组")
+    ids = [str(item.get("need_id") or "") for item in needs]
+    if not all(ids) or len(ids) != len(set(ids)):
+        raise ValueError(f"{case_id}: need_id 缺失或重复")
+    evidence_ids = {
+        str(item.get("evidence_id")) for item in (case.get("evidence_ground_truth") or [])
+        if item.get("evidence_id")
+    }
+    available = 0
+    for need in needs:
+        gold = need.get("gold_evidence_ids")
+        if not isinstance(gold, list):
+            raise ValueError(f"{case_id}/{need.get('need_id')}: gold_evidence_ids 必须是数组")
+        unknown = set(map(str, gold)) - evidence_ids
+        if unknown:
+            raise ValueError(f"{case_id}/{need.get('need_id')}: 引用了不存在的 evidence_id：{sorted(unknown)}")
+        available += bool(gold)
+    if status == "complete" and available != len(needs):
+        raise ValueError(f"{case_id}: complete 要求每个 need 都有 gold evidence")
+    if status == "partial" and not 0 < available < len(needs):
+        raise ValueError(f"{case_id}: partial 要求部分但非全部 need 有 gold evidence")
+    if status == "none" and available:
+        raise ValueError(f"{case_id}: none 不得包含可用 gold evidence")
 
 
 def load_baseline(path: Path | None) -> dict[str, float] | None:
@@ -96,8 +156,14 @@ def source_of(item) -> str:
     return item.document_id
 
 
-def information_need_groups(case: dict, gold_evidence_ids: list[str]) -> list[set[str]]:
+def information_need_groups(case: dict, gold_evidence_ids: list[str]) -> list[set[str] | None]:
     """把冻结金标映射成必须覆盖的信息需求；不使用模型自报的 need ID 充当真值。"""
+    declared_needs = case.get("required_information_needs")
+    if declared_needs:
+        return [
+            (set(map(str, need.get("gold_evidence_ids") or [])) or None)
+            for need in declared_needs
+        ]
     if not gold_evidence_ids:
         return []
     evidence = case.get("evidence_ground_truth") or []
@@ -119,11 +185,14 @@ def information_need_groups(case: dict, gold_evidence_ids: list[str]) -> list[se
     return [set(gold_evidence_ids)]
 
 
-def information_need_coverage(retrieved_evidence_ids: list[str], groups: list[set[str]]) -> float | None:
+def information_need_coverage(
+    retrieved_evidence_ids: list[str],
+    groups: list[set[str] | None],
+) -> float | None:
     if not groups:
         return None
     retrieved = set(retrieved_evidence_ids)
-    return sum(group.issubset(retrieved) for group in groups) / len(groups)
+    return sum(bool(group) and group.issubset(retrieved) for group in groups) / len(groups)
 
 
 async def run_dataset(
@@ -138,7 +207,10 @@ async def run_dataset(
     candidate_cache: dict | None = None,
     per_need_reranker=None,
 ) -> Aggregate:
+    for case in cases:
+        validate_coverage_contract(case)
     results: list[QueryResult] = []
+    partial_results: list[QueryResult] = []
     empty_results: list[bool] = []
     policy_results: list[bool] = []
     for case in cases:
@@ -159,9 +231,8 @@ async def run_dataset(
                 retrieved.append(src)
 
         relevant = case.get("relevant") or []
-        expected_unanswerable = bool(
-            case.get("expected_unanswerable") or case.get("answerability") == "unanswerable"
-        )
+        case_coverage = coverage_status(case)
+        expected_unanswerable = case_coverage == "none"
         evidence = case.get("evidence_ground_truth") or []
         gold_evidence_ids = [item["evidence_id"] for item in evidence if int(item.get("grade") or 0) >= 2]
         retrieved_evidence_ids, evidence_ranks = matched_evidence_ids(hits, evidence)
@@ -205,6 +276,8 @@ async def run_dataset(
         path_success = bool(hop_scores and all(hop_scores)) if hops and len(retrievable_hops) == len(hops) else None
         observation = {
             "case_id": case.get("id"), "query": case["query"], "split": case.get("split"),
+            "answerability": case_coverage,
+            "missing_reason": case.get("missing_reason"),
             "retrieved": retrieved, "relevant": relevant,
             "expected_unanswerable": expected_unanswerable,
             "unanswerable_pass": not has_answerable_knowledge(hits) if expected_unanswerable else None,
@@ -212,7 +285,8 @@ async def run_dataset(
             "gold_evidence_ids": gold_evidence_ids,
             "evidence_ranks": evidence_ranks,
             "evidence_recall": evidence_recall,
-            "all_evidence_recall": all_evidence_recall,
+            "available_evidence_recall": evidence_recall if case_coverage == "partial" else None,
+            "all_evidence_recall": all_evidence_recall if case_coverage == "complete" else None,
             "hard_negative_hit": hard_negative_hit,
             "hard_negative_above_positive": hard_negative_above_positive,
             "hop_recall": hop_recall,
@@ -238,6 +312,9 @@ async def run_dataset(
             "post_fusion_query_route_coverage": outcome.trace.post_fusion_query_route_coverage,
             "pre_fusion_information_need_coverage": pre_need_coverage,
             "post_fusion_information_need_coverage": post_need_coverage,
+            "missing_need_detected": None,
+            "false_complete_answer": None,
+            "correct_escalation": None,
             "fusion_information_need_loss": (
                 None
                 if pre_need_coverage is None or post_need_coverage is None
@@ -260,8 +337,7 @@ async def run_dataset(
             # 命中目标政策文档且每条都被标为不可作确定事实，才算具备可执行拒答证据。
             policy_results.append(bool(statuses) and all(status != "fact_eligible" for status in statuses))
             observation.update(policy_statuses=statuses, policy_pass=policy_results[-1])
-        results.append(
-            QueryResult(
+        query_result = QueryResult(
                 query=case["query"],
                 retrieved=retrieved,
                 relevant=relevant,
@@ -274,10 +350,12 @@ async def run_dataset(
                     "split": str(case.get("split") or "ALL"),
                     "primary_kind": str(case.get("primary_kind") or case.get("original_kind") or case.get("kind") or "knowledge"),
                     "query_plan_mode": str(outcome.trace.query_plan_mode or outcome.trace.mode),
+                    "answerability": case_coverage,
+                    "missing_reason": str(case.get("missing_reason") or "none"),
                 },
                 latency_ms=latency_ms,
                 evidence_recall=evidence_recall,
-                all_evidence_recall=all_evidence_recall,
+                all_evidence_recall=all_evidence_recall if case_coverage == "complete" else None,
                 hop_recall=hop_recall,
                 path_success=path_success,
                 constraint_recall=None,
@@ -289,9 +367,15 @@ async def run_dataset(
                 ),
                 pre_fusion_information_need_coverage=pre_need_coverage,
                 post_fusion_information_need_coverage=post_need_coverage,
-            ),
-        )
-    return evaluate(results, k=top_k, empty_results=empty_results, policy_results=policy_results)
+                available_evidence_recall=evidence_recall if case_coverage == "partial" else None,
+                information_need_coverage=post_need_coverage if case_coverage == "partial" else None,
+            )
+        if case_coverage == "partial":
+            partial_results.append(query_result)
+        else:
+            results.append(query_result)
+    aggregate = evaluate(results, k=top_k, empty_results=empty_results, policy_results=policy_results)
+    return attach_partial_coverage_metrics(aggregate, partial_results)
 
 
 def render_report(
@@ -328,6 +412,11 @@ def render_report(
         f"| Pre-fusion information-need coverage | {'n/a' if agg.pre_fusion_information_need_coverage is None else f'{agg.pre_fusion_information_need_coverage:.3f}'} | 子查询候选池覆盖率 |",
         f"| Post-fusion information-need coverage | {'n/a' if agg.post_fusion_information_need_coverage is None else f'{agg.post_fusion_information_need_coverage:.3f}'} | 最终 Top-K 覆盖率 |",
         f"| Fusion information-need loss | {'n/a' if agg.fusion_information_need_loss is None else f'{agg.fusion_information_need_loss:.3f}'} | 越低越好 |",
+        f"| Partial: Available Evidence Recall | {'n/a' if agg.available_evidence_recall is None else f'{agg.available_evidence_recall:.3f}'} | 只评价 KB 已有证据 |",
+        f"| Partial: Information Need Coverage | {'n/a' if agg.partial_information_need_coverage is None else f'{agg.partial_information_need_coverage:.3f}'} | 分母包含缺失 need |",
+        f"| Partial: Missing Need Detection | {'n/a' if agg.missing_need_detection_accuracy is None else f'{agg.missing_need_detection_accuracy:.3f}'} | 需要 Agent 最终回答 trace |",
+        f"| Partial: False Complete Answer Rate | {'n/a' if agg.false_complete_answer_rate is None else f'{agg.false_complete_answer_rate:.3f}'} | 越低越好；需要 Agent 最终回答 trace |",
+        f"| Partial: Correct Escalation Rate | {'n/a' if agg.correct_escalation_rate is None else f'{agg.correct_escalation_rate:.3f}'} | 需要 Agent 最终动作 trace |",
         "",
         f"门禁结论：**{verdict}**",
         "",
@@ -352,6 +441,20 @@ def render_report(
             f"| {r.query} | {r.recall:.2f} | {r.precision:.2f} | {r.mrr:.2f} | {r.ndcg:.2f} | "
             f"{','.join(r.retrieved) or '（空）'} | {','.join(r.relevant)} |",
         )
+    if agg.partial_per_query:
+        lines += [
+            "",
+            "## Partial Coverage 专项",
+            "",
+            "裸检索只能验证已有证据召回和 information need 覆盖；缺失识别、假装完整回答和升级动作必须由端到端 Agent runner 评测。",
+            "",
+            "| query | Available Evidence Recall | Information Need Coverage | 召回文档 |",
+            "|---|---:|---:|---|",
+        ]
+        for result in agg.partial_per_query:
+            available = "n/a" if result.available_evidence_recall is None else f"{result.available_evidence_recall:.2f}"
+            coverage = "n/a" if result.information_need_coverage is None else f"{result.information_need_coverage:.2f}"
+            lines.append(f"| {result.query} | {available} | {coverage} | {','.join(result.retrieved) or '（空）'} |")
     return "\n".join(lines) + "\n"
 
 

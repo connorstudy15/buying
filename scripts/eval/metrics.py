@@ -149,6 +149,14 @@ class QueryResult:
     graded_ndcg: float | None = None
     pre_fusion_information_need_coverage: float | None = None
     post_fusion_information_need_coverage: float | None = None
+    # Partial Coverage 专项：只对 KB 当前确实存在的正证据算 Recall；分母不包含缺失证据。
+    available_evidence_recall: float | None = None
+    # 所有必要 information needs 中，最终被有效证据覆盖的比例；缺失 gold 的 need 固定记 0。
+    information_need_coverage: float | None = None
+    # 以下三个指标需要观察 Agent 最终回答/动作。裸检索 runner 必须保持 None，不能伪造。
+    missing_need_detected: bool | None = None
+    false_complete_answer: bool | None = None
+    correct_escalation: bool | None = None
 
 
 @dataclass
@@ -205,6 +213,16 @@ class Aggregate:
     pre_fusion_information_need_coverage: float | None = None
     post_fusion_information_need_coverage: float | None = None
     fusion_information_need_loss: float | None = None
+    partial_coverage_count: int = 0
+    available_evidence_recall: float | None = None
+    partial_information_need_coverage: float | None = None
+    missing_need_detection_count: int = 0
+    missing_need_detection_accuracy: float | None = None
+    false_complete_answer_count: int = 0
+    false_complete_answer_rate: float | None = None
+    correct_escalation_count: int = 0
+    correct_escalation_rate: float | None = None
+    partial_per_query: list[QueryResult] = field(default_factory=list)
 
 
 def evaluate(
@@ -381,6 +399,47 @@ def evaluate(
     )
 
 
+def attach_partial_coverage_metrics(
+    aggregate: Aggregate,
+    partial_results: Sequence[QueryResult],
+) -> Aggregate:
+    """把 Partial Coverage 指标附加到普通召回聚合，不污染标准 Recall/MRR/nDCG。
+
+    `partial_results` 的普通 recall 字段仅供逐题诊断；它们不会加入 aggregate.count，
+    也不会改变完整可回答题的发布门禁。
+    """
+    items = list(partial_results)
+    aggregate.partial_coverage_count = len(items)
+    aggregate.partial_per_query = items
+    if not items:
+        return aggregate
+
+    def mean_optional(field_name: str) -> tuple[int, float | None]:
+        values = [getattr(item, field_name) for item in items if getattr(item, field_name) is not None]
+        return len(values), (None if not values else round(sum(float(value) for value in values) / len(values), 4))
+
+    _, aggregate.available_evidence_recall = mean_optional("available_evidence_recall")
+    _, aggregate.partial_information_need_coverage = mean_optional("information_need_coverage")
+    aggregate.missing_need_detection_count, aggregate.missing_need_detection_accuracy = mean_optional(
+        "missing_need_detected",
+    )
+    aggregate.false_complete_answer_count, aggregate.false_complete_answer_rate = mean_optional(
+        "false_complete_answer",
+    )
+    aggregate.correct_escalation_count, aggregate.correct_escalation_rate = mean_optional(
+        "correct_escalation",
+    )
+    aggregate.bucket_metrics["partial_coverage"] = {
+        "count": len(items),
+        "available_evidence_recall": aggregate.available_evidence_recall,
+        "information_need_coverage": aggregate.partial_information_need_coverage,
+        "missing_need_detection_accuracy": aggregate.missing_need_detection_accuracy,
+        "false_complete_answer_rate": aggregate.false_complete_answer_rate,
+        "correct_escalation_rate": aggregate.correct_escalation_rate,
+    }
+    return aggregate
+
+
 @dataclass(frozen=True)
 class Thresholds:
     """发版门禁阈值。
@@ -412,6 +471,8 @@ def gate(
     """返回 (verdict, 原因列表)；verdict ∈ PASS / WARN / BLOCK。"""
     blocks: list[str] = []
     if agg.count == 0:
+        if agg.partial_coverage_count:
+            return "WARN", ["仅包含 Partial Coverage 专项；未执行普通 Recall/MRR/nDCG 发布门禁"]
         return "BLOCK", ["标注集为空，无法评测"]
 
     if agg.recall < thresholds.recall:

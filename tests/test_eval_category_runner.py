@@ -2,7 +2,10 @@
 """正式知识评测的拒答与政策来源门禁。"""
 from types import SimpleNamespace
 
-from scripts.eval.run_category_recall import run_dataset
+import pytest
+
+from scripts.eval.metrics import Thresholds, gate
+from scripts.eval.run_category_recall import run_dataset, validate_coverage_contract
 
 
 class FakeKnowledgeBase:
@@ -116,3 +119,78 @@ async def test_information_need_coverage_distinguishes_candidate_pool_from_final
     assert aggregate.post_fusion_information_need_coverage == 0.5
     assert aggregate.fusion_information_need_loss == 0.5
     assert observations[0]["pre_fusion_retrieved_evidence_ids"] == ["a#x", "b#x"]
+
+
+async def test_partial_coverage_is_scored_separately_from_standard_recall():
+    knowledge_base = FakeKnowledgeBase({
+        "完整题": [_hit("complete.md", 0.9, text="完整证据")],
+        "部分题": [_hit("available.md", 0.9, text="已有证据")],
+    })
+    complete = {
+        "id": "complete", "query": "完整题", "answerability": "complete", "missing_reason": None,
+        "relevant": ["complete.md"], "graded_relevance": {"complete.md": 3},
+        "evidence_ground_truth": [{
+            "evidence_id": "complete#1", "source": "complete.md", "quote": "完整证据",
+            "grade": 3, "supports": ["n1"],
+        }],
+        "required_information_needs": [{
+            "need_id": "n1", "description": "完整需求", "gold_evidence_ids": ["complete#1"],
+        }],
+    }
+    partial = {
+        "id": "partial", "query": "部分题", "answerability": "partial",
+        "missing_reason": "external_authority_required",
+        "relevant": ["available.md"], "graded_relevance": {"available.md": 3},
+        "evidence_ground_truth": [{
+            "evidence_id": "available#1", "source": "available.md", "quote": "已有证据",
+            "grade": 3, "supports": ["n1"],
+        }],
+        "required_information_needs": [
+            {"need_id": "n1", "description": "已有需求", "gold_evidence_ids": ["available#1"]},
+            {"need_id": "n2", "description": "缺失需求", "gold_evidence_ids": []},
+        ],
+    }
+    observations = []
+    aggregate = await run_dataset(knowledge_base, [complete, partial], top_k=3, observations=observations)
+
+    assert aggregate.count == 1
+    assert aggregate.recall == 1.0
+    assert aggregate.partial_coverage_count == 1
+    assert aggregate.available_evidence_recall == 1.0
+    assert aggregate.partial_information_need_coverage == 0.5
+    assert aggregate.missing_need_detection_accuracy is None
+    assert aggregate.false_complete_answer_rate is None
+    assert aggregate.correct_escalation_rate is None
+    assert observations[1]["answerability"] == "partial"
+
+
+async def test_partial_only_dataset_is_diagnostic_warn_not_empty_dataset_block():
+    knowledge_base = FakeKnowledgeBase({"部分题": [_hit("available.md", 0.9, text="已有证据")]})
+    case = {
+        "id": "partial", "query": "部分题", "answerability": "partial",
+        "missing_reason": "knowledge_gap", "relevant": ["available.md"],
+        "graded_relevance": {"available.md": 3},
+        "evidence_ground_truth": [{
+            "evidence_id": "available#1", "source": "available.md", "quote": "已有证据",
+            "grade": 3, "supports": ["n1"],
+        }],
+        "required_information_needs": [
+            {"need_id": "n1", "description": "已有", "gold_evidence_ids": ["available#1"]},
+            {"need_id": "n2", "description": "缺失", "gold_evidence_ids": []},
+        ],
+    }
+    aggregate = await run_dataset(knowledge_base, [case], top_k=3)
+    verdict, reasons = gate(aggregate, Thresholds())
+    assert aggregate.count == 0 and aggregate.partial_coverage_count == 1
+    assert verdict == "WARN"
+    assert "Partial Coverage" in reasons[0]
+
+
+def test_partial_contract_requires_some_but_not_all_needs_to_have_gold():
+    case = {
+        "id": "bad-partial", "answerability": "partial", "missing_reason": "knowledge_gap",
+        "evidence_ground_truth": [],
+        "required_information_needs": [{"need_id": "n1", "gold_evidence_ids": []}],
+    }
+    with pytest.raises(ValueError, match="partial 要求部分但非全部"):
+        validate_coverage_contract(case)
