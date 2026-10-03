@@ -16,9 +16,11 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import hashlib
 import json
 import sys
 import time
+import uuid
 from dataclasses import replace
 from datetime import datetime
 from pathlib import Path
@@ -36,6 +38,8 @@ from app.infrastructure.rag.category_knowledge import (  # noqa: E402
     policy_fact_status,
 )
 from app.infrastructure.settings import load_settings  # noqa: E402
+from app.infrastructure.langfuse_config import LangfuseConfig  # noqa: E402
+from app.infrastructure.tracing import setup_tracing, shutdown_tracing  # noqa: E402
 from scripts.eval.metrics import (  # noqa: E402
     Aggregate,
     QueryResult,
@@ -50,6 +54,7 @@ from scripts.eval.metrics import (  # noqa: E402
     recall_at_k,
 )
 from scripts.eval.knowledge_evidence import matched_evidence_ids  # noqa: E402
+from scripts.eval.langfuse_trace import EvaluationCaseTrace, result_attributes  # noqa: E402
 from scripts.eval.run_manifest import (  # noqa: E402
     SPLITS, build_manifest, finish_manifest, manifest_report, select_cases,
     validate_baseline_selection, write_manifest,
@@ -206,6 +211,11 @@ async def run_dataset(
     execute_rewrite: bool = True,
     candidate_cache: dict | None = None,
     per_need_reranker=None,
+    langfuse_enabled: bool = False,
+    evaluation_run_id: str = "",
+    evaluation_strategy: str = "",
+    dataset_hash: str = "",
+    repetition: int = 1,
 ) -> Aggregate:
     for case in cases:
         validate_coverage_contract(case)
@@ -214,13 +224,29 @@ async def run_dataset(
     empty_results: list[bool] = []
     policy_results: list[bool] = []
     for case in cases:
-        started = time.perf_counter()
-        outcome = await search_knowledge_with_trace(
-            knowledge_base, case["query"], top_k=top_k,
-            query_processor=query_processor, rrf_k=rrf_k, execute_rewrite=execute_rewrite,
-            candidate_cache=candidate_cache,
-            per_need_reranker=per_need_reranker,
+        case_trace = EvaluationCaseTrace(
+            enabled=langfuse_enabled,
+            run_id=evaluation_run_id,
+            case_id=str(case.get("id") or "unknown"),
+            strategy=evaluation_strategy or "unspecified",
+            dataset_hash=dataset_hash or "unknown",
+            answerability=coverage_status(case),
+            missing_reason=case.get("missing_reason"),
+            repetition=repetition,
+            top_k=top_k,
+            rrf_k=rrf_k,
         )
+        started = time.perf_counter()
+        try:
+            outcome = await search_knowledge_with_trace(
+                knowledge_base, case["query"], top_k=top_k,
+                query_processor=query_processor, rrf_k=rrf_k, execute_rewrite=execute_rewrite,
+                candidate_cache=candidate_cache,
+                per_need_reranker=per_need_reranker,
+            )
+        except BaseException as error:
+            case_trace.finish(error=error)
+            raise
         hits = outcome.hits
         latency_ms = (time.perf_counter() - started) * 1000
         # 同一篇文档可能命中多个 chunk：按首次出现保序去重，落到文档粒度
@@ -322,6 +348,8 @@ async def run_dataset(
             ),
             "pre_fusion_retrieved_evidence_ids": candidate_evidence_ids,
         }
+        observation["langfuse_trace_id"] = case_trace.finish(result_attributes(observation))
+        observation["evaluation_run_id"] = evaluation_run_id or None
         if observations is not None:
             observations.append(observation)
         if expected_unanswerable:
@@ -478,6 +506,10 @@ async def main(argv: list[str] | None = None) -> None:
     parser.add_argument("--formal-gates", action="store_true", help="启用正式知识集门槛：K=3、Recall/MRR/NDCG≥0.85、不可回答=100%%")
     parser.add_argument("--baseline-file", type=Path, default=None, help="批准基线 JSON；指标下降超过 2 个百分点即阻断")
     parser.add_argument("--report-dir", default="eval")
+    parser.add_argument(
+        "--langfuse", action="store_true",
+        help="把脱敏后的逐题评测 trace 发到 Langfuse；不上传 query 或知识正文",
+    )
     args = parser.parse_args(argv)
     try:
         cases, selection = select_cases(load_dataset(Path(args.dataset)), args.split)
@@ -504,6 +536,7 @@ async def main(argv: list[str] | None = None) -> None:
         runner="category_recall", dataset=Path(args.dataset), selection=selection, baseline=args.baseline_file,
         parameters={"formal_gates": args.formal_gates, "top_k": top_k, "thresholds": thresholds,
                     "requested_strategies": [args.strategy], "rrf_k": args.rrf_k, "dry_run": args.dry_run,
+                    "langfuse_enabled": args.langfuse,
                     "gate_scope": "release" if args.split == "release" and args.formal_gates else "diagnostic"},
     )
     if args.dry_run:
@@ -513,6 +546,13 @@ async def main(argv: list[str] | None = None) -> None:
     observations: list[dict] = []
     try:
         settings = load_settings()
+        if args.langfuse:
+            LangfuseConfig(
+                settings.langfuse_base_url, settings.langfuse_public_key, settings.langfuse_secret_key,
+            ).validate()
+            setup_tracing(settings)
+        evaluation_run_id = f"knowledge-{datetime.now().strftime('%Y%m%d%H%M%S')}-{uuid.uuid4().hex[:8]}"
+        dataset_hash = hashlib.sha256(Path(args.dataset).read_bytes()).hexdigest()
         knowledge_base = build_category_knowledge_base(settings)
         inserted = await bootstrap_category_knowledge(knowledge_base)
         print(f"知识库就绪（本次新增 {inserted} 篇）")
@@ -535,6 +575,8 @@ async def main(argv: list[str] | None = None) -> None:
             knowledge_base, cases, top_k, observations=observations,
             query_processor=query_processor, rrf_k=args.rrf_k,
             execute_rewrite=args.strategy != "query-decompose",
+            langfuse_enabled=args.langfuse, evaluation_run_id=evaluation_run_id,
+            evaluation_strategy=args.strategy, dataset_hash=dataset_hash,
         )
     except Exception as err:
         actual = sorted({item.get("retrieval_mode") for item in observations if item.get("retrieval_mode")})
@@ -542,6 +584,8 @@ async def main(argv: list[str] | None = None) -> None:
         write_manifest(manifest, report_path)
         report_path.write_text(f"# 品类知识库评测未完成\n\n{type(err).__name__}: {err}" + manifest_report(manifest), encoding="utf-8")
         print(f"执行失败，已保存 BLOCK 证据：{report_path}")
+        if args.langfuse:
+            shutdown_tracing()
         raise SystemExit(1) from err
     print(
         f"  Recall@{agg.k}={agg.recall:.3f}  Precision@{agg.k}={agg.precision:.3f}  MRR={agg.mrr:.3f}  "
@@ -554,6 +598,8 @@ async def main(argv: list[str] | None = None) -> None:
     stable = finish_manifest(manifest, actual_strategies=actual, gate=verdict, metrics=agg, observations=observations, reasons=reasons)
     write_manifest(manifest, report_path)
     report_path.write_text(render_report(agg, thresholds, baseline, dataset=Path(args.dataset)) + manifest_report(manifest), encoding="utf-8")
+    if args.langfuse:
+        shutdown_tracing()
     print(f"报告已写入 {report_path}")
 
     print(f"最终门禁：{manifest['execution']['gate']}" + (f"（{'；'.join(reasons)}）" if reasons else ""))

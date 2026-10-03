@@ -10,6 +10,8 @@ from dataclasses import dataclass, field, replace
 from typing import Any
 
 from agentscope.rag import KnowledgeBase
+from opentelemetry import trace
+from opentelemetry.trace import Status, StatusCode
 
 from app.application.retrieval.query_processor import QueryPlan, QueryProcessor, QueryVariant
 from app.infrastructure.rag.category_knowledge import MIN_ANSWERABLE_KNOWLEDGE_SCORE
@@ -220,22 +222,46 @@ async def _retrieve_candidates(
     """可选地复用原始候选，只用于严格配对评测；线上默认不传缓存。"""
     key = (question, depth, target_limit)
     templates = candidate_cache.get(key) if candidate_cache is not None else None
-    if templates is None:
-        templates = await retrieve_knowledge_candidates(
-            knowledge_base, question, depth, target_limit=target_limit,
-            query_id="candidate_cache", information_need_id="candidate_cache",
-            intent_group_id="candidate_cache",
-        )
-        if candidate_cache is not None:
-            candidate_cache[key] = templates
-    return [
-        KnowledgeCandidate(
-            template.item, query_id, information_need_id, template.retrieval_route,
-            template.rank_in_source, intent_group_id,
-            retrieval_rank_in_source=(template.retrieval_rank_in_source or template.rank_in_source),
-        )
-        for template in templates
-    ]
+    cache_hit = templates is not None
+    started = time.perf_counter()
+    with trace.get_tracer(__name__).start_as_current_span(
+        "knowledge.candidate_retrieval",
+        attributes={
+            "langfuse.observation.type": "span",
+            "globex.retrieval.stage": "candidate_retrieval",
+            "globex.retrieval.query_id": query_id,
+            "globex.retrieval.need_id": information_need_id,
+            "globex.retrieval.intent_group_id": intent_group_id,
+            "globex.retrieval.cache_hit": cache_hit,
+            "globex.retrieval.top_k": target_limit,
+        },
+        record_exception=False, set_status_on_exception=False,
+    ) as span:
+        try:
+            if templates is None:
+                templates = await retrieve_knowledge_candidates(
+                    knowledge_base, question, depth, target_limit=target_limit,
+                    query_id="candidate_cache", information_need_id="candidate_cache",
+                    intent_group_id="candidate_cache",
+                )
+                if candidate_cache is not None:
+                    candidate_cache[key] = templates
+            output = [
+                KnowledgeCandidate(
+                    template.item, query_id, information_need_id, template.retrieval_route,
+                    template.rank_in_source, intent_group_id,
+                    retrieval_rank_in_source=(template.retrieval_rank_in_source or template.rank_in_source),
+                )
+                for template in templates
+            ]
+            span.set_attribute("globex.retrieval.candidate_count", len(output))
+            return output
+        except BaseException as error:
+            span.set_attribute("error.type", type(error).__name__)
+            span.set_status(Status(StatusCode.ERROR))
+            raise
+        finally:
+            span.set_attribute("globex.retrieval.latency_ms", round((time.perf_counter() - started) * 1000, 3))
 
 
 def _chunk_text(item: Any) -> str:
@@ -287,33 +313,55 @@ async def _rerank_information_need(
     """只用当前子问题给它自己的候选重排；不拿完整原问题做全局重排。"""
     started = time.perf_counter()
     documents = [_chunk_text(candidate.item) for candidate in candidates]
-    if hasattr(reranker, "rerank_with_metadata"):
-        scores, usage = await reranker.rerank_with_metadata(variant.text, documents)
-    else:
-        scores = await reranker.rerank(variant.text, documents)
-        usage = {}
-    if len(scores) != len(candidates) or not all(math.isfinite(float(score)) for score in scores):
-        raise RuntimeError("per_need_reranker_invalid_scores")
-    ranked = sorted(
-        zip(candidates, (float(score) for score in scores)),
-        key=lambda pair: (-pair[1], pair[0].rank_in_source, _candidate_key(pair[0].item)),
-    )
-    output = [
-        replace(
-            candidate,
-            rank_in_source=rank,
-            retrieval_rank_in_source=(candidate.retrieval_rank_in_source or candidate.rank_in_source),
-            per_need_relevance_score=score,
-        )
-        for rank, (candidate, score) in enumerate(ranked, 1)
-    ]
-    return output, {
-        "query_id": variant.query_id,
-        "information_need_id": variant.information_need_id,
-        "document_count": len(documents),
-        "latency_ms": round((time.perf_counter() - started) * 1000, 3),
-        "usage": usage,
-    }
+    with trace.get_tracer(__name__).start_as_current_span(
+        "knowledge.reranker.need",
+        attributes={
+            "langfuse.observation.type": "span",
+            "globex.retrieval.stage": "reranker_need",
+            "globex.retrieval.query_id": variant.query_id,
+            "globex.retrieval.need_id": variant.information_need_id,
+            "globex.retrieval.intent_group_id": variant.intent_group_id,
+            "globex.retrieval.document_count": len(documents),
+        },
+        record_exception=False, set_status_on_exception=False,
+    ) as span:
+        try:
+            if hasattr(reranker, "rerank_with_metadata"):
+                scores, usage = await reranker.rerank_with_metadata(variant.text, documents)
+            else:
+                scores = await reranker.rerank(variant.text, documents)
+                usage = {}
+            if len(scores) != len(candidates) or not all(math.isfinite(float(score)) for score in scores):
+                raise RuntimeError("per_need_reranker_invalid_scores")
+            ranked = sorted(
+                zip(candidates, (float(score) for score in scores)),
+                key=lambda pair: (-pair[1], pair[0].rank_in_source, _candidate_key(pair[0].item)),
+            )
+            output = [
+                replace(
+                    candidate,
+                    rank_in_source=rank,
+                    retrieval_rank_in_source=(candidate.retrieval_rank_in_source or candidate.rank_in_source),
+                    per_need_relevance_score=score,
+                )
+                for rank, (candidate, score) in enumerate(ranked, 1)
+            ]
+            span.set_attribute("globex.retrieval.total_tokens", int(usage.get("total_tokens") or 0))
+            span.set_attribute("globex.retrieval.degraded", bool(usage.get("degraded")))
+            return output, {
+                "query_id": variant.query_id,
+                "information_need_id": variant.information_need_id,
+                "document_count": len(documents),
+                "latency_ms": round((time.perf_counter() - started) * 1000, 3),
+                "usage": usage,
+                "degraded": bool(usage.get("degraded")),
+            }
+        except BaseException as error:
+            span.set_attribute("error.type", type(error).__name__)
+            span.set_status(Status(StatusCode.ERROR))
+            raise
+        finally:
+            span.set_attribute("globex.retrieval.latency_ms", round((time.perf_counter() - started) * 1000, 3))
 
 
 def _rrf_fuse(
@@ -459,20 +507,40 @@ async def search_knowledge_with_trace(
 
     processor_started = time.perf_counter()
     processor_metadata: dict[str, Any] = {}
-    try:
-        if hasattr(query_processor, "process_with_metadata"):
-            plan, processor_metadata = await query_processor.process_with_metadata(question)
-        else:
-            plan = await query_processor.process(question)
-        processor_metadata.setdefault(
-            "latency_ms", round((time.perf_counter() - processor_started) * 1000, 3),
-        )
-    except Exception as err:  # noqa: BLE001 - 精确回到 legacy，不走新管线 original-only
-        return await _legacy_outcome(
-            knowledge_base, question, depth, top_k, trace_mode="legacy_fallback",
-            processor_fallback_reason=str(err), candidate_cache=candidate_cache,
-            query_processor_latency_ms=round((time.perf_counter() - processor_started) * 1000, 3),
-        )
+    with trace.get_tracer(__name__).start_as_current_span(
+        "knowledge.query_processor",
+        attributes={
+            "langfuse.observation.type": "span",
+            "globex.retrieval.stage": "query_processor",
+        },
+        record_exception=False, set_status_on_exception=False,
+    ) as processor_span:
+        try:
+            if hasattr(query_processor, "process_with_metadata"):
+                plan, processor_metadata = await query_processor.process_with_metadata(question)
+            else:
+                plan = await query_processor.process(question)
+            processor_metadata.setdefault(
+                "latency_ms", round((time.perf_counter() - processor_started) * 1000, 3),
+            )
+            processor_span.set_attributes({
+                "globex.retrieval.plan_mode": plan.mode,
+                "globex.retrieval.input_tokens": int(processor_metadata.get("input_tokens") or 0),
+                "globex.retrieval.output_tokens": int(processor_metadata.get("output_tokens") or 0),
+                "globex.retrieval.total_tokens": int(processor_metadata.get("total_tokens") or 0),
+            })
+        except Exception as err:  # noqa: BLE001 - 精确回到 legacy，不走新管线 original-only
+            processor_span.set_attribute("error.type", type(err).__name__)
+            processor_span.set_status(Status(StatusCode.ERROR))
+            return await _legacy_outcome(
+                knowledge_base, question, depth, top_k, trace_mode="legacy_fallback",
+                processor_fallback_reason=str(err), candidate_cache=candidate_cache,
+                query_processor_latency_ms=round((time.perf_counter() - processor_started) * 1000, 3),
+            )
+        finally:
+            processor_span.set_attribute(
+                "globex.retrieval.latency_ms", round((time.perf_counter() - processor_started) * 1000, 3),
+            )
 
     processor_mode = plan.mode
     effective_mode = "DIRECT" if processor_mode == "REWRITE" and not execute_rewrite else processor_mode
@@ -520,9 +588,31 @@ async def search_knowledge_with_trace(
         variant.information_need_id for variant in variants
         if variant.kind == "subquery"
     ))
-    hits, fused, duplicate_decisions = _rrf_fuse(
-        candidates, top_k, max(1, int(rrf_k)), expected_needs=expected_needs,
-    )
+    fusion_started = time.perf_counter()
+    with trace.get_tracer(__name__).start_as_current_span(
+        "knowledge.rrf_fusion",
+        attributes={
+            "langfuse.observation.type": "span",
+            "globex.retrieval.stage": "rrf_fusion",
+            "globex.retrieval.candidate_count": len(candidates),
+            "globex.retrieval.top_k": top_k,
+            "globex.retrieval.rrf_k": max(1, int(rrf_k)),
+        },
+        record_exception=False, set_status_on_exception=False,
+    ) as fusion_span:
+        try:
+            hits, fused, duplicate_decisions = _rrf_fuse(
+                candidates, top_k, max(1, int(rrf_k)), expected_needs=expected_needs,
+            )
+            fusion_span.set_attribute("globex.retrieval.fused_count", len(hits))
+        except BaseException as error:
+            fusion_span.set_attribute("error.type", type(error).__name__)
+            fusion_span.set_status(Status(StatusCode.ERROR))
+            raise
+        finally:
+            fusion_span.set_attribute(
+                "globex.retrieval.latency_ms", round((time.perf_counter() - fusion_started) * 1000, 3),
+            )
     pre_needs = {candidate.information_need_id for candidate in candidates}
     post_needs = {
         source["information_need_id"]
@@ -548,7 +638,7 @@ async def search_knowledge_with_trace(
         rewrite_similarity=plan.rewrite_similarity,
         rewrite_decision=rewrite_decision,
         near_duplicate_decisions=duplicate_decisions,
-        per_need_rerank_applied=bool(rerank_calls),
+        per_need_rerank_applied=any(not call.get("degraded") for call in rerank_calls),
         per_need_rerank_calls=rerank_calls,
         query_processor_latency_ms=processor_metadata.get("latency_ms"),
         query_processor_usage={

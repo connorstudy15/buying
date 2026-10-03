@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "read_only": true,
+  "checked_at": "2026-10-03T10:01:04.352453+00:00",
+  "remote_trace_verified": true,
+  "project": {
+    "status": "ACCESS_VERIFIED",
+    "accessible_count": 1,
+    "project_id_sha256": "e13663d7dbba7967665d3f68"
+  },
+  "trace": {
+    "status": "VERIFIED",
+    "trace_id": "a774c59883ec5dad5e039a63c44a4f1a",
+    "observation_count": 1,
+    "component_counts": {
+      "other": 1
+    },
+    "required_components": [],
+    "root_count": 1,
+    "parent_link_count": 0,
+    "missing_parent_count": 0,
+    "unfinished_count": 0,
+    "error_count": 0,
+    "usage_complete": false,
+    "input_tokens": null,
+    "output_tokens": null,
+    "cost_usd": null,
+    "issues": []
+  },
+  "status": "VERIFIED",
+  "read_attempts": 1
+}

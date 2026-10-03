@@ -9,9 +9,12 @@ import json
 import math
 from pathlib import Path
 import re
+import sys
 import time
 
 import httpx
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from app.infrastructure.langfuse_config import LangfuseConfig
 

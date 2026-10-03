@@ -223,6 +223,23 @@ async def test_experiment_reranker_retries_without_silent_fallback(monkeypatch):
 
 
 @pytest.mark.asyncio
+async def test_experiment_reranker_latency_budget_falls_back_with_explicit_marker():
+    async def too_slow(*_args):
+        await asyncio.sleep(0.1)
+
+    inner = SimpleNamespace(rerank=too_slow)
+    reranker = RetryingReranker(
+        inner, attempts=2, attempt_timeout_seconds=0.001,
+        backoff_seconds=0, fallback_on_failure=True,
+    )
+    scores, usage = await reranker.rerank_with_metadata("问题", ["第一", "第二"])
+
+    assert scores == [2.0, 1.0]
+    assert usage["degraded"] == 1
+    assert usage["total_tokens"] == 0
+
+
+@pytest.mark.asyncio
 async def test_decompose_can_keep_two_sections_from_same_document():
     size = hit("travel", "登机箱尺寸因航司而异", section="避坑点")
     bag = hit("travel", "折叠背包可作为第二件行李", section="当前热卖款型")
