@@ -165,11 +165,39 @@ async def retrieve_knowledge_candidates(
     ]
 
 
-def _legacy_finalize(candidates: list[KnowledgeCandidate], top_k: int) -> list[Any]:
-    documents: dict[str, Any] = {}
+def _legacy_finalize(
+    candidates: list[KnowledgeCandidate], top_k: int, *, max_chunks_per_document: int = 1,
+    min_distinct_documents: int = 1,
+) -> list[Any]:
+    """保序选择候选；冻结 Legacy 每文档 1 块，DIRECT 可显式放宽到多 section。"""
+    selected: list[Any] = []
+    document_counts: dict[str, int] = {}
+    seen_chunks: set[str] = set()
+
+    def add(candidate: KnowledgeCandidate) -> bool:
+        item = candidate.item
+        chunk_key = _candidate_key(item)
+        document_id = str(item.document_id)
+        if chunk_key in seen_chunks or document_counts.get(document_id, 0) >= max_chunks_per_document:
+            return False
+        selected.append(item)
+        seen_chunks.add(chunk_key)
+        document_counts[document_id] = document_counts.get(document_id, 0) + 1
+        return True
+
+    # DIRECT 的 Top-3 先保证基本文档多样性，再用剩余名额补同文档第二个必要 section。
+    diversity_target = min(top_k, max(1, min_distinct_documents))
     for candidate in candidates:
-        documents.setdefault(candidate.item.document_id, candidate.item)
-    return list(documents.values())[:top_k]
+        if str(candidate.item.document_id) in document_counts:
+            continue
+        add(candidate)
+        if len(document_counts) >= diversity_target:
+            break
+    for candidate in candidates:
+        if len(selected) >= top_k:
+            break
+        add(candidate)
+    return selected
 
 
 async def _legacy_outcome(
@@ -194,8 +222,28 @@ async def _legacy_outcome(
             "query_id": "original", "text": question, "information_need_id": "overall",
             "intent_group_id": "global", "kind": "original",
         }]
+    max_chunks_per_document = 2 if effective_plan_mode == "DIRECT" else 1
+    with trace.get_tracer(__name__).start_as_current_span(
+        "knowledge.direct_selection",
+        attributes={
+            "langfuse.observation.type": "span",
+            "globex.retrieval.stage": "direct_selection",
+            "globex.retrieval.candidate_count": len(candidates),
+            "globex.retrieval.top_k": top_k,
+            "globex.retrieval.max_chunks_per_document": max_chunks_per_document,
+        },
+        record_exception=False, set_status_on_exception=False,
+    ) as selection_span:
+        hits = _legacy_finalize(
+            candidates, top_k, max_chunks_per_document=max_chunks_per_document,
+            min_distinct_documents=2 if effective_plan_mode == "DIRECT" else 1,
+        )
+        selection_span.set_attribute("globex.retrieval.selected_chunk_count", len(hits))
+        selection_span.set_attribute(
+            "globex.retrieval.selected_document_count", len({str(item.document_id) for item in hits}),
+        )
     return KnowledgeRetrievalOutcome(
-        _legacy_finalize(candidates, top_k),
+        hits,
         KnowledgeRetrievalTrace(
             trace_mode, variants=variants, candidates=candidates,
             processor_fallback_reason=processor_fallback_reason,

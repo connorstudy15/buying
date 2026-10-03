@@ -71,6 +71,8 @@ _SAFE_ATTRIBUTES = {
     "globex.eval.query_processor_output_tokens", "globex.eval.reranker_call_count",
     "globex.eval.reranker_wall_ms", "globex.eval.reranker_total_tokens",
     "globex.eval.reranker_degraded_count",
+    "globex.eval.trigger_expected", "globex.eval.trigger_predicted",
+    "globex.eval.trigger_correct", "globex.eval.trigger_fallback",
     "globex.retrieval.stage", "globex.retrieval.query_id", "globex.retrieval.need_id",
     "globex.retrieval.intent_group_id", "globex.retrieval.cache_hit",
     "globex.retrieval.candidate_count", "globex.retrieval.document_count",
@@ -79,6 +81,8 @@ _SAFE_ATTRIBUTES = {
     "globex.retrieval.total_tokens", "globex.retrieval.attempt",
     "globex.retrieval.max_attempts", "globex.retrieval.top_k", "globex.retrieval.rrf_k",
     "globex.retrieval.fused_count", "globex.retrieval.degraded",
+    "globex.retrieval.max_chunks_per_document", "globex.retrieval.selected_chunk_count",
+    "globex.retrieval.selected_document_count",
 }
 _CONTENT_FIELDS = {
     "gen_ai.input.messages": "globex.input.characters",

@@ -262,6 +262,28 @@ async def test_decompose_can_keep_two_sections_from_same_document():
     assert outcome.trace.post_fusion_query_route_coverage == 1.0
 
 
+@pytest.mark.asyncio
+async def test_direct_can_keep_two_distinct_sections_but_legacy_stays_one_per_document():
+    first = hit("travel", "第一段证据", section="属性")
+    second = hit("travel", "第二段证据", section="限制")
+    other = hit("other", "其他文档", section="概览")
+
+    async def search(queries, top_k):
+        return [first, second, other]
+
+    kb = SimpleNamespace(search=search)
+    direct = QueryPlan("同一主题需要两段证据", "", (), mode="DIRECT")
+
+    legacy_outcome = await search_knowledge_with_trace(kb, direct.original_query, 3)
+    direct_outcome = await search_knowledge_with_trace(
+        kb, direct.original_query, 3, query_processor=PlannedProcessor(direct),
+    )
+
+    assert [item.document_id for item in legacy_outcome.hits] == ["travel", "other"]
+    assert [item.document_id for item in direct_outcome.hits] == ["travel", "other", "travel"]
+    assert {item.chunk.metadata["section"] for item in (direct_outcome.hits[0], direct_outcome.hits[2])} == {"属性", "限制"}
+
+
 def test_query_processor_rejects_duplicate_information_need_ids():
     processor = QueryProcessor(None, "prompt")
     with pytest.raises(QueryProcessorError):
