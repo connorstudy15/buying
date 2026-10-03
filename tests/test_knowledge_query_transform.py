@@ -368,7 +368,7 @@ def test_same_intent_original_and_rewrite_do_not_double_vote():
         SimpleNamespace(item=item, query_id="original", information_need_id="overall", retrieval_route="vector", rank_in_source=1, intent_group_id="overall"),
         SimpleNamespace(item=item, query_id="rewrite", information_need_id="overall", retrieval_route="vector", rank_in_source=2, intent_group_id="overall"),
     ]
-    _, fused, _ = _rrf_fuse(candidates, 1, 60)
+    _, fused, _, _ = _rrf_fuse(candidates, 1, 60)
     assert fused[0]["rrf_score"] == pytest.approx(1 / 61)
 
 

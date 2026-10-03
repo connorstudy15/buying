@@ -194,6 +194,70 @@ def _telemetry(runs, strategy: str) -> dict[str, float | int | None]:
     }
 
 
+def _stage_loss_metrics(runs, strategy: str) -> dict[str, object]:
+    """按 gold evidence 的首次丢失阶段归因；四类 loss 互斥。"""
+    observations = [row for run in runs for row in run[strategy]["observations"]]
+    stages = (
+        "retrieval_loss_evidence_ids", "reranker_loss_evidence_ids",
+        "fusion_loss_evidence_ids", "top_k_truncation_loss_evidence_ids",
+    )
+    total_gold = sum(len(set(row.get("gold_evidence_ids") or [])) for row in observations)
+    result: dict[str, object] = {"gold_evidence_observations": total_gold}
+    for field in stages:
+        count = sum(len(set(row.get(field) or [])) for row in observations)
+        result[field.replace("_evidence_ids", "_count")] = count
+        result[field.replace("_evidence_ids", "_rate")] = count / total_gold if total_gold else None
+        result[field.replace("_evidence_ids", "_case_ids")] = sorted({
+            str(row["case_id"]) for row in observations if row.get(field)
+        })
+    return result
+
+
+def _stage_latency_metrics(runs, strategy: str, mode: str | None = None) -> dict[str, float | int | None]:
+    observations = [row for run in runs for row in run[strategy]["observations"]]
+    if mode is not None:
+        observations = [row for row in observations if row.get("effective_plan_mode") == mode]
+    fields = {
+        "query_processor": "query_processor_stage_latency_ms",
+        "retrieval": "retrieval_stage_latency_ms",
+        "per_need_reranker": "reranker_stage_latency_ms",
+        "fusion": "fusion_stage_latency_ms",
+        "end_to_end": "latency_ms",
+    }
+    output: dict[str, float | int | None] = {"count": len(observations)}
+    for label, field in fields.items():
+        values = [float(row[field]) for row in observations if row.get(field) is not None]
+        output[f"{label}_p50_ms"] = _percentile(values, 0.5)
+        output[f"{label}_p95_ms"] = _percentile(values, 0.95)
+    return output
+
+
+def _cost_efficiency(runs, baseline: str, experiment: str) -> dict[str, float | int | None]:
+    old = [row for run in runs for row in run[baseline]["observations"]]
+    new = [row for run in runs for row in run[experiment]["observations"]]
+    old_complete = sum(row.get("all_evidence_recall") == 1 for row in old)
+    new_complete = sum(row.get("all_evidence_recall") == 1 for row in new)
+    additional = new_complete - old_complete
+    old_cost = float(_telemetry(runs, baseline)["estimated_idle_cny_per_query"] or 0.0)
+    new_cost = float(_telemetry(runs, experiment)["estimated_idle_cny_per_query"] or 0.0)
+    delta_cost = new_cost - old_cost
+    delta_all = (_median(runs, experiment, "all_evidence_recall_at_3") or 0.0) - (
+        _median(runs, baseline, "all_evidence_recall_at_3") or 0.0
+    )
+    additional_rate = additional / len(new) if new else 0.0
+    return {
+        "baseline_fully_correct": old_complete,
+        "experiment_fully_correct": new_complete,
+        "additional_fully_correct": additional,
+        "delta_cost_cny_per_query": delta_cost,
+        "cost_per_additional_fully_correct_case_cny": (
+            delta_cost / additional_rate if additional_rate > 0 and delta_cost >= 0 else None
+        ),
+        "delta_all_evidence_recall": delta_all,
+        "delta_all_evidence_recall_per_cny": delta_all / delta_cost if delta_cost > 0 else None,
+    }
+
+
 def _decompose_trigger_metrics(runs, dataset: Path) -> dict[str, Any]:
     """评价“是否应该拆”的分类质量；优先使用人工策略标签，旧集才按问题桶兼容推导。"""
     cases = {str(row["id"]): row for row in load_dataset(dataset)}
@@ -297,8 +361,6 @@ def _render(
         ("Hard negative above positive", "hard_negative_above_positive_rate"),
         ("Fusion information-need loss", "fusion_information_need_loss"),
         ("Unanswerable accuracy", "unanswerable_accuracy"),
-        ("P50 latency (ms)", "latency_p50_ms"),
-        ("P95 latency (ms)", "latency_p95_ms"),
     )
     for label, metric in metrics:
         values = {strategy: _median(runs, strategy, metric) for strategy in strategies}
@@ -314,11 +376,11 @@ def _render(
     a_telemetry = _telemetry(runs, "decompose_rrf")
     b_telemetry = _telemetry(runs, "decompose_per_need_rerank")
     lines += [
-        "", "## 延迟、调用量与估算费用", "",
+        "", "## 调用量与估算费用（质量配对 pass）", "",
+        "本 pass 共享候选缓存，只用于质量和调用量对比；端到端延迟请看后面的独立无缓存探针。",
+        "",
         "| 指标 | 实验 A | 实验 B |",
         "|---|---:|---:|",
-        f"| 全部调用合并后的端到端 P50 / P95 | {_fmt(a_telemetry['total_p50_ms'])} / {_fmt(a_telemetry['total_p95_ms'])} ms | {_fmt(b_telemetry['total_p50_ms'])} / {_fmt(b_telemetry['total_p95_ms'])} ms |",
-        f"| QueryProcessor P50 / P95 | {_fmt(a_telemetry['query_processor_p50_ms'])} / {_fmt(a_telemetry['query_processor_p95_ms'])} ms | {_fmt(b_telemetry['query_processor_p50_ms'])} / {_fmt(b_telemetry['query_processor_p95_ms'])} ms |",
         f"| 每个 Query 的并发 reranker 墙钟 P50 / P95 | 0 / 0 ms | {_fmt(b_telemetry['reranker_query_wall_p50_ms'])} / {_fmt(b_telemetry['reranker_query_wall_p95_ms'])} ms |",
         f"| 仅触发拆分的 Query：reranker 墙钟 P50 / P95 | n/a | {_fmt(b_telemetry['triggered_reranker_wall_p50_ms'])} / {_fmt(b_telemetry['triggered_reranker_wall_p95_ms'])} ms |",
         f"| 单次 reranker 调用 P50 / P95 | n/a | {_fmt(b_telemetry['reranker_call_p50_ms'])} / {_fmt(b_telemetry['reranker_call_p95_ms'])} ms |",
@@ -333,6 +395,97 @@ def _render(
         "",
         "费用按华北2公开原价估算，不含免费额度、缓存折扣和活动优惠：DeepSeek V4.1 Flash 输入闲/忙 1/2 元、输出 4/8 元/百万 token；Qwen3.7 Text Rerank 输入 0.5 元/百万 token。",
     ]
+
+    a_loss_stages = _stage_loss_metrics(runs, "decompose_rrf")
+    b_loss_stages = _stage_loss_metrics(runs, "decompose_per_need_rerank")
+    lines += [
+        "", "## Gold evidence 分阶段去向", "",
+        "每条 gold evidence 只归入它首次丢失的阶段，因此四类 loss 不会重复计数。",
+        "", "| 首次丢失阶段 | 实验 A 数量 / 比例 | 实验 B 数量 / 比例 |",
+        "|---|---:|---:|",
+    ]
+    for field, label in (
+        ("retrieval_loss", "Retrieval Loss（原始召回未出现）"),
+        ("reranker_loss", "Reranker Loss（重排后消失）"),
+        ("fusion_loss", "Fusion Loss（融合池中消失）"),
+        ("top_k_truncation_loss", "Top-K Truncation Loss（最终截断丢失）"),
+    ):
+        lines.append(
+            f"| {label} | {a_loss_stages[field + '_count']} / {_fmt(a_loss_stages[field + '_rate'])} | "
+            f"{b_loss_stages[field + '_count']} / {_fmt(b_loss_stages[field + '_rate'])} |"
+        )
+    lines += ["", "实验 B 丢失 case："]
+    for field, label in (
+        ("retrieval_loss", "召回失败"), ("reranker_loss", "reranker 丢失"),
+        ("fusion_loss", "fusion 丢失"), ("top_k_truncation_loss", "Top-K 截断"),
+    ):
+        ids = b_loss_stages[field + "_case_ids"]
+        lines.append(f"- {label}：`{','.join(ids) or '无'}`")
+
+    latency_all = _stage_latency_metrics(runs, "decompose_per_need_rerank_latency_uncached")
+    latency_direct = _stage_latency_metrics(runs, "decompose_per_need_rerank_latency_uncached", "DIRECT")
+    latency_decompose = _stage_latency_metrics(runs, "decompose_per_need_rerank_latency_uncached", "DECOMPOSE")
+    lines += [
+        "", "## 实验 B 分阶段延迟（独立无缓存探针）", "",
+        f"样本数：全部 {latency_all['count']}；DIRECT {latency_direct['count']}；DECOMPOSE {latency_decompose['count']}。",
+        "", "| 阶段 | 全部 P50 / P95 | DIRECT P50 / P95 | DECOMPOSE P50 / P95 |",
+        "|---|---:|---:|---:|",
+    ]
+    for field, label in (
+        ("query_processor", "QueryProcessor"), ("retrieval", "Raw Retrieval"),
+        ("per_need_reranker", "Per-Need Reranker"), ("fusion", "RRF / Fusion"),
+        ("end_to_end", "End-to-End"),
+    ):
+        lines.append(
+            f"| {label} | {_fmt(latency_all[field + '_p50_ms'])} / {_fmt(latency_all[field + '_p95_ms'])} ms | "
+            f"{_fmt(latency_direct[field + '_p50_ms'])} / {_fmt(latency_direct[field + '_p95_ms'])} ms | "
+            f"{_fmt(latency_decompose[field + '_p50_ms'])} / {_fmt(latency_decompose[field + '_p95_ms'])} ms |"
+        )
+    latency_rows = [
+        row for run in runs
+        for row in run["decompose_per_need_rerank_latency_uncached"]["observations"]
+    ]
+    lines += [
+        "", "### 最慢 case（无缓存）", "",
+        "| case | 模式 | End-to-End | QP | Retrieval | Reranker | Fusion | 主要瓶颈 | Langfuse trace |",
+        "|---|---|---:|---:|---:|---:|---:|---|---|",
+    ]
+    stage_fields = {
+        "QueryProcessor": "query_processor_stage_latency_ms",
+        "Retrieval": "retrieval_stage_latency_ms",
+        "Reranker": "reranker_stage_latency_ms",
+        "Fusion": "fusion_stage_latency_ms",
+    }
+    for row in sorted(latency_rows, key=lambda item: float(item["latency_ms"]), reverse=True)[:10]:
+        stage_values = {label: float(row.get(field) or 0.0) for label, field in stage_fields.items()}
+        bottleneck = max(stage_values, key=stage_values.get)
+        lines.append(
+            f"| {row['case_id']} | {row.get('effective_plan_mode') or row.get('retrieval_mode')} | "
+            f"{float(row['latency_ms']):.1f} | {stage_values['QueryProcessor']:.1f} | "
+            f"{stage_values['Retrieval']:.1f} | {stage_values['Reranker']:.1f} | "
+            f"{stage_values['Fusion']:.1f} | {bottleneck} | `{row.get('langfuse_trace_id') or 'n/a'}` |"
+        )
+
+    legacy_efficiency = _cost_efficiency(runs, "legacy", "decompose_per_need_rerank")
+    rerank_efficiency = _cost_efficiency(runs, "decompose_rrf", "decompose_per_need_rerank")
+    lines += [
+        "", "## 成本换效果", "",
+        "这里只计算 QueryProcessor 与 reranker 的边际 API 费用，不把各策略共同承担的 embedding 成本重复算入。",
+        "", "| 对比 | 新增完整正确 case | 每 Query 增量成本 | 每新增一个完整正确 case 的成本 | ΔAll-Evidence Recall / ΔCost |",
+        "|---|---:|---:|---:|---:|",
+    ]
+    for label, efficiency in (
+        ("Legacy → 实验 B", legacy_efficiency),
+        ("实验 A → 实验 B（reranker 增量）", rerank_efficiency),
+    ):
+        cost_per_case = efficiency["cost_per_additional_fully_correct_case_cny"]
+        recall_per_cost = efficiency["delta_all_evidence_recall_per_cny"]
+        lines.append(
+            f"| {label} | {efficiency['additional_fully_correct']} | "
+            f"¥{float(efficiency['delta_cost_cny_per_query']):.6f} | "
+            f"{'n/a' if cost_per_case is None else f'¥{float(cost_per_case):.6f}'} | "
+            f"{'n/a' if recall_per_cost is None else f'{float(recall_per_cost):.4f} / ¥1'} |"
+        )
 
     trigger = _decompose_trigger_metrics(runs, dataset)
     explicit = trigger["explicit"]
@@ -483,6 +636,18 @@ async def main(argv: list[str] | None = None) -> None:
     prompt = load_prompts()["query_processor"]["system_prompt"]
 
     runs = []
+
+    def write_checkpoint(completed_repetitions: int) -> None:
+        args.output_dir.mkdir(parents=True, exist_ok=True)
+        checkpoint = {
+            "schema_version": "per-need-rerank-ablation-b-checkpoint-v2",
+            "completed_repetitions": completed_repetitions,
+            "runs": runs,
+        }
+        (args.output_dir / "experiment-b-in-progress.json").write_text(
+            json.dumps(checkpoint, ensure_ascii=False, indent=2), encoding="utf-8",
+        )
+
     for repetition in range(1, args.repetitions + 1):
         candidate_cache: dict = {}
         shared = SharedPlanProcessor(QueryProcessor(
@@ -518,7 +683,7 @@ async def main(argv: list[str] | None = None) -> None:
             evaluation_strategy="decompose_per_need_rerank", dataset_hash=dataset_hash,
             repetition=repetition,
         )
-        runs.append({
+        run_record = {
             "repetition": repetition,
             "query_plans": shared.snapshot(),
             "legacy": {"metrics": _metrics(legacy), "observations": observations["legacy"]},
@@ -531,16 +696,39 @@ async def main(argv: list[str] | None = None) -> None:
                 "paired_vs_legacy": _paired_changes(observations["legacy"], observations["b"]),
                 "paired_vs_a": _paired_changes(observations["a"], observations["b"]),
             },
-        })
-        args.output_dir.mkdir(parents=True, exist_ok=True)
-        checkpoint = {
-            "schema_version": "per-need-rerank-ablation-b-checkpoint-v1",
-            "completed_repetitions": repetition,
-            "runs": runs,
+            "decompose_per_need_rerank_latency_uncached": {
+                "status": "pending",
+                "observations": [],
+            },
         }
-        (args.output_dir / "experiment-b-in-progress.json").write_text(
-            json.dumps(checkpoint, ensure_ascii=False, indent=2), encoding="utf-8",
-        )
+        runs.append(run_record)
+        # 质量结果先落盘；无缓存探针依赖远程 embedding，失败时不能丢掉已完成的质量 pass。
+        write_checkpoint(repetition - 1)
+        latency_observations: list[dict] = []
+        try:
+            await run_dataset(
+                knowledge_base, cases, 3, observations=latency_observations, query_processor=shared,
+                rrf_k=args.rrf_k, execute_rewrite=False, candidate_cache=None,
+                per_need_reranker=reranker,
+                langfuse_enabled=args.langfuse, evaluation_run_id=evaluation_run_id,
+                evaluation_strategy="decompose_per_need_rerank_latency_uncached", dataset_hash=dataset_hash,
+                repetition=repetition,
+            )
+        except BaseException as error:
+            run_record["decompose_per_need_rerank_latency_uncached"] = {
+                "status": "failed",
+                "error_type": type(error).__name__,
+                "status_code": getattr(error, "status_code", None),
+                "completed_observation_count": len(latency_observations),
+                "observations": latency_observations,
+            }
+            write_checkpoint(repetition - 1)
+            raise
+        run_record["decompose_per_need_rerank_latency_uncached"] = {
+            "status": "complete",
+            "observations": latency_observations,
+        }
+        write_checkpoint(repetition)
         print(
             f"第 {repetition} 轮：A evidence={experiment_a.evidence_recall:.4f}，"
             f"B={experiment_b.evidence_recall:.4f}，A all={experiment_a.all_evidence_recall:.4f}，"
@@ -550,7 +738,7 @@ async def main(argv: list[str] | None = None) -> None:
     stamp = datetime.now().strftime("%Y%m%d-%H%M%S")
     args.output_dir.mkdir(parents=True, exist_ok=True)
     payload = {
-        "schema_version": "per-need-rerank-ablation-b-v1",
+        "schema_version": "per-need-rerank-ablation-b-v2-stage-attribution",
         "created_at": datetime.now().astimezone().isoformat(),
         "dataset": str(args.dataset), "selection": selection,
         "evaluation_run_id": evaluation_run_id,
@@ -561,6 +749,8 @@ async def main(argv: list[str] | None = None) -> None:
             "reranker_model": settings.reranker_model,
             "shared_query_plan_within_repetition": True,
             "shared_candidate_pool_within_repetition": True,
+            "quality_and_latency_measurement_separated": True,
+            "latency_probe_candidate_cache": False,
             "global_original_query_rerank": False,
             "reranker_attempt_timeout_seconds": args.reranker_timeout_seconds,
             "reranker_attempts": args.reranker_attempts,
@@ -573,7 +763,8 @@ async def main(argv: list[str] | None = None) -> None:
                 "query_processor_output_idle": 4.0,
                 "query_processor_output_busy": 8.0,
                 "reranker_input": 0.5,
-                "as_of": "2026-10-03",
+                "as_of": "2026-10-04",
+                "source": "https://help.aliyun.com/zh/model-studio/model-pricing",
             },
         },
         "runs": runs,

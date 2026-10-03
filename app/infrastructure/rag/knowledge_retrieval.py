@@ -85,6 +85,9 @@ class KnowledgeRetrievalTrace:
     mode: str
     variants: list[dict[str, str]] = field(default_factory=list)
     candidates: list[KnowledgeCandidate] = field(default_factory=list, repr=False)
+    raw_candidates: list[KnowledgeCandidate] = field(default_factory=list, repr=False)
+    reranked_candidates: list[KnowledgeCandidate] = field(default_factory=list, repr=False)
+    fusion_candidates: list[Any] = field(default_factory=list, repr=False)
     fused: list[dict[str, Any]] = field(default_factory=list)
     processor_fallback_reason: str | None = None
     pre_fusion_query_route_coverage: float | None = None
@@ -101,6 +104,9 @@ class KnowledgeRetrievalTrace:
     per_need_rerank_calls: list[dict[str, Any]] = field(default_factory=list)
     query_processor_latency_ms: float | None = None
     query_processor_usage: dict[str, int] = field(default_factory=dict)
+    retrieval_latency_ms: float | None = None
+    reranker_latency_ms: float | None = None
+    fusion_latency_ms: float | None = None
 
 
 @dataclass
@@ -212,10 +218,12 @@ async def _legacy_outcome(
     query_processor_usage: dict[str, Any] | None = None,
 ) -> KnowledgeRetrievalOutcome:
     """关闭、回退和 DIRECT 共用同一条旧检索实现，避免三份代码逐渐产生差异。"""
+    retrieval_started = time.perf_counter()
     candidates = await _retrieve_candidates(
         knowledge_base, question, depth, target_limit=top_k,
         candidate_cache=candidate_cache,
     )
+    retrieval_latency_ms = round((time.perf_counter() - retrieval_started) * 1000, 3)
     variants = []
     if processor_plan_mode is not None:
         variants = [{
@@ -223,6 +231,7 @@ async def _legacy_outcome(
             "intent_group_id": "global", "kind": "original",
         }]
     max_chunks_per_document = 2 if effective_plan_mode == "DIRECT" else 1
+    selection_started = time.perf_counter()
     with trace.get_tracer(__name__).start_as_current_span(
         "knowledge.direct_selection",
         attributes={
@@ -242,10 +251,13 @@ async def _legacy_outcome(
         selection_span.set_attribute(
             "globex.retrieval.selected_document_count", len({str(item.document_id) for item in hits}),
         )
+    selection_latency_ms = round((time.perf_counter() - selection_started) * 1000, 3)
     return KnowledgeRetrievalOutcome(
         hits,
         KnowledgeRetrievalTrace(
             trace_mode, variants=variants, candidates=candidates,
+            raw_candidates=list(candidates), reranked_candidates=list(candidates),
+            fusion_candidates=[candidate.item for candidate in candidates],
             processor_fallback_reason=processor_fallback_reason,
             processor_plan_mode=processor_plan_mode,
             effective_plan_mode=effective_plan_mode,
@@ -253,6 +265,9 @@ async def _legacy_outcome(
             rewrite_similarity=rewrite_similarity,
             rewrite_decision=rewrite_decision,
             query_processor_latency_ms=query_processor_latency_ms,
+            retrieval_latency_ms=retrieval_latency_ms,
+            reranker_latency_ms=0.0,
+            fusion_latency_ms=selection_latency_ms,
             query_processor_usage={
                 key: int((query_processor_usage or {}).get(key) or 0)
                 for key in ("input_tokens", "output_tokens", "total_tokens")
@@ -415,7 +430,7 @@ async def _rerank_information_need(
 def _rrf_fuse(
     candidates: list[KnowledgeCandidate], top_k: int, rrf_k: int, *,
     expected_needs: tuple[str, ...] = (), max_chunks_per_document: int = 2,
-) -> tuple[list[Any], list[dict[str, Any]], list[dict[str, Any]]]:
+) -> tuple[list[Any], list[dict[str, Any]], list[dict[str, Any]], list[Any]]:
     group_scores: dict[str, dict[str, float]] = {}
     best: dict[str, KnowledgeCandidate] = {}
     provenance: dict[str, list[dict[str, Any]]] = {}
@@ -526,7 +541,10 @@ def _rrf_fuse(
 
     selected = [entry for entry in deduped if entry["candidate_id"] in selected_ids][:top_k]
     fused = [{key: value for key, value in entry.items() if key not in {"item", "group_scores", "best_rank"}} for entry in selected]
-    return [entry["item"] for entry in selected], fused, duplicate_decisions
+    return (
+        [entry["item"] for entry in selected], fused, duplicate_decisions,
+        [entry["item"] for entry in deduped],
+    )
 
 
 async def search_knowledge_with_trace(
@@ -580,10 +598,17 @@ async def search_knowledge_with_trace(
         except Exception as err:  # noqa: BLE001 - 精确回到 legacy，不走新管线 original-only
             processor_span.set_attribute("error.type", type(err).__name__)
             processor_span.set_status(Status(StatusCode.ERROR))
+            fallback_metadata = getattr(err, "metadata", {}) or {}
             return await _legacy_outcome(
                 knowledge_base, question, depth, top_k, trace_mode="legacy_fallback",
                 processor_fallback_reason=str(err), candidate_cache=candidate_cache,
-                query_processor_latency_ms=round((time.perf_counter() - processor_started) * 1000, 3),
+                processor_plan_mode=getattr(err, "model_decision", None),
+                effective_plan_mode="FALLBACK",
+                query_processor_latency_ms=(
+                    fallback_metadata.get("latency_ms")
+                    or round((time.perf_counter() - processor_started) * 1000, 3)
+                ),
+                query_processor_usage=fallback_metadata,
             )
         finally:
             processor_span.set_attribute(
@@ -613,6 +638,7 @@ async def search_knowledge_with_trace(
         )
 
     variants: tuple[QueryVariant, ...] = plan.variants()
+    retrieval_started = time.perf_counter()
     groups = await asyncio.gather(*(
         _retrieve_candidates(
             knowledge_base, variant.text, depth, target_limit=top_k,
@@ -621,7 +647,10 @@ async def search_knowledge_with_trace(
             candidate_cache=candidate_cache,
         ) for variant in variants
     ))
+    retrieval_latency_ms = round((time.perf_counter() - retrieval_started) * 1000, 3)
+    raw_candidates = [candidate for group in groups for candidate in group]
     rerank_calls: list[dict[str, Any]] = []
+    reranker_started = time.perf_counter()
     if effective_mode == "DECOMPOSE" and per_need_reranker is not None:
         reranked = await asyncio.gather(*(
             _rerank_information_need(per_need_reranker, variant, list(group))
@@ -631,6 +660,7 @@ async def search_knowledge_with_trace(
         ))
         groups = tuple(group for group, _ in reranked)
         rerank_calls = [call for _, call in reranked if call is not None]
+    reranker_latency_ms = round((time.perf_counter() - reranker_started) * 1000, 3)
     candidates = [candidate for group in groups for candidate in group]
     expected_needs = tuple(dict.fromkeys(
         variant.information_need_id for variant in variants
@@ -649,7 +679,7 @@ async def search_knowledge_with_trace(
         record_exception=False, set_status_on_exception=False,
     ) as fusion_span:
         try:
-            hits, fused, duplicate_decisions = _rrf_fuse(
+            hits, fused, duplicate_decisions, fusion_candidates = _rrf_fuse(
                 candidates, top_k, max(1, int(rrf_k)), expected_needs=expected_needs,
             )
             fusion_span.set_attribute("globex.retrieval.fused_count", len(hits))
@@ -677,6 +707,9 @@ async def search_knowledge_with_trace(
             "intent_group_id": variant.intent_group_id, "kind": variant.kind,
         } for variant in variants],
         candidates=candidates,
+        raw_candidates=raw_candidates,
+        reranked_candidates=list(candidates),
+        fusion_candidates=fusion_candidates,
         fused=fused,
         pre_fusion_query_route_coverage=pre_coverage,
         post_fusion_query_route_coverage=post_coverage,
@@ -689,6 +722,9 @@ async def search_knowledge_with_trace(
         per_need_rerank_applied=any(not call.get("degraded") for call in rerank_calls),
         per_need_rerank_calls=rerank_calls,
         query_processor_latency_ms=processor_metadata.get("latency_ms"),
+        retrieval_latency_ms=retrieval_latency_ms,
+        reranker_latency_ms=reranker_latency_ms,
+        fusion_latency_ms=round((time.perf_counter() - fusion_started) * 1000, 3),
         query_processor_usage={
             key: int(processor_metadata.get(key) or 0)
             for key in ("input_tokens", "output_tokens", "total_tokens")

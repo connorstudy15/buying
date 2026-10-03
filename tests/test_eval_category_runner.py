@@ -6,6 +6,7 @@ import pytest
 
 from scripts.eval.metrics import Thresholds, gate
 from scripts.eval.run_category_recall import run_dataset, validate_coverage_contract
+from scripts.eval.run_per_need_rerank_ablation import _stage_latency_metrics, _stage_loss_metrics
 
 
 class FakeKnowledgeBase:
@@ -119,6 +120,50 @@ async def test_information_need_coverage_distinguishes_candidate_pool_from_final
     assert aggregate.post_fusion_information_need_coverage == 0.5
     assert aggregate.fusion_information_need_loss == 0.5
     assert observations[0]["pre_fusion_retrieved_evidence_ids"] == ["a#x", "b#x"]
+    assert observations[0]["raw_retrieval_evidence_ids"] == ["a#x", "b#x"]
+    assert observations[0]["post_rerank_evidence_ids"] == ["a#x", "b#x"]
+    assert observations[0]["post_fusion_evidence_ids"] == ["a#x", "b#x"]
+    assert observations[0]["final_top_k_evidence_ids"] == ["a#x"]
+    assert observations[0]["retrieval_loss_evidence_ids"] == []
+    assert observations[0]["reranker_loss_evidence_ids"] == []
+    assert observations[0]["fusion_loss_evidence_ids"] == []
+    assert observations[0]["top_k_truncation_loss_evidence_ids"] == ["b#x"]
+    assert observations[0]["top_k_truncation_loss_rate"] == 0.5
+
+
+def test_stage_dashboard_keeps_loss_attribution_mutually_exclusive_and_splits_mode_latency():
+    observations = [
+        {
+            "case_id": "direct", "gold_evidence_ids": ["a", "b"],
+            "retrieval_loss_evidence_ids": ["a"], "reranker_loss_evidence_ids": [],
+            "fusion_loss_evidence_ids": [], "top_k_truncation_loss_evidence_ids": ["b"],
+            "effective_plan_mode": "DIRECT", "query_processor_stage_latency_ms": 10,
+            "retrieval_stage_latency_ms": 20, "reranker_stage_latency_ms": 0,
+            "fusion_stage_latency_ms": 1, "latency_ms": 31,
+        },
+        {
+            "case_id": "decompose", "gold_evidence_ids": ["c", "d"],
+            "retrieval_loss_evidence_ids": [], "reranker_loss_evidence_ids": ["c"],
+            "fusion_loss_evidence_ids": ["d"], "top_k_truncation_loss_evidence_ids": [],
+            "effective_plan_mode": "DECOMPOSE", "query_processor_stage_latency_ms": 11,
+            "retrieval_stage_latency_ms": 30, "reranker_stage_latency_ms": 40,
+            "fusion_stage_latency_ms": 2, "latency_ms": 83,
+        },
+    ]
+    runs = [{"strategy": {"observations": observations}}]
+    loss = _stage_loss_metrics(runs, "strategy")
+    assert loss["gold_evidence_observations"] == 4
+    assert sum(loss[field] for field in (
+        "retrieval_loss_count", "reranker_loss_count", "fusion_loss_count",
+        "top_k_truncation_loss_count",
+    )) == 4
+    assert loss["fusion_loss_case_ids"] == ["decompose"]
+    direct = _stage_latency_metrics(runs, "strategy", "DIRECT")
+    decompose = _stage_latency_metrics(runs, "strategy", "DECOMPOSE")
+    assert direct["per_need_reranker_p95_ms"] == 0
+    assert decompose["per_need_reranker_p95_ms"] == 40
+    assert direct["end_to_end_p95_ms"] == 31
+    assert decompose["end_to_end_p95_ms"] == 83
 
 
 async def test_partial_coverage_is_scored_separately_from_standard_recall():

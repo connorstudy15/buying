@@ -262,8 +262,29 @@ async def run_dataset(
         evidence = case.get("evidence_ground_truth") or []
         gold_evidence_ids = [item["evidence_id"] for item in evidence if int(item.get("grade") or 0) >= 2]
         retrieved_evidence_ids, evidence_ranks = matched_evidence_ids(hits, evidence)
+        raw_candidates = outcome.trace.raw_candidates or outcome.trace.candidates
+        reranked_candidates = outcome.trace.reranked_candidates or outcome.trace.candidates
+        raw_candidate_items = [candidate.item for candidate in raw_candidates]
+        reranked_candidate_items = [candidate.item for candidate in reranked_candidates]
+        fusion_candidate_items = (
+            list(outcome.trace.fusion_candidates)
+            or [candidate.item for candidate in outcome.trace.candidates]
+        )
         candidate_items = [candidate.item for candidate in outcome.trace.candidates]
+        raw_evidence_ids, _ = matched_evidence_ids(raw_candidate_items, evidence)
+        reranked_evidence_ids, _ = matched_evidence_ids(reranked_candidate_items, evidence)
+        fusion_evidence_ids, _ = matched_evidence_ids(fusion_candidate_items, evidence)
         candidate_evidence_ids, _ = matched_evidence_ids(candidate_items, evidence)
+        gold_set = set(gold_evidence_ids)
+        raw_set = set(raw_evidence_ids)
+        reranked_set = set(reranked_evidence_ids)
+        fusion_set = set(fusion_evidence_ids)
+        final_set = set(retrieved_evidence_ids)
+        retrieval_loss_ids = sorted(gold_set - raw_set)
+        reranker_loss_ids = sorted((gold_set & raw_set) - reranked_set)
+        fusion_loss_ids = sorted((gold_set & reranked_set) - fusion_set)
+        top_k_loss_ids = sorted((gold_set & fusion_set) - final_set)
+        gold_count = len(gold_set)
         need_groups = information_need_groups(case, gold_evidence_ids)
         pre_need_coverage = information_need_coverage(candidate_evidence_ids, need_groups)
         post_need_coverage = information_need_coverage(retrieved_evidence_ids, need_groups)
@@ -319,6 +340,10 @@ async def run_dataset(
             "path_success": path_success,
             "constraint_recall": None,
             "latency_ms": round(latency_ms, 3),
+            "query_processor_stage_latency_ms": outcome.trace.query_processor_latency_ms,
+            "retrieval_stage_latency_ms": outcome.trace.retrieval_latency_ms,
+            "reranker_stage_latency_ms": outcome.trace.reranker_latency_ms,
+            "fusion_stage_latency_ms": outcome.trace.fusion_latency_ms,
             "retrieval_mode": outcome.trace.mode,
             "processor_plan_mode": outcome.trace.processor_plan_mode,
             "effective_plan_mode": outcome.trace.effective_plan_mode,
@@ -347,6 +372,27 @@ async def run_dataset(
                 else round(pre_need_coverage - post_need_coverage, 4)
             ),
             "pre_fusion_retrieved_evidence_ids": candidate_evidence_ids,
+            "raw_retrieval_evidence_ids": raw_evidence_ids,
+            "post_rerank_evidence_ids": reranked_evidence_ids,
+            "post_fusion_evidence_ids": fusion_evidence_ids,
+            "final_top_k_evidence_ids": retrieved_evidence_ids,
+            "evidence_stage_presence": {
+                evidence_id: {
+                    "raw_retrieval": evidence_id in raw_set,
+                    "post_rerank": evidence_id in reranked_set,
+                    "post_fusion": evidence_id in fusion_set,
+                    "final_top_k": evidence_id in final_set,
+                }
+                for evidence_id in gold_evidence_ids
+            },
+            "retrieval_loss_evidence_ids": retrieval_loss_ids,
+            "reranker_loss_evidence_ids": reranker_loss_ids,
+            "fusion_loss_evidence_ids": fusion_loss_ids,
+            "top_k_truncation_loss_evidence_ids": top_k_loss_ids,
+            "retrieval_loss_rate": len(retrieval_loss_ids) / gold_count if gold_count else None,
+            "reranker_loss_rate": len(reranker_loss_ids) / gold_count if gold_count else None,
+            "fusion_loss_rate": len(fusion_loss_ids) / gold_count if gold_count else None,
+            "top_k_truncation_loss_rate": len(top_k_loss_ids) / gold_count if gold_count else None,
         }
         observation["langfuse_trace_id"] = case_trace.finish(result_attributes(observation))
         observation["evaluation_run_id"] = evaluation_run_id or None

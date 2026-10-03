@@ -50,7 +50,7 @@ class SharedPlanProcessor:
             await asyncio.sleep(self._latency[question])
             value = self._cache[question]
             if isinstance(value, Exception):
-                raise type(value)(str(value))
+                raise value
             return value, dict(self._metadata.get(question) or {})
         started = time.perf_counter()
         try:
