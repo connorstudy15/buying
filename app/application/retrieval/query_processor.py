@@ -48,6 +48,15 @@ class QueryPlan:
 class QueryProcessorError(RuntimeError):
     """模型输出不可用；上层必须原样退回 legacy 检索。"""
 
+    def __init__(
+        self, code: str, *, model_decision: str | None = None,
+        metadata: dict | None = None,
+    ) -> None:
+        super().__init__(code)
+        self.code = code
+        self.model_decision = model_decision
+        self.metadata = metadata or {}
+
 
 class QueryProcessor:
     def __init__(
@@ -102,12 +111,24 @@ class QueryProcessor:
             input_tokens = int(usage_data.get("input_tokens") or usage_data.get("prompt_tokens") or 0)
             output_tokens = int(usage_data.get("output_tokens") or usage_data.get("completion_tokens") or 0)
             total_tokens = int(usage_data.get("total_tokens") or input_tokens + output_tokens)
-            return self._validate(question, payload), {
-                "latency_ms": round((time.perf_counter() - started) * 1000, 3),
+            metadata = {
+                "latency_ms": 0.0,
                 "input_tokens": input_tokens,
                 "output_tokens": output_tokens,
                 "total_tokens": total_tokens,
             }
+            try:
+                plan = self._validate(question, payload)
+            except QueryProcessorError as err:
+                metadata["latency_ms"] = round((time.perf_counter() - started) * 1000, 3)
+                if err.model_decision is None and isinstance(payload, dict):
+                    raw_mode = str(payload.get("mode") or "").strip().upper()
+                    if raw_mode in {"DIRECT", "REWRITE", "DECOMPOSE"}:
+                        err.model_decision = raw_mode
+                err.metadata = metadata
+                raise
+            metadata["latency_ms"] = round((time.perf_counter() - started) * 1000, 3)
+            return plan, metadata
         except QueryProcessorError:
             raise
         except Exception as err:  # noqa: BLE001 - 任何模型/格式故障均触发精确 legacy fallback

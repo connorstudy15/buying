@@ -35,6 +35,7 @@ def test_eval_whitelist_drops_unapproved_free_text():
 def test_retrieval_step_whitelist_keeps_diagnostics_but_drops_query_text():
     clean = tracing._sanitize_attributes({
         "globex.retrieval.stage": "reranker_attempt",
+        "globex.retrieval.model_decision": "DECOMPOSE",
         "globex.retrieval.need_id": "baggage_policy",
         "globex.retrieval.attempt": 2,
         "globex.retrieval.latency_ms": 3000.0,
@@ -44,6 +45,7 @@ def test_retrieval_step_whitelist_keeps_diagnostics_but_drops_query_text():
 
     assert clean == {
         "globex.retrieval.stage": "reranker_attempt",
+        "globex.retrieval.model_decision": "DECOMPOSE",
         "globex.retrieval.need_id": "baggage_policy",
         "globex.retrieval.attempt": 2,
         "globex.retrieval.latency_ms": 3000.0,

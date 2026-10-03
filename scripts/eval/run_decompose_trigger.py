@@ -53,6 +53,8 @@ def _percentile(values: list[float], percentile: float) -> float | None:
 
 
 def metrics(observations: list[dict]) -> dict:
+    model_tp = sum(row["expected"] == "DECOMPOSE" and row["model_predicted_decompose"] for row in observations)
+    model_fn = sum(row["expected"] == "DECOMPOSE" and not row["model_predicted_decompose"] for row in observations)
     tp = sum(row["expected"] == "DECOMPOSE" and row["predicted_decompose"] and not row["fallback"] for row in observations)
     fp = sum(row["expected"] == "DIRECT" and row["predicted_decompose"] and not row["fallback"] for row in observations)
     fn = sum(row["expected"] == "DECOMPOSE" and (not row["predicted_decompose"] or row["fallback"]) for row in observations)
@@ -64,7 +66,10 @@ def metrics(observations: list[dict]) -> dict:
     return {
         "count": count, "tp": tp, "fp": fp, "fn": fn, "tn": tn,
         "precision": tp / (tp + fp) if tp + fp else None,
+        # recall 是 effective_decompose_recall 的兼容别名，避免破坏旧报告消费者。
         "recall": tp / (tp + fn) if tp + fn else None,
+        "model_decision_recall": model_tp / (model_tp + model_fn) if model_tp + model_fn else None,
+        "effective_decompose_recall": tp / (tp + fn) if tp + fn else None,
         "direct_preservation_accuracy": tn / (tn + fp) if tn + fp else None,
         "accuracy": (tp + tn) / count if count else None,
         "fallback_rate": sum(row["fallback"] for row in observations) / count if count else None,
@@ -91,6 +96,7 @@ async def run_once(processor: QueryProcessor, cases: list[dict], *, run_id: str,
         usage: dict = {}
         plan = None
         error = None
+        model_decision = None
         with trace.get_tracer(__name__).start_as_current_span(
             "knowledge.query_processor",
             attributes={"langfuse.observation.type": "span", "globex.retrieval.stage": "query_processor"},
@@ -100,23 +106,32 @@ async def run_once(processor: QueryProcessor, cases: list[dict], *, run_id: str,
                 plan, usage = await processor.process_with_metadata(case["query"])
                 span.set_attributes({
                     "globex.retrieval.plan_mode": plan.mode,
+                    "globex.retrieval.model_decision": plan.mode,
                     "globex.retrieval.input_tokens": int(usage.get("input_tokens") or 0),
                     "globex.retrieval.output_tokens": int(usage.get("output_tokens") or 0),
                     "globex.retrieval.total_tokens": int(usage.get("total_tokens") or 0),
                 })
             except Exception as caught:  # fallback 是被测结果，不能让整轮消失
                 error = caught
+                model_decision = getattr(caught, "model_decision", None)
+                usage = getattr(caught, "metadata", {}) or {}
+                if model_decision:
+                    span.set_attribute("globex.retrieval.model_decision", model_decision)
                 span.set_attribute("error.type", type(caught).__name__)
                 span.set_status(Status(StatusCode.ERROR))
             finally:
                 span.set_attribute("globex.retrieval.latency_ms", round((time.perf_counter() - started) * 1000, 3))
         latency_ms = round((time.perf_counter() - started) * 1000, 3)
+        if plan is not None:
+            model_decision = plan.mode
         predicted = plan.mode if plan is not None else "FALLBACK"
         predicted_decompose = predicted == "DECOMPOSE"
+        model_predicted_decompose = model_decision == "DECOMPOSE"
         fallback = plan is None
         correct = not fallback and predicted_decompose == (case["expected_query_strategy"] == "DECOMPOSE")
         trace_id = root.finish({
             "globex.eval.trigger_expected": case["expected_query_strategy"],
+            "globex.eval.trigger_model_decision": model_decision or "UNKNOWN",
             "globex.eval.trigger_predicted": predicted,
             "globex.eval.trigger_correct": correct,
             "globex.eval.trigger_fallback": fallback,
@@ -124,6 +139,8 @@ async def run_once(processor: QueryProcessor, cases: list[dict], *, run_id: str,
         }, error=error)
         observations.append({
             "case_id": case["id"], "expected": case["expected_query_strategy"],
+            "model_decision": model_decision,
+            "model_predicted_decompose": model_predicted_decompose,
             "predicted": predicted, "predicted_decompose": predicted_decompose,
             "correct": correct, "fallback": fallback,
             "error_type": type(error).__name__ if error is not None else None,
@@ -139,13 +156,14 @@ def render(payload: dict) -> str:
         f"- 数据集：`{payload['dataset']}`；{payload['case_count']} 题；重复 {len(payload['runs'])} 轮。",
         f"- Langfuse：{'已启用' if payload['langfuse_enabled'] else '未启用'}；运行 ID：`{payload['evaluation_run_id']}`。",
         "- REWRITE 归入非 DECOMPOSE；fallback 单独计数，不冒充 DIRECT。", "",
-        "| 轮次 | Precision | Recall | DIRECT 保持率 | fallback | P50/P95 | 输入/输出 token（每题） |",
-        "|---:|---:|---:|---:|---:|---:|---:|",
+        "| 轮次 | Precision | Model Decision Recall | Effective Decompose Recall | DIRECT 保持率 | fallback | P50/P95 | 输入/输出 token（每题） |",
+        "|---:|---:|---:|---:|---:|---:|---:|---:|",
     ]
     for run in payload["runs"]:
         item = run["metrics"]
         lines.append(
-            f"| {run['repetition']} | {item['precision']:.2%} | {item['recall']:.2%} | "
+            f"| {run['repetition']} | {item['precision']:.2%} | {item['model_decision_recall']:.2%} | "
+            f"{item['effective_decompose_recall']:.2%} | "
             f"{item['direct_preservation_accuracy']:.2%} | {item['fallback_rate']:.2%} | "
             f"{item['latency_p50_ms']:.0f}/{item['latency_p95_ms']:.0f} ms | "
             f"{item['input_tokens_per_query']:.1f}/{item['output_tokens_per_query']:.1f} |"

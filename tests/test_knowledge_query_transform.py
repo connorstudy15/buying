@@ -323,6 +323,18 @@ def test_query_processor_still_rejects_dropped_explicit_negative_constraint():
 
 
 @pytest.mark.asyncio
+async def test_query_processor_error_preserves_raw_model_decision_and_usage():
+    model = AsyncMock(return_value=SimpleNamespace(
+        content=[TextBlock(text='''{"mode":"DECOMPOSE","rewritten_query":"","subqueries":[{"information_need_id":"a","query":"20寸登机箱尺寸"},{"information_need_id":"b","query":"航空公司规则"}]}''')],
+        usage={"prompt_tokens": 100, "completion_tokens": 20, "total_tokens": 120},
+    ))
+    with pytest.raises(QueryProcessorError) as captured:
+        await QueryProcessor(model, "prompt").process_with_metadata("20寸登机箱适用于任意航空公司吗")
+    assert captured.value.model_decision == "DECOMPOSE"
+    assert captured.value.metadata["total_tokens"] == 120
+
+
+@pytest.mark.asyncio
 async def test_query_processor_calls_model_once_and_accepts_fenced_json():
     model = AsyncMock(return_value=SimpleNamespace(content=[TextBlock(text='''```json
 {"mode":"REWRITE","rewritten_query":"20寸登机箱 任意航空公司规则","subqueries":[]}
