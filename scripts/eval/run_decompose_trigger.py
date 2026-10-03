@@ -53,11 +53,10 @@ def _percentile(values: list[float], percentile: float) -> float | None:
 
 
 def metrics(observations: list[dict]) -> dict:
-    valid = [row for row in observations if not row["fallback"]]
-    tp = sum(row["expected"] == "DECOMPOSE" and row["predicted_decompose"] for row in valid)
-    fp = sum(row["expected"] == "DIRECT" and row["predicted_decompose"] for row in valid)
-    fn = sum(row["expected"] == "DECOMPOSE" and not row["predicted_decompose"] for row in valid)
-    tn = sum(row["expected"] == "DIRECT" and not row["predicted_decompose"] for row in valid)
+    tp = sum(row["expected"] == "DECOMPOSE" and row["predicted_decompose"] and not row["fallback"] for row in observations)
+    fp = sum(row["expected"] == "DIRECT" and row["predicted_decompose"] and not row["fallback"] for row in observations)
+    fn = sum(row["expected"] == "DECOMPOSE" and (not row["predicted_decompose"] or row["fallback"]) for row in observations)
+    tn = sum(row["expected"] == "DIRECT" and not row["predicted_decompose"] and not row["fallback"] for row in observations)
     latencies = [float(row["latency_ms"]) for row in observations]
     input_tokens = sum(int(row["usage"].get("input_tokens") or 0) for row in observations)
     output_tokens = sum(int(row["usage"].get("output_tokens") or 0) for row in observations)
@@ -67,10 +66,10 @@ def metrics(observations: list[dict]) -> dict:
         "precision": tp / (tp + fp) if tp + fp else None,
         "recall": tp / (tp + fn) if tp + fn else None,
         "direct_preservation_accuracy": tn / (tn + fp) if tn + fp else None,
-        "accuracy": (tp + tn) / len(valid) if valid else None,
-        "fallback_rate": (count - len(valid)) / count if count else None,
-        "false_positive_ids": [row["case_id"] for row in valid if row["expected"] == "DIRECT" and row["predicted_decompose"]],
-        "false_negative_ids": [row["case_id"] for row in valid if row["expected"] == "DECOMPOSE" and not row["predicted_decompose"]],
+        "accuracy": (tp + tn) / count if count else None,
+        "fallback_rate": sum(row["fallback"] for row in observations) / count if count else None,
+        "false_positive_ids": [row["case_id"] for row in observations if row["expected"] == "DIRECT" and row["predicted_decompose"] and not row["fallback"]],
+        "false_negative_ids": [row["case_id"] for row in observations if row["expected"] == "DECOMPOSE" and (not row["predicted_decompose"] or row["fallback"])],
         "fallback_ids": [row["case_id"] for row in observations if row["fallback"]],
         "latency_p50_ms": _percentile(latencies, 0.5),
         "latency_p95_ms": _percentile(latencies, 0.95),
@@ -128,6 +127,7 @@ async def run_once(processor: QueryProcessor, cases: list[dict], *, run_id: str,
             "predicted": predicted, "predicted_decompose": predicted_decompose,
             "correct": correct, "fallback": fallback,
             "error_type": type(error).__name__ if error is not None else None,
+            "error_code": str(error) if error is not None else None,
             "latency_ms": latency_ms, "usage": usage, "langfuse_trace_id": trace_id,
         })
     return observations, metrics(observations)
@@ -139,15 +139,16 @@ def render(payload: dict) -> str:
         f"- 数据集：`{payload['dataset']}`；{payload['case_count']} 题；重复 {len(payload['runs'])} 轮。",
         f"- Langfuse：{'已启用' if payload['langfuse_enabled'] else '未启用'}；运行 ID：`{payload['evaluation_run_id']}`。",
         "- REWRITE 归入非 DECOMPOSE；fallback 单独计数，不冒充 DIRECT。", "",
-        "| 轮次 | Precision | Recall | DIRECT 保持率 | fallback | P50/P95 |",
-        "|---:|---:|---:|---:|---:|---:|",
+        "| 轮次 | Precision | Recall | DIRECT 保持率 | fallback | P50/P95 | 输入/输出 token（每题） |",
+        "|---:|---:|---:|---:|---:|---:|---:|",
     ]
     for run in payload["runs"]:
         item = run["metrics"]
         lines.append(
             f"| {run['repetition']} | {item['precision']:.2%} | {item['recall']:.2%} | "
             f"{item['direct_preservation_accuracy']:.2%} | {item['fallback_rate']:.2%} | "
-            f"{item['latency_p50_ms']:.0f}/{item['latency_p95_ms']:.0f} ms |"
+            f"{item['latency_p50_ms']:.0f}/{item['latency_p95_ms']:.0f} ms | "
+            f"{item['input_tokens_per_query']:.1f}/{item['output_tokens_per_query']:.1f} |"
         )
     for run in payload["runs"]:
         item = run["metrics"]

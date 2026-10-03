@@ -304,6 +304,24 @@ def test_query_processor_rejects_dropped_numeric_or_universal_constraint():
         })
 
 
+def test_query_processor_does_not_treat_can_or_cannot_question_as_strong_negative():
+    plan = QueryProcessor(None, "prompt")._validate("去日本用国内吹风机，还想知道它能不能放进随身行李。", {
+        "mode": "DECOMPOSE", "rewritten_query": "",
+        "subqueries": [
+            {"information_need_id": "voltage", "query": "国内吹风机在日本的电压插头兼容性"},
+            {"information_need_id": "baggage", "query": "吹风机是否可以放进随身行李"},
+        ],
+    })
+    assert plan.mode == "DECOMPOSE"
+
+
+def test_query_processor_still_rejects_dropped_explicit_negative_constraint():
+    with pytest.raises(QueryProcessorError, match="constraint_drift"):
+        QueryProcessor(None, "prompt")._validate("不要推荐禁止随身携带的电器", {
+            "mode": "REWRITE", "rewritten_query": "旅行电器推荐", "subqueries": [],
+        })
+
+
 @pytest.mark.asyncio
 async def test_query_processor_calls_model_once_and_accepts_fenced_json():
     model = AsyncMock(return_value=SimpleNamespace(content=[TextBlock(text='''```json

@@ -162,12 +162,21 @@ class QueryProcessor:
         anchors = set(re.findall(r"(?i)\b[a-z]+[-_]?\d[\w.-]*\b|\d+(?:\.\d+)?", original))
         if plan.mode != "DIRECT" and any(anchor.casefold() not in combined for anchor in anchors):
             raise QueryProcessorError("query_processor_anchor_drift")
+        # “能不能 / 可不可以”是在询问可行性，不等于用户已经声明“不能”。先移除
+        # 这些疑问式搭配，再检查真正的强否定，避免把正常的限制查询误判成约束漂移。
+        strong_negative_source = re.sub(r"能不能|可不可以|是否能|能否|可否", "", original)
         constraint_groups = (
-            ({"不要", "不能", "不含", "没有", "不得", "禁止"}, {"不要", "不能", "不含", "没有", "不得", "禁止"}),
-            ({"任意", "任何", "所有", "全部", "全球"}, {"任意", "任何", "所有", "全部", "全球"}),
+            (
+                any(word in strong_negative_source for word in {"不要", "不能", "不含", "没有", "不得", "禁止"}),
+                {"不要", "不能", "不含", "没有", "不得", "禁止"},
+            ),
+            (
+                any(word in original for word in {"任意", "任何", "所有", "全部", "全球"}),
+                {"任意", "任何", "所有", "全部", "全球"},
+            ),
         )
-        for triggers, equivalents in constraint_groups:
-            if plan.mode != "DIRECT" and any(word in original for word in triggers) and not any(word in combined for word in equivalents):
+        for has_constraint, equivalents in constraint_groups:
+            if plan.mode != "DIRECT" and has_constraint and not any(word in combined for word in equivalents):
                 raise QueryProcessorError("query_processor_constraint_drift")
         return plan
 

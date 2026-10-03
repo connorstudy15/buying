@@ -1,0 +1,1160 @@
+{
+  "schema_version": "decompose-trigger-holdout-v1",
+  "created_at": "2026-10-04T02:18:13.340601+08:00",
+  "dataset": "eval\\knowledge\\v5\\decompose_trigger_holdout_20.jsonl",
+  "dataset_sha256": "688d3c3e723a9b4ac93cdf7c2022e16a60c519af4fce6982b3d80beb5b73881b",
+  "case_count": 20,
+  "evaluation_run_id": "decompose-trigger-20261004021707-e09e3cfb",
+  "langfuse_enabled": true,
+  "runs": [
+    {
+      "repetition": 1,
+      "metrics": {
+        "count": 20,
+        "tp": 9,
+        "fp": 0,
+        "fn": 1,
+        "tn": 10,
+        "precision": 1.0,
+        "recall": 0.9,
+        "direct_preservation_accuracy": 1.0,
+        "accuracy": 0.95,
+        "fallback_rate": 0.05,
+        "false_positive_ids": [],
+        "false_negative_ids": [
+          "trigger-h014"
+        ],
+        "fallback_ids": [
+          "trigger-h014"
+        ],
+        "latency_p50_ms": 1106.9029999999998,
+        "latency_p95_ms": 1506.6167,
+        "input_tokens_per_query": 587.7,
+        "output_tokens_per_query": 39.5
+      },
+      "observations": [
+        {
+          "case_id": "trigger-h001",
+          "expected": "DIRECT",
+          "predicted": "DIRECT",
+          "predicted_decompose": false,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 849.201,
+          "usage": {
+            "latency_ms": 849.049,
+            "input_tokens": 617,
+            "output_tokens": 17,
+            "total_tokens": 634
+          },
+          "langfuse_trace_id": "2d185704fbe9cc82d0058edbf8610314"
+        },
+        {
+          "case_id": "trigger-h002",
+          "expected": "DIRECT",
+          "predicted": "DIRECT",
+          "predicted_decompose": false,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 710.921,
+          "usage": {
+            "latency_ms": 710.83,
+            "input_tokens": 618,
+            "output_tokens": 17,
+            "total_tokens": 635
+          },
+          "langfuse_trace_id": "be3fa26b03e244e4a0f0279645d18368"
+        },
+        {
+          "case_id": "trigger-h003",
+          "expected": "DIRECT",
+          "predicted": "DIRECT",
+          "predicted_decompose": false,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 1182.037,
+          "usage": {
+            "latency_ms": 1181.921,
+            "input_tokens": 614,
+            "output_tokens": 17,
+            "total_tokens": 631
+          },
+          "langfuse_trace_id": "734de28c3f950601d7ab609d6e81b9ec"
+        },
+        {
+          "case_id": "trigger-h004",
+          "expected": "DIRECT",
+          "predicted": "DIRECT",
+          "predicted_decompose": false,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 897.835,
+          "usage": {
+            "latency_ms": 897.721,
+            "input_tokens": 614,
+            "output_tokens": 17,
+            "total_tokens": 631
+          },
+          "langfuse_trace_id": "b57d6ba44567163ce342be0475834904"
+        },
+        {
+          "case_id": "trigger-h005",
+          "expected": "DIRECT",
+          "predicted": "DIRECT",
+          "predicted_decompose": false,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 1335.862,
+          "usage": {
+            "latency_ms": 1335.708,
+            "input_tokens": 615,
+            "output_tokens": 17,
+            "total_tokens": 632
+          },
+          "langfuse_trace_id": "3e59a2edb11a0439d967199b4f7b6a57"
+        },
+        {
+          "case_id": "trigger-h006",
+          "expected": "DIRECT",
+          "predicted": "DIRECT",
+          "predicted_decompose": false,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 683.92,
+          "usage": {
+            "latency_ms": 683.815,
+            "input_tokens": 616,
+            "output_tokens": 17,
+            "total_tokens": 633
+          },
+          "langfuse_trace_id": "b38dff12467873cc8541c3315be6a02b"
+        },
+        {
+          "case_id": "trigger-h007",
+          "expected": "DIRECT",
+          "predicted": "DIRECT",
+          "predicted_decompose": false,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 925.159,
+          "usage": {
+            "latency_ms": 925.026,
+            "input_tokens": 617,
+            "output_tokens": 17,
+            "total_tokens": 634
+          },
+          "langfuse_trace_id": "05fe5150964264743d9c38e4c534a820"
+        },
+        {
+          "case_id": "trigger-h008",
+          "expected": "DIRECT",
+          "predicted": "DIRECT",
+          "predicted_decompose": false,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 1177.137,
+          "usage": {
+            "latency_ms": 1176.987,
+            "input_tokens": 616,
+            "output_tokens": 17,
+            "total_tokens": 633
+          },
+          "langfuse_trace_id": "996f6d373c0720987275a52b7694b1f1"
+        },
+        {
+          "case_id": "trigger-h009",
+          "expected": "DIRECT",
+          "predicted": "DIRECT",
+          "predicted_decompose": false,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 1450.733,
+          "usage": {
+            "latency_ms": 1450.63,
+            "input_tokens": 615,
+            "output_tokens": 17,
+            "total_tokens": 632
+          },
+          "langfuse_trace_id": "1ab802a6d84b1461bf06be811cffb26e"
+        },
+        {
+          "case_id": "trigger-h010",
+          "expected": "DIRECT",
+          "predicted": "DIRECT",
+          "predicted_decompose": false,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 756.308,
+          "usage": {
+            "latency_ms": 756.144,
+            "input_tokens": 615,
+            "output_tokens": 17,
+            "total_tokens": 632
+          },
+          "langfuse_trace_id": "342d3536a845888e18aee1a84402ae5a"
+        },
+        {
+          "case_id": "trigger-h011",
+          "expected": "DECOMPOSE",
+          "predicted": "DECOMPOSE",
+          "predicted_decompose": true,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 1419.608,
+          "usage": {
+            "latency_ms": 1419.476,
+            "input_tokens": 622,
+            "output_tokens": 75,
+            "total_tokens": 697
+          },
+          "langfuse_trace_id": "40a845b41e2a3f000abdb5ab5866b15d"
+        },
+        {
+          "case_id": "trigger-h012",
+          "expected": "DECOMPOSE",
+          "predicted": "DECOMPOSE",
+          "predicted_decompose": true,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 1146.157,
+          "usage": {
+            "latency_ms": 1146.022,
+            "input_tokens": 622,
+            "output_tokens": 70,
+            "total_tokens": 692
+          },
+          "langfuse_trace_id": "c3873ec384c6000604df780979d93733"
+        },
+        {
+          "case_id": "trigger-h013",
+          "expected": "DECOMPOSE",
+          "predicted": "DECOMPOSE",
+          "predicted_decompose": true,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 828.291,
+          "usage": {
+            "latency_ms": 828.187,
+            "input_tokens": 621,
+            "output_tokens": 66,
+            "total_tokens": 687
+          },
+          "langfuse_trace_id": "9ff70e9558310833d5b8760d6cfb3b4e"
+        },
+        {
+          "case_id": "trigger-h014",
+          "expected": "DECOMPOSE",
+          "predicted": "FALLBACK",
+          "predicted_decompose": false,
+          "correct": false,
+          "fallback": true,
+          "error_type": "QueryProcessorError",
+          "error_code": "query_processor_constraint_drift",
+          "latency_ms": 1577.728,
+          "usage": {},
+          "langfuse_trace_id": "0786d42904cfeabeb0fce671b83f9552"
+        },
+        {
+          "case_id": "trigger-h015",
+          "expected": "DECOMPOSE",
+          "predicted": "DECOMPOSE",
+          "predicted_decompose": true,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 772.461,
+          "usage": {
+            "latency_ms": 772.371,
+            "input_tokens": 625,
+            "output_tokens": 69,
+            "total_tokens": 694
+          },
+          "langfuse_trace_id": "6b3ca58444a355d42b33e5c60c94fa9a"
+        },
+        {
+          "case_id": "trigger-h016",
+          "expected": "DECOMPOSE",
+          "predicted": "DECOMPOSE",
+          "predicted_decompose": true,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 1067.649,
+          "usage": {
+            "latency_ms": 1067.563,
+            "input_tokens": 624,
+            "output_tokens": 68,
+            "total_tokens": 692
+          },
+          "langfuse_trace_id": "158694986b367d81ee56dffac50bc8d5"
+        },
+        {
+          "case_id": "trigger-h017",
+          "expected": "DECOMPOSE",
+          "predicted": "DECOMPOSE",
+          "predicted_decompose": true,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 1390.629,
+          "usage": {
+            "latency_ms": 1390.543,
+            "input_tokens": 620,
+            "output_tokens": 65,
+            "total_tokens": 685
+          },
+          "langfuse_trace_id": "957e4c0fdfdb40b7c1341087cbed1ec0"
+        },
+        {
+          "case_id": "trigger-h018",
+          "expected": "DECOMPOSE",
+          "predicted": "DECOMPOSE",
+          "predicted_decompose": true,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 843.212,
+          "usage": {
+            "latency_ms": 843.125,
+            "input_tokens": 620,
+            "output_tokens": 63,
+            "total_tokens": 683
+          },
+          "langfuse_trace_id": "e398b5f755c8581f5214766c9abecd87"
+        },
+        {
+          "case_id": "trigger-h019",
+          "expected": "DECOMPOSE",
+          "predicted": "DECOMPOSE",
+          "predicted_decompose": true,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 1223.829,
+          "usage": {
+            "latency_ms": 1223.738,
+            "input_tokens": 621,
+            "output_tokens": 74,
+            "total_tokens": 695
+          },
+          "langfuse_trace_id": "05ee22a5bbbcbac7fddb960a23b8b6ef"
+        },
+        {
+          "case_id": "trigger-h020",
+          "expected": "DECOMPOSE",
+          "predicted": "DECOMPOSE",
+          "predicted_decompose": true,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 1502.874,
+          "usage": {
+            "latency_ms": 1502.785,
+            "input_tokens": 622,
+            "output_tokens": 70,
+            "total_tokens": 692
+          },
+          "langfuse_trace_id": "456c6e2a1400db4cfa4a0d4f9cde2c2c"
+        }
+      ]
+    },
+    {
+      "repetition": 2,
+      "metrics": {
+        "count": 20,
+        "tp": 9,
+        "fp": 0,
+        "fn": 1,
+        "tn": 10,
+        "precision": 1.0,
+        "recall": 0.9,
+        "direct_preservation_accuracy": 1.0,
+        "accuracy": 0.95,
+        "fallback_rate": 0.05,
+        "false_positive_ids": [],
+        "false_negative_ids": [
+          "trigger-h014"
+        ],
+        "fallback_ids": [
+          "trigger-h014"
+        ],
+        "latency_p50_ms": 1075.679,
+        "latency_p95_ms": 1386.2722,
+        "input_tokens_per_query": 587.7,
+        "output_tokens_per_query": 39.6
+      },
+      "observations": [
+        {
+          "case_id": "trigger-h001",
+          "expected": "DIRECT",
+          "predicted": "DIRECT",
+          "predicted_decompose": false,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 812.648,
+          "usage": {
+            "latency_ms": 812.509,
+            "input_tokens": 617,
+            "output_tokens": 17,
+            "total_tokens": 634
+          },
+          "langfuse_trace_id": "4bf3bb740cb65853ab806037d10dce3e"
+        },
+        {
+          "case_id": "trigger-h002",
+          "expected": "DIRECT",
+          "predicted": "DIRECT",
+          "predicted_decompose": false,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 800.41,
+          "usage": {
+            "latency_ms": 800.24,
+            "input_tokens": 618,
+            "output_tokens": 17,
+            "total_tokens": 635
+          },
+          "langfuse_trace_id": "4ddf1abb55d569161aa4b8378774dcb6"
+        },
+        {
+          "case_id": "trigger-h003",
+          "expected": "DIRECT",
+          "predicted": "DIRECT",
+          "predicted_decompose": false,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 1117.408,
+          "usage": {
+            "latency_ms": 1117.228,
+            "input_tokens": 614,
+            "output_tokens": 17,
+            "total_tokens": 631
+          },
+          "langfuse_trace_id": "6e4bcc962cb10c2d7f72368013315a75"
+        },
+        {
+          "case_id": "trigger-h004",
+          "expected": "DIRECT",
+          "predicted": "DIRECT",
+          "predicted_decompose": false,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 1106.786,
+          "usage": {
+            "latency_ms": 1106.604,
+            "input_tokens": 614,
+            "output_tokens": 17,
+            "total_tokens": 631
+          },
+          "langfuse_trace_id": "80814d008cf2633790f04ea3641d2356"
+        },
+        {
+          "case_id": "trigger-h005",
+          "expected": "DIRECT",
+          "predicted": "DIRECT",
+          "predicted_decompose": false,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 1116.562,
+          "usage": {
+            "latency_ms": 1116.382,
+            "input_tokens": 615,
+            "output_tokens": 17,
+            "total_tokens": 632
+          },
+          "langfuse_trace_id": "5b59892b30d08c1493a2221567b68f5c"
+        },
+        {
+          "case_id": "trigger-h006",
+          "expected": "DIRECT",
+          "predicted": "DIRECT",
+          "predicted_decompose": false,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 715.847,
+          "usage": {
+            "latency_ms": 715.667,
+            "input_tokens": 616,
+            "output_tokens": 17,
+            "total_tokens": 633
+          },
+          "langfuse_trace_id": "60f61662b41495d3aa3da0419ef91ad2"
+        },
+        {
+          "case_id": "trigger-h007",
+          "expected": "DIRECT",
+          "predicted": "DIRECT",
+          "predicted_decompose": false,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 1064.931,
+          "usage": {
+            "latency_ms": 1064.777,
+            "input_tokens": 617,
+            "output_tokens": 17,
+            "total_tokens": 634
+          },
+          "langfuse_trace_id": "6be8a9a7df6bb928c5c5843d6ec37d88"
+        },
+        {
+          "case_id": "trigger-h008",
+          "expected": "DIRECT",
+          "predicted": "DIRECT",
+          "predicted_decompose": false,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 1158.745,
+          "usage": {
+            "latency_ms": 1158.59,
+            "input_tokens": 616,
+            "output_tokens": 17,
+            "total_tokens": 633
+          },
+          "langfuse_trace_id": "54c150c804457526bdbe1ff34af29b9a"
+        },
+        {
+          "case_id": "trigger-h009",
+          "expected": "DIRECT",
+          "predicted": "DIRECT",
+          "predicted_decompose": false,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 950.437,
+          "usage": {
+            "latency_ms": 950.255,
+            "input_tokens": 615,
+            "output_tokens": 17,
+            "total_tokens": 632
+          },
+          "langfuse_trace_id": "3a2cb9bcfb0ecb0854753efa7308ee01"
+        },
+        {
+          "case_id": "trigger-h010",
+          "expected": "DIRECT",
+          "predicted": "DIRECT",
+          "predicted_decompose": false,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 842.809,
+          "usage": {
+            "latency_ms": 842.59,
+            "input_tokens": 615,
+            "output_tokens": 17,
+            "total_tokens": 632
+          },
+          "langfuse_trace_id": "50a3e399e8daca7051357b351dcaa393"
+        },
+        {
+          "case_id": "trigger-h011",
+          "expected": "DECOMPOSE",
+          "predicted": "DECOMPOSE",
+          "predicted_decompose": true,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 1539.606,
+          "usage": {
+            "latency_ms": 1539.447,
+            "input_tokens": 622,
+            "output_tokens": 69,
+            "total_tokens": 691
+          },
+          "langfuse_trace_id": "364f75723bb82c413c739958cb148fb0"
+        },
+        {
+          "case_id": "trigger-h012",
+          "expected": "DECOMPOSE",
+          "predicted": "DECOMPOSE",
+          "predicted_decompose": true,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 1378.122,
+          "usage": {
+            "latency_ms": 1377.99,
+            "input_tokens": 622,
+            "output_tokens": 66,
+            "total_tokens": 688
+          },
+          "langfuse_trace_id": "2158ec767f6de93d0e4de007a4499afc"
+        },
+        {
+          "case_id": "trigger-h013",
+          "expected": "DECOMPOSE",
+          "predicted": "DECOMPOSE",
+          "predicted_decompose": true,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 949.559,
+          "usage": {
+            "latency_ms": 949.398,
+            "input_tokens": 621,
+            "output_tokens": 66,
+            "total_tokens": 687
+          },
+          "langfuse_trace_id": "50e801c87b42a73aa7dce47408b4867d"
+        },
+        {
+          "case_id": "trigger-h014",
+          "expected": "DECOMPOSE",
+          "predicted": "FALLBACK",
+          "predicted_decompose": false,
+          "correct": false,
+          "fallback": true,
+          "error_type": "QueryProcessorError",
+          "error_code": "query_processor_constraint_drift",
+          "latency_ms": 977.745,
+          "usage": {},
+          "langfuse_trace_id": "9ceed4abe2096a266d0dcd9b9ba64886"
+        },
+        {
+          "case_id": "trigger-h015",
+          "expected": "DECOMPOSE",
+          "predicted": "DECOMPOSE",
+          "predicted_decompose": true,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 1047.407,
+          "usage": {
+            "latency_ms": 1047.217,
+            "input_tokens": 625,
+            "output_tokens": 68,
+            "total_tokens": 693
+          },
+          "langfuse_trace_id": "8c7b28197ce175ca0d0a49cbb6e8ca52"
+        },
+        {
+          "case_id": "trigger-h016",
+          "expected": "DECOMPOSE",
+          "predicted": "DECOMPOSE",
+          "predicted_decompose": true,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 1219.256,
+          "usage": {
+            "latency_ms": 1219.096,
+            "input_tokens": 624,
+            "output_tokens": 69,
+            "total_tokens": 693
+          },
+          "langfuse_trace_id": "6f83a36f9030ee8cdc4d11ad1a99646c"
+        },
+        {
+          "case_id": "trigger-h017",
+          "expected": "DECOMPOSE",
+          "predicted": "DECOMPOSE",
+          "predicted_decompose": true,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 1191.288,
+          "usage": {
+            "latency_ms": 1191.204,
+            "input_tokens": 620,
+            "output_tokens": 65,
+            "total_tokens": 685
+          },
+          "langfuse_trace_id": "74f3cd72995659653657736e56485a9d"
+        },
+        {
+          "case_id": "trigger-h018",
+          "expected": "DECOMPOSE",
+          "predicted": "DECOMPOSE",
+          "predicted_decompose": true,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 1086.427,
+          "usage": {
+            "latency_ms": 1086.307,
+            "input_tokens": 620,
+            "output_tokens": 78,
+            "total_tokens": 698
+          },
+          "langfuse_trace_id": "f741699598d911d250d5696b05b1c0f4"
+        },
+        {
+          "case_id": "trigger-h019",
+          "expected": "DECOMPOSE",
+          "predicted": "DECOMPOSE",
+          "predicted_decompose": true,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 1378.202,
+          "usage": {
+            "latency_ms": 1378.039,
+            "input_tokens": 621,
+            "output_tokens": 74,
+            "total_tokens": 695
+          },
+          "langfuse_trace_id": "cbf610f2a5fae2aeff295b8d2a258c24"
+        },
+        {
+          "case_id": "trigger-h020",
+          "expected": "DECOMPOSE",
+          "predicted": "DECOMPOSE",
+          "predicted_decompose": true,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 1053.447,
+          "usage": {
+            "latency_ms": 1053.367,
+            "input_tokens": 622,
+            "output_tokens": 67,
+            "total_tokens": 689
+          },
+          "langfuse_trace_id": "4f08a6b7b00d50df7741a7e0f348e6f8"
+        }
+      ]
+    },
+    {
+      "repetition": 3,
+      "metrics": {
+        "count": 20,
+        "tp": 9,
+        "fp": 0,
+        "fn": 1,
+        "tn": 10,
+        "precision": 1.0,
+        "recall": 0.9,
+        "direct_preservation_accuracy": 1.0,
+        "accuracy": 0.95,
+        "fallback_rate": 0.05,
+        "false_positive_ids": [],
+        "false_negative_ids": [
+          "trigger-h014"
+        ],
+        "fallback_ids": [
+          "trigger-h014"
+        ],
+        "latency_p50_ms": 1091.8875,
+        "latency_p95_ms": 1408.1439500000001,
+        "input_tokens_per_query": 587.7,
+        "output_tokens_per_query": 40.0
+      },
+      "observations": [
+        {
+          "case_id": "trigger-h001",
+          "expected": "DIRECT",
+          "predicted": "DIRECT",
+          "predicted_decompose": false,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 634.226,
+          "usage": {
+            "latency_ms": 634.115,
+            "input_tokens": 617,
+            "output_tokens": 17,
+            "total_tokens": 634
+          },
+          "langfuse_trace_id": "a3481c5aa08bb5f78f6ae86cd21bd173"
+        },
+        {
+          "case_id": "trigger-h002",
+          "expected": "DIRECT",
+          "predicted": "DIRECT",
+          "predicted_decompose": false,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 1060.944,
+          "usage": {
+            "latency_ms": 1060.794,
+            "input_tokens": 618,
+            "output_tokens": 17,
+            "total_tokens": 635
+          },
+          "langfuse_trace_id": "66501b1b7d19c599dda8777c330c5c59"
+        },
+        {
+          "case_id": "trigger-h003",
+          "expected": "DIRECT",
+          "predicted": "DIRECT",
+          "predicted_decompose": false,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 920.505,
+          "usage": {
+            "latency_ms": 920.312,
+            "input_tokens": 614,
+            "output_tokens": 17,
+            "total_tokens": 631
+          },
+          "langfuse_trace_id": "8bbe6dec4ffb641931dd7df45d8b82a4"
+        },
+        {
+          "case_id": "trigger-h004",
+          "expected": "DIRECT",
+          "predicted": "DIRECT",
+          "predicted_decompose": false,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 1114.652,
+          "usage": {
+            "latency_ms": 1114.571,
+            "input_tokens": 614,
+            "output_tokens": 17,
+            "total_tokens": 631
+          },
+          "langfuse_trace_id": "13d646aeb11df6fb7b382ec36d301dff"
+        },
+        {
+          "case_id": "trigger-h005",
+          "expected": "DIRECT",
+          "predicted": "DIRECT",
+          "predicted_decompose": false,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 996.313,
+          "usage": {
+            "latency_ms": 996.241,
+            "input_tokens": 615,
+            "output_tokens": 17,
+            "total_tokens": 632
+          },
+          "langfuse_trace_id": "ed2a266a33082fb5525765de4cb7566e"
+        },
+        {
+          "case_id": "trigger-h006",
+          "expected": "DIRECT",
+          "predicted": "DIRECT",
+          "predicted_decompose": false,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 943.875,
+          "usage": {
+            "latency_ms": 943.801,
+            "input_tokens": 616,
+            "output_tokens": 17,
+            "total_tokens": 633
+          },
+          "langfuse_trace_id": "17286d1cb9274d432d3fc86935dc965e"
+        },
+        {
+          "case_id": "trigger-h007",
+          "expected": "DIRECT",
+          "predicted": "DIRECT",
+          "predicted_decompose": false,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 1509.033,
+          "usage": {
+            "latency_ms": 1508.956,
+            "input_tokens": 617,
+            "output_tokens": 17,
+            "total_tokens": 634
+          },
+          "langfuse_trace_id": "12b31e2bd6c4201e9852bada653d97df"
+        },
+        {
+          "case_id": "trigger-h008",
+          "expected": "DIRECT",
+          "predicted": "DIRECT",
+          "predicted_decompose": false,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 760.067,
+          "usage": {
+            "latency_ms": 759.982,
+            "input_tokens": 616,
+            "output_tokens": 17,
+            "total_tokens": 633
+          },
+          "langfuse_trace_id": "d0632a3355c6a401ad3f51e4a4730139"
+        },
+        {
+          "case_id": "trigger-h009",
+          "expected": "DIRECT",
+          "predicted": "DIRECT",
+          "predicted_decompose": false,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 1020.423,
+          "usage": {
+            "latency_ms": 1020.343,
+            "input_tokens": 615,
+            "output_tokens": 17,
+            "total_tokens": 632
+          },
+          "langfuse_trace_id": "b22004d30be9336478978d02436478ec"
+        },
+        {
+          "case_id": "trigger-h010",
+          "expected": "DIRECT",
+          "predicted": "DIRECT",
+          "predicted_decompose": false,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 1053.264,
+          "usage": {
+            "latency_ms": 1053.187,
+            "input_tokens": 615,
+            "output_tokens": 17,
+            "total_tokens": 632
+          },
+          "langfuse_trace_id": "44869f889e9da66578a8623316e0b64c"
+        },
+        {
+          "case_id": "trigger-h011",
+          "expected": "DECOMPOSE",
+          "predicted": "DECOMPOSE",
+          "predicted_decompose": true,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 1402.834,
+          "usage": {
+            "latency_ms": 1402.714,
+            "input_tokens": 622,
+            "output_tokens": 75,
+            "total_tokens": 697
+          },
+          "langfuse_trace_id": "d224bf0b75162fd10507d43fe19b30c3"
+        },
+        {
+          "case_id": "trigger-h012",
+          "expected": "DECOMPOSE",
+          "predicted": "DECOMPOSE",
+          "predicted_decompose": true,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 1136.777,
+          "usage": {
+            "latency_ms": 1136.666,
+            "input_tokens": 622,
+            "output_tokens": 70,
+            "total_tokens": 692
+          },
+          "langfuse_trace_id": "4682f7be82b8abc51e7a1cb7b784495f"
+        },
+        {
+          "case_id": "trigger-h013",
+          "expected": "DECOMPOSE",
+          "predicted": "DECOMPOSE",
+          "predicted_decompose": true,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 1303.399,
+          "usage": {
+            "latency_ms": 1303.29,
+            "input_tokens": 621,
+            "output_tokens": 67,
+            "total_tokens": 688
+          },
+          "langfuse_trace_id": "c37ba47ce3bbc7e6294f7383d95e6c14"
+        },
+        {
+          "case_id": "trigger-h014",
+          "expected": "DECOMPOSE",
+          "predicted": "FALLBACK",
+          "predicted_decompose": false,
+          "correct": false,
+          "fallback": true,
+          "error_type": "QueryProcessorError",
+          "error_code": "query_processor_constraint_drift",
+          "latency_ms": 1377.771,
+          "usage": {},
+          "langfuse_trace_id": "1a0a1e72066aec45adf45c9db8cdba67"
+        },
+        {
+          "case_id": "trigger-h015",
+          "expected": "DECOMPOSE",
+          "predicted": "DECOMPOSE",
+          "predicted_decompose": true,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 1326.419,
+          "usage": {
+            "latency_ms": 1326.306,
+            "input_tokens": 625,
+            "output_tokens": 69,
+            "total_tokens": 694
+          },
+          "langfuse_trace_id": "95101cf257b666644710867bfe26efd3"
+        },
+        {
+          "case_id": "trigger-h016",
+          "expected": "DECOMPOSE",
+          "predicted": "DECOMPOSE",
+          "predicted_decompose": true,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 1252.172,
+          "usage": {
+            "latency_ms": 1252.084,
+            "input_tokens": 624,
+            "output_tokens": 68,
+            "total_tokens": 692
+          },
+          "langfuse_trace_id": "e895873b767b15845f3f71ded787a666"
+        },
+        {
+          "case_id": "trigger-h017",
+          "expected": "DECOMPOSE",
+          "predicted": "DECOMPOSE",
+          "predicted_decompose": true,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 1069.123,
+          "usage": {
+            "latency_ms": 1069.031,
+            "input_tokens": 620,
+            "output_tokens": 65,
+            "total_tokens": 685
+          },
+          "langfuse_trace_id": "2c84da1b0213ed6d765b649ffa7e9fe4"
+        },
+        {
+          "case_id": "trigger-h018",
+          "expected": "DECOMPOSE",
+          "predicted": "DECOMPOSE",
+          "predicted_decompose": true,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 1265.675,
+          "usage": {
+            "latency_ms": 1265.574,
+            "input_tokens": 620,
+            "output_tokens": 78,
+            "total_tokens": 698
+          },
+          "langfuse_trace_id": "45d6c4cf7f2c5334e2ac81081f65ec54"
+        },
+        {
+          "case_id": "trigger-h019",
+          "expected": "DECOMPOSE",
+          "predicted": "DECOMPOSE",
+          "predicted_decompose": true,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 850.697,
+          "usage": {
+            "latency_ms": 850.594,
+            "input_tokens": 621,
+            "output_tokens": 72,
+            "total_tokens": 693
+          },
+          "langfuse_trace_id": "92eefb794d0167b5f06a7c7545c2770b"
+        },
+        {
+          "case_id": "trigger-h020",
+          "expected": "DECOMPOSE",
+          "predicted": "DECOMPOSE",
+          "predicted_decompose": true,
+          "correct": true,
+          "fallback": false,
+          "error_type": null,
+          "error_code": null,
+          "latency_ms": 1152.964,
+          "usage": {
+            "latency_ms": 1152.877,
+            "input_tokens": 622,
+            "output_tokens": 66,
+            "total_tokens": 688
+          },
+          "langfuse_trace_id": "590cf8d12b8bb544f71a542a5b622285"
+        }
+      ]
+    }
+  ]
+}

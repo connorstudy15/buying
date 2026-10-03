@@ -23,3 +23,15 @@ def test_trigger_metrics_keep_fallback_out_of_true_negative_count():
     assert result["tp"] == 1 and result["tn"] == 1
     assert result["precision"] == 1 and result["recall"] == 1
     assert result["fallback_rate"] == 1 / 3
+    assert result["accuracy"] == 2 / 3
+
+
+def test_trigger_fallback_on_decompose_counts_as_false_negative():
+    rows = [
+        {"case_id": "fallback", "expected": "DECOMPOSE", "predicted_decompose": False,
+         "fallback": True, "latency_ms": 1, "usage": {}},
+    ]
+    result = metrics(rows)
+    assert result["fn"] == 1
+    assert result["recall"] == 0
+    assert result["false_negative_ids"] == ["fallback"]
