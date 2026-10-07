@@ -27,6 +27,8 @@ from typing import Literal, Optional
 
 from agentscope.message import TextBlock, ToolResultState, UserMsg
 from agentscope.tool import ToolChunk
+from opentelemetry import trace
+from opentelemetry.trace import Status, StatusCode
 
 from app.application.agents.search_agent import SearchAgentFactory
 from app.application.agents.trade_agent import TradeAgentFactory
@@ -130,16 +132,60 @@ def build_task_dispatch_tool(
             for line in [*payload.get("confirmation", {}).get("payload", {}).get("items", []),
                          *payload.get("order", {}).get("lines", [])]:
                 verified_ids.update(str(line[key]) for key in ("product_id", "sku_id") if line.get(key))
-        with observe_run_events(capture):
-            reply = await worker.reply(inputs)
-        output = reply.get_text_content() or ""
-        mentioned_ids = set(re.findall(r"\bP\d{4}(?:-S\d+)?\b", output))
-        unknown = mentioned_ids - verified_ids
-        # 下单专家可能只核对主任务传入的 SKU；这些标识仍须经过其真实业务工具核验。
-        decision = {"agent": subagent_type, "status": "unverified" if unknown else "completed",
-                    "summary": output if not unknown else "子任务回复包含未能由本轮检索证据核实的商品标识，请使用业务工具复核。",
-                    "evidence_refs": sorted(evidence_refs), "verified_product_ids": sorted(verified_ids),
-                    "unverified_product_ids": sorted(unknown)}
+        with trace.get_tracer(__name__).start_as_current_span(
+            "agent.subagent_handoff",
+            attributes={
+                "langfuse.observation.type": "agent",
+                "globex.trace.stage": "subagent_handoff",
+                "globex.agent.subagent": subagent_type,
+            },
+            record_exception=False,
+            set_status_on_exception=False,
+        ) as handoff_span:
+            demand_ids = sorted(set(re.findall(r"\bP\d{4}(?:-S\d+)?\b", demands)))
+            handoff_span.set_attribute(
+                "langfuse.observation.input",
+                json.dumps({
+                    "subagent": subagent_type,
+                    "demands": demands if subagent_type == "search_agent" else "[REDACTED_WRITE_PATH]",
+                    "demand_characters": len(demands),
+                    "demand_product_ids": demand_ids,
+                    "preference_hint_injected": bool(hint),
+                    "preference_hint": hint if subagent_type == "search_agent" else None,
+                    "input_message_names": [str(message.name) for message in inputs],
+                }, ensure_ascii=False, separators=(",", ":")),
+            )
+            try:
+                with observe_run_events(capture):
+                    reply = await worker.reply(inputs)
+            except BaseException as error:
+                handoff_span.set_attribute("error.type", type(error).__name__)
+                handoff_span.set_attribute(
+                    "langfuse.observation.output",
+                    json.dumps({"status": "failed", "error_type": type(error).__name__}, separators=(",", ":")),
+                )
+                handoff_span.set_status(Status(StatusCode.ERROR))
+                raise
+            output = reply.get_text_content() or ""
+            mentioned_ids = set(re.findall(r"\bP\d{4}(?:-S\d+)?\b", output))
+            unknown = mentioned_ids - verified_ids
+            # 下单专家可能只核对主任务传入的 SKU；这些标识仍须经过其真实业务工具核验。
+            decision = {"agent": subagent_type, "status": "unverified" if unknown else "completed",
+                        "summary": output if not unknown else "子任务回复包含未能由本轮检索证据核实的商品标识，请使用业务工具复核。",
+                        "evidence_refs": sorted(evidence_refs), "verified_product_ids": sorted(verified_ids),
+                        "unverified_product_ids": sorted(unknown)}
+            handoff_span.set_attribute(
+                "langfuse.observation.output",
+                json.dumps({
+                    "status": decision["status"],
+                    "summary": decision["summary"] if subagent_type == "search_agent" else "[REDACTED_WRITE_PATH]",
+                    "reply_characters": len(output),
+                    "evidence_refs": decision["evidence_refs"],
+                    "verified_product_ids": decision["verified_product_ids"],
+                    "unverified_product_ids": decision["unverified_product_ids"],
+                }, ensure_ascii=False, separators=(",", ":")),
+            )
+            handoff_span.set_attribute("globex.agent.unverified_id_count", len(unknown))
         bus.publish(
             session_id,
             "tool.result",
@@ -149,6 +195,10 @@ def build_task_dispatch_tool(
                 "started_at": started_at,
                 "finished_at": datetime.now(timezone.utc).isoformat(),
                 "elapsed_ms": round((time.monotonic() - started_monotonic) * 1000),
+                "status": decision["status"],
+                "evidence_refs": decision["evidence_refs"],
+                "verified_product_ids": decision["verified_product_ids"],
+                "unverified_product_ids": decision["unverified_product_ids"],
             },
         )
         return ToolChunk(

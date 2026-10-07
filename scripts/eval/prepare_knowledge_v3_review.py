@@ -72,7 +72,7 @@ def main() -> None:
             if type(grade) is not int or not 0 <= grade <= 3:
                 problems.append(f"{case_id}: {source} grade 非 0..3 整数")
         for item in evidence:
-            source_path = PROJECT_ROOT / "knowledge" / item["source"]
+            source_path = PROJECT_ROOT / "eval" / "knowledge" / "corpus" / item["source"]
             if not source_path.is_file() or item["quote"] not in source_path.read_text(encoding="utf-8"):
                 problems.append(f"{case_id}: evidence 无法逐字回指 {item['source']}")
         hops = row.get("hops") or []

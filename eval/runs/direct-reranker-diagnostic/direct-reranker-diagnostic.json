@@ -1,0 +1,1537 @@
+{
+  "schema_version": "direct-reranker-diagnostic-v1",
+  "created_at": "2026-10-04T22:15:14.092662+08:00",
+  "dataset": "eval\\knowledge\\v5\\knowledge_eval_core_61.jsonl",
+  "parameters": {
+    "depth": 24,
+    "reranker_model": "qwen3.7-text-rerank",
+    "production_behavior_changed": false,
+    "candidate_source": "eval\\runs\\final-rank-diagnostic-source-v2\\experiment-b-20261004-213732.json"
+  },
+  "cases": [
+    {
+      "case_id": "blind-008",
+      "query": "移动电源带出门坐飞机，锂电池运输这块一般有什么讲究？",
+      "primary_kind": "cross_evidence",
+      "expected_query_strategy": null,
+      "gold_count": 2,
+      "gold_evidence_ids": [
+        "digital-accessories.md#当前热卖款型#b365042193b2",
+        "cross-border-guide.md#材质与合规#f6bfddbb08fc"
+      ],
+      "vector_gold_ranks": {
+        "digital-accessories.md#当前热卖款型#b365042193b2": 3,
+        "cross-border-guide.md#材质与合规#f6bfddbb08fc": 25
+      },
+      "rerank_gold_ranks": null,
+      "vector_top3_gold_count": 1,
+      "rerank_top3_gold_count": null,
+      "candidate_count": 25,
+      "reranker_latency_ms": null,
+      "reranker_usage": {},
+      "reranker_status": "skipped",
+      "reranker_error_type": null,
+      "vector_top25": [
+        {
+          "rank": 1,
+          "source": "eval-policy-battery.md",
+          "document_id": "eval-policy-battery",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4524760052,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "# 跨境通用规则（含电池商品限制）政策演示快照评测知识快照 ## 适用范围 本文用于 Globex 离线评测中的跨境通用规则（含电池商品限制）问题，重点覆盖含电池商品限制。内容是合成的演示快照，不能替代实时商品说明、法律意见或监管机构公告。 ## 判断卡片 ### 1. 场景 先把使用场景拆成携带频率、接触对象和使用时长；跨境通用规则（含电池商品限制）政策演示快照只讨论含电池商品限制，不把其他品类的经验直接套用。 ### 2. 预算 跨境通用规则（含电池商品限制）政策演示快照需要分别记录商品标价、目标币种、运费和税"
+        },
+        {
+          "rank": 2,
+          "source": "eval-policy-battery.md",
+          "document_id": "eval-policy-battery",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4408070122,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "演示快照的地区规则必须与收货地逐项对应；GLOBAL 指引不能直接替代针对含电池商品限制的区域性证据。 ### 18. 不确定性 如果跨境通用规则（含电池商品限制）政策演示快照缺少判断含电池商品限制所需字段，回复要明确说明未知项及补充信息，而不是以常识补齐。 ### 19. 交叉 跨境通用规则（含电池商品限制）政策演示快照与其他品类共同决策时，分别列出各自的含电池商品限制条件，避免一篇文档替另一篇文档做结论。 ### 20. 复盘 遇到用户追问时，重新展示跨境通用规则（含电池商品限制）政策演示快照已验证的含电池商品"
+        },
+        {
+          "rank": 3,
+          "source": "digital-accessories.md",
+          "document_id": "digital-accessories",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4357204161,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [
+            "digital-accessories.md#当前热卖款型#b365042193b2"
+          ],
+          "excerpt": "# 数码配件品类洞察 ## 品类定位 数码配件以充电（氮化镓充电器、移动电源、数据线）与音频（降噪耳机、蓝牙音箱）为主，是跨境购物中决策链最短、参数化最强的品类。买家看参数（功率、降噪深度、续航），品牌认知度对转化影响大。 ## 当前热卖款型 - 65W 氮化镓多口充电器：出国旅行刚需，全球通用插脚（英标/欧标/美标）是跨境场景的核心差异点。 - 主动降噪头戴耳机：长途飞行与通勤场景，降噪深度（dB）与续航（小时）是两个硬指标。 - 大容量移动电源（20000mAh 档）：注意各国航空对锂电池容量的限制（100Wh"
+        },
+        {
+          "rank": 4,
+          "source": "eval-policy-battery.md",
+          "document_id": "eval-policy-battery",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4185365302,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "的更新时间影响判断；当资料早于本次评测快照时，应提示用户结果可能过期。 ### 9. 比较 跨境通用规则（含电池商品限制）政策演示快照的候选排序应说明各自满足了哪些含电池商品限制条件，不能只因为标题相似就宣称同样适合。 ### 10. 表达 回答跨境通用规则（含电池商品限制）政策演示快照问题时，区分已验证事实、推测和待确认事项；价格与配送数字只能引用当次工具结果。 ### 11. 复核 在给出跨境通用规则（含电池商品限制）政策演示快照结论前复核目的地、币种和 SKU 是否一致；任一条件变化都应重新计算而非沿用旧答案"
+        },
+        {
+          "rank": 5,
+          "source": "eval-digital-accessories-避坑与合规.md",
+          "document_id": "eval-digital-accessories-避坑与合规",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.385969543,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "# 数码配件避坑与合规评测知识快照 ## 适用范围 本文用于 Globex 离线评测中的数码配件问题，重点覆盖供电、音频与连接。内容是合成的演示快照，不能替代实时商品说明、法律意见或监管机构公告。 ## 判断卡片 ### 1. 场景 先把使用场景拆成携带频率、接触对象和使用时长；数码配件避坑与合规只讨论供电、音频与连接，不把其他品类的经验直接套用。 ### 2. 预算 数码配件避坑与合规需要分别记录商品标价、目标币种、运费和税费，预算不足时应指出是哪一项造成缺口。 ### 3. 材质 核对数码配件避坑与合规的材质标"
+        },
+        {
+          "rank": 6,
+          "source": "eval-digital-accessories-避坑与合规.md",
+          "document_id": "eval-digital-accessories-避坑与合规",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.381534792,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "验证事实、推测和待确认事项；价格与配送数字只能引用当次工具结果。 ### 11. 复核 在给出数码配件避坑与合规结论前复核目的地、币种和 SKU 是否一致；任一条件变化都应重新计算而非沿用旧答案。 ### 12. 边界 数码配件避坑与合规快照用于离线评测，不替代商品说明或监管公告；涉及供电、音频与连接的强断言必须附带来源和有效期。 ### 13. 替代 当数码配件避坑与合规没有完全满足供电、音频与连接的商品时，应给出约束不满足的原因，而不是把近似候选包装成等价替代。 ### 14. 证据 数码配件避坑与合规的每个关"
+        },
+        {
+          "rank": 7,
+          "source": "eval-travel-gear-避坑与合规.md",
+          "document_id": "eval-travel-gear-避坑与合规",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.379972736,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "# 旅行装备避坑与合规评测知识快照 ## 适用范围 本文用于 Globex 离线评测中的旅行装备问题，重点覆盖收纳、舒适与行李组织。内容是合成的演示快照，不能替代实时商品说明、法律意见或监管机构公告。 ## 判断卡片 ### 1. 场景 先把使用场景拆成携带频率、接触对象和使用时长；旅行装备避坑与合规只讨论收纳、舒适与行李组织，不把其他品类的经验直接套用。 ### 2. 预算 旅行装备避坑与合规需要分别记录商品标价、目标币种、运费和税费，预算不足时应指出是哪一项造成缺口。 ### 3. 材质 核对旅行装备避坑与合规"
+        },
+        {
+          "rank": 8,
+          "source": "travel-gear.md",
+          "document_id": "travel-gear",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.3729351835,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "力，300 元以上多为设计师联名。 - 20 寸登机箱：500-700 元入门，800-1200 元主力（铝框），1500 元以上为品牌溢价。 - 折叠双肩包：80-160 元。 - 睡袋内胆：棉质 100-180 元，桑蚕丝 300-400 元。 - 速干毛巾三条装：60-100 元。 ## 避坑点 - 标称\"皮质\"的低价箱包多为 PU 涂层，跨境退换成本高，材质敏感买家要避开。 - 登机箱尺寸各航司口径不同，20 寸并非全球通用免托运，需按目的地航司核对三边和。 - 桑蚕丝内胆需干洗或手洗，不接受养护成本的买家"
+        },
+        {
+          "rank": 9,
+          "source": "eval-policy-battery.md",
+          "document_id": "eval-policy-battery",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.3703428652,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "### 26. 异常 当跨境通用规则（含电池商品限制）政策演示快照工具返回为空、超时或字段不完整时，回复应报告异常并停止对含电池商品限制做确定性推荐。 ### 27. 一致 确保跨境通用规则（含电池商品限制）政策演示快照的商品卡、到手价和最终回复使用同一币种与 SKU，避免含电池商品限制结论在不同环节矛盾。 ### 28. 维护 跨境通用规则（含电池商品限制）政策演示快照文档更新后应重新验证涉及含电池商品限制的评测金标，防止旧样本继续奖励过期行为。 ### 29. 升级 当跨境通用规则（含电池商品限制）政策演示快照"
+        },
+        {
+          "rank": 10,
+          "source": "eval-beauty-care-避坑与合规.md",
+          "document_id": "eval-beauty-care-避坑与合规",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.3695960126,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "# 美妆个护避坑与合规评测知识快照 ## 适用范围 本文用于 Globex 离线评测中的美妆个护问题，重点覆盖成分、低敏与旅行分装。内容是合成的演示快照，不能替代实时商品说明、法律意见或监管机构公告。 ## 判断卡片 ### 1. 场景 先把使用场景拆成携带频率、接触对象和使用时长；美妆个护避坑与合规只讨论成分、低敏与旅行分装，不把其他品类的经验直接套用。 ### 2. 预算 美妆个护避坑与合规需要分别记录商品标价、目标币种、运费和税费，预算不足时应指出是哪一项造成缺口。 ### 3. 材质 核对美妆个护避坑与合规"
+        },
+        {
+          "rank": 11,
+          "source": "eval-travel-gear-避坑与合规.md",
+          "document_id": "eval-travel-gear-避坑与合规",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.3664356271,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "规问题时，区分已验证事实、推测和待确认事项；价格与配送数字只能引用当次工具结果。 ### 11. 复核 在给出旅行装备避坑与合规结论前复核目的地、币种和 SKU 是否一致；任一条件变化都应重新计算而非沿用旧答案。 ### 12. 边界 旅行装备避坑与合规快照用于离线评测，不替代商品说明或监管公告；涉及收纳、舒适与行李组织的强断言必须附带来源和有效期。 ### 13. 替代 当旅行装备避坑与合规没有完全满足收纳、舒适与行李组织的商品时，应给出约束不满足的原因，而不是把近似候选包装成等价替代。 ### 14. 证据 旅"
+        },
+        {
+          "rank": 12,
+          "source": "eval-travel-gear-避坑与合规.md",
+          "document_id": "eval-travel-gear-避坑与合规",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.3662083734,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "和理由，使后续评测能检查收纳、舒适与行李组织判断是否来自可追溯证据。 ## 回复边界 当旅行装备避坑与合规文档与实时商品字段冲突时，以实时字段为准，并解释收纳、舒适与行李组织中仍无法确定的部分。"
+        },
+        {
+          "rank": 13,
+          "source": "eval-beauty-care-避坑与合规.md",
+          "document_id": "eval-beauty-care-避坑与合规",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.3656437165,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "的成分、低敏与旅行分装证据和未验证条件，保证多轮回答没有悄悄改变口径。 ### 21. 来源 美妆个护避坑与合规引用外部资料时要标出来源类型和发布日期；没有可靠来源的成分、低敏与旅行分装信息只能作为待核实线索。 ### 22. 量化 比较美妆个护避坑与合规候选时，以统一单位量化重量、容量、功率或价格，避免用模糊形容词代替成分、低敏与旅行分装判断。 ### 23. 例外 美妆个护避坑与合规中存在例外条件时，应把触发条件写清楚；不能因为多数商品符合成分、低敏与旅行分装就默认所有商品都符合。 ### 24. 筛选 先以美"
+        },
+        {
+          "rank": 14,
+          "source": "eval-digital-accessories-价格与预算.md",
+          "document_id": "eval-digital-accessories-价格与预算",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.3654242095,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "# 数码配件价格与预算评测知识快照 ## 适用范围 本文用于 Globex 离线评测中的数码配件问题，重点覆盖供电、音频与连接。内容是合成的演示快照，不能替代实时商品说明、法律意见或监管机构公告。 ## 判断卡片 ### 1. 场景 先把使用场景拆成携带频率、接触对象和使用时长；数码配件价格与预算只讨论供电、音频与连接，不把其他品类的经验直接套用。 ### 2. 预算 数码配件价格与预算需要分别记录商品标价、目标币种、运费和税费，预算不足时应指出是哪一项造成缺口。 ### 3. 材质 核对数码配件价格与预算的材质标"
+        },
+        {
+          "rank": 15,
+          "source": "eval-home-living-避坑与合规.md",
+          "document_id": "eval-home-living-避坑与合规",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.3646317182,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "# 家居生活避坑与合规评测知识快照 ## 适用范围 本文用于 Globex 离线评测中的家居生活问题，重点覆盖材质、器物与易碎运输。内容是合成的演示快照，不能替代实时商品说明、法律意见或监管机构公告。 ## 判断卡片 ### 1. 场景 先把使用场景拆成携带频率、接触对象和使用时长；家居生活避坑与合规只讨论材质、器物与易碎运输，不把其他品类的经验直接套用。 ### 2. 预算 家居生活避坑与合规需要分别记录商品标价、目标币种、运费和税费，预算不足时应指出是哪一项造成缺口。 ### 3. 材质 核对家居生活避坑与合规"
+        },
+        {
+          "rank": 16,
+          "source": "eval-travel-gear-避坑与合规.md",
+          "document_id": "eval-travel-gear-避坑与合规",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.3637988864,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "的收纳、舒适与行李组织证据和未验证条件，保证多轮回答没有悄悄改变口径。 ### 21. 来源 旅行装备避坑与合规引用外部资料时要标出来源类型和发布日期；没有可靠来源的收纳、舒适与行李组织信息只能作为待核实线索。 ### 22. 量化 比较旅行装备避坑与合规候选时，以统一单位量化重量、容量、功率或价格，避免用模糊形容词代替收纳、舒适与行李组织判断。 ### 23. 例外 旅行装备避坑与合规中存在例外条件时，应把触发条件写清楚；不能因为多数商品符合收纳、舒适与行李组织就默认所有商品都符合。 ### 24. 筛选 先以旅"
+        },
+        {
+          "rank": 17,
+          "source": "eval-beauty-care-避坑与合规.md",
+          "document_id": "eval-beauty-care-避坑与合规",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.3621074211,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "和理由，使后续评测能检查成分、低敏与旅行分装判断是否来自可追溯证据。 ## 回复边界 当美妆个护避坑与合规文档与实时商品字段冲突时，以实时字段为准，并解释成分、低敏与旅行分装中仍无法确定的部分。"
+        },
+        {
+          "rank": 18,
+          "source": "eval-office-study-避坑与合规.md",
+          "document_id": "eval-office-study-避坑与合规",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.3618206629,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "规问题时，区分已验证事实、推测和待确认事项；价格与配送数字只能引用当次工具结果。 ### 11. 复核 在给出办公学习避坑与合规结论前复核目的地、币种和 SKU 是否一致；任一条件变化都应重新计算而非沿用旧答案。 ### 12. 边界 办公学习避坑与合规快照用于离线评测，不替代商品说明或监管公告；涉及护眼、收纳与跨境供电的强断言必须附带来源和有效期。 ### 13. 替代 当办公学习避坑与合规没有完全满足护眼、收纳与跨境供电的商品时，应给出约束不满足的原因，而不是把近似候选包装成等价替代。 ### 14. 证据 办"
+        },
+        {
+          "rank": 19,
+          "source": "eval-home-living-价格与预算.md",
+          "document_id": "eval-home-living-价格与预算",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.3616549089,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "# 家居生活价格与预算评测知识快照 ## 适用范围 本文用于 Globex 离线评测中的家居生活问题，重点覆盖材质、器物与易碎运输。内容是合成的演示快照，不能替代实时商品说明、法律意见或监管机构公告。 ## 判断卡片 ### 1. 场景 先把使用场景拆成携带频率、接触对象和使用时长；家居生活价格与预算只讨论材质、器物与易碎运输，不把其他品类的经验直接套用。 ### 2. 预算 家居生活价格与预算需要分别记录商品标价、目标币种、运费和税费，预算不足时应指出是哪一项造成缺口。 ### 3. 材质 核对家居生活价格与预算"
+        },
+        {
+          "rank": 20,
+          "source": "eval-office-study-避坑与合规.md",
+          "document_id": "eval-office-study-避坑与合规",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.3600161052,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "# 办公学习避坑与合规评测知识快照 ## 适用范围 本文用于 Globex 离线评测中的办公学习问题，重点覆盖护眼、收纳与跨境供电。内容是合成的演示快照，不能替代实时商品说明、法律意见或监管机构公告。 ## 判断卡片 ### 1. 场景 先把使用场景拆成携带频率、接触对象和使用时长；办公学习避坑与合规只讨论护眼、收纳与跨境供电，不把其他品类的经验直接套用。 ### 2. 预算 办公学习避坑与合规需要分别记录商品标价、目标币种、运费和税费，预算不足时应指出是哪一项造成缺口。 ### 3. 材质 核对办公学习避坑与合规"
+        },
+        {
+          "rank": 21,
+          "source": "eval-beauty-care-概览.md",
+          "document_id": "eval-beauty-care-概览",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.3597223709,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "布日期；没有可靠来源的成分、低敏与旅行分装信息只能作为待核实线索。 ### 22. 量化 比较美妆个护概览候选时，以统一单位量化重量、容量、功率或价格，避免用模糊形容词代替成分、低敏与旅行分装判断。 ### 23. 例外 美妆个护概览中存在例外条件时，应把触发条件写清楚；不能因为多数商品符合成分、低敏与旅行分装就默认所有商品都符合。 ### 24. 筛选 先以美妆个护概览的硬约束缩小候选，再比较成分、低敏与旅行分装偏好；筛选顺序应能从工具事件和字段值复现。 ### 25. 沟通 向用户解释美妆个护概览取舍时，说明哪"
+        },
+        {
+          "rank": 22,
+          "source": "eval-travel-gear-概览.md",
+          "document_id": "eval-travel-gear-概览",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.3582736061,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "布日期；没有可靠来源的收纳、舒适与行李组织信息只能作为待核实线索。 ### 22. 量化 比较旅行装备概览候选时，以统一单位量化重量、容量、功率或价格，避免用模糊形容词代替收纳、舒适与行李组织判断。 ### 23. 例外 旅行装备概览中存在例外条件时，应把触发条件写清楚；不能因为多数商品符合收纳、舒适与行李组织就默认所有商品都符合。 ### 24. 筛选 先以旅行装备概览的硬约束缩小候选，再比较收纳、舒适与行李组织偏好；筛选顺序应能从工具事件和字段值复现。 ### 25. 沟通 向用户解释旅行装备概览取舍时，说明哪"
+        },
+        {
+          "rank": 23,
+          "source": "eval-home-living-避坑与合规.md",
+          "document_id": "eval-home-living-避坑与合规",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.3572782662,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "的材质、器物与易碎运输证据和未验证条件，保证多轮回答没有悄悄改变口径。 ### 21. 来源 家居生活避坑与合规引用外部资料时要标出来源类型和发布日期；没有可靠来源的材质、器物与易碎运输信息只能作为待核实线索。 ### 22. 量化 比较家居生活避坑与合规候选时，以统一单位量化重量、容量、功率或价格，避免用模糊形容词代替材质、器物与易碎运输判断。 ### 23. 例外 家居生活避坑与合规中存在例外条件时，应把触发条件写清楚；不能因为多数商品符合材质、器物与易碎运输就默认所有商品都符合。 ### 24. 筛选 先以家"
+        },
+        {
+          "rank": 24,
+          "source": "eval-office-study-避坑与合规.md",
+          "document_id": "eval-office-study-避坑与合规",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.3568371552,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "和理由，使后续评测能检查护眼、收纳与跨境供电判断是否来自可追溯证据。 ## 回复边界 当办公学习避坑与合规文档与实时商品字段冲突时，以实时字段为准，并解释护眼、收纳与跨境供电中仍无法确定的部分。"
+        },
+        {
+          "rank": 25,
+          "source": "cross-border-guide.md",
+          "document_id": "cross-border-guide",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.3197732967,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [
+            "cross-border-guide.md#材质与合规#f6bfddbb08fc"
+          ],
+          "excerpt": "# 跨境选购通则 ## 到手价的构成 跨境购物的真实成本是\"到手价\"，不是商品标价： 到手价 = 商品小计 + 国际运费 + 关税 三项都受目的国规则影响。Globex 的商品检索工具在传入 ship_to 后会内联返回 landed_price 三分项明细，任何对外报价都应以工具返回为准，不要凭汇率心算。 ## 免税额度（de minimis） 多数目的国设有免税额度，小计低于额度时关税为零： - 美国：约 800 美元档，数码配件常规税率本身也可能为 0 - 欧盟：约 150 欧元档，超出部分按品类税率征收 -"
+        }
+      ],
+      "rerank_top25": []
+    },
+    {
+      "case_id": "blind-014",
+      "query": "竹木陶餐具直接接触吃的，食品接触安全这块怎么看？",
+      "primary_kind": "single_evidence",
+      "expected_query_strategy": null,
+      "gold_count": 1,
+      "gold_evidence_ids": [
+        "home-living.md#避坑点#cc9519301550"
+      ],
+      "vector_gold_ranks": {
+        "home-living.md#避坑点#cc9519301550": 23
+      },
+      "rerank_gold_ranks": null,
+      "vector_top3_gold_count": 0,
+      "rerank_top3_gold_count": null,
+      "candidate_count": 26,
+      "reranker_latency_ms": null,
+      "reranker_usage": {},
+      "reranker_status": "skipped",
+      "reranker_error_type": null,
+      "vector_top25": [
+        {
+          "rank": 1,
+          "source": "eval-kitchen-dining-避坑与合规.md",
+          "document_id": "eval-kitchen-dining-避坑与合规",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.5212744374,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "# 厨房餐饮避坑与合规评测知识快照 ## 适用范围 本文用于 Globex 离线评测中的厨房餐饮问题，重点覆盖食品接触、保温与清洁。内容是合成的演示快照，不能替代实时商品说明、法律意见或监管机构公告。 ## 判断卡片 ### 1. 场景 先把使用场景拆成携带频率、接触对象和使用时长；厨房餐饮避坑与合规只讨论食品接触、保温与清洁，不把其他品类的经验直接套用。 ### 2. 预算 厨房餐饮避坑与合规需要分别记录商品标价、目标币种、运费和税费，预算不足时应指出是哪一项造成缺口。 ### 3. 材质 核对厨房餐饮避坑与合规"
+        },
+        {
+          "rank": 2,
+          "source": "eval-kitchen-dining-参数判断.md",
+          "document_id": "eval-kitchen-dining-参数判断",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.51821374,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "# 厨房餐饮参数判断评测知识快照 ## 适用范围 本文用于 Globex 离线评测中的厨房餐饮问题，重点覆盖食品接触、保温与清洁。内容是合成的演示快照，不能替代实时商品说明、法律意见或监管机构公告。 ## 判断卡片 ### 1. 场景 先把使用场景拆成携带频率、接触对象和使用时长；厨房餐饮参数判断只讨论食品接触、保温与清洁，不把其他品类的经验直接套用。 ### 2. 预算 厨房餐饮参数判断需要分别记录商品标价、目标币种、运费和税费，预算不足时应指出是哪一项造成缺口。 ### 3. 材质 核对厨房餐饮参数判断的材质标"
+        },
+        {
+          "rank": 3,
+          "source": "eval-kitchen-dining-概览.md",
+          "document_id": "eval-kitchen-dining-概览",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.5064951706,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "# 厨房餐饮概览评测知识快照 ## 适用范围 本文用于 Globex 离线评测中的厨房餐饮问题，重点覆盖食品接触、保温与清洁。内容是合成的演示快照，不能替代实时商品说明、法律意见或监管机构公告。 ## 判断卡片 ### 1. 场景 先把使用场景拆成携带频率、接触对象和使用时长；厨房餐饮概览只讨论食品接触、保温与清洁，不把其他品类的经验直接套用。 ### 2. 预算 厨房餐饮概览需要分别记录商品标价、目标币种、运费和税费，预算不足时应指出是哪一项造成缺口。 ### 3. 材质 核对厨房餐饮概览的材质标签与实际接触部位"
+        },
+        {
+          "rank": 4,
+          "source": "eval-kitchen-dining-避坑与合规.md",
+          "document_id": "eval-kitchen-dining-避坑与合规",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.5053741595,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "和理由，使后续评测能检查食品接触、保温与清洁判断是否来自可追溯证据。 ## 回复边界 当厨房餐饮避坑与合规文档与实时商品字段冲突时，以实时字段为准，并解释食品接触、保温与清洁中仍无法确定的部分。"
+        },
+        {
+          "rank": 5,
+          "source": "eval-kitchen-dining-价格与预算.md",
+          "document_id": "eval-kitchen-dining-价格与预算",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.503255615,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "# 厨房餐饮价格与预算评测知识快照 ## 适用范围 本文用于 Globex 离线评测中的厨房餐饮问题，重点覆盖食品接触、保温与清洁。内容是合成的演示快照，不能替代实时商品说明、法律意见或监管机构公告。 ## 判断卡片 ### 1. 场景 先把使用场景拆成携带频率、接触对象和使用时长；厨房餐饮价格与预算只讨论食品接触、保温与清洁，不把其他品类的经验直接套用。 ### 2. 预算 厨房餐饮价格与预算需要分别记录商品标价、目标币种、运费和税费，预算不足时应指出是哪一项造成缺口。 ### 3. 材质 核对厨房餐饮价格与预算"
+        },
+        {
+          "rank": 6,
+          "source": "eval-kitchen-dining-参数判断.md",
+          "document_id": "eval-kitchen-dining-参数判断",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4987364014,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "证多轮回答没有悄悄改变口径。 ### 21. 来源 厨房餐饮参数判断引用外部资料时要标出来源类型和发布日期；没有可靠来源的食品接触、保温与清洁信息只能作为待核实线索。 ### 22. 量化 比较厨房餐饮参数判断候选时，以统一单位量化重量、容量、功率或价格，避免用模糊形容词代替食品接触、保温与清洁判断。 ### 23. 例外 厨房餐饮参数判断中存在例外条件时，应把触发条件写清楚；不能因为多数商品符合食品接触、保温与清洁就默认所有商品都符合。 ### 24. 筛选 先以厨房餐饮参数判断的硬约束缩小候选，再比较食品接触、"
+        },
+        {
+          "rank": 7,
+          "source": "eval-kitchen-dining-参数判断.md",
+          "document_id": "eval-kitchen-dining-参数判断",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4961785374,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "实、推测和待确认事项；价格与配送数字只能引用当次工具结果。 ### 11. 复核 在给出厨房餐饮参数判断结论前复核目的地、币种和 SKU 是否一致；任一条件变化都应重新计算而非沿用旧答案。 ### 12. 边界 厨房餐饮参数判断快照用于离线评测，不替代商品说明或监管公告；涉及食品接触、保温与清洁的强断言必须附带来源和有效期。 ### 13. 替代 当厨房餐饮参数判断没有完全满足食品接触、保温与清洁的商品时，应给出约束不满足的原因，而不是把近似候选包装成等价替代。 ### 14. 证据 厨房餐饮参数判断的每个关键结论"
+        },
+        {
+          "rank": 8,
+          "source": "eval-kitchen-dining-避坑与合规.md",
+          "document_id": "eval-kitchen-dining-避坑与合规",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4950257354,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "的食品接触、保温与清洁证据和未验证条件，保证多轮回答没有悄悄改变口径。 ### 21. 来源 厨房餐饮避坑与合规引用外部资料时要标出来源类型和发布日期；没有可靠来源的食品接触、保温与清洁信息只能作为待核实线索。 ### 22. 量化 比较厨房餐饮避坑与合规候选时，以统一单位量化重量、容量、功率或价格，避免用模糊形容词代替食品接触、保温与清洁判断。 ### 23. 例外 厨房餐饮避坑与合规中存在例外条件时，应把触发条件写清楚；不能因为多数商品符合食品接触、保温与清洁就默认所有商品都符合。 ### 24. 筛选 先以厨"
+        },
+        {
+          "rank": 9,
+          "source": "eval-kitchen-dining-概览.md",
+          "document_id": "eval-kitchen-dining-概览",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4918305025,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "当次工具结果。 ### 11. 复核 在给出厨房餐饮概览结论前复核目的地、币种和 SKU 是否一致；任一条件变化都应重新计算而非沿用旧答案。 ### 12. 边界 厨房餐饮概览快照用于离线评测，不替代商品说明或监管公告；涉及食品接触、保温与清洁的强断言必须附带来源和有效期。 ### 13. 替代 当厨房餐饮概览没有完全满足食品接触、保温与清洁的商品时，应给出约束不满足的原因，而不是把近似候选包装成等价替代。 ### 14. 证据 厨房餐饮概览的每个关键结论应能回指材质、尺寸、库存、配送或报价字段；缺少证据时只允许提"
+        },
+        {
+          "rank": 10,
+          "source": "eval-kitchen-dining-避坑与合规.md",
+          "document_id": "eval-kitchen-dining-避坑与合规",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4836315673,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "规问题时，区分已验证事实、推测和待确认事项；价格与配送数字只能引用当次工具结果。 ### 11. 复核 在给出厨房餐饮避坑与合规结论前复核目的地、币种和 SKU 是否一致；任一条件变化都应重新计算而非沿用旧答案。 ### 12. 边界 厨房餐饮避坑与合规快照用于离线评测，不替代商品说明或监管公告；涉及食品接触、保温与清洁的强断言必须附带来源和有效期。 ### 13. 替代 当厨房餐饮避坑与合规没有完全满足食品接触、保温与清洁的商品时，应给出约束不满足的原因，而不是把近似候选包装成等价替代。 ### 14. 证据 厨"
+        },
+        {
+          "rank": 11,
+          "source": "eval-kitchen-dining-概览.md",
+          "document_id": "eval-kitchen-dining-概览",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4805494144,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "布日期；没有可靠来源的食品接触、保温与清洁信息只能作为待核实线索。 ### 22. 量化 比较厨房餐饮概览候选时，以统一单位量化重量、容量、功率或价格，避免用模糊形容词代替食品接触、保温与清洁判断。 ### 23. 例外 厨房餐饮概览中存在例外条件时，应把触发条件写清楚；不能因为多数商品符合食品接触、保温与清洁就默认所有商品都符合。 ### 24. 筛选 先以厨房餐饮概览的硬约束缩小候选，再比较食品接触、保温与清洁偏好；筛选顺序应能从工具事件和字段值复现。 ### 25. 沟通 向用户解释厨房餐饮概览取舍时，说明哪"
+        },
+        {
+          "rank": 12,
+          "source": "eval-kitchen-dining-价格与预算.md",
+          "document_id": "eval-kitchen-dining-价格与预算",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4727938387,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "和理由，使后续评测能检查食品接触、保温与清洁判断是否来自可追溯证据。 ## 回复边界 当厨房餐饮价格与预算文档与实时商品字段冲突时，以实时字段为准，并解释食品接触、保温与清洁中仍无法确定的部分。"
+        },
+        {
+          "rank": 13,
+          "source": "eval-kitchen-dining-价格与预算.md",
+          "document_id": "eval-kitchen-dining-价格与预算",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.454953302,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "的食品接触、保温与清洁证据和未验证条件，保证多轮回答没有悄悄改变口径。 ### 21. 来源 厨房餐饮价格与预算引用外部资料时要标出来源类型和发布日期；没有可靠来源的食品接触、保温与清洁信息只能作为待核实线索。 ### 22. 量化 比较厨房餐饮价格与预算候选时，以统一单位量化重量、容量、功率或价格，避免用模糊形容词代替食品接触、保温与清洁判断。 ### 23. 例外 厨房餐饮价格与预算中存在例外条件时，应把触发条件写清楚；不能因为多数商品符合食品接触、保温与清洁就默认所有商品都符合。 ### 24. 筛选 先以厨"
+        },
+        {
+          "rank": 14,
+          "source": "eval-kitchen-dining-价格与预算.md",
+          "document_id": "eval-kitchen-dining-价格与预算",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.450341924,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "算问题时，区分已验证事实、推测和待确认事项；价格与配送数字只能引用当次工具结果。 ### 11. 复核 在给出厨房餐饮价格与预算结论前复核目的地、币种和 SKU 是否一致；任一条件变化都应重新计算而非沿用旧答案。 ### 12. 边界 厨房餐饮价格与预算快照用于离线评测，不替代商品说明或监管公告；涉及食品接触、保温与清洁的强断言必须附带来源和有效期。 ### 13. 替代 当厨房餐饮价格与预算没有完全满足食品接触、保温与清洁的商品时，应给出约束不满足的原因，而不是把近似候选包装成等价替代。 ### 14. 证据 厨"
+        },
+        {
+          "rank": 15,
+          "source": "eval-home-living-参数判断.md",
+          "document_id": "eval-home-living-参数判断",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4364854854,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "# 家居生活参数判断评测知识快照 ## 适用范围 本文用于 Globex 离线评测中的家居生活问题，重点覆盖材质、器物与易碎运输。内容是合成的演示快照，不能替代实时商品说明、法律意见或监管机构公告。 ## 判断卡片 ### 1. 场景 先把使用场景拆成携带频率、接触对象和使用时长；家居生活参数判断只讨论材质、器物与易碎运输，不把其他品类的经验直接套用。 ### 2. 预算 家居生活参数判断需要分别记录商品标价、目标币种、运费和税费，预算不足时应指出是哪一项造成缺口。 ### 3. 材质 核对家居生活参数判断的材质标"
+        },
+        {
+          "rank": 16,
+          "source": "eval-home-living-避坑与合规.md",
+          "document_id": "eval-home-living-避坑与合规",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4153497819,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "# 家居生活避坑与合规评测知识快照 ## 适用范围 本文用于 Globex 离线评测中的家居生活问题，重点覆盖材质、器物与易碎运输。内容是合成的演示快照，不能替代实时商品说明、法律意见或监管机构公告。 ## 判断卡片 ### 1. 场景 先把使用场景拆成携带频率、接触对象和使用时长；家居生活避坑与合规只讨论材质、器物与易碎运输，不把其他品类的经验直接套用。 ### 2. 预算 家居生活避坑与合规需要分别记录商品标价、目标币种、运费和税费，预算不足时应指出是哪一项造成缺口。 ### 3. 材质 核对家居生活避坑与合规"
+        },
+        {
+          "rank": 17,
+          "source": "eval-home-living-概览.md",
+          "document_id": "eval-home-living-概览",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4100942405,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "# 家居生活概览评测知识快照 ## 适用范围 本文用于 Globex 离线评测中的家居生活问题，重点覆盖材质、器物与易碎运输。内容是合成的演示快照，不能替代实时商品说明、法律意见或监管机构公告。 ## 判断卡片 ### 1. 场景 先把使用场景拆成携带频率、接触对象和使用时长；家居生活概览只讨论材质、器物与易碎运输，不把其他品类的经验直接套用。 ### 2. 预算 家居生活概览需要分别记录商品标价、目标币种、运费和税费，预算不足时应指出是哪一项造成缺口。 ### 3. 材质 核对家居生活概览的材质标签与实际接触部位"
+        },
+        {
+          "rank": 18,
+          "source": "eval-baby-pet-参数判断.md",
+          "document_id": "eval-baby-pet-参数判断",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4039884568,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "实、推测和待确认事项；价格与配送数字只能引用当次工具结果。 ### 11. 复核 在给出母婴宠物参数判断结论前复核目的地、币种和 SKU 是否一致；任一条件变化都应重新计算而非沿用旧答案。 ### 12. 边界 母婴宠物参数判断快照用于离线评测，不替代商品说明或监管公告；涉及安全、尺寸与可清洁性的强断言必须附带来源和有效期。 ### 13. 替代 当母婴宠物参数判断没有完全满足安全、尺寸与可清洁性的商品时，应给出约束不满足的原因，而不是把近似候选包装成等价替代。 ### 14. 证据 母婴宠物参数判断的每个关键结论"
+        },
+        {
+          "rank": 19,
+          "source": "eval-home-living-参数判断.md",
+          "document_id": "eval-home-living-参数判断",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4009574134,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "证多轮回答没有悄悄改变口径。 ### 21. 来源 家居生活参数判断引用外部资料时要标出来源类型和发布日期；没有可靠来源的材质、器物与易碎运输信息只能作为待核实线索。 ### 22. 量化 比较家居生活参数判断候选时，以统一单位量化重量、容量、功率或价格，避免用模糊形容词代替材质、器物与易碎运输判断。 ### 23. 例外 家居生活参数判断中存在例外条件时，应把触发条件写清楚；不能因为多数商品符合材质、器物与易碎运输就默认所有商品都符合。 ### 24. 筛选 先以家居生活参数判断的硬约束缩小候选，再比较材质、器物"
+        },
+        {
+          "rank": 20,
+          "source": "eval-home-living-参数判断.md",
+          "document_id": "eval-home-living-参数判断",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.3985091597,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "实、推测和待确认事项；价格与配送数字只能引用当次工具结果。 ### 11. 复核 在给出家居生活参数判断结论前复核目的地、币种和 SKU 是否一致；任一条件变化都应重新计算而非沿用旧答案。 ### 12. 边界 家居生活参数判断快照用于离线评测，不替代商品说明或监管公告；涉及材质、器物与易碎运输的强断言必须附带来源和有效期。 ### 13. 替代 当家居生活参数判断没有完全满足材质、器物与易碎运输的商品时，应给出约束不满足的原因，而不是把近似候选包装成等价替代。 ### 14. 证据 家居生活参数判断的每个关键结论"
+        },
+        {
+          "rank": 21,
+          "source": "eval-baby-pet-参数判断.md",
+          "document_id": "eval-baby-pet-参数判断",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.3976918778,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "# 母婴宠物参数判断评测知识快照 ## 适用范围 本文用于 Globex 离线评测中的母婴宠物问题，重点覆盖安全、尺寸与可清洁性。内容是合成的演示快照，不能替代实时商品说明、法律意见或监管机构公告。 ## 判断卡片 ### 1. 场景 先把使用场景拆成携带频率、接触对象和使用时长；母婴宠物参数判断只讨论安全、尺寸与可清洁性，不把其他品类的经验直接套用。 ### 2. 预算 母婴宠物参数判断需要分别记录商品标价、目标币种、运费和税费，预算不足时应指出是哪一项造成缺口。 ### 3. 材质 核对母婴宠物参数判断的材质标"
+        },
+        {
+          "rank": 22,
+          "source": "eval-home-living-价格与预算.md",
+          "document_id": "eval-home-living-价格与预算",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.3964953005,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "# 家居生活价格与预算评测知识快照 ## 适用范围 本文用于 Globex 离线评测中的家居生活问题，重点覆盖材质、器物与易碎运输。内容是合成的演示快照，不能替代实时商品说明、法律意见或监管机构公告。 ## 判断卡片 ### 1. 场景 先把使用场景拆成携带频率、接触对象和使用时长；家居生活价格与预算只讨论材质、器物与易碎运输，不把其他品类的经验直接套用。 ### 2. 预算 家居生活价格与预算需要分别记录商品标价、目标币种、运费和税费，预算不足时应指出是哪一项造成缺口。 ### 3. 材质 核对家居生活价格与预算"
+        },
+        {
+          "rank": 23,
+          "source": "home-living.md",
+          "document_id": "home-living",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.3917905126,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [
+            "home-living.md#避坑点#cc9519301550"
+          ],
+          "excerpt": "# 家居生活品类洞察 ## 品类定位 家居生活在跨境场景以\"轻器物 + 手作调性\"为主：茶具、香器、餐具小件、织物。买家买的是设计与材质叙事，而非参数，因此产地、工艺、材质天然属性是决策核心。易碎与体积是跨境物流的主要摩擦点。 ## 当前热卖款型 - 手工粗陶茶具套装（一壶两杯）：便携旅行装是近两年的增量款，日式窑烧与国内柴烧各有拥趸。 - 天然材质餐具小件（木、竹、陶）：主打\"无塑料\"，与环保诉求买家高度契合。 - 手工织物（棉麻桌旗、坐垫）：客单低、复购稳，看织法与克重。 ## 关键属性与判断口径 - 材质天然"
+        },
+        {
+          "rank": 24,
+          "source": "eval-home-living-避坑与合规.md",
+          "document_id": "eval-home-living-避坑与合规",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.3895088672,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "的材质、器物与易碎运输证据和未验证条件，保证多轮回答没有悄悄改变口径。 ### 21. 来源 家居生活避坑与合规引用外部资料时要标出来源类型和发布日期；没有可靠来源的材质、器物与易碎运输信息只能作为待核实线索。 ### 22. 量化 比较家居生活避坑与合规候选时，以统一单位量化重量、容量、功率或价格，避免用模糊形容词代替材质、器物与易碎运输判断。 ### 23. 例外 家居生活避坑与合规中存在例外条件时，应把触发条件写清楚；不能因为多数商品符合材质、器物与易碎运输就默认所有商品都符合。 ### 24. 筛选 先以家"
+        },
+        {
+          "rank": 25,
+          "source": "eval-policy-material.md",
+          "document_id": "eval-policy-material",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.355118236,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "演示快照的地区规则必须与收货地逐项对应；GLOBAL 指引不能直接替代针对材质与过敏限制的区域性证据。 ### 18. 不确定性 如果跨境通用规则（材质与过敏限制）政策演示快照缺少判断材质与过敏限制所需字段，回复要明确说明未知项及补充信息，而不是以常识补齐。 ### 19. 交叉 跨境通用规则（材质与过敏限制）政策演示快照与其他品类共同决策时，分别列出各自的材质与过敏限制条件，避免一篇文档替另一篇文档做结论。 ### 20. 复盘 遇到用户追问时，重新展示跨境通用规则（材质与过敏限制）政策演示快照已验证的材质与过敏"
+        },
+        {
+          "rank": 26,
+          "source": "cross-border-guide.md",
+          "document_id": "cross-border-guide",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.2703481969,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "# 跨境选购通则 ## 到手价的构成 跨境购物的真实成本是\"到手价\"，不是商品标价： 到手价 = 商品小计 + 国际运费 + 关税 三项都受目的国规则影响。Globex 的商品检索工具在传入 ship_to 后会内联返回 landed_price 三分项明细，任何对外报价都应以工具返回为准，不要凭汇率心算。 ## 免税额度（de minimis） 多数目的国设有免税额度，小计低于额度时关税为零： - 美国：约 800 美元档，数码配件常规税率本身也可能为 0 - 欧盟：约 150 欧元档，超出部分按品类税率征收 -"
+        }
+      ],
+      "rerank_top25": []
+    },
+    {
+      "case_id": "human-mh-001",
+      "query": "我要买个充电宝带着飞日本",
+      "primary_kind": "implicit_constraint_multi_hop",
+      "expected_query_strategy": null,
+      "gold_count": 2,
+      "gold_evidence_ids": [
+        "digital-accessories.md#当前热卖款型#b365042193b2",
+        "cross-border-guide.md#材质与合规#f6bfddbb08fc"
+      ],
+      "vector_gold_ranks": {
+        "digital-accessories.md#当前热卖款型#b365042193b2": 1,
+        "cross-border-guide.md#材质与合规#f6bfddbb08fc": 25
+      },
+      "rerank_gold_ranks": null,
+      "vector_top3_gold_count": 1,
+      "rerank_top3_gold_count": null,
+      "candidate_count": 25,
+      "reranker_latency_ms": null,
+      "reranker_usage": {},
+      "reranker_status": "skipped",
+      "reranker_error_type": null,
+      "vector_top25": [
+        {
+          "rank": 1,
+          "source": "digital-accessories.md",
+          "document_id": "digital-accessories",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.454535398,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [
+            "digital-accessories.md#当前热卖款型#b365042193b2"
+          ],
+          "excerpt": "# 数码配件品类洞察 ## 品类定位 数码配件以充电（氮化镓充电器、移动电源、数据线）与音频（降噪耳机、蓝牙音箱）为主，是跨境购物中决策链最短、参数化最强的品类。买家看参数（功率、降噪深度、续航），品牌认知度对转化影响大。 ## 当前热卖款型 - 65W 氮化镓多口充电器：出国旅行刚需，全球通用插脚（英标/欧标/美标）是跨境场景的核心差异点。 - 主动降噪头戴耳机：长途飞行与通勤场景，降噪深度（dB）与续航（小时）是两个硬指标。 - 大容量移动电源（20000mAh 档）：注意各国航空对锂电池容量的限制（100Wh"
+        },
+        {
+          "rank": 2,
+          "source": "eval-travel-gear-避坑与合规.md",
+          "document_id": "eval-travel-gear-避坑与合规",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4211878009,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "# 旅行装备避坑与合规评测知识快照 ## 适用范围 本文用于 Globex 离线评测中的旅行装备问题，重点覆盖收纳、舒适与行李组织。内容是合成的演示快照，不能替代实时商品说明、法律意见或监管机构公告。 ## 判断卡片 ### 1. 场景 先把使用场景拆成携带频率、接触对象和使用时长；旅行装备避坑与合规只讨论收纳、舒适与行李组织，不把其他品类的经验直接套用。 ### 2. 预算 旅行装备避坑与合规需要分别记录商品标价、目标币种、运费和税费，预算不足时应指出是哪一项造成缺口。 ### 3. 材质 核对旅行装备避坑与合规"
+        },
+        {
+          "rank": 3,
+          "source": "eval-digital-accessories-避坑与合规.md",
+          "document_id": "eval-digital-accessories-避坑与合规",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4207526723,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "# 数码配件避坑与合规评测知识快照 ## 适用范围 本文用于 Globex 离线评测中的数码配件问题，重点覆盖供电、音频与连接。内容是合成的演示快照，不能替代实时商品说明、法律意见或监管机构公告。 ## 判断卡片 ### 1. 场景 先把使用场景拆成携带频率、接触对象和使用时长；数码配件避坑与合规只讨论供电、音频与连接，不把其他品类的经验直接套用。 ### 2. 预算 数码配件避坑与合规需要分别记录商品标价、目标币种、运费和税费，预算不足时应指出是哪一项造成缺口。 ### 3. 材质 核对数码配件避坑与合规的材质标"
+        },
+        {
+          "rank": 4,
+          "source": "eval-digital-accessories-价格与预算.md",
+          "document_id": "eval-digital-accessories-价格与预算",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4201878941,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "# 数码配件价格与预算评测知识快照 ## 适用范围 本文用于 Globex 离线评测中的数码配件问题，重点覆盖供电、音频与连接。内容是合成的演示快照，不能替代实时商品说明、法律意见或监管机构公告。 ## 判断卡片 ### 1. 场景 先把使用场景拆成携带频率、接触对象和使用时长；数码配件价格与预算只讨论供电、音频与连接，不把其他品类的经验直接套用。 ### 2. 预算 数码配件价格与预算需要分别记录商品标价、目标币种、运费和税费，预算不足时应指出是哪一项造成缺口。 ### 3. 材质 核对数码配件价格与预算的材质标"
+        },
+        {
+          "rank": 5,
+          "source": "eval-travel-gear-价格与预算.md",
+          "document_id": "eval-travel-gear-价格与预算",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4170431121,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "# 旅行装备价格与预算评测知识快照 ## 适用范围 本文用于 Globex 离线评测中的旅行装备问题，重点覆盖收纳、舒适与行李组织。内容是合成的演示快照，不能替代实时商品说明、法律意见或监管机构公告。 ## 判断卡片 ### 1. 场景 先把使用场景拆成携带频率、接触对象和使用时长；旅行装备价格与预算只讨论收纳、舒适与行李组织，不把其他品类的经验直接套用。 ### 2. 预算 旅行装备价格与预算需要分别记录商品标价、目标币种、运费和税费，预算不足时应指出是哪一项造成缺口。 ### 3. 材质 核对旅行装备价格与预算"
+        },
+        {
+          "rank": 6,
+          "source": "outdoor-sports.md",
+          "document_id": "outdoor-sports",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4127016229,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "# 户外运动品类洞察 ## 品类定位 户外运动覆盖照明（露营灯、头灯）、支撑（登山杖）、营地（天幕、地钉）三类高频装备。买家分\"轻装快穿\"与\"营地舒适\"两派，前者看自重与折叠尺寸，后者看亮度、续航与稳定性。跨境场景里，重量直接决定运费，是选购的隐性约束。 ## 当前热卖款型 - 便携充电露营灯：三档调光 + 磁吸挂钩是标配，IPX5 及以上防水、70 小时级续航为主力配置。 - 钛合金折叠登山杖：五节折叠后 36cm 左右可入箱，单支 250-280g 属轻量档，快锁结构比旋锁更耐用。 - 可充电头灯：夜跑与夜间营"
+        },
+        {
+          "rank": 7,
+          "source": "eval-policy-battery.md",
+          "document_id": "eval-policy-battery",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.411067419,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "# 跨境通用规则（含电池商品限制）政策演示快照评测知识快照 ## 适用范围 本文用于 Globex 离线评测中的跨境通用规则（含电池商品限制）问题，重点覆盖含电池商品限制。内容是合成的演示快照，不能替代实时商品说明、法律意见或监管机构公告。 ## 判断卡片 ### 1. 场景 先把使用场景拆成携带频率、接触对象和使用时长；跨境通用规则（含电池商品限制）政策演示快照只讨论含电池商品限制，不把其他品类的经验直接套用。 ### 2. 预算 跨境通用规则（含电池商品限制）政策演示快照需要分别记录商品标价、目标币种、运费和税"
+        },
+        {
+          "rank": 8,
+          "source": "eval-travel-gear-参数判断.md",
+          "document_id": "eval-travel-gear-参数判断",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4022712251,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "# 旅行装备参数判断评测知识快照 ## 适用范围 本文用于 Globex 离线评测中的旅行装备问题，重点覆盖收纳、舒适与行李组织。内容是合成的演示快照，不能替代实时商品说明、法律意见或监管机构公告。 ## 判断卡片 ### 1. 场景 先把使用场景拆成携带频率、接触对象和使用时长；旅行装备参数判断只讨论收纳、舒适与行李组织，不把其他品类的经验直接套用。 ### 2. 预算 旅行装备参数判断需要分别记录商品标价、目标币种、运费和税费，预算不足时应指出是哪一项造成缺口。 ### 3. 材质 核对旅行装备参数判断的材质标"
+        },
+        {
+          "rank": 9,
+          "source": "eval-travel-gear-概览.md",
+          "document_id": "eval-travel-gear-概览",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.3946751853,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "# 旅行装备概览评测知识快照 ## 适用范围 本文用于 Globex 离线评测中的旅行装备问题，重点覆盖收纳、舒适与行李组织。内容是合成的演示快照，不能替代实时商品说明、法律意见或监管机构公告。 ## 判断卡片 ### 1. 场景 先把使用场景拆成携带频率、接触对象和使用时长；旅行装备概览只讨论收纳、舒适与行李组织，不把其他品类的经验直接套用。 ### 2. 预算 旅行装备概览需要分别记录商品标价、目标币种、运费和税费，预算不足时应指出是哪一项造成缺口。 ### 3. 材质 核对旅行装备概览的材质标签与实际接触部位"
+        },
+        {
+          "rank": 10,
+          "source": "eval-digital-accessories-概览.md",
+          "document_id": "eval-digital-accessories-概览",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.39341563,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "# 数码配件概览评测知识快照 ## 适用范围 本文用于 Globex 离线评测中的数码配件问题，重点覆盖供电、音频与连接。内容是合成的演示快照，不能替代实时商品说明、法律意见或监管机构公告。 ## 判断卡片 ### 1. 场景 先把使用场景拆成携带频率、接触对象和使用时长；数码配件概览只讨论供电、音频与连接，不把其他品类的经验直接套用。 ### 2. 预算 数码配件概览需要分别记录商品标价、目标币种、运费和税费，预算不足时应指出是哪一项造成缺口。 ### 3. 材质 核对数码配件概览的材质标签与实际接触部位；营销词"
+        },
+        {
+          "rank": 11,
+          "source": "eval-policy-jp.md",
+          "document_id": "eval-policy-jp",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.390147085,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "# JP 跨境规则政策演示快照评测知识快照 ## 适用范围 本文用于 Globex 离线评测中的JP 跨境规则问题，重点覆盖申报、配送限制与报价边界。内容是合成的演示快照，不能替代实时商品说明、法律意见或监管机构公告。 ## 判断卡片 ### 1. 场景 先把使用场景拆成携带频率、接触对象和使用时长；JP 跨境规则政策演示快照只讨论申报、配送限制与报价边界，不把其他品类的经验直接套用。 ### 2. 预算 JP 跨境规则政策演示快照需要分别记录商品标价、目标币种、运费和税费，预算不足时应指出是哪一项造成缺口。 ##"
+        },
+        {
+          "rank": 12,
+          "source": "eval-office-study-避坑与合规.md",
+          "document_id": "eval-office-study-避坑与合规",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.3863323696,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "# 办公学习避坑与合规评测知识快照 ## 适用范围 本文用于 Globex 离线评测中的办公学习问题，重点覆盖护眼、收纳与跨境供电。内容是合成的演示快照，不能替代实时商品说明、法律意见或监管机构公告。 ## 判断卡片 ### 1. 场景 先把使用场景拆成携带频率、接触对象和使用时长；办公学习避坑与合规只讨论护眼、收纳与跨境供电，不把其他品类的经验直接套用。 ### 2. 预算 办公学习避坑与合规需要分别记录商品标价、目标币种、运费和税费，预算不足时应指出是哪一项造成缺口。 ### 3. 材质 核对办公学习避坑与合规"
+        },
+        {
+          "rank": 13,
+          "source": "eval-digital-accessories-参数判断.md",
+          "document_id": "eval-digital-accessories-参数判断",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.3856606191,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "# 数码配件参数判断评测知识快照 ## 适用范围 本文用于 Globex 离线评测中的数码配件问题，重点覆盖供电、音频与连接。内容是合成的演示快照，不能替代实时商品说明、法律意见或监管机构公告。 ## 判断卡片 ### 1. 场景 先把使用场景拆成携带频率、接触对象和使用时长；数码配件参数判断只讨论供电、音频与连接，不把其他品类的经验直接套用。 ### 2. 预算 数码配件参数判断需要分别记录商品标价、目标币种、运费和税费，预算不足时应指出是哪一项造成缺口。 ### 3. 材质 核对数码配件参数判断的材质标签与实际"
+        },
+        {
+          "rank": 14,
+          "source": "eval-travel-gear-避坑与合规.md",
+          "document_id": "eval-travel-gear-避坑与合规",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.3812930214,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "的收纳、舒适与行李组织证据和未验证条件，保证多轮回答没有悄悄改变口径。 ### 21. 来源 旅行装备避坑与合规引用外部资料时要标出来源类型和发布日期；没有可靠来源的收纳、舒适与行李组织信息只能作为待核实线索。 ### 22. 量化 比较旅行装备避坑与合规候选时，以统一单位量化重量、容量、功率或价格，避免用模糊形容词代替收纳、舒适与行李组织判断。 ### 23. 例外 旅行装备避坑与合规中存在例外条件时，应把触发条件写清楚；不能因为多数商品符合收纳、舒适与行李组织就默认所有商品都符合。 ### 24. 筛选 先以旅"
+        },
+        {
+          "rank": 15,
+          "source": "eval-travel-gear-价格与预算.md",
+          "document_id": "eval-travel-gear-价格与预算",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.377127397,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "的收纳、舒适与行李组织证据和未验证条件，保证多轮回答没有悄悄改变口径。 ### 21. 来源 旅行装备价格与预算引用外部资料时要标出来源类型和发布日期；没有可靠来源的收纳、舒适与行李组织信息只能作为待核实线索。 ### 22. 量化 比较旅行装备价格与预算候选时，以统一单位量化重量、容量、功率或价格，避免用模糊形容词代替收纳、舒适与行李组织判断。 ### 23. 例外 旅行装备价格与预算中存在例外条件时，应把触发条件写清楚；不能因为多数商品符合收纳、舒适与行李组织就默认所有商品都符合。 ### 24. 筛选 先以旅"
+        },
+        {
+          "rank": 16,
+          "source": "eval-beauty-care-价格与预算.md",
+          "document_id": "eval-beauty-care-价格与预算",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.3767272773,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "# 美妆个护价格与预算评测知识快照 ## 适用范围 本文用于 Globex 离线评测中的美妆个护问题，重点覆盖成分、低敏与旅行分装。内容是合成的演示快照，不能替代实时商品说明、法律意见或监管机构公告。 ## 判断卡片 ### 1. 场景 先把使用场景拆成携带频率、接触对象和使用时长；美妆个护价格与预算只讨论成分、低敏与旅行分装，不把其他品类的经验直接套用。 ### 2. 预算 美妆个护价格与预算需要分别记录商品标价、目标币种、运费和税费，预算不足时应指出是哪一项造成缺口。 ### 3. 材质 核对美妆个护价格与预算"
+        },
+        {
+          "rank": 17,
+          "source": "eval-policy-jp.md",
+          "document_id": "eval-policy-jp",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.3757820339,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "为标题相似就宣称同样适合。 ### 10. 表达 回答JP 跨境规则政策演示快照问题时，区分已验证事实、推测和待确认事项；价格与配送数字只能引用当次工具结果。 ### 11. 复核 在给出JP 跨境规则政策演示快照结论前复核目的地、币种和 SKU 是否一致；任一条件变化都应重新计算而非沿用旧答案。 ### 12. 边界 JP 跨境规则政策演示快照快照用于离线评测，不替代商品说明或监管公告；涉及申报、配送限制与报价边界的强断言必须附带来源和有效期。 ### 13. 替代 当JP 跨境规则政策演示快照没有完全满足申报、"
+        },
+        {
+          "rank": 18,
+          "source": "eval-beauty-care-避坑与合规.md",
+          "document_id": "eval-beauty-care-避坑与合规",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.3755688329,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "# 美妆个护避坑与合规评测知识快照 ## 适用范围 本文用于 Globex 离线评测中的美妆个护问题，重点覆盖成分、低敏与旅行分装。内容是合成的演示快照，不能替代实时商品说明、法律意见或监管机构公告。 ## 判断卡片 ### 1. 场景 先把使用场景拆成携带频率、接触对象和使用时长；美妆个护避坑与合规只讨论成分、低敏与旅行分装，不把其他品类的经验直接套用。 ### 2. 预算 美妆个护避坑与合规需要分别记录商品标价、目标币种、运费和税费，预算不足时应指出是哪一项造成缺口。 ### 3. 材质 核对美妆个护避坑与合规"
+        },
+        {
+          "rank": 19,
+          "source": "eval-policy-battery.md",
+          "document_id": "eval-policy-battery",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.3712583583,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "演示快照的地区规则必须与收货地逐项对应；GLOBAL 指引不能直接替代针对含电池商品限制的区域性证据。 ### 18. 不确定性 如果跨境通用规则（含电池商品限制）政策演示快照缺少判断含电池商品限制所需字段，回复要明确说明未知项及补充信息，而不是以常识补齐。 ### 19. 交叉 跨境通用规则（含电池商品限制）政策演示快照与其他品类共同决策时，分别列出各自的含电池商品限制条件，避免一篇文档替另一篇文档做结论。 ### 20. 复盘 遇到用户追问时，重新展示跨境通用规则（含电池商品限制）政策演示快照已验证的含电池商品"
+        },
+        {
+          "rank": 20,
+          "source": "eval-office-study-价格与预算.md",
+          "document_id": "eval-office-study-价格与预算",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.371066991,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "# 办公学习价格与预算评测知识快照 ## 适用范围 本文用于 Globex 离线评测中的办公学习问题，重点覆盖护眼、收纳与跨境供电。内容是合成的演示快照，不能替代实时商品说明、法律意见或监管机构公告。 ## 判断卡片 ### 1. 场景 先把使用场景拆成携带频率、接触对象和使用时长；办公学习价格与预算只讨论护眼、收纳与跨境供电，不把其他品类的经验直接套用。 ### 2. 预算 办公学习价格与预算需要分别记录商品标价、目标币种、运费和税费，预算不足时应指出是哪一项造成缺口。 ### 3. 材质 核对办公学习价格与预算"
+        },
+        {
+          "rank": 21,
+          "source": "travel-gear.md",
+          "document_id": "travel-gear",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.3690836485,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "力，300 元以上多为设计师联名。 - 20 寸登机箱：500-700 元入门，800-1200 元主力（铝框），1500 元以上为品牌溢价。 - 折叠双肩包：80-160 元。 - 睡袋内胆：棉质 100-180 元，桑蚕丝 300-400 元。 - 速干毛巾三条装：60-100 元。 ## 避坑点 - 标称\"皮质\"的低价箱包多为 PU 涂层，跨境退换成本高，材质敏感买家要避开。 - 登机箱尺寸各航司口径不同，20 寸并非全球通用免托运，需按目的地航司核对三边和。 - 桑蚕丝内胆需干洗或手洗，不接受养护成本的买家"
+        },
+        {
+          "rank": 22,
+          "source": "eval-office-study-概览.md",
+          "document_id": "eval-office-study-概览",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.3614796535,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "# 办公学习概览评测知识快照 ## 适用范围 本文用于 Globex 离线评测中的办公学习问题，重点覆盖护眼、收纳与跨境供电。内容是合成的演示快照，不能替代实时商品说明、法律意见或监管机构公告。 ## 判断卡片 ### 1. 场景 先把使用场景拆成携带频率、接触对象和使用时长；办公学习概览只讨论护眼、收纳与跨境供电，不把其他品类的经验直接套用。 ### 2. 预算 办公学习概览需要分别记录商品标价、目标币种、运费和税费，预算不足时应指出是哪一项造成缺口。 ### 3. 材质 核对办公学习概览的材质标签与实际接触部位"
+        },
+        {
+          "rank": 23,
+          "source": "eval-policy-jp.md",
+          "document_id": "eval-policy-jp",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.360815024,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "自的申报、配送限制与报价边界条件，避免一篇文档替另一篇文档做结论。 ### 20. 复盘 遇到用户追问时，重新展示JP 跨境规则政策演示快照已验证的申报、配送限制与报价边界证据和未验证条件，保证多轮回答没有悄悄改变口径。 ### 21. 来源 JP 跨境规则政策演示快照引用外部资料时要标出来源类型和发布日期；没有可靠来源的申报、配送限制与报价边界信息只能作为待核实线索。 ### 22. 量化 比较JP 跨境规则政策演示快照候选时，以统一单位量化重量、容量、功率或价格，避免用模糊形容词代替申报、配送限制与报价边界判断"
+        },
+        {
+          "rank": 24,
+          "source": "eval-baby-pet-价格与预算.md",
+          "document_id": "eval-baby-pet-价格与预算",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.3600318969,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "# 母婴宠物价格与预算评测知识快照 ## 适用范围 本文用于 Globex 离线评测中的母婴宠物问题，重点覆盖安全、尺寸与可清洁性。内容是合成的演示快照，不能替代实时商品说明、法律意见或监管机构公告。 ## 判断卡片 ### 1. 场景 先把使用场景拆成携带频率、接触对象和使用时长；母婴宠物价格与预算只讨论安全、尺寸与可清洁性，不把其他品类的经验直接套用。 ### 2. 预算 母婴宠物价格与预算需要分别记录商品标价、目标币种、运费和税费，预算不足时应指出是哪一项造成缺口。 ### 3. 材质 核对母婴宠物价格与预算"
+        },
+        {
+          "rank": 25,
+          "source": "cross-border-guide.md",
+          "document_id": "cross-border-guide",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.3503576526,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [
+            "cross-border-guide.md#材质与合规#f6bfddbb08fc"
+          ],
+          "excerpt": "# 跨境选购通则 ## 到手价的构成 跨境购物的真实成本是\"到手价\"，不是商品标价： 到手价 = 商品小计 + 国际运费 + 关税 三项都受目的国规则影响。Globex 的商品检索工具在传入 ship_to 后会内联返回 landed_price 三分项明细，任何对外报价都应以工具返回为准，不要凭汇率心算。 ## 免税额度（de minimis） 多数目的国设有免税额度，小计低于额度时关税为零： - 美国：约 800 美元档，数码配件常规税率本身也可能为 0 - 欧盟：约 150 欧元档，超出部分按品类税率征收 -"
+        }
+      ],
+      "rerank_top25": []
+    },
+    {
+      "case_id": "v4-006",
+      "query": "收纳用品耐用吗？经常拉拉链会不会坏？",
+      "primary_kind": "single_evidence",
+      "expected_query_strategy": "DIRECT",
+      "gold_count": 1,
+      "gold_evidence_ids": [
+        "travel-gear.md#关键属性与判断口径#c8cbfcdaef5e"
+      ],
+      "vector_gold_ranks": {
+        "travel-gear.md#关键属性与判断口径#c8cbfcdaef5e": 17
+      },
+      "rerank_gold_ranks": null,
+      "vector_top3_gold_count": 0,
+      "rerank_top3_gold_count": null,
+      "candidate_count": 25,
+      "reranker_latency_ms": null,
+      "reranker_usage": {},
+      "reranker_status": "skipped",
+      "reranker_error_type": null,
+      "vector_top25": [
+        {
+          "rank": 1,
+          "source": "eval-travel-gear-避坑与合规.md",
+          "document_id": "eval-travel-gear-避坑与合规",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4688762228,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "# 旅行装备避坑与合规评测知识快照 ## 适用范围 本文用于 Globex 离线评测中的旅行装备问题，重点覆盖收纳、舒适与行李组织。内容是合成的演示快照，不能替代实时商品说明、法律意见或监管机构公告。 ## 判断卡片 ### 1. 场景 先把使用场景拆成携带频率、接触对象和使用时长；旅行装备避坑与合规只讨论收纳、舒适与行李组织，不把其他品类的经验直接套用。 ### 2. 预算 旅行装备避坑与合规需要分别记录商品标价、目标币种、运费和税费，预算不足时应指出是哪一项造成缺口。 ### 3. 材质 核对旅行装备避坑与合规"
+        },
+        {
+          "rank": 2,
+          "source": "eval-travel-gear-概览.md",
+          "document_id": "eval-travel-gear-概览",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.452240309,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "# 旅行装备概览评测知识快照 ## 适用范围 本文用于 Globex 离线评测中的旅行装备问题，重点覆盖收纳、舒适与行李组织。内容是合成的演示快照，不能替代实时商品说明、法律意见或监管机构公告。 ## 判断卡片 ### 1. 场景 先把使用场景拆成携带频率、接触对象和使用时长；旅行装备概览只讨论收纳、舒适与行李组织，不把其他品类的经验直接套用。 ### 2. 预算 旅行装备概览需要分别记录商品标价、目标币种、运费和税费，预算不足时应指出是哪一项造成缺口。 ### 3. 材质 核对旅行装备概览的材质标签与实际接触部位"
+        },
+        {
+          "rank": 3,
+          "source": "eval-travel-gear-避坑与合规.md",
+          "document_id": "eval-travel-gear-避坑与合规",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4513724798,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "的收纳、舒适与行李组织证据和未验证条件，保证多轮回答没有悄悄改变口径。 ### 21. 来源 旅行装备避坑与合规引用外部资料时要标出来源类型和发布日期；没有可靠来源的收纳、舒适与行李组织信息只能作为待核实线索。 ### 22. 量化 比较旅行装备避坑与合规候选时，以统一单位量化重量、容量、功率或价格，避免用模糊形容词代替收纳、舒适与行李组织判断。 ### 23. 例外 旅行装备避坑与合规中存在例外条件时，应把触发条件写清楚；不能因为多数商品符合收纳、舒适与行李组织就默认所有商品都符合。 ### 24. 筛选 先以旅"
+        },
+        {
+          "rank": 4,
+          "source": "eval-travel-gear-避坑与合规.md",
+          "document_id": "eval-travel-gear-避坑与合规",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4497738363,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "规问题时，区分已验证事实、推测和待确认事项；价格与配送数字只能引用当次工具结果。 ### 11. 复核 在给出旅行装备避坑与合规结论前复核目的地、币种和 SKU 是否一致；任一条件变化都应重新计算而非沿用旧答案。 ### 12. 边界 旅行装备避坑与合规快照用于离线评测，不替代商品说明或监管公告；涉及收纳、舒适与行李组织的强断言必须附带来源和有效期。 ### 13. 替代 当旅行装备避坑与合规没有完全满足收纳、舒适与行李组织的商品时，应给出约束不满足的原因，而不是把近似候选包装成等价替代。 ### 14. 证据 旅"
+        },
+        {
+          "rank": 5,
+          "source": "eval-travel-gear-参数判断.md",
+          "document_id": "eval-travel-gear-参数判断",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4464597246,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "# 旅行装备参数判断评测知识快照 ## 适用范围 本文用于 Globex 离线评测中的旅行装备问题，重点覆盖收纳、舒适与行李组织。内容是合成的演示快照，不能替代实时商品说明、法律意见或监管机构公告。 ## 判断卡片 ### 1. 场景 先把使用场景拆成携带频率、接触对象和使用时长；旅行装备参数判断只讨论收纳、舒适与行李组织，不把其他品类的经验直接套用。 ### 2. 预算 旅行装备参数判断需要分别记录商品标价、目标币种、运费和税费，预算不足时应指出是哪一项造成缺口。 ### 3. 材质 核对旅行装备参数判断的材质标"
+        },
+        {
+          "rank": 6,
+          "source": "eval-travel-gear-价格与预算.md",
+          "document_id": "eval-travel-gear-价格与预算",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4456892129,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "# 旅行装备价格与预算评测知识快照 ## 适用范围 本文用于 Globex 离线评测中的旅行装备问题，重点覆盖收纳、舒适与行李组织。内容是合成的演示快照，不能替代实时商品说明、法律意见或监管机构公告。 ## 判断卡片 ### 1. 场景 先把使用场景拆成携带频率、接触对象和使用时长；旅行装备价格与预算只讨论收纳、舒适与行李组织，不把其他品类的经验直接套用。 ### 2. 预算 旅行装备价格与预算需要分别记录商品标价、目标币种、运费和税费，预算不足时应指出是哪一项造成缺口。 ### 3. 材质 核对旅行装备价格与预算"
+        },
+        {
+          "rank": 7,
+          "source": "eval-travel-gear-概览.md",
+          "document_id": "eval-travel-gear-概览",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.445257822,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "布日期；没有可靠来源的收纳、舒适与行李组织信息只能作为待核实线索。 ### 22. 量化 比较旅行装备概览候选时，以统一单位量化重量、容量、功率或价格，避免用模糊形容词代替收纳、舒适与行李组织判断。 ### 23. 例外 旅行装备概览中存在例外条件时，应把触发条件写清楚；不能因为多数商品符合收纳、舒适与行李组织就默认所有商品都符合。 ### 24. 筛选 先以旅行装备概览的硬约束缩小候选，再比较收纳、舒适与行李组织偏好；筛选顺序应能从工具事件和字段值复现。 ### 25. 沟通 向用户解释旅行装备概览取舍时，说明哪"
+        },
+        {
+          "rank": 8,
+          "source": "eval-home-living-避坑与合规.md",
+          "document_id": "eval-home-living-避坑与合规",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4319390164,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "# 家居生活避坑与合规评测知识快照 ## 适用范围 本文用于 Globex 离线评测中的家居生活问题，重点覆盖材质、器物与易碎运输。内容是合成的演示快照，不能替代实时商品说明、法律意见或监管机构公告。 ## 判断卡片 ### 1. 场景 先把使用场景拆成携带频率、接触对象和使用时长；家居生活避坑与合规只讨论材质、器物与易碎运输，不把其他品类的经验直接套用。 ### 2. 预算 家居生活避坑与合规需要分别记录商品标价、目标币种、运费和税费，预算不足时应指出是哪一项造成缺口。 ### 3. 材质 核对家居生活避坑与合规"
+        },
+        {
+          "rank": 9,
+          "source": "eval-travel-gear-参数判断.md",
+          "document_id": "eval-travel-gear-参数判断",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4307479025,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "实、推测和待确认事项；价格与配送数字只能引用当次工具结果。 ### 11. 复核 在给出旅行装备参数判断结论前复核目的地、币种和 SKU 是否一致；任一条件变化都应重新计算而非沿用旧答案。 ### 12. 边界 旅行装备参数判断快照用于离线评测，不替代商品说明或监管公告；涉及收纳、舒适与行李组织的强断言必须附带来源和有效期。 ### 13. 替代 当旅行装备参数判断没有完全满足收纳、舒适与行李组织的商品时，应给出约束不满足的原因，而不是把近似候选包装成等价替代。 ### 14. 证据 旅行装备参数判断的每个关键结论"
+        },
+        {
+          "rank": 10,
+          "source": "eval-travel-gear-参数判断.md",
+          "document_id": "eval-travel-gear-参数判断",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4294235601,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "证多轮回答没有悄悄改变口径。 ### 21. 来源 旅行装备参数判断引用外部资料时要标出来源类型和发布日期；没有可靠来源的收纳、舒适与行李组织信息只能作为待核实线索。 ### 22. 量化 比较旅行装备参数判断候选时，以统一单位量化重量、容量、功率或价格，避免用模糊形容词代替收纳、舒适与行李组织判断。 ### 23. 例外 旅行装备参数判断中存在例外条件时，应把触发条件写清楚；不能因为多数商品符合收纳、舒适与行李组织就默认所有商品都符合。 ### 24. 筛选 先以旅行装备参数判断的硬约束缩小候选，再比较收纳、舒适"
+        },
+        {
+          "rank": 11,
+          "source": "eval-travel-gear-概览.md",
+          "document_id": "eval-travel-gear-概览",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4275134899,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "当次工具结果。 ### 11. 复核 在给出旅行装备概览结论前复核目的地、币种和 SKU 是否一致；任一条件变化都应重新计算而非沿用旧答案。 ### 12. 边界 旅行装备概览快照用于离线评测，不替代商品说明或监管公告；涉及收纳、舒适与行李组织的强断言必须附带来源和有效期。 ### 13. 替代 当旅行装备概览没有完全满足收纳、舒适与行李组织的商品时，应给出约束不满足的原因，而不是把近似候选包装成等价替代。 ### 14. 证据 旅行装备概览的每个关键结论应能回指材质、尺寸、库存、配送或报价字段；缺少证据时只允许提"
+        },
+        {
+          "rank": 12,
+          "source": "eval-home-living-价格与预算.md",
+          "document_id": "eval-home-living-价格与预算",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.423774454,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "# 家居生活价格与预算评测知识快照 ## 适用范围 本文用于 Globex 离线评测中的家居生活问题，重点覆盖材质、器物与易碎运输。内容是合成的演示快照，不能替代实时商品说明、法律意见或监管机构公告。 ## 判断卡片 ### 1. 场景 先把使用场景拆成携带频率、接触对象和使用时长；家居生活价格与预算只讨论材质、器物与易碎运输，不把其他品类的经验直接套用。 ### 2. 预算 家居生活价格与预算需要分别记录商品标价、目标币种、运费和税费，预算不足时应指出是哪一项造成缺口。 ### 3. 材质 核对家居生活价格与预算"
+        },
+        {
+          "rank": 13,
+          "source": "eval-home-living-避坑与合规.md",
+          "document_id": "eval-home-living-避坑与合规",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4231083081,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "的材质、器物与易碎运输证据和未验证条件，保证多轮回答没有悄悄改变口径。 ### 21. 来源 家居生活避坑与合规引用外部资料时要标出来源类型和发布日期；没有可靠来源的材质、器物与易碎运输信息只能作为待核实线索。 ### 22. 量化 比较家居生活避坑与合规候选时，以统一单位量化重量、容量、功率或价格，避免用模糊形容词代替材质、器物与易碎运输判断。 ### 23. 例外 家居生活避坑与合规中存在例外条件时，应把触发条件写清楚；不能因为多数商品符合材质、器物与易碎运输就默认所有商品都符合。 ### 24. 筛选 先以家"
+        },
+        {
+          "rank": 14,
+          "source": "eval-home-living-概览.md",
+          "document_id": "eval-home-living-概览",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4207939263,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "# 家居生活概览评测知识快照 ## 适用范围 本文用于 Globex 离线评测中的家居生活问题，重点覆盖材质、器物与易碎运输。内容是合成的演示快照，不能替代实时商品说明、法律意见或监管机构公告。 ## 判断卡片 ### 1. 场景 先把使用场景拆成携带频率、接触对象和使用时长；家居生活概览只讨论材质、器物与易碎运输，不把其他品类的经验直接套用。 ### 2. 预算 家居生活概览需要分别记录商品标价、目标币种、运费和税费，预算不足时应指出是哪一项造成缺口。 ### 3. 材质 核对家居生活概览的材质标签与实际接触部位"
+        },
+        {
+          "rank": 15,
+          "source": "eval-travel-gear-价格与预算.md",
+          "document_id": "eval-travel-gear-价格与预算",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4174699727,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "的收纳、舒适与行李组织证据和未验证条件，保证多轮回答没有悄悄改变口径。 ### 21. 来源 旅行装备价格与预算引用外部资料时要标出来源类型和发布日期；没有可靠来源的收纳、舒适与行李组织信息只能作为待核实线索。 ### 22. 量化 比较旅行装备价格与预算候选时，以统一单位量化重量、容量、功率或价格，避免用模糊形容词代替收纳、舒适与行李组织判断。 ### 23. 例外 旅行装备价格与预算中存在例外条件时，应把触发条件写清楚；不能因为多数商品符合收纳、舒适与行李组织就默认所有商品都符合。 ### 24. 筛选 先以旅"
+        },
+        {
+          "rank": 16,
+          "source": "eval-home-living-参数判断.md",
+          "document_id": "eval-home-living-参数判断",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4149047542,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "# 家居生活参数判断评测知识快照 ## 适用范围 本文用于 Globex 离线评测中的家居生活问题，重点覆盖材质、器物与易碎运输。内容是合成的演示快照，不能替代实时商品说明、法律意见或监管机构公告。 ## 判断卡片 ### 1. 场景 先把使用场景拆成携带频率、接触对象和使用时长；家居生活参数判断只讨论材质、器物与易碎运输，不把其他品类的经验直接套用。 ### 2. 预算 家居生活参数判断需要分别记录商品标价、目标币种、运费和税费，预算不足时应指出是哪一项造成缺口。 ### 3. 材质 核对家居生活参数判断的材质标"
+        },
+        {
+          "rank": 17,
+          "source": "travel-gear.md",
+          "document_id": "travel-gear",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4141801551,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [
+            "travel-gear.md#关键属性与判断口径#c8cbfcdaef5e"
+          ],
+          "excerpt": "# 旅行装备品类洞察 ## 品类定位 旅行装备覆盖收纳（收纳袋、压缩袋、行李箱）、舒适（颈枕、眼罩、睡袋内胆）、消耗与配件（速干毛巾、洗漱包）三大子类。跨境买家的核心诉求是\"轻量 + 耐用 + 好收纳\"，价格敏感度中等，比数码配件更看重材质与做工。 ## 当前热卖款型 - 旅行三件套（收纳袋 + 颈枕 + 眼罩）：长途飞行刚需组合，200 元档竞争最激烈，帆布/再生尼龙材质的设计师联名款溢价能力最强。 - 20 寸铝框登机箱：商务与短途首选，铝镁合金框 + PC 箱体是主流配置，静音万向轮和 TSA 海关锁是必看卖"
+        },
+        {
+          "rank": 18,
+          "source": "eval-travel-gear-避坑与合规.md",
+          "document_id": "eval-travel-gear-避坑与合规",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4127681196,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "和理由，使后续评测能检查收纳、舒适与行李组织判断是否来自可追溯证据。 ## 回复边界 当旅行装备避坑与合规文档与实时商品字段冲突时，以实时字段为准，并解释收纳、舒适与行李组织中仍无法确定的部分。"
+        },
+        {
+          "rank": 19,
+          "source": "eval-home-living-避坑与合规.md",
+          "document_id": "eval-home-living-避坑与合规",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4122779019,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "规问题时，区分已验证事实、推测和待确认事项；价格与配送数字只能引用当次工具结果。 ### 11. 复核 在给出家居生活避坑与合规结论前复核目的地、币种和 SKU 是否一致；任一条件变化都应重新计算而非沿用旧答案。 ### 12. 边界 家居生活避坑与合规快照用于离线评测，不替代商品说明或监管公告；涉及材质、器物与易碎运输的强断言必须附带来源和有效期。 ### 13. 替代 当家居生活避坑与合规没有完全满足材质、器物与易碎运输的商品时，应给出约束不满足的原因，而不是把近似候选包装成等价替代。 ### 14. 证据 家"
+        },
+        {
+          "rank": 20,
+          "source": "eval-home-living-概览.md",
+          "document_id": "eval-home-living-概览",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4106427873,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "布日期；没有可靠来源的材质、器物与易碎运输信息只能作为待核实线索。 ### 22. 量化 比较家居生活概览候选时，以统一单位量化重量、容量、功率或价格，避免用模糊形容词代替材质、器物与易碎运输判断。 ### 23. 例外 家居生活概览中存在例外条件时，应把触发条件写清楚；不能因为多数商品符合材质、器物与易碎运输就默认所有商品都符合。 ### 24. 筛选 先以家居生活概览的硬约束缩小候选，再比较材质、器物与易碎运输偏好；筛选顺序应能从工具事件和字段值复现。 ### 25. 沟通 向用户解释家居生活概览取舍时，说明哪"
+        },
+        {
+          "rank": 21,
+          "source": "eval-home-living-价格与预算.md",
+          "document_id": "eval-home-living-价格与预算",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4102689696,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "的材质、器物与易碎运输证据和未验证条件，保证多轮回答没有悄悄改变口径。 ### 21. 来源 家居生活价格与预算引用外部资料时要标出来源类型和发布日期；没有可靠来源的材质、器物与易碎运输信息只能作为待核实线索。 ### 22. 量化 比较家居生活价格与预算候选时，以统一单位量化重量、容量、功率或价格，避免用模糊形容词代替材质、器物与易碎运输判断。 ### 23. 例外 家居生活价格与预算中存在例外条件时，应把触发条件写清楚；不能因为多数商品符合材质、器物与易碎运输就默认所有商品都符合。 ### 24. 筛选 先以家"
+        },
+        {
+          "rank": 22,
+          "source": "eval-travel-gear-价格与预算.md",
+          "document_id": "eval-travel-gear-价格与预算",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4075487388,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "算问题时，区分已验证事实、推测和待确认事项；价格与配送数字只能引用当次工具结果。 ### 11. 复核 在给出旅行装备价格与预算结论前复核目的地、币种和 SKU 是否一致；任一条件变化都应重新计算而非沿用旧答案。 ### 12. 边界 旅行装备价格与预算快照用于离线评测，不替代商品说明或监管公告；涉及收纳、舒适与行李组织的强断言必须附带来源和有效期。 ### 13. 替代 当旅行装备价格与预算没有完全满足收纳、舒适与行李组织的商品时，应给出约束不满足的原因，而不是把近似候选包装成等价替代。 ### 14. 证据 旅"
+        },
+        {
+          "rank": 23,
+          "source": "eval-home-living-概览.md",
+          "document_id": "eval-home-living-概览",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4020649323,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "当次工具结果。 ### 11. 复核 在给出家居生活概览结论前复核目的地、币种和 SKU 是否一致；任一条件变化都应重新计算而非沿用旧答案。 ### 12. 边界 家居生活概览快照用于离线评测，不替代商品说明或监管公告；涉及材质、器物与易碎运输的强断言必须附带来源和有效期。 ### 13. 替代 当家居生活概览没有完全满足材质、器物与易碎运输的商品时，应给出约束不满足的原因，而不是把近似候选包装成等价替代。 ### 14. 证据 家居生活概览的每个关键结论应能回指材质、尺寸、库存、配送或报价字段；缺少证据时只允许提"
+        },
+        {
+          "rank": 24,
+          "source": "eval-travel-gear-价格与预算.md",
+          "document_id": "eval-travel-gear-价格与预算",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4009891772,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "和理由，使后续评测能检查收纳、舒适与行李组织判断是否来自可追溯证据。 ## 回复边界 当旅行装备价格与预算文档与实时商品字段冲突时，以实时字段为准，并解释收纳、舒适与行李组织中仍无法确定的部分。"
+        },
+        {
+          "rank": 25,
+          "source": "home-living.md",
+          "document_id": "home-living",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.3247735271,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "# 家居生活品类洞察 ## 品类定位 家居生活在跨境场景以\"轻器物 + 手作调性\"为主：茶具、香器、餐具小件、织物。买家买的是设计与材质叙事，而非参数，因此产地、工艺、材质天然属性是决策核心。易碎与体积是跨境物流的主要摩擦点。 ## 当前热卖款型 - 手工粗陶茶具套装（一壶两杯）：便携旅行装是近两年的增量款，日式窑烧与国内柴烧各有拥趸。 - 天然材质餐具小件（木、竹、陶）：主打\"无塑料\"，与环保诉求买家高度契合。 - 手工织物（棉麻桌旗、坐垫）：客单低、复购稳，看织法与克重。 ## 关键属性与判断口径 - 材质天然"
+        }
+      ],
+      "rerank_top25": []
+    },
+    {
+      "case_id": "v4-022",
+      "query": "体积重是怎么计算的？",
+      "primary_kind": "single_evidence",
+      "expected_query_strategy": "DIRECT",
+      "gold_count": 1,
+      "gold_evidence_ids": [
+        "cross-border-guide.md#运费口径#a6d0645c2de4"
+      ],
+      "vector_gold_ranks": {
+        "cross-border-guide.md#运费口径#a6d0645c2de4": 25
+      },
+      "rerank_gold_ranks": null,
+      "vector_top3_gold_count": 0,
+      "rerank_top3_gold_count": null,
+      "candidate_count": 25,
+      "reranker_latency_ms": null,
+      "reranker_usage": {},
+      "reranker_status": "skipped",
+      "reranker_error_type": null,
+      "vector_top25": [
+        {
+          "rank": 1,
+          "source": "eval-policy-global-shipping.md",
+          "document_id": "eval-policy-global-shipping",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.5365975968,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "与体积重）政策演示快照资料的更新时间影响判断；当资料早于本次评测快照时，应提示用户结果可能过期。 ### 9. 比较 跨境通用规则（通用运费与体积重）政策演示快照的候选排序应说明各自满足了哪些通用运费与体积重条件，不能只因为标题相似就宣称同样适合。 ### 10. 表达 回答跨境通用规则（通用运费与体积重）政策演示快照问题时，区分已验证事实、推测和待确认事项；价格与配送数字只能引用当次工具结果。 ### 11. 复核 在给出跨境通用规则（通用运费与体积重）政策演示快照结论前复核目的地、币种和 SKU 是否一致；任一"
+        },
+        {
+          "rank": 2,
+          "source": "eval-policy-global-shipping.md",
+          "document_id": "eval-policy-global-shipping",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.50000262,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "推荐。 ### 17. 地域 跨境通用规则（通用运费与体积重）政策演示快照的地区规则必须与收货地逐项对应；GLOBAL 指引不能直接替代针对通用运费与体积重的区域性证据。 ### 18. 不确定性 如果跨境通用规则（通用运费与体积重）政策演示快照缺少判断通用运费与体积重所需字段，回复要明确说明未知项及补充信息，而不是以常识补齐。 ### 19. 交叉 跨境通用规则（通用运费与体积重）政策演示快照与其他品类共同决策时，分别列出各自的通用运费与体积重条件，避免一篇文档替另一篇文档做结论。 ### 20. 复盘 遇到用户"
+        },
+        {
+          "rank": 3,
+          "source": "eval-policy-global-shipping.md",
+          "document_id": "eval-policy-global-shipping",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4936506863,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "# 跨境通用规则（通用运费与体积重）政策演示快照评测知识快照 ## 适用范围 本文用于 Globex 离线评测中的跨境通用规则（通用运费与体积重）问题，重点覆盖通用运费与体积重。内容是合成的演示快照，不能替代实时商品说明、法律意见或监管机构公告。 ## 判断卡片 ### 1. 场景 先把使用场景拆成携带频率、接触对象和使用时长；跨境通用规则（通用运费与体积重）政策演示快照只讨论通用运费与体积重，不把其他品类的经验直接套用。 ### 2. 预算 跨境通用规则（通用运费与体积重）政策演示快照需要分别记录商品标价、目标币"
+        },
+        {
+          "rank": 4,
+          "source": "eval-policy-global-shipping.md",
+          "document_id": "eval-policy-global-shipping",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4863893494,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "重）政策演示快照取舍时，说明哪个通用运费与体积重条件导致排除，帮助用户决定是否放宽限制。 ### 26. 异常 当跨境通用规则（通用运费与体积重）政策演示快照工具返回为空、超时或字段不完整时，回复应报告异常并停止对通用运费与体积重做确定性推荐。 ### 27. 一致 确保跨境通用规则（通用运费与体积重）政策演示快照的商品卡、到手价和最终回复使用同一币种与 SKU，避免通用运费与体积重结论在不同环节矛盾。 ### 28. 维护 跨境通用规则（通用运费与体积重）政策演示快照文档更新后应重新验证涉及通用运费与体积重的评测"
+        },
+        {
+          "rank": 5,
+          "source": "eval-travel-gear-参数判断.md",
+          "document_id": "eval-travel-gear-参数判断",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4331221172,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "证多轮回答没有悄悄改变口径。 ### 21. 来源 旅行装备参数判断引用外部资料时要标出来源类型和发布日期；没有可靠来源的收纳、舒适与行李组织信息只能作为待核实线索。 ### 22. 量化 比较旅行装备参数判断候选时，以统一单位量化重量、容量、功率或价格，避免用模糊形容词代替收纳、舒适与行李组织判断。 ### 23. 例外 旅行装备参数判断中存在例外条件时，应把触发条件写清楚；不能因为多数商品符合收纳、舒适与行李组织就默认所有商品都符合。 ### 24. 筛选 先以旅行装备参数判断的硬约束缩小候选，再比较收纳、舒适"
+        },
+        {
+          "rank": 6,
+          "source": "eval-travel-gear-避坑与合规.md",
+          "document_id": "eval-travel-gear-避坑与合规",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4300282353,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "规问题时，区分已验证事实、推测和待确认事项；价格与配送数字只能引用当次工具结果。 ### 11. 复核 在给出旅行装备避坑与合规结论前复核目的地、币种和 SKU 是否一致；任一条件变化都应重新计算而非沿用旧答案。 ### 12. 边界 旅行装备避坑与合规快照用于离线评测，不替代商品说明或监管公告；涉及收纳、舒适与行李组织的强断言必须附带来源和有效期。 ### 13. 替代 当旅行装备避坑与合规没有完全满足收纳、舒适与行李组织的商品时，应给出约束不满足的原因，而不是把近似候选包装成等价替代。 ### 14. 证据 旅"
+        },
+        {
+          "rank": 7,
+          "source": "eval-outdoor-sports-避坑与合规.md",
+          "document_id": "eval-outdoor-sports-避坑与合规",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4270986366,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "规问题时，区分已验证事实、推测和待确认事项；价格与配送数字只能引用当次工具结果。 ### 11. 复核 在给出户外运动避坑与合规结论前复核目的地、币种和 SKU 是否一致；任一条件变化都应重新计算而非沿用旧答案。 ### 12. 边界 户外运动避坑与合规快照用于离线评测，不替代商品说明或监管公告；涉及防护、重量与环境适配的强断言必须附带来源和有效期。 ### 13. 替代 当户外运动避坑与合规没有完全满足防护、重量与环境适配的商品时，应给出约束不满足的原因，而不是把近似候选包装成等价替代。 ### 14. 证据 户"
+        },
+        {
+          "rank": 8,
+          "source": "eval-baby-pet-避坑与合规.md",
+          "document_id": "eval-baby-pet-避坑与合规",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4133408031,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "规问题时，区分已验证事实、推测和待确认事项；价格与配送数字只能引用当次工具结果。 ### 11. 复核 在给出母婴宠物避坑与合规结论前复核目的地、币种和 SKU 是否一致；任一条件变化都应重新计算而非沿用旧答案。 ### 12. 边界 母婴宠物避坑与合规快照用于离线评测，不替代商品说明或监管公告；涉及安全、尺寸与可清洁性的强断言必须附带来源和有效期。 ### 13. 替代 当母婴宠物避坑与合规没有完全满足安全、尺寸与可清洁性的商品时，应给出约束不满足的原因，而不是把近似候选包装成等价替代。 ### 14. 证据 母"
+        },
+        {
+          "rank": 9,
+          "source": "eval-travel-gear-避坑与合规.md",
+          "document_id": "eval-travel-gear-避坑与合规",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4106273375,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "的收纳、舒适与行李组织证据和未验证条件，保证多轮回答没有悄悄改变口径。 ### 21. 来源 旅行装备避坑与合规引用外部资料时要标出来源类型和发布日期；没有可靠来源的收纳、舒适与行李组织信息只能作为待核实线索。 ### 22. 量化 比较旅行装备避坑与合规候选时，以统一单位量化重量、容量、功率或价格，避免用模糊形容词代替收纳、舒适与行李组织判断。 ### 23. 例外 旅行装备避坑与合规中存在例外条件时，应把触发条件写清楚；不能因为多数商品符合收纳、舒适与行李组织就默认所有商品都符合。 ### 24. 筛选 先以旅"
+        },
+        {
+          "rank": 10,
+          "source": "eval-travel-gear-价格与预算.md",
+          "document_id": "eval-travel-gear-价格与预算",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.410448103,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "算问题时，区分已验证事实、推测和待确认事项；价格与配送数字只能引用当次工具结果。 ### 11. 复核 在给出旅行装备价格与预算结论前复核目的地、币种和 SKU 是否一致；任一条件变化都应重新计算而非沿用旧答案。 ### 12. 边界 旅行装备价格与预算快照用于离线评测，不替代商品说明或监管公告；涉及收纳、舒适与行李组织的强断言必须附带来源和有效期。 ### 13. 替代 当旅行装备价格与预算没有完全满足收纳、舒适与行李组织的商品时，应给出约束不满足的原因，而不是把近似候选包装成等价替代。 ### 14. 证据 旅"
+        },
+        {
+          "rank": 11,
+          "source": "eval-travel-gear-概览.md",
+          "document_id": "eval-travel-gear-概览",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4090660029,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "布日期；没有可靠来源的收纳、舒适与行李组织信息只能作为待核实线索。 ### 22. 量化 比较旅行装备概览候选时，以统一单位量化重量、容量、功率或价格，避免用模糊形容词代替收纳、舒适与行李组织判断。 ### 23. 例外 旅行装备概览中存在例外条件时，应把触发条件写清楚；不能因为多数商品符合收纳、舒适与行李组织就默认所有商品都符合。 ### 24. 筛选 先以旅行装备概览的硬约束缩小候选，再比较收纳、舒适与行李组织偏好；筛选顺序应能从工具事件和字段值复现。 ### 25. 沟通 向用户解释旅行装备概览取舍时，说明哪"
+        },
+        {
+          "rank": 12,
+          "source": "eval-travel-gear-参数判断.md",
+          "document_id": "eval-travel-gear-参数判断",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4072334342,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "实、推测和待确认事项；价格与配送数字只能引用当次工具结果。 ### 11. 复核 在给出旅行装备参数判断结论前复核目的地、币种和 SKU 是否一致；任一条件变化都应重新计算而非沿用旧答案。 ### 12. 边界 旅行装备参数判断快照用于离线评测，不替代商品说明或监管公告；涉及收纳、舒适与行李组织的强断言必须附带来源和有效期。 ### 13. 替代 当旅行装备参数判断没有完全满足收纳、舒适与行李组织的商品时，应给出约束不满足的原因，而不是把近似候选包装成等价替代。 ### 14. 证据 旅行装备参数判断的每个关键结论"
+        },
+        {
+          "rank": 13,
+          "source": "eval-kitchen-dining-避坑与合规.md",
+          "document_id": "eval-kitchen-dining-避坑与合规",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.4038482165,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "规问题时，区分已验证事实、推测和待确认事项；价格与配送数字只能引用当次工具结果。 ### 11. 复核 在给出厨房餐饮避坑与合规结论前复核目的地、币种和 SKU 是否一致；任一条件变化都应重新计算而非沿用旧答案。 ### 12. 边界 厨房餐饮避坑与合规快照用于离线评测，不替代商品说明或监管公告；涉及食品接触、保温与清洁的强断言必须附带来源和有效期。 ### 13. 替代 当厨房餐饮避坑与合规没有完全满足食品接触、保温与清洁的商品时，应给出约束不满足的原因，而不是把近似候选包装成等价替代。 ### 14. 证据 厨"
+        },
+        {
+          "rank": 14,
+          "source": "eval-travel-gear-价格与预算.md",
+          "document_id": "eval-travel-gear-价格与预算",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.3988383757,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "的收纳、舒适与行李组织证据和未验证条件，保证多轮回答没有悄悄改变口径。 ### 21. 来源 旅行装备价格与预算引用外部资料时要标出来源类型和发布日期；没有可靠来源的收纳、舒适与行李组织信息只能作为待核实线索。 ### 22. 量化 比较旅行装备价格与预算候选时，以统一单位量化重量、容量、功率或价格，避免用模糊形容词代替收纳、舒适与行李组织判断。 ### 23. 例外 旅行装备价格与预算中存在例外条件时，应把触发条件写清楚；不能因为多数商品符合收纳、舒适与行李组织就默认所有商品都符合。 ### 24. 筛选 先以旅"
+        },
+        {
+          "rank": 15,
+          "source": "eval-baby-pet-价格与预算.md",
+          "document_id": "eval-baby-pet-价格与预算",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.3964388921,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "算问题时，区分已验证事实、推测和待确认事项；价格与配送数字只能引用当次工具结果。 ### 11. 复核 在给出母婴宠物价格与预算结论前复核目的地、币种和 SKU 是否一致；任一条件变化都应重新计算而非沿用旧答案。 ### 12. 边界 母婴宠物价格与预算快照用于离线评测，不替代商品说明或监管公告；涉及安全、尺寸与可清洁性的强断言必须附带来源和有效期。 ### 13. 替代 当母婴宠物价格与预算没有完全满足安全、尺寸与可清洁性的商品时，应给出约束不满足的原因，而不是把近似候选包装成等价替代。 ### 14. 证据 母"
+        },
+        {
+          "rank": 16,
+          "source": "eval-office-study-避坑与合规.md",
+          "document_id": "eval-office-study-避坑与合规",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.3947850443,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "规问题时，区分已验证事实、推测和待确认事项；价格与配送数字只能引用当次工具结果。 ### 11. 复核 在给出办公学习避坑与合规结论前复核目的地、币种和 SKU 是否一致；任一条件变化都应重新计算而非沿用旧答案。 ### 12. 边界 办公学习避坑与合规快照用于离线评测，不替代商品说明或监管公告；涉及护眼、收纳与跨境供电的强断言必须附带来源和有效期。 ### 13. 替代 当办公学习避坑与合规没有完全满足护眼、收纳与跨境供电的商品时，应给出约束不满足的原因，而不是把近似候选包装成等价替代。 ### 14. 证据 办"
+        },
+        {
+          "rank": 17,
+          "source": "eval-travel-gear-概览.md",
+          "document_id": "eval-travel-gear-概览",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.3942006141,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "当次工具结果。 ### 11. 复核 在给出旅行装备概览结论前复核目的地、币种和 SKU 是否一致；任一条件变化都应重新计算而非沿用旧答案。 ### 12. 边界 旅行装备概览快照用于离线评测，不替代商品说明或监管公告；涉及收纳、舒适与行李组织的强断言必须附带来源和有效期。 ### 13. 替代 当旅行装备概览没有完全满足收纳、舒适与行李组织的商品时，应给出约束不满足的原因，而不是把近似候选包装成等价替代。 ### 14. 证据 旅行装备概览的每个关键结论应能回指材质、尺寸、库存、配送或报价字段；缺少证据时只允许提"
+        },
+        {
+          "rank": 18,
+          "source": "eval-home-living-避坑与合规.md",
+          "document_id": "eval-home-living-避坑与合规",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.3940997411,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "规问题时，区分已验证事实、推测和待确认事项；价格与配送数字只能引用当次工具结果。 ### 11. 复核 在给出家居生活避坑与合规结论前复核目的地、币种和 SKU 是否一致；任一条件变化都应重新计算而非沿用旧答案。 ### 12. 边界 家居生活避坑与合规快照用于离线评测，不替代商品说明或监管公告；涉及材质、器物与易碎运输的强断言必须附带来源和有效期。 ### 13. 替代 当家居生活避坑与合规没有完全满足材质、器物与易碎运输的商品时，应给出约束不满足的原因，而不是把近似候选包装成等价替代。 ### 14. 证据 家"
+        },
+        {
+          "rank": 19,
+          "source": "eval-outdoor-sports-参数判断.md",
+          "document_id": "eval-outdoor-sports-参数判断",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.3933116639,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "实、推测和待确认事项；价格与配送数字只能引用当次工具结果。 ### 11. 复核 在给出户外运动参数判断结论前复核目的地、币种和 SKU 是否一致；任一条件变化都应重新计算而非沿用旧答案。 ### 12. 边界 户外运动参数判断快照用于离线评测，不替代商品说明或监管公告；涉及防护、重量与环境适配的强断言必须附带来源和有效期。 ### 13. 替代 当户外运动参数判断没有完全满足防护、重量与环境适配的商品时，应给出约束不满足的原因，而不是把近似候选包装成等价替代。 ### 14. 证据 户外运动参数判断的每个关键结论"
+        },
+        {
+          "rank": 20,
+          "source": "eval-outdoor-sports-价格与预算.md",
+          "document_id": "eval-outdoor-sports-价格与预算",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.3921391316,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "算问题时，区分已验证事实、推测和待确认事项；价格与配送数字只能引用当次工具结果。 ### 11. 复核 在给出户外运动价格与预算结论前复核目的地、币种和 SKU 是否一致；任一条件变化都应重新计算而非沿用旧答案。 ### 12. 边界 户外运动价格与预算快照用于离线评测，不替代商品说明或监管公告；涉及防护、重量与环境适配的强断言必须附带来源和有效期。 ### 13. 替代 当户外运动价格与预算没有完全满足防护、重量与环境适配的商品时，应给出约束不满足的原因，而不是把近似候选包装成等价替代。 ### 14. 证据 户"
+        },
+        {
+          "rank": 21,
+          "source": "eval-outdoor-sports-避坑与合规.md",
+          "document_id": "eval-outdoor-sports-避坑与合规",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.3915045666,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "# 户外运动避坑与合规评测知识快照 ## 适用范围 本文用于 Globex 离线评测中的户外运动问题，重点覆盖防护、重量与环境适配。内容是合成的演示快照，不能替代实时商品说明、法律意见或监管机构公告。 ## 判断卡片 ### 1. 场景 先把使用场景拆成携带频率、接触对象和使用时长；户外运动避坑与合规只讨论防护、重量与环境适配，不把其他品类的经验直接套用。 ### 2. 预算 户外运动避坑与合规需要分别记录商品标价、目标币种、运费和税费，预算不足时应指出是哪一项造成缺口。 ### 3. 材质 核对户外运动避坑与合规"
+        },
+        {
+          "rank": 22,
+          "source": "eval-baby-pet-概览.md",
+          "document_id": "eval-baby-pet-概览",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.3907993109,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "布日期；没有可靠来源的安全、尺寸与可清洁性信息只能作为待核实线索。 ### 22. 量化 比较母婴宠物概览候选时，以统一单位量化重量、容量、功率或价格，避免用模糊形容词代替安全、尺寸与可清洁性判断。 ### 23. 例外 母婴宠物概览中存在例外条件时，应把触发条件写清楚；不能因为多数商品符合安全、尺寸与可清洁性就默认所有商品都符合。 ### 24. 筛选 先以母婴宠物概览的硬约束缩小候选，再比较安全、尺寸与可清洁性偏好；筛选顺序应能从工具事件和字段值复现。 ### 25. 沟通 向用户解释母婴宠物概览取舍时，说明哪"
+        },
+        {
+          "rank": 23,
+          "source": "eval-baby-pet-概览.md",
+          "document_id": "eval-baby-pet-概览",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.3903079115,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "当次工具结果。 ### 11. 复核 在给出母婴宠物概览结论前复核目的地、币种和 SKU 是否一致；任一条件变化都应重新计算而非沿用旧答案。 ### 12. 边界 母婴宠物概览快照用于离线评测，不替代商品说明或监管公告；涉及安全、尺寸与可清洁性的强断言必须附带来源和有效期。 ### 13. 替代 当母婴宠物概览没有完全满足安全、尺寸与可清洁性的商品时，应给出约束不满足的原因，而不是把近似候选包装成等价替代。 ### 14. 证据 母婴宠物概览的每个关键结论应能回指材质、尺寸、库存、配送或报价字段；缺少证据时只允许提"
+        },
+        {
+          "rank": 24,
+          "source": "eval-outdoor-sports-概览.md",
+          "document_id": "eval-outdoor-sports-概览",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.3902919205,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [],
+          "excerpt": "当次工具结果。 ### 11. 复核 在给出户外运动概览结论前复核目的地、币种和 SKU 是否一致；任一条件变化都应重新计算而非沿用旧答案。 ### 12. 边界 户外运动概览快照用于离线评测，不替代商品说明或监管公告；涉及防护、重量与环境适配的强断言必须附带来源和有效期。 ### 13. 替代 当户外运动概览没有完全满足防护、重量与环境适配的商品时，应给出约束不满足的原因，而不是把近似候选包装成等价替代。 ### 14. 证据 户外运动概览的每个关键结论应能回指材质、尺寸、库存、配送或报价字段；缺少证据时只允许提"
+        },
+        {
+          "rank": 25,
+          "source": "cross-border-guide.md",
+          "document_id": "cross-border-guide",
+          "section": "",
+          "retrieval_route": "recorded_snapshot",
+          "vector_score": 0.3713541533,
+          "rerank_score": null,
+          "matched_gold_evidence_ids": [
+            "cross-border-guide.md#运费口径#a6d0645c2de4"
+          ],
+          "excerpt": "# 跨境选购通则 ## 到手价的构成 跨境购物的真实成本是\"到手价\"，不是商品标价： 到手价 = 商品小计 + 国际运费 + 关税 三项都受目的国规则影响。Globex 的商品检索工具在传入 ship_to 后会内联返回 landed_price 三分项明细，任何对外报价都应以工具返回为准，不要凭汇率心算。 ## 免税额度（de minimis） 多数目的国设有免税额度，小计低于额度时关税为零： - 美国：约 800 美元档，数码配件常规税率本身也可能为 0 - 欧盟：约 150 欧元档，超出部分按品类税率征收 -"
+        }
+      ],
+      "rerank_top25": []
+    }
+  ]
+}

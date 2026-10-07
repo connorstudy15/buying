@@ -1,0 +1,2 @@
+{"query_id":"frozen-demo-direct","retriever":"example","candidates":[{"candidate_id":"chunk-a","source":"frozen.md","score":0.9,"evidence_ids":["frozen.md#answer#demo"]},{"candidate_id":"chunk-b","source":"frozen-hard-negative.md","score":0.8,"evidence_ids":[]}]}
+{"query_id":"frozen-demo-subquery","retriever":"example","candidates":[{"candidate_id":"chunk-c","source":"frozen-rule.md","score":0.88,"evidence_ids":["frozen-rule.md#answer#demo"]},{"candidate_id":"chunk-d","source":"frozen-product.md","score":0.7,"evidence_ids":[]}]}

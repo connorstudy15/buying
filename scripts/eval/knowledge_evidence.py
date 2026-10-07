@@ -93,7 +93,7 @@ def inspect_evidence(project_root: Path, item: dict) -> list[str]:
     source = str(item.get("source") or "")
     quote = str(item.get("quote") or "")
     declared_section = normalize_text(item.get("section") or "")
-    path = project_root / "knowledge" / source
+    path = project_root / "eval" / "knowledge" / "corpus" / source
     if not path.is_file():
         return ["source_missing"]
     actual_section, occurrences = section_for_quote(path.read_text(encoding="utf-8"), quote)

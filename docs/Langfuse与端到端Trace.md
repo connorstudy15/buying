@@ -22,6 +22,7 @@
 | `OTEL_EXPORTER_OTLP_TRACES_HEADERS` | Trace 专用认证头，优先于通用头；支持百分号编码 |
 | `OTEL_EXPORTER_OTLP_TRACES_TIMEOUT` | 导出超时秒数，默认 5；未设置时读取通用 `OTEL_EXPORTER_OTLP_TIMEOUT` |
 | `OTEL_SERVICE_NAME` | 进程服务名称；Compose 分别设置为 `globex-api` 和 `globex-worker` |
+| `TRACE_CONTENT_MODE` | 默认 `off`，只保留输入输出字符数；本地开发可设为 `development`，展示白名单只读工具的脱敏、截断后输入输出 |
 | `LANGFUSE_BASE_URL` | Langfuse 项目所在地域的基础地址，例如 `https://cloud.langfuse.com` |
 | `LANGFUSE_PUBLIC_KEY` / `LANGFUSE_SECRET_KEY` | 项目公钥和私钥；无显式 OTLP 端点时自动派生 Basic Auth、v4 header 和完整 Trace 端点 |
 
@@ -46,9 +47,14 @@ export OTEL_EXPORTER_OTLP_TRACES_TIMEOUT=5
 ```text
 HTTP 请求 span
   └─ commerce.intent.consume（队列 worker）
-       └─ invoke_agent ...（AgentScope）
-            ├─ chat ...（模型）
-            └─ execute_tool ...（工具）
+       └─ commerce.turn（一次完整业务回合）
+            ├─ context.assembly（本轮输入组装诊断）
+            ├─ agent.turn_attempt（首次执行及有界重试）
+            │    └─ invoke_agent ...（AgentScope）
+            │         ├─ chat ...（模型）
+            │         └─ execute_tool ...（工具）
+            │              └─ agent.subagent_handoff（主/子 Agent 交接）
+            └─ context.compaction（发生时：裁剪、摘要、校验与回滚）
 ```
 
 AG-UI 直接执行时省去队列消费 span，AgentScope 接在 HTTP span 下。纯 ASGI middleware 覆盖整个 SSE 响应生命周期，不读取、缓存或修改业务正文。
@@ -69,7 +75,37 @@ AgentScope 原生中间件会在内存中构造输入、输出、工具参数/�
 
 保留：父子 Span ID、Trace ID、时间与耗时、HTTP 方法及路由模板、HTTP 状态、模型/工具名称、Token 用量、错误类型、取消标志、请求/任务关联及会话摘要。模型、Agent、工具映射为 Langfuse 的 generation、agent、tool。
 
-删除：对话全文、system prompt、工具描述/定义、工具参数与结果全文、异常正文和 traceback、原始 buyer/session 标识、非白名单 resource/scope/link 属性。输入输出仅保留字符数和 `globex.content.redacted=true`。不提供通过配置绕过此过滤的开关。
+默认 `TRACE_CONTENT_MODE=off` 时删除：对话全文、system prompt、工具描述/定义、工具参数与结果全文、异常正文和 traceback、原始 buyer/session 标识、非白名单 resource/scope/link 属性。输入输出仅保留字符数和 `globex.content.redacted=true`。
+
+开发排障可显式设置 `TRACE_CONTENT_MODE=development`。该模式允许 `product_search_tool`、`category_insight_tool`、`conversation_fact_lookup` 三个只读工具保留标准 `gen_ai.tool.call.arguments/result` 字段，也允许下述知识 RAG 与 Agent 闭环白名单阶段保留 `langfuse.observation.input/output`，让 Langfuse 的 Input/Output 面板可以直接展示；模型消息、订单工具、偏好写工具及其他工具仍只导出长度。允许展示的内容还会递归屏蔽密钥、认证、buyer/session、地址、电话、邮箱等常见敏感字段和文本模式，并分别限制为 12,000/50,000 字符。交易子 Agent 的 demands 和回复即使在开发模式也主动显示为 `[REDACTED_WRITE_PATH]`。它用于本地开发和独立测试项目，不应作为生产默认值；自由文本脱敏不能替代正式的数据分级、最小化与访问控制。
+
+### 开发模式下的知识 RAG 调查视图
+
+`category_insight_tool` 下的现有子 span 会显示以下结构化诊断；这些字段只观察现有算法，不改变 QueryProcessor、召回深度、reranker、RRF 或 selector：
+
+| Observation | 类型 | Input | Output |
+| --- | --- | --- | --- |
+| `knowledge.query_processor` | `chain` | 原问题 | DIRECT/REWRITE/DECOMPOSE 决策、改写、information needs/subqueries、漂移/近重复判断 |
+| `knowledge.candidate_retrieval` | `retriever` | 本次 query/subquery、need、recall depth | 最多 50 个候选的稳定 ID、来源、小节、文本预览、向量分、召回 route 与原始排名 |
+| `knowledge.reranker.need` | `span` | 当前 information need 及其候选 | 每个候选的召回排名、rerank 排名、rank delta、reranker 分数及是否降级 |
+| `knowledge.rrf_fusion` | `chain` | RRF k、期望 needs、各路候选 | RRF 排名与 provenance、近重复淘汰、coverage 保留结果、最终候选 ID |
+| `knowledge.direct_selection` | `chain` | DIRECT 候选与文档多样性参数 | 逐候选 selected 标记、最终 chunk/document 数量 |
+
+候选明细最多输出 50 条，chunk 正文只保留前 320 字符；`candidate_id` 是由 document/source/section/content 计算的稳定摘要，便于跨阶段核对同一证据。`rank_delta = retrieval_rank - current_rank`，正数表示 rerank 后上升，负数表示下降。完整 chunk 仍以 `category_insight_tool` 的最终工具结果为准。
+
+### 开发模式下的 Agent 闭环调查视图
+
+第三阶段新增下列 Observation，只做旁路观测，不改变提示词、派发决策、重试次数、检索参数或工具结果：
+
+| Observation | 直接回答的问题 |
+| --- | --- |
+| `commerce.turn` | 本轮调用了哪些工具/子 Agent、提供了哪些证据引用、最终回答显式写了哪些已核验或未核验商品 ID、是否降级/命中缓存/发生模型回退 |
+| `context.assembly` | 本轮真正送入主 Agent 的消息由哪些服务端提示组成，是否注入偏好、历史候选、交易状态、选定 Skill 与个人 Skill 目录 |
+| `agent.turn_attempt` | 本轮是第几次尝试、是否复用已有 Agent 上下文、失败是否瞬时且继续重试 |
+| `agent.subagent_handoff` | 主 Agent 交给哪个子 Agent 的 demand、服务端是否补入偏好、子 Agent 返回的证据引用与商品 ID 是否经本轮工具核验 |
+| `context.compaction` | 压缩前后 Token、归档工具结果数、是否生成摘要、摘要校验尝试、checkpoint，以及失败时是否回滚 |
+
+`commerce.turn.evidence_refs_supplied` 表示证据确实进入过本轮工具/Agent 链路，不等于模型一定在最终答案采用了它。商品证据可通过最终文本中的稳定商品 ID 与本轮工具核验 ID 求交，输出 `explicitly_referenced_product_ids` 和 `unverified_product_ids`。知识答案目前没有强制候选 ID/引用协议，因此只要调用过知识工具就如实输出 `knowledge_adoption_status=not_observable`；不能因为文字语义相似就宣称已经采用。后续若引入结构化 citation contract，才可把这项升级为可判定指标。
 
 HTTP span 记录路由模板，例如 `/commerce/orders/{order_id}`；不记录实际 URL、查询参数、请求头或请求/响应 body。认证失败时接收器的响应正文也不会写入本模块日志。
 

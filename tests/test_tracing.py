@@ -129,6 +129,143 @@ def test_selected_skill_trace_keeps_version_evidence_but_never_reference_body():
     assert clean['globex.content.redacted'] is True
 
 
+def test_development_mode_exposes_allowlisted_read_only_tool_io_after_redaction():
+    clean = tracing._sanitize_attributes({
+        "gen_ai.operation.name": "execute_tool",
+        "gen_ai.tool.name": "product_search_tool",
+        "gen_ai.tool.call.arguments": json.dumps({
+            "query": "轻便通勤背包",
+            "phone": "13800000000",
+            "api_key": "sk-private-value",
+        }, ensure_ascii=False),
+        "gen_ai.tool.call.result": json.dumps({
+            "hits": [{"product_id": "P-100", "name": "轻便背包"}],
+            "buyer_id": "buyer-private",
+        }, ensure_ascii=False),
+    }, content_mode="development")
+    assert "轻便通勤背包" in clean["gen_ai.tool.call.arguments"]
+    assert "P-100" in clean["gen_ai.tool.call.result"]
+    assert "13800000000" not in clean["gen_ai.tool.call.arguments"]
+    assert "sk-private-value" not in clean["gen_ai.tool.call.arguments"]
+    assert "buyer-private" not in clean["gen_ai.tool.call.result"]
+    assert clean["globex.content.sanitized"] is True
+    assert clean["globex.trace.content_mode"] == "development"
+
+
+def test_development_mode_does_not_expose_model_or_mutating_tool_content():
+    model = tracing._sanitize_attributes({
+        "gen_ai.operation.name": "chat",
+        "gen_ai.input.messages": SECRET,
+        "gen_ai.output.messages": SECRET,
+    }, content_mode="development")
+    order_tool = tracing._sanitize_attributes({
+        "gen_ai.operation.name": "execute_tool",
+        "gen_ai.tool.name": "create_order_tool",
+        "gen_ai.tool.call.arguments": SECRET,
+        "gen_ai.tool.call.result": SECRET,
+    }, content_mode="development")
+    for clean in (model, order_tool):
+        assert SECRET not in json.dumps(clean, ensure_ascii=False)
+        assert "gen_ai.tool.call.arguments" not in clean
+        assert "gen_ai.tool.call.result" not in clean
+        assert clean["globex.content.redacted"] is True
+
+
+def test_development_mode_exposes_rag_stage_io_but_off_mode_does_not():
+    attributes = {
+        "langfuse.observation.type": "retriever",
+        "globex.retrieval.stage": "candidate_retrieval",
+        "langfuse.observation.input": json.dumps({
+            "query": "日本旅行电器 buyer@example.com",
+            "session_id": "session-private",
+        }, ensure_ascii=False),
+        "langfuse.observation.output": json.dumps({
+            "candidates": [{"document_id": "travel", "content_preview": "日本电压规则"}],
+        }, ensure_ascii=False),
+    }
+    development = tracing._sanitize_attributes(attributes, content_mode="development")
+    assert "日本旅行电器" in development["langfuse.observation.input"]
+    assert "buyer@example.com" not in development["langfuse.observation.input"]
+    assert "session-private" not in development["langfuse.observation.input"]
+    assert "日本电压规则" in development["langfuse.observation.output"]
+
+    off = tracing._sanitize_attributes(attributes)
+    assert "langfuse.observation.input" not in off
+    assert "langfuse.observation.output" not in off
+    assert off["globex.content.redacted"] is True
+
+
+def test_development_mode_exposes_agent_stage_io_but_still_redacts_sensitive_fields():
+    values = {
+        "langfuse.observation.type": "chain",
+        "globex.trace.stage": "agent_turn",
+        "langfuse.observation.input": json.dumps({
+            "query": "帮我找轻便背包 buyer@example.com",
+            "buyer_id": "buyer-private",
+        }, ensure_ascii=False),
+        "langfuse.observation.output": json.dumps({
+            "final_text": "推荐 P1008，联系 13800000000",
+            "evidence_refs_supplied": ["ctx_safe"],
+        }, ensure_ascii=False),
+    }
+    development = tracing._sanitize_attributes(values, content_mode="development")
+    assert "帮我找轻便背包" in development["langfuse.observation.input"]
+    assert "buyer@example.com" not in development["langfuse.observation.input"]
+    assert "buyer-private" not in development["langfuse.observation.input"]
+    assert "P1008" in development["langfuse.observation.output"]
+    assert "13800000000" not in development["langfuse.observation.output"]
+
+    off = tracing._sanitize_attributes(values, content_mode="off")
+    assert "langfuse.observation.input" not in off
+    assert "langfuse.observation.output" not in off
+
+
+async def test_development_mode_preserves_safe_tool_io_through_real_otlp(collector):
+    configured = settings(
+        otlp_traces_endpoint=collector.endpoint + "/v1/traces",
+        trace_content_mode="development",
+    )
+    provider = create_tracer_provider(configured)
+    tracer = provider.get_tracer("development-trace-test")
+    with tracer.start_as_current_span("execute_tool product_search_tool") as span:
+        span.set_attribute("gen_ai.operation.name", "execute_tool")
+        span.set_attribute("gen_ai.tool.name", "product_search_tool")
+        span.set_attribute("gen_ai.tool.call.arguments", json.dumps({"query": "轻便背包"}, ensure_ascii=False))
+        span.set_attribute("gen_ai.tool.call.result", json.dumps({"hits": [{"product_id": "P-100"}]}))
+    assert await asyncio.to_thread(provider.force_flush, 5000)
+    provider.shutdown()
+    exported = spans(collector.captured)
+    assert len(exported) == 1
+    attrs = attributes(exported[0])
+    assert "轻便背包" in attrs["gen_ai.tool.call.arguments"]
+    assert "P-100" in attrs["gen_ai.tool.call.result"]
+    assert attrs["langfuse.observation.type"] == "tool"
+
+
+async def test_development_mode_preserves_rag_io_through_real_otlp(collector):
+    provider = create_tracer_provider(settings(
+        otlp_traces_endpoint=collector.endpoint + "/v1/traces",
+        trace_content_mode="development",
+    ))
+    tracer = provider.get_tracer("development-rag-trace-test")
+    with tracer.start_as_current_span("knowledge.candidate_retrieval") as span:
+        span.set_attribute("langfuse.observation.type", "retriever")
+        span.set_attribute("globex.retrieval.stage", "candidate_retrieval")
+        span.set_attribute("langfuse.observation.input", json.dumps({"query": "日本旅行电器"}, ensure_ascii=False))
+        span.set_attribute("langfuse.observation.output", json.dumps({
+            "candidates": [{"document_id": "travel", "total_tokens": 17}],
+        }, ensure_ascii=False))
+    assert await asyncio.to_thread(provider.force_flush, 5000)
+    provider.shutdown()
+    exported = spans(collector.captured)
+    assert len(exported) == 1
+    attrs = attributes(exported[0])
+    assert "日本旅行电器" in attrs["langfuse.observation.input"]
+    assert '"document_id":"travel"' in attrs["langfuse.observation.output"]
+    assert '"total_tokens":17' in attrs["langfuse.observation.output"]
+    assert attrs["langfuse.observation.type"] == "retriever"
+
+
 def test_unconfigured_tracing_never_installs_exporter(monkeypatch):
     create = AsyncMock()
     monkeypatch.setattr(tracing, "create_tracer_provider", create)

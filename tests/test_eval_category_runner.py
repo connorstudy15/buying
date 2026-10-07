@@ -123,12 +123,44 @@ async def test_information_need_coverage_distinguishes_candidate_pool_from_final
     assert observations[0]["raw_retrieval_evidence_ids"] == ["a#x", "b#x"]
     assert observations[0]["post_rerank_evidence_ids"] == ["a#x", "b#x"]
     assert observations[0]["post_fusion_evidence_ids"] == ["a#x", "b#x"]
+    assert observations[0]["post_fusion_evidence_ranks"] == {"a#x": 1, "b#x": 2}
     assert observations[0]["final_top_k_evidence_ids"] == ["a#x"]
     assert observations[0]["retrieval_loss_evidence_ids"] == []
     assert observations[0]["reranker_loss_evidence_ids"] == []
     assert observations[0]["fusion_loss_evidence_ids"] == []
     assert observations[0]["top_k_truncation_loss_evidence_ids"] == ["b#x"]
     assert observations[0]["top_k_truncation_loss_rate"] == 0.5
+
+
+async def test_declared_need_accepts_any_gold_evidence_but_distinct_needs_remain_required():
+    knowledge_base = FakeKnowledgeBase({
+        "替代证据": [
+            _hit("a.md", 0.9, text="需求一证据甲"),
+            _hit("c.md", 0.8, text="需求二证据"),
+        ],
+    })
+    case = {
+        "id": "need-alternatives", "query": "替代证据",
+        "answerability": "complete", "missing_reason": None,
+        "relevant": ["a.md", "b.md", "c.md"],
+        "graded_relevance": {"a.md": 3, "b.md": 3, "c.md": 3},
+        "evidence_ground_truth": [
+            {"evidence_id": "a#1", "source": "a.md", "quote": "需求一证据甲", "grade": 3, "supports": ["n1"]},
+            {"evidence_id": "b#1", "source": "b.md", "quote": "需求一证据乙", "grade": 3, "supports": ["n1"]},
+            {"evidence_id": "c#1", "source": "c.md", "quote": "需求二证据", "grade": 3, "supports": ["n2"]},
+        ],
+        "required_information_needs": [
+            {"need_id": "n1", "description": "需求一", "gold_evidence_ids": ["a#1", "b#1"]},
+            {"need_id": "n2", "description": "需求二", "gold_evidence_ids": ["c#1"]},
+        ],
+    }
+    observations = []
+    await run_dataset(knowledge_base, [case], top_k=3, observations=observations)
+
+    assert observations[0]["post_fusion_information_need_coverage"] == 1.0
+    assert observations[0]["all_required_needs_recall"] == 1.0
+    assert observations[0]["strict_all_gold_evidence_recall"] == 0.0
+    assert observations[0]["all_evidence_recall"] == 1.0
 
 
 def test_stage_dashboard_keeps_loss_attribution_mutually_exclusive_and_splits_mode_latency():

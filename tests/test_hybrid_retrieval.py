@@ -144,6 +144,44 @@ def test_knowledge_topics_use_longest_title_at_each_query_position():
     assert [d.document_id for d in targeted_documents(documents, '园艺价格与预算有哪些依据', 3)] == ['1']
 
 
+def test_knowledge_topics_route_stable_cross_border_domains_without_expanding_global_depth():
+    from app.infrastructure.rag.knowledge_retrieval import supplemental_documents
+    documents = [
+        SimpleNamespace(document_id='battery', metadata={
+            'document_title': '跨境通用规则（含电池商品限制）政策演示快照评测知识快照',
+            'source': 'eval-policy-battery.md', 'topic': 'policy', 'region': 'GLOBAL',
+        }),
+        SimpleNamespace(document_id='shipping', metadata={
+            'document_title': '跨境通用规则（通用运费与体积重）政策演示快照评测知识快照',
+            'source': 'eval-policy-global-shipping.md', 'topic': 'policy', 'region': 'GLOBAL',
+        }),
+        SimpleNamespace(document_id='guide', metadata={
+            'document_title': '跨境选购通则', 'source': 'cross-border-guide.md',
+            'topic': 'policy', 'region': 'GLOBAL',
+        }),
+        SimpleNamespace(document_id='home', metadata={
+            'document_title': '家居生活品类洞察', 'source': 'home-living.md',
+            'topic': 'category', 'region': 'GLOBAL',
+        }),
+        SimpleNamespace(document_id='jp', metadata={
+            'document_title': 'JP 跨境规则政策演示快照评测知识快照',
+            'source': 'eval-policy-jp.md', 'topic': 'policy', 'region': 'JP',
+        }),
+    ]
+    assert [d.document_id for d in supplemental_documents(documents, '充电宝坐飞机去日本要核对什么', 3)] == [
+        'battery', 'guide',
+    ]
+    assert [d.document_id for d in supplemental_documents(documents, '体积重怎么计算', 3)] == [
+        'shipping', 'guide',
+    ]
+    assert [d.document_id for d in supplemental_documents(documents, '带到国外用要确认电压和兼容性吗', 3)] == [
+        'guide',
+    ]
+    assert [d.document_id for d in supplemental_documents(documents, '棉麻织物和收纳用品怎么寄', 3)] == [
+        'shipping', 'guide', 'home',
+    ]
+
+
 async def test_knowledge_deduplicates_chunks_and_declines_missing_required_facts():
     from app.infrastructure.rag.knowledge_retrieval import search_knowledge
     kb = SimpleNamespace(search=AsyncMock(return_value=[SimpleNamespace(document_id=i) for i in ['a','a','b','b','c']]))

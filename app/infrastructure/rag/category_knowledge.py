@@ -7,7 +7,9 @@
     globex_products     商品卡向量（模块一：二阶段召回）
     globex_category_kb  品类洞察知识（本模块：RAG 问答）
 
-建库流程：TextParser 读 knowledge/*.md → ApproxTokenChunker 切块 → insert_document（按文件名做 document_id，幂等）。
+正式建库流程：TextParser 读 knowledge/production/*.md → ApproxTokenChunker 切块
+→ insert_document（按文件名做 document_id，幂等）。评测语料位于 eval/knowledge/corpus，
+只能由评测入口显式加载到独立 collection。
 """
 from __future__ import annotations
 
@@ -27,7 +29,15 @@ from app.infrastructure.settings import PROJECT_ROOT, Settings
 
 logger = logging.getLogger(__name__)
 
-KNOWLEDGE_DIR = PROJECT_ROOT / "knowledge"
+PRODUCTION_KNOWLEDGE_DIR = PROJECT_ROOT / "knowledge" / "production"
+EVALUATION_KNOWLEDGE_DIR = PROJECT_ROOT / "eval" / "knowledge" / "corpus"
+# 兼容既有调用名；它现在只能指向正式知识目录。
+KNOWLEDGE_DIR = PRODUCTION_KNOWLEDGE_DIR
+
+PRODUCTION_SOURCE_TYPES = frozenset({"production_knowledge", "official_guide", "curated_knowledge"})
+EVALUATION_SOURCE_TYPES = frozenset({
+    "synthetic_evaluation_fixture", "evaluation_fixture", "hard_negative_fixture",
+})
 
 _KB_DESCRIPTION = (
     "Globex 跨境电商品类洞察知识库：各品类的热卖款型、关键属性判断口径、"
@@ -60,7 +70,7 @@ def policy_fact_status(metadata: dict, today: date | None = None) -> str:
         return "not_policy"
     if not metadata.get("source_reference"):
         return "missing_source"
-    if metadata.get("source_type") != "official_snapshot":
+    if metadata.get("source_type") not in {"official_snapshot", "official_guide", "production_knowledge"}:
         return "non_authoritative_source"
     today = today or date.today()
     try:
@@ -75,14 +85,33 @@ def policy_fact_status(metadata: dict, today: date | None = None) -> str:
     return "fact_eligible"
 
 
-def load_knowledge_metadata(knowledge_dir: Path = KNOWLEDGE_DIR) -> dict[str, dict]:
+def _infer_corpus_role(knowledge_dir: Path) -> str:
+    try:
+        resolved = knowledge_dir.resolve()
+    except OSError:
+        resolved = knowledge_dir
+    if resolved == PRODUCTION_KNOWLEDGE_DIR.resolve():
+        return "production"
+    if resolved == EVALUATION_KNOWLEDGE_DIR.resolve():
+        return "evaluation"
+    return "temporary"
+
+
+def load_knowledge_metadata(
+    knowledge_dir: Path = KNOWLEDGE_DIR,
+    *,
+    corpus_role: str | None = None,
+) -> dict[str, dict]:
     """读取 manifest，把来源/时效元数据随 chunk 一起入库。
 
     ``source`` 保留文件名以兼容既有召回评测；实际来源放在 ``source_reference``，
     防止“评测标注单位”与“引用来源”混为一谈。
     """
     manifest = knowledge_dir / "manifest.jsonl"
+    role = corpus_role or _infer_corpus_role(knowledge_dir)
     if not manifest.exists():
+        if role in {"production", "evaluation"}:
+            raise ValueError(f"{role} 知识目录缺少 manifest.jsonl，拒绝入库：{knowledge_dir}")
         # 临时知识库（单测/本地实验）仍应可启动；正式知识库是否缺 manifest
         # 由 scripts/eval/knowledge_quality.py 的数据门禁负责阻断。
         return {
@@ -104,16 +133,38 @@ def load_knowledge_metadata(knowledge_dir: Path = KNOWLEDGE_DIR) -> dict[str, di
         if not line.strip():
             continue
         entry = json.loads(line)
+        entry_role = entry.get("corpus_role")
+        source_type = entry.get("source_type")
+        if role == "production":
+            if entry_role != "production":
+                raise ValueError(f"{entry.get('document_id')} 缺少 corpus_role=production，拒绝入正式库")
+            if source_type not in PRODUCTION_SOURCE_TYPES:
+                raise ValueError(f"{entry.get('document_id')} 的 source_type={source_type!r} 不在正式库 allowlist")
+        elif role == "evaluation":
+            if entry_role != "evaluation":
+                raise ValueError(f"{entry.get('document_id')} 缺少 corpus_role=evaluation，拒绝入评测库")
+            if source_type not in EVALUATION_SOURCE_TYPES:
+                raise ValueError(f"{entry.get('document_id')} 的 source_type={source_type!r} 不是评测 fixture")
         metadata[entry["document_id"]] = {
             "source": entry["filename"],
-            "source_reference": entry["source"],
-            "source_type": entry["source_type"],
-            "published_at": entry["published_at"],
-            "effective_from": entry["effective_from"],
-            "effective_to": entry["effective_to"],
+            "title": entry.get("title", entry["document_id"]),
+            "source_name": entry.get("source_name", entry.get("source", "")),
+            "source_url": entry.get("source_url", ""),
+            "source_reference": entry.get("source_reference", entry.get("source", "")),
+            "source_type": source_type,
+            "published_at": entry.get("published_at", entry.get("updated_at", "")),
+            "effective_from": entry.get("effective_from", entry.get("valid_from", "")),
+            "effective_to": entry.get("effective_to", entry.get("valid_to", "")),
+            "valid_from": entry.get("valid_from", entry.get("effective_from", "")),
+            "valid_to": entry.get("valid_to", entry.get("effective_to", "")),
+            "updated_at": entry.get("updated_at", entry.get("published_at", "")),
             "region": entry["region"],
             "version": entry["version"],
             "topic": entry["topic"],
+            "authority_level": entry.get("authority_level", ""),
+            "status": entry.get("status", ""),
+            "supersedes": entry.get("supersedes"),
+            "corpus_role": entry_role or role,
         }
     return metadata
 
@@ -172,7 +223,12 @@ def keyword_fallback_insights(
     return insights
 
 
-def build_category_knowledge_base(settings: Settings) -> KnowledgeBase:
+def build_category_knowledge_base(
+    settings: Settings,
+    *,
+    collection_name: str | None = None,
+    corpus_role: str = "production",
+) -> KnowledgeBase:
     """构建品类知识库对象（不建库，建库见 bootstrap_category_knowledge）。"""
     credential = OpenAICredential(
         api_key=settings.embedding_api_key,
@@ -190,23 +246,77 @@ def build_category_knowledge_base(settings: Settings) -> KnowledgeBase:
         local_path = settings.data_dir / "qdrant_kb"
         local_path.parent.mkdir(parents=True, exist_ok=True)
         vector_store = QdrantStore(path=str(local_path))
-    return KnowledgeBase(
+    if corpus_role not in {"production", "evaluation"}:
+        raise ValueError(f"未知 corpus_role：{corpus_role}")
+    if corpus_role == "evaluation" and collection_name is None:
+        raise ValueError("Evaluation KnowledgeBase 必须显式指定 collection_name，禁止回退到正式库")
+    collection = collection_name or settings.category_kb_collection
+    expected = settings.category_kb_collection if corpus_role == "production" else settings.category_kb_eval_collection
+    if collection != expected:
+        raise ValueError(f"{corpus_role} collection 必须是 {expected!r}，实际为 {collection!r}")
+    if settings.category_kb_collection == settings.category_kb_eval_collection:
+        raise ValueError("Production / Evaluation collection 不允许相同")
+    knowledge_base = KnowledgeBase(
         name="category_insight",
         description=_KB_DESCRIPTION,
         embedding_model=embedding_model,
         vector_store=vector_store,
-        collection=settings.category_kb_collection,
+        collection=collection,
     )
+    knowledge_base._globex_corpus_role = corpus_role
+    knowledge_base._globex_collection_name = collection
+    return knowledge_base
+
+
+def build_evaluation_knowledge_base(settings: Settings) -> KnowledgeBase:
+    """构建隔离的离线评测知识库；绝不回退到 production collection。"""
+    return build_category_knowledge_base(
+        settings,
+        collection_name=settings.category_kb_eval_collection,
+        corpus_role="evaluation",
+    )
+
+
+async def verify_evaluation_knowledge_base(
+    knowledge_base: KnowledgeBase,
+    knowledge_dir: Path = EVALUATION_KNOWLEDGE_DIR,
+) -> int:
+    """只验证冻结评测 collection，不在普通 runner 中重切块或重算向量。"""
+    metadata = load_knowledge_metadata(knowledge_dir, corpus_role="evaluation")
+    if getattr(knowledge_base, "_globex_corpus_role", None) != "evaluation":
+        raise ValueError("评测 runner 收到了非 evaluation KnowledgeBase")
+    await knowledge_base.ensure_collection()
+    documents = await knowledge_base.list_documents()
+    expected, actual = set(metadata), {document.document_id for document in documents}
+    if actual != expected:
+        raise RuntimeError(
+            f"冻结 evaluation collection 与 corpus 不一致：missing={sorted(expected - actual)} "
+            f"extra={sorted(actual - expected)}；请显式运行迁移/重建脚本"
+        )
+    manifest_path = knowledge_dir / "manifest.jsonl"
+    knowledge_base._globex_corpus_version = hashlib.sha256(manifest_path.read_bytes()).hexdigest()[:16]
+    return len(documents)
 
 
 async def bootstrap_category_knowledge(
     knowledge_base: KnowledgeBase,
     knowledge_dir: Optional[Path] = None,
+    *,
+    corpus_role: str | None = None,
 ) -> int:
-    """把 knowledge/*.md 灌入知识库（幂等），返回入库文档数；失败仅告警返回 0。"""
+    """同步指定 corpus；production/evaluation 均执行 fail-closed admission。"""
     directory = knowledge_dir or KNOWLEDGE_DIR
+    role = corpus_role or _infer_corpus_role(directory)
     try:
-        metadata_by_id = load_knowledge_metadata(directory)
+        configured_role = getattr(knowledge_base, "_globex_corpus_role", role)
+        if role in {"production", "evaluation"} and configured_role != role:
+            raise ValueError(f"语料角色 {role} 与 collection 角色 {configured_role} 不一致")
+        metadata_by_id = load_knowledge_metadata(directory, corpus_role=role)
+        manifest_path = directory / "manifest.jsonl"
+        knowledge_base._globex_corpus_version = (
+            hashlib.sha256(manifest_path.read_bytes()).hexdigest()[:16]
+            if manifest_path.is_file() else "temporary"
+        )
         await knowledge_base.ensure_collection()
         existing = {doc.document_id: doc for doc in await knowledge_base.list_documents()}
         local_ids = {path.stem for path in directory.glob("*.md")}

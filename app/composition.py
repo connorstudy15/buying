@@ -144,7 +144,7 @@ class Container:
             except Exception as err:  # noqa: BLE001
                 logger.warning("队列消费者组创建失败：%s", err)
         await bootstrap_product_index(self.product_repo, self.embedder, self.vector_index)
-        await bootstrap_category_knowledge(self.knowledge_base)
+        await bootstrap_category_knowledge(self.knowledge_base, corpus_role="production")
 
     async def shutdown(self) -> None:
         if self.context_service is not None:

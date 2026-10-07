@@ -1,0 +1,717 @@
+{
+  "schema_version": "final-rank-distribution-v1",
+  "experiment": "knowledge-v5-20261004213526-e335fbab",
+  "strategy": "decompose_per_need_rerank",
+  "top_k_loss_evidence_observations": 29,
+  "rank_buckets": {
+    "rank_4_5": 4,
+    "rank_gt_10": 16,
+    "rank_1_3": 7,
+    "rank_6_10": 2
+  },
+  "rank_bucket_rates": {
+    "rank_4_5": 0.1379,
+    "rank_gt_10": 0.5517,
+    "rank_1_3": 0.2414,
+    "rank_6_10": 0.069
+  },
+  "score_gap_to_rank3": {
+    "median": 0.0234779527,
+    "p95": 0.1427857801
+  },
+  "information_need_coverage_loss_cases": [
+    "blind-005",
+    "blind-006",
+    "blind-008",
+    "blind-010",
+    "blind-012",
+    "blind-014",
+    "blind-019",
+    "blind-021",
+    "blind-025",
+    "human-mh-001",
+    "human-mh-002",
+    "v4-002",
+    "v4-006",
+    "v4-022",
+    "v4-028",
+    "v4-037",
+    "v4-038",
+    "v4-043",
+    "v4-048",
+    "v4-049",
+    "v4-051",
+    "v4-060"
+  ],
+  "selected_same_document_cases": [],
+  "selected_same_section_cases": [],
+  "details": [
+    {
+      "repetition": 1,
+      "case_id": "blind-005",
+      "evidence_id": "travel-gear.md#关键属性与判断口径#8399e109d5dd",
+      "rank": 4,
+      "rank_bucket": "rank_4_5",
+      "ranking_score": 0.5391122047,
+      "ranking_score_type": "retrieval_similarity",
+      "rank3_cutoff_score": 0.5411963224,
+      "score_gap_to_rank3": 0.0020841177,
+      "pre_need_coverage": 1.0,
+      "post_need_coverage": 0.0,
+      "selected_documents": [
+        "eval-travel-gear-价格与预算",
+        "eval-travel-gear-避坑与合规",
+        "eval-travel-gear-概览"
+      ],
+      "selected_sections": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "repetition": 1,
+      "case_id": "blind-006",
+      "evidence_id": "travel-gear.md#关键属性与判断口径#3cc9021c0b71",
+      "rank": 5,
+      "rank_bucket": "rank_4_5",
+      "ranking_score": 0.5455181194,
+      "ranking_score_type": "retrieval_similarity",
+      "rank3_cutoff_score": 0.5729289541,
+      "score_gap_to_rank3": 0.0274108347,
+      "pre_need_coverage": 1.0,
+      "post_need_coverage": 0.0,
+      "selected_documents": [
+        "eval-travel-gear-避坑与合规",
+        "eval-travel-gear-价格与预算",
+        "eval-travel-gear-概览"
+      ],
+      "selected_sections": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "repetition": 1,
+      "case_id": "blind-008",
+      "evidence_id": "cross-border-guide.md#材质与合规#f6bfddbb08fc",
+      "rank": 25,
+      "rank_bucket": "rank_gt_10",
+      "ranking_score": 0.3197732967,
+      "ranking_score_type": "retrieval_similarity",
+      "rank3_cutoff_score": 0.4357204161,
+      "score_gap_to_rank3": 0.1159471194,
+      "pre_need_coverage": 1.0,
+      "post_need_coverage": 0.0,
+      "selected_documents": [
+        "eval-policy-battery",
+        "digital-accessories",
+        "eval-digital-accessories-避坑与合规"
+      ],
+      "selected_sections": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "repetition": 1,
+      "case_id": "blind-010",
+      "evidence_id": "digital-accessories.md#关键属性与判断口径#392e8f8f1822",
+      "rank": 2,
+      "rank_bucket": "rank_1_3",
+      "ranking_score": 0.4304918474,
+      "ranking_score_type": "retrieval_similarity",
+      "rank3_cutoff_score": 0.3239707727,
+      "score_gap_to_rank3": -0.1065210747,
+      "pre_need_coverage": 1.0,
+      "post_need_coverage": 0.0,
+      "selected_documents": [
+        "digital-accessories",
+        "eval-digital-accessories-参数判断",
+        "eval-beauty-care-参数判断"
+      ],
+      "selected_sections": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "repetition": 1,
+      "case_id": "blind-012",
+      "evidence_id": "digital-accessories.md#当前热卖款型#93430049f89a",
+      "rank": 2,
+      "rank_bucket": "rank_1_3",
+      "ranking_score": 0.4205309009,
+      "ranking_score_type": "retrieval_similarity",
+      "rank3_cutoff_score": 0.3867626039,
+      "score_gap_to_rank3": -0.033768297,
+      "pre_need_coverage": 1.0,
+      "post_need_coverage": 0.0,
+      "selected_documents": [
+        "digital-accessories",
+        "eval-digital-accessories-避坑与合规",
+        "eval-policy-battery"
+      ],
+      "selected_sections": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "repetition": 1,
+      "case_id": "blind-014",
+      "evidence_id": "home-living.md#避坑点#cc9519301550",
+      "rank": 23,
+      "rank_bucket": "rank_gt_10",
+      "ranking_score": 0.3917905126,
+      "ranking_score_type": "retrieval_similarity",
+      "rank3_cutoff_score": 0.5064951706,
+      "score_gap_to_rank3": 0.114704658,
+      "pre_need_coverage": 1.0,
+      "post_need_coverage": 0.0,
+      "selected_documents": [
+        "eval-kitchen-dining-避坑与合规",
+        "eval-kitchen-dining-参数判断",
+        "eval-kitchen-dining-概览"
+      ],
+      "selected_sections": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "repetition": 1,
+      "case_id": "blind-019",
+      "evidence_id": "digital-accessories.md#当前热卖款型#b365042193b2",
+      "rank": 4,
+      "rank_bucket": "rank_4_5",
+      "ranking_score": 0.4209667059,
+      "ranking_score_type": "retrieval_similarity",
+      "rank3_cutoff_score": 0.4249785485,
+      "score_gap_to_rank3": 0.0040118426,
+      "pre_need_coverage": 1.0,
+      "post_need_coverage": 0.0,
+      "selected_documents": [
+        "travel-gear",
+        "eval-policy-battery",
+        "eval-travel-gear-避坑与合规"
+      ],
+      "selected_sections": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "repetition": 1,
+      "case_id": "blind-021",
+      "evidence_id": "cross-border-guide.md#运费口径#a9e7150b3956",
+      "rank": 12,
+      "rank_bucket": "rank_gt_10",
+      "ranking_score": 0.4536216581,
+      "ranking_score_type": "retrieval_similarity",
+      "rank3_cutoff_score": 0.491618309,
+      "score_gap_to_rank3": 0.0379966509,
+      "pre_need_coverage": 1.0,
+      "post_need_coverage": 0.0,
+      "selected_documents": [
+        "home-living",
+        "eval-policy-global-shipping",
+        "eval-home-living-概览"
+      ],
+      "selected_sections": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "repetition": 1,
+      "case_id": "blind-025",
+      "evidence_id": "cross-border-guide.md#材质与合规#ec2498127b7d",
+      "rank": 25,
+      "rank_bucket": "rank_gt_10",
+      "ranking_score": 0.345504864,
+      "ranking_score_type": "retrieval_similarity",
+      "rank3_cutoff_score": 0.4536089748,
+      "score_gap_to_rank3": 0.1081041108,
+      "pre_need_coverage": 1.0,
+      "post_need_coverage": 0.0,
+      "selected_documents": [
+        "digital-accessories",
+        "eval-digital-accessories-避坑与合规",
+        "eval-office-study-避坑与合规"
+      ],
+      "selected_sections": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "repetition": 1,
+      "case_id": "human-mh-001",
+      "evidence_id": "cross-border-guide.md#材质与合规#f6bfddbb08fc",
+      "rank": 25,
+      "rank_bucket": "rank_gt_10",
+      "ranking_score": 0.3503576526,
+      "ranking_score_type": "retrieval_similarity",
+      "rank3_cutoff_score": 0.4207526723,
+      "score_gap_to_rank3": 0.0703950197,
+      "pre_need_coverage": 1.0,
+      "post_need_coverage": 0.0,
+      "selected_documents": [
+        "digital-accessories",
+        "eval-travel-gear-避坑与合规",
+        "eval-digital-accessories-避坑与合规"
+      ],
+      "selected_sections": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "repetition": 1,
+      "case_id": "human-mh-002",
+      "evidence_id": "travel-gear.md#当前热卖款型#36bc545a10ef",
+      "rank": 4,
+      "rank_bucket": "rank_4_5",
+      "ranking_score": 0.4710098156,
+      "ranking_score_type": "retrieval_similarity",
+      "rank3_cutoff_score": 0.4715499971,
+      "score_gap_to_rank3": 0.0005401815,
+      "pre_need_coverage": 1.0,
+      "post_need_coverage": 0.0,
+      "selected_documents": [
+        "travel-gear",
+        "eval-travel-gear-价格与预算",
+        "eval-travel-gear-避坑与合规"
+      ],
+      "selected_sections": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "repetition": 1,
+      "case_id": "v4-002",
+      "evidence_id": "travel-gear.md#关键属性与判断口径#d8c425d3c498",
+      "rank": 2,
+      "rank_bucket": "rank_1_3",
+      "ranking_score": 0.5019866387,
+      "ranking_score_type": "retrieval_similarity",
+      "rank3_cutoff_score": 0.474165626,
+      "score_gap_to_rank3": -0.0278210127,
+      "pre_need_coverage": 1.0,
+      "post_need_coverage": 0.0,
+      "selected_documents": [
+        "travel-gear",
+        "eval-travel-gear-避坑与合规",
+        "eval-travel-gear-价格与预算"
+      ],
+      "selected_sections": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "repetition": 1,
+      "case_id": "v4-006",
+      "evidence_id": "travel-gear.md#关键属性与判断口径#c8cbfcdaef5e",
+      "rank": 17,
+      "rank_bucket": "rank_gt_10",
+      "ranking_score": 0.4141801551,
+      "ranking_score_type": "retrieval_similarity",
+      "rank3_cutoff_score": 0.4513724798,
+      "score_gap_to_rank3": 0.0371923247,
+      "pre_need_coverage": 1.0,
+      "post_need_coverage": 0.0,
+      "selected_documents": [
+        "eval-travel-gear-避坑与合规",
+        "eval-travel-gear-概览",
+        "eval-travel-gear-参数判断"
+      ],
+      "selected_sections": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "repetition": 1,
+      "case_id": "v4-022",
+      "evidence_id": "cross-border-guide.md#运费口径#a6d0645c2de4",
+      "rank": 25,
+      "rank_bucket": "rank_gt_10",
+      "ranking_score": 0.3713541533,
+      "ranking_score_type": "retrieval_similarity",
+      "rank3_cutoff_score": 0.4936506863,
+      "score_gap_to_rank3": 0.122296533,
+      "pre_need_coverage": 1.0,
+      "post_need_coverage": 0.0,
+      "selected_documents": [
+        "eval-policy-global-shipping",
+        "eval-travel-gear-参数判断",
+        "eval-travel-gear-避坑与合规"
+      ],
+      "selected_sections": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "repetition": 1,
+      "case_id": "v4-028",
+      "evidence_id": "cross-border-guide.md#运费口径#a6d0645c2de4",
+      "rank": 16,
+      "rank_bucket": "rank_gt_10",
+      "ranking_score": 0.4936978195,
+      "ranking_score_type": "retrieval_similarity",
+      "rank3_cutoff_score": 0.5615085725,
+      "score_gap_to_rank3": 0.067810753,
+      "pre_need_coverage": 1.0,
+      "post_need_coverage": 0.5,
+      "selected_documents": [
+        "outdoor-sports",
+        "eval-travel-gear-价格与预算",
+        "eval-travel-gear-参数判断"
+      ],
+      "selected_sections": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "repetition": 1,
+      "case_id": "v4-037",
+      "evidence_id": "digital-accessories.md#当前热卖款型#4ee1798508d7",
+      "rank": 6,
+      "rank_bucket": "rank_6_10",
+      "ranking_score": 0.4035487289,
+      "ranking_score_type": "retrieval_similarity",
+      "rank3_cutoff_score": 0.4115753606,
+      "score_gap_to_rank3": 0.0080266317,
+      "pre_need_coverage": 1.0,
+      "post_need_coverage": 0.5,
+      "selected_documents": [
+        "outdoor-sports",
+        "eval-office-study-避坑与合规",
+        "eval-office-study-价格与预算"
+      ],
+      "selected_sections": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "repetition": 1,
+      "case_id": "v4-038",
+      "evidence_id": "cross-border-guide.md#运费口径#a6d0645c2de4",
+      "rank": 26,
+      "rank_bucket": "rank_gt_10",
+      "ranking_score": 0.3900743605,
+      "ranking_score_type": "retrieval_similarity",
+      "rank3_cutoff_score": 0.4788653798,
+      "score_gap_to_rank3": 0.0887910193,
+      "pre_need_coverage": 1.0,
+      "post_need_coverage": 0.5,
+      "selected_documents": [
+        "outdoor-sports",
+        "eval-travel-gear-价格与预算",
+        "eval-travel-gear-避坑与合规"
+      ],
+      "selected_sections": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "repetition": 1,
+      "case_id": "v4-043",
+      "evidence_id": "cross-border-guide.md#材质与合规#19aa6758a0c6",
+      "rank": 26,
+      "rank_bucket": "rank_gt_10",
+      "ranking_score": 0.3075142304,
+      "ranking_score_type": "retrieval_similarity",
+      "rank3_cutoff_score": 0.4503000105,
+      "score_gap_to_rank3": 0.1427857801,
+      "pre_need_coverage": 1.0,
+      "post_need_coverage": 0.0,
+      "selected_documents": [
+        "outdoor-sports",
+        "eval-travel-gear-避坑与合规",
+        "eval-travel-gear-参数判断"
+      ],
+      "selected_sections": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "repetition": 1,
+      "case_id": "v4-043",
+      "evidence_id": "digital-accessories.md#当前热卖款型#4ee1798508d7",
+      "rank": 16,
+      "rank_bucket": "rank_gt_10",
+      "ranking_score": 0.4268220578,
+      "ranking_score_type": "retrieval_similarity",
+      "rank3_cutoff_score": 0.4503000105,
+      "score_gap_to_rank3": 0.0234779527,
+      "pre_need_coverage": 1.0,
+      "post_need_coverage": 0.0,
+      "selected_documents": [
+        "outdoor-sports",
+        "eval-travel-gear-避坑与合规",
+        "eval-travel-gear-参数判断"
+      ],
+      "selected_sections": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "repetition": 1,
+      "case_id": "v4-048",
+      "evidence_id": "cross-border-guide.md#运费口径#a6d0645c2de4",
+      "rank": 12,
+      "rank_bucket": "rank_gt_10",
+      "ranking_score": 0.4667261714,
+      "ranking_score_type": "retrieval_similarity",
+      "rank3_cutoff_score": 0.4848650389,
+      "score_gap_to_rank3": 0.0181388675,
+      "pre_need_coverage": 1.0,
+      "post_need_coverage": 0.0,
+      "selected_documents": [
+        "eval-travel-gear-价格与预算",
+        "eval-travel-gear-概览",
+        "travel-gear"
+      ],
+      "selected_sections": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "repetition": 1,
+      "case_id": "v4-048",
+      "evidence_id": "cross-border-guide.md#运费口径#f6a798520e96",
+      "rank": 12,
+      "rank_bucket": "rank_gt_10",
+      "ranking_score": 0.4667261714,
+      "ranking_score_type": "retrieval_similarity",
+      "rank3_cutoff_score": 0.4848650389,
+      "score_gap_to_rank3": 0.0181388675,
+      "pre_need_coverage": 1.0,
+      "post_need_coverage": 0.0,
+      "selected_documents": [
+        "eval-travel-gear-价格与预算",
+        "eval-travel-gear-概览",
+        "travel-gear"
+      ],
+      "selected_sections": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "repetition": 1,
+      "case_id": "v4-048",
+      "evidence_id": "home-living.md#避坑点#4e6f39bf3889",
+      "rank": 26,
+      "rank_bucket": "rank_gt_10",
+      "ranking_score": 0.4031917488,
+      "ranking_score_type": "retrieval_similarity",
+      "rank3_cutoff_score": 0.4848650389,
+      "score_gap_to_rank3": 0.0816732901,
+      "pre_need_coverage": 1.0,
+      "post_need_coverage": 0.0,
+      "selected_documents": [
+        "eval-travel-gear-价格与预算",
+        "eval-travel-gear-概览",
+        "travel-gear"
+      ],
+      "selected_sections": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "repetition": 1,
+      "case_id": "v4-049",
+      "evidence_id": "outdoor-sports.md#关键属性与判断口径#c6b2a27622bf",
+      "rank": 2,
+      "rank_bucket": "rank_1_3",
+      "ranking_score": 0.4803572699,
+      "ranking_score_type": "retrieval_similarity",
+      "rank3_cutoff_score": 0.3983356482,
+      "score_gap_to_rank3": -0.0820216217,
+      "pre_need_coverage": 1.0,
+      "post_need_coverage": 0.0,
+      "selected_documents": [
+        "outdoor-sports",
+        "eval-digital-accessories-避坑与合规",
+        "eval-office-study-避坑与合规"
+      ],
+      "selected_sections": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "repetition": 1,
+      "case_id": "v4-049",
+      "evidence_id": "outdoor-sports.md#避坑点#b6ee3fa0d857",
+      "rank": 2,
+      "rank_bucket": "rank_1_3",
+      "ranking_score": 0.4803572699,
+      "ranking_score_type": "retrieval_similarity",
+      "rank3_cutoff_score": 0.3983356482,
+      "score_gap_to_rank3": -0.0820216217,
+      "pre_need_coverage": 1.0,
+      "post_need_coverage": 0.0,
+      "selected_documents": [
+        "outdoor-sports",
+        "eval-digital-accessories-避坑与合规",
+        "eval-office-study-避坑与合规"
+      ],
+      "selected_sections": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "repetition": 1,
+      "case_id": "v4-051",
+      "evidence_id": "cross-border-guide.md#运费口径#a6d0645c2de4",
+      "rank": 6,
+      "rank_bucket": "rank_6_10",
+      "ranking_score": 0.4929845451,
+      "ranking_score_type": "retrieval_similarity",
+      "rank3_cutoff_score": 0.4969737016,
+      "score_gap_to_rank3": 0.0039891565,
+      "pre_need_coverage": 0.5,
+      "post_need_coverage": 0.0,
+      "selected_documents": [
+        "travel-gear",
+        "eval-home-living-价格与预算",
+        "outdoor-sports"
+      ],
+      "selected_sections": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "repetition": 1,
+      "case_id": "v4-060",
+      "evidence_id": "cross-border-guide.md#材质与合规#19aa6758a0c6",
+      "rank": 25,
+      "rank_bucket": "rank_gt_10",
+      "ranking_score": 0.2709261456,
+      "ranking_score_type": "retrieval_similarity",
+      "rank3_cutoff_score": 0.4304987697,
+      "score_gap_to_rank3": 0.1595726241,
+      "pre_need_coverage": 1.0,
+      "post_need_coverage": 0.0,
+      "selected_documents": [
+        "eval-policy-battery",
+        "eval-policy-jp",
+        "eval-policy-us"
+      ],
+      "selected_sections": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "repetition": 1,
+      "case_id": "v4-060",
+      "evidence_id": "eval-policy-battery.md#12-边界#3a0dece099a0",
+      "rank": 2,
+      "rank_bucket": "rank_1_3",
+      "ranking_score": 0.4609224833,
+      "ranking_score_type": "retrieval_similarity",
+      "rank3_cutoff_score": 0.4304987697,
+      "score_gap_to_rank3": -0.0304237136,
+      "pre_need_coverage": 1.0,
+      "post_need_coverage": 0.0,
+      "selected_documents": [
+        "eval-policy-battery",
+        "eval-policy-jp",
+        "eval-policy-us"
+      ],
+      "selected_sections": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "repetition": 1,
+      "case_id": "v4-060",
+      "evidence_id": "eval-policy-battery.md#29-升级#0a81df2ca50b",
+      "rank": 21,
+      "rank_bucket": "rank_gt_10",
+      "ranking_score": 0.377351095,
+      "ranking_score_type": "retrieval_similarity",
+      "rank3_cutoff_score": 0.4304987697,
+      "score_gap_to_rank3": 0.0531476747,
+      "pre_need_coverage": 1.0,
+      "post_need_coverage": 0.0,
+      "selected_documents": [
+        "eval-policy-battery",
+        "eval-policy-jp",
+        "eval-policy-us"
+      ],
+      "selected_sections": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "repetition": 1,
+      "case_id": "v4-060",
+      "evidence_id": "eval-policy-battery.md#适用范围#f12478f064a8",
+      "rank": 3,
+      "rank_bucket": "rank_1_3",
+      "ranking_score": 0.4304987697,
+      "ranking_score_type": "retrieval_similarity",
+      "rank3_cutoff_score": 0.4304987697,
+      "score_gap_to_rank3": 0.0,
+      "pre_need_coverage": 1.0,
+      "post_need_coverage": 0.0,
+      "selected_documents": [
+        "eval-policy-battery",
+        "eval-policy-jp",
+        "eval-policy-us"
+      ],
+      "selected_sections": [
+        "",
+        "",
+        ""
+      ]
+    }
+  ]
+}

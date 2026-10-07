@@ -1,0 +1,562 @@
+{
+  "case_id": "v4-006",
+  "query_ids": [
+    "v4-006::original"
+  ],
+  "arms": {
+    "B0-compatible": {
+      "v4-006::original": [
+        {
+          "rank": 1,
+          "candidate_id": "f7aad019-ab85-41f5-bbf8-76bf6f68653b",
+          "source": "eval-travel-gear-避坑与合规.md",
+          "document_id": "eval-travel-gear-避坑与合规",
+          "chunk_index": 0,
+          "score": 0.466850264454,
+          "evidence_ids": []
+        },
+        {
+          "rank": 2,
+          "candidate_id": "5231603e-e0fc-468a-84ba-3d3c74fcb71f",
+          "source": "eval-travel-gear-概览.md",
+          "document_id": "eval-travel-gear-概览",
+          "chunk_index": 0,
+          "score": 0.450390743149,
+          "evidence_ids": []
+        },
+        {
+          "rank": 3,
+          "candidate_id": "0e0d2da5-0977-4fc2-8374-d8e94a0415e2",
+          "source": "eval-travel-gear-避坑与合规.md",
+          "document_id": "eval-travel-gear-避坑与合规",
+          "chunk_index": 2,
+          "score": 0.448994560069,
+          "evidence_ids": []
+        },
+        {
+          "rank": 4,
+          "candidate_id": "1a343e79-1ece-49e7-9a09-025c8a246693",
+          "source": "eval-travel-gear-避坑与合规.md",
+          "document_id": "eval-travel-gear-避坑与合规",
+          "chunk_index": 1,
+          "score": 0.44689104579,
+          "evidence_ids": []
+        },
+        {
+          "rank": 5,
+          "candidate_id": "b6f86320-71ba-4a9c-940f-d7c8fb9bed25",
+          "source": "eval-travel-gear-参数判断.md",
+          "document_id": "eval-travel-gear-参数判断",
+          "chunk_index": 0,
+          "score": 0.444739248036,
+          "evidence_ids": []
+        },
+        {
+          "rank": 6,
+          "candidate_id": "97082cb9-0c8c-48a8-9641-1363f0f7a229",
+          "source": "eval-travel-gear-价格与预算.md",
+          "document_id": "eval-travel-gear-价格与预算",
+          "chunk_index": 0,
+          "score": 0.444299808758,
+          "evidence_ids": []
+        },
+        {
+          "rank": 7,
+          "candidate_id": "507618b9-6de2-4004-8fc3-168dfb4a8bbc",
+          "source": "eval-travel-gear-概览.md",
+          "document_id": "eval-travel-gear-概览",
+          "chunk_index": 2,
+          "score": 0.442798997322,
+          "evidence_ids": []
+        },
+        {
+          "rank": 8,
+          "candidate_id": "ea6b1f98-208e-4626-9f15-0c942cdebae5",
+          "source": "eval-travel-gear-参数判断.md",
+          "document_id": "eval-travel-gear-参数判断",
+          "chunk_index": 1,
+          "score": 0.428359796007,
+          "evidence_ids": []
+        },
+        {
+          "rank": 9,
+          "candidate_id": "0fecbaca-32de-417b-ad85-4969b61694a2",
+          "source": "eval-travel-gear-参数判断.md",
+          "document_id": "eval-travel-gear-参数判断",
+          "chunk_index": 2,
+          "score": 0.427317012062,
+          "evidence_ids": []
+        },
+        {
+          "rank": 10,
+          "candidate_id": "fcd2b4bf-a593-45f9-85bb-05597e328714",
+          "source": "eval-home-living-避坑与合规.md",
+          "document_id": "eval-home-living-避坑与合规",
+          "chunk_index": 0,
+          "score": 0.426371190364,
+          "evidence_ids": []
+        },
+        {
+          "rank": 11,
+          "candidate_id": "661281df-c470-43e3-8077-09831744b584",
+          "source": "eval-travel-gear-概览.md",
+          "document_id": "eval-travel-gear-概览",
+          "chunk_index": 1,
+          "score": 0.426126773253,
+          "evidence_ids": []
+        },
+        {
+          "rank": 12,
+          "candidate_id": "b6b74e07-d3ed-41fb-bf6a-a5c9b8f36339",
+          "source": "eval-home-living-价格与预算.md",
+          "document_id": "eval-home-living-价格与预算",
+          "chunk_index": 0,
+          "score": 0.41891866695,
+          "evidence_ids": []
+        },
+        {
+          "rank": 13,
+          "candidate_id": "3eb0a86e-f5cc-4c77-b9d8-e52707f03ee7",
+          "source": "eval-home-living-避坑与合规.md",
+          "document_id": "eval-home-living-避坑与合规",
+          "chunk_index": 2,
+          "score": 0.417658974162,
+          "evidence_ids": []
+        },
+        {
+          "rank": 14,
+          "candidate_id": "9dfdee98-f481-492c-abd1-6abbb26b1af8",
+          "source": "eval-travel-gear-价格与预算.md",
+          "document_id": "eval-travel-gear-价格与预算",
+          "chunk_index": 2,
+          "score": 0.415453187323,
+          "evidence_ids": []
+        },
+        {
+          "rank": 15,
+          "candidate_id": "6c9bcce5-594d-432b-af9b-6a2b66c3ebe3",
+          "source": "eval-home-living-概览.md",
+          "document_id": "eval-home-living-概览",
+          "chunk_index": 0,
+          "score": 0.415323407081,
+          "evidence_ids": []
+        },
+        {
+          "rank": 16,
+          "candidate_id": "740ef343-4f48-438e-97f5-81f3ead69f13",
+          "source": "travel-gear.md",
+          "document_id": "travel-gear",
+          "chunk_index": 0,
+          "score": 0.413778270026,
+          "evidence_ids": [
+            "travel-gear.md#关键属性与判断口径#c8cbfcdaef5e"
+          ]
+        },
+        {
+          "rank": 17,
+          "candidate_id": "ca35634b-d20a-4af1-9ccb-89414a7f3240",
+          "source": "eval-home-living-参数判断.md",
+          "document_id": "eval-home-living-参数判断",
+          "chunk_index": 0,
+          "score": 0.409335778386,
+          "evidence_ids": []
+        },
+        {
+          "rank": 18,
+          "candidate_id": "ca9c8fac-8851-4ff9-932f-3cbe1b1ea240",
+          "source": "eval-travel-gear-避坑与合规.md",
+          "document_id": "eval-travel-gear-避坑与合规",
+          "chunk_index": 3,
+          "score": 0.408476929288,
+          "evidence_ids": []
+        },
+        {
+          "rank": 19,
+          "candidate_id": "5758d3de-3e2c-4d19-ac43-66a3e8de8a1d",
+          "source": "eval-home-living-避坑与合规.md",
+          "document_id": "eval-home-living-避坑与合规",
+          "chunk_index": 1,
+          "score": 0.407879877217,
+          "evidence_ids": []
+        },
+        {
+          "rank": 20,
+          "candidate_id": "49f97380-143f-4026-88b9-64383f38af31",
+          "source": "eval-home-living-概览.md",
+          "document_id": "eval-home-living-概览",
+          "chunk_index": 2,
+          "score": 0.406177598198,
+          "evidence_ids": []
+        }
+      ]
+    },
+    "B0-native-symmetric": {
+      "v4-006::original": [
+        {
+          "rank": 1,
+          "candidate_id": "f7aad019-ab85-41f5-bbf8-76bf6f68653b",
+          "source": "eval-travel-gear-避坑与合规.md",
+          "document_id": "eval-travel-gear-避坑与合规",
+          "chunk_index": 0,
+          "score": 0.495571819916,
+          "evidence_ids": []
+        },
+        {
+          "rank": 2,
+          "candidate_id": "5231603e-e0fc-468a-84ba-3d3c74fcb71f",
+          "source": "eval-travel-gear-概览.md",
+          "document_id": "eval-travel-gear-概览",
+          "chunk_index": 0,
+          "score": 0.492764274563,
+          "evidence_ids": []
+        },
+        {
+          "rank": 3,
+          "candidate_id": "ca9c8fac-8851-4ff9-932f-3cbe1b1ea240",
+          "source": "eval-travel-gear-避坑与合规.md",
+          "document_id": "eval-travel-gear-避坑与合规",
+          "chunk_index": 3,
+          "score": 0.487782372193,
+          "evidence_ids": []
+        },
+        {
+          "rank": 4,
+          "candidate_id": "0e0d2da5-0977-4fc2-8374-d8e94a0415e2",
+          "source": "eval-travel-gear-避坑与合规.md",
+          "document_id": "eval-travel-gear-避坑与合规",
+          "chunk_index": 2,
+          "score": 0.484070101194,
+          "evidence_ids": []
+        },
+        {
+          "rank": 5,
+          "candidate_id": "97082cb9-0c8c-48a8-9641-1363f0f7a229",
+          "source": "eval-travel-gear-价格与预算.md",
+          "document_id": "eval-travel-gear-价格与预算",
+          "chunk_index": 0,
+          "score": 0.473621762208,
+          "evidence_ids": []
+        },
+        {
+          "rank": 6,
+          "candidate_id": "b6f86320-71ba-4a9c-940f-d7c8fb9bed25",
+          "source": "eval-travel-gear-参数判断.md",
+          "document_id": "eval-travel-gear-参数判断",
+          "chunk_index": 0,
+          "score": 0.471771645692,
+          "evidence_ids": []
+        },
+        {
+          "rank": 7,
+          "candidate_id": "a1bfe001-0a2d-440f-b461-467b4ee359a4",
+          "source": "eval-home-living-避坑与合规.md",
+          "document_id": "eval-home-living-避坑与合规",
+          "chunk_index": 3,
+          "score": 0.471728768237,
+          "evidence_ids": []
+        },
+        {
+          "rank": 8,
+          "candidate_id": "39beb9b4-7149-4630-947c-84a861327be6",
+          "source": "eval-travel-gear-价格与预算.md",
+          "document_id": "eval-travel-gear-价格与预算",
+          "chunk_index": 3,
+          "score": 0.467985590238,
+          "evidence_ids": []
+        },
+        {
+          "rank": 9,
+          "candidate_id": "fcd2b4bf-a593-45f9-85bb-05597e328714",
+          "source": "eval-home-living-避坑与合规.md",
+          "document_id": "eval-home-living-避坑与合规",
+          "chunk_index": 0,
+          "score": 0.467130850353,
+          "evidence_ids": []
+        },
+        {
+          "rank": 10,
+          "candidate_id": "6c9bcce5-594d-432b-af9b-6a2b66c3ebe3",
+          "source": "eval-home-living-概览.md",
+          "document_id": "eval-home-living-概览",
+          "chunk_index": 0,
+          "score": 0.463951657621,
+          "evidence_ids": []
+        },
+        {
+          "rank": 11,
+          "candidate_id": "bf7c16f3-1d07-44ea-8cd5-19c00b8507b6",
+          "source": "digital-accessories.md",
+          "document_id": "digital-accessories",
+          "chunk_index": 1,
+          "score": 0.460494421013,
+          "evidence_ids": []
+        },
+        {
+          "rank": 12,
+          "candidate_id": "0fecbaca-32de-417b-ad85-4969b61694a2",
+          "source": "eval-travel-gear-参数判断.md",
+          "document_id": "eval-travel-gear-参数判断",
+          "chunk_index": 2,
+          "score": 0.460055346256,
+          "evidence_ids": []
+        },
+        {
+          "rank": 13,
+          "candidate_id": "1a343e79-1ece-49e7-9a09-025c8a246693",
+          "source": "eval-travel-gear-避坑与合规.md",
+          "document_id": "eval-travel-gear-避坑与合规",
+          "chunk_index": 1,
+          "score": 0.458205753257,
+          "evidence_ids": []
+        },
+        {
+          "rank": 14,
+          "candidate_id": "3eb0a86e-f5cc-4c77-b9d8-e52707f03ee7",
+          "source": "eval-home-living-避坑与合规.md",
+          "document_id": "eval-home-living-避坑与合规",
+          "chunk_index": 2,
+          "score": 0.457122769812,
+          "evidence_ids": []
+        },
+        {
+          "rank": 15,
+          "candidate_id": "753d3c7d-a646-402c-a1fd-78407b2c09ed",
+          "source": "eval-home-living-价格与预算.md",
+          "document_id": "eval-home-living-价格与预算",
+          "chunk_index": 3,
+          "score": 0.451536314722,
+          "evidence_ids": []
+        },
+        {
+          "rank": 16,
+          "candidate_id": "507618b9-6de2-4004-8fc3-168dfb4a8bbc",
+          "source": "eval-travel-gear-概览.md",
+          "document_id": "eval-travel-gear-概览",
+          "chunk_index": 2,
+          "score": 0.449482625132,
+          "evidence_ids": []
+        },
+        {
+          "rank": 17,
+          "candidate_id": "f7f93adc-c894-431d-9087-dc9effdaaef4",
+          "source": "eval-home-living-参数判断.md",
+          "document_id": "eval-home-living-参数判断",
+          "chunk_index": 2,
+          "score": 0.446374722013,
+          "evidence_ids": []
+        },
+        {
+          "rank": 18,
+          "candidate_id": "b6b74e07-d3ed-41fb-bf6a-a5c9b8f36339",
+          "source": "eval-home-living-价格与预算.md",
+          "document_id": "eval-home-living-价格与预算",
+          "chunk_index": 0,
+          "score": 0.444734406534,
+          "evidence_ids": []
+        },
+        {
+          "rank": 19,
+          "candidate_id": "9dfdee98-f481-492c-abd1-6abbb26b1af8",
+          "source": "eval-travel-gear-价格与预算.md",
+          "document_id": "eval-travel-gear-价格与预算",
+          "chunk_index": 2,
+          "score": 0.444389579131,
+          "evidence_ids": []
+        },
+        {
+          "rank": 20,
+          "candidate_id": "ea6b1f98-208e-4626-9f15-0c942cdebae5",
+          "source": "eval-travel-gear-参数判断.md",
+          "document_id": "eval-travel-gear-参数判断",
+          "chunk_index": 1,
+          "score": 0.441985600954,
+          "evidence_ids": []
+        }
+      ]
+    },
+    "D0-role": {
+      "v4-006::original": [
+        {
+          "rank": 1,
+          "candidate_id": "f7aad019-ab85-41f5-bbf8-76bf6f68653b",
+          "source": "eval-travel-gear-避坑与合规.md",
+          "document_id": "eval-travel-gear-避坑与合规",
+          "chunk_index": 0,
+          "score": 0.470815020613,
+          "evidence_ids": []
+        },
+        {
+          "rank": 2,
+          "candidate_id": "0e0d2da5-0977-4fc2-8374-d8e94a0415e2",
+          "source": "eval-travel-gear-避坑与合规.md",
+          "document_id": "eval-travel-gear-避坑与合规",
+          "chunk_index": 2,
+          "score": 0.466658546815,
+          "evidence_ids": []
+        },
+        {
+          "rank": 3,
+          "candidate_id": "1a343e79-1ece-49e7-9a09-025c8a246693",
+          "source": "eval-travel-gear-避坑与合规.md",
+          "document_id": "eval-travel-gear-避坑与合规",
+          "chunk_index": 1,
+          "score": 0.458983554624,
+          "evidence_ids": []
+        },
+        {
+          "rank": 4,
+          "candidate_id": "ca9c8fac-8851-4ff9-932f-3cbe1b1ea240",
+          "source": "eval-travel-gear-避坑与合规.md",
+          "document_id": "eval-travel-gear-避坑与合规",
+          "chunk_index": 3,
+          "score": 0.451643013453,
+          "evidence_ids": []
+        },
+        {
+          "rank": 5,
+          "candidate_id": "b6f86320-71ba-4a9c-940f-d7c8fb9bed25",
+          "source": "eval-travel-gear-参数判断.md",
+          "document_id": "eval-travel-gear-参数判断",
+          "chunk_index": 0,
+          "score": 0.44689006876,
+          "evidence_ids": []
+        },
+        {
+          "rank": 6,
+          "candidate_id": "fcd2b4bf-a593-45f9-85bb-05597e328714",
+          "source": "eval-home-living-避坑与合规.md",
+          "document_id": "eval-home-living-避坑与合规",
+          "chunk_index": 0,
+          "score": 0.445086912709,
+          "evidence_ids": []
+        },
+        {
+          "rank": 7,
+          "candidate_id": "5231603e-e0fc-468a-84ba-3d3c74fcb71f",
+          "source": "eval-travel-gear-概览.md",
+          "document_id": "eval-travel-gear-概览",
+          "chunk_index": 0,
+          "score": 0.442494052998,
+          "evidence_ids": []
+        },
+        {
+          "rank": 8,
+          "candidate_id": "39beb9b4-7149-4630-947c-84a861327be6",
+          "source": "eval-travel-gear-价格与预算.md",
+          "document_id": "eval-travel-gear-价格与预算",
+          "chunk_index": 3,
+          "score": 0.437250700097,
+          "evidence_ids": []
+        },
+        {
+          "rank": 9,
+          "candidate_id": "97082cb9-0c8c-48a8-9641-1363f0f7a229",
+          "source": "eval-travel-gear-价格与预算.md",
+          "document_id": "eval-travel-gear-价格与预算",
+          "chunk_index": 0,
+          "score": 0.436859586444,
+          "evidence_ids": []
+        },
+        {
+          "rank": 10,
+          "candidate_id": "ea6b1f98-208e-4626-9f15-0c942cdebae5",
+          "source": "eval-travel-gear-参数判断.md",
+          "document_id": "eval-travel-gear-参数判断",
+          "chunk_index": 1,
+          "score": 0.436792956518,
+          "evidence_ids": []
+        },
+        {
+          "rank": 11,
+          "candidate_id": "a1bfe001-0a2d-440f-b461-467b4ee359a4",
+          "source": "eval-home-living-避坑与合规.md",
+          "document_id": "eval-home-living-避坑与合规",
+          "chunk_index": 3,
+          "score": 0.435209015629,
+          "evidence_ids": []
+        },
+        {
+          "rank": 12,
+          "candidate_id": "5758d3de-3e2c-4d19-ac43-66a3e8de8a1d",
+          "source": "eval-home-living-避坑与合规.md",
+          "document_id": "eval-home-living-避坑与合规",
+          "chunk_index": 1,
+          "score": 0.434967980967,
+          "evidence_ids": []
+        },
+        {
+          "rank": 13,
+          "candidate_id": "507618b9-6de2-4004-8fc3-168dfb4a8bbc",
+          "source": "eval-travel-gear-概览.md",
+          "document_id": "eval-travel-gear-概览",
+          "chunk_index": 2,
+          "score": 0.434802783263,
+          "evidence_ids": []
+        },
+        {
+          "rank": 14,
+          "candidate_id": "3eb0a86e-f5cc-4c77-b9d8-e52707f03ee7",
+          "source": "eval-home-living-避坑与合规.md",
+          "document_id": "eval-home-living-避坑与合规",
+          "chunk_index": 2,
+          "score": 0.43448966624,
+          "evidence_ids": []
+        },
+        {
+          "rank": 15,
+          "candidate_id": "661281df-c470-43e3-8077-09831744b584",
+          "source": "eval-travel-gear-概览.md",
+          "document_id": "eval-travel-gear-概览",
+          "chunk_index": 1,
+          "score": 0.426504456742,
+          "evidence_ids": []
+        },
+        {
+          "rank": 16,
+          "candidate_id": "6c9bcce5-594d-432b-af9b-6a2b66c3ebe3",
+          "source": "eval-home-living-概览.md",
+          "document_id": "eval-home-living-概览",
+          "chunk_index": 0,
+          "score": 0.425844945424,
+          "evidence_ids": []
+        },
+        {
+          "rank": 17,
+          "candidate_id": "9dfdee98-f481-492c-abd1-6abbb26b1af8",
+          "source": "eval-travel-gear-价格与预算.md",
+          "document_id": "eval-travel-gear-价格与预算",
+          "chunk_index": 2,
+          "score": 0.425533887395,
+          "evidence_ids": []
+        },
+        {
+          "rank": 18,
+          "candidate_id": "753d3c7d-a646-402c-a1fd-78407b2c09ed",
+          "source": "eval-home-living-价格与预算.md",
+          "document_id": "eval-home-living-价格与预算",
+          "chunk_index": 3,
+          "score": 0.42441528702,
+          "evidence_ids": []
+        },
+        {
+          "rank": 19,
+          "candidate_id": "0fecbaca-32de-417b-ad85-4969b61694a2",
+          "source": "eval-travel-gear-参数判断.md",
+          "document_id": "eval-travel-gear-参数判断",
+          "chunk_index": 2,
+          "score": 0.423009484206,
+          "evidence_ids": []
+        },
+        {
+          "rank": 20,
+          "candidate_id": "8fcecadd-c9bf-4589-a4da-9879cc946800",
+          "source": "eval-home-living-概览.md",
+          "document_id": "eval-home-living-概览",
+          "chunk_index": 1,
+          "score": 0.42118379627,
+          "evidence_ids": []
+        }
+      ]
+    }
+  }
+}

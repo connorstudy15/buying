@@ -118,7 +118,11 @@ def build_category_insight_tool(
         for item in results:
             metadata = {
                 key: item.chunk.metadata[key]
-                for key in ("source_reference", "source_type", "published_at", "effective_from", "effective_to", "region", "version", "topic")
+                for key in (
+                    "source_reference", "source_name", "source_url", "source_type", "published_at",
+                    "effective_from", "effective_to", "valid_from", "valid_to", "updated_at",
+                    "region", "version", "topic", "authority_level", "status", "corpus_role",
+                )
                 if item.chunk.metadata and key in item.chunk.metadata
             }
             insights.append({
@@ -140,6 +144,8 @@ def build_category_insight_tool(
                 "query_variant_count": len(outcome.trace.variants) or 1,
                 "candidate_count": len(outcome.trace.candidates),
                 "query_processor_fallback": outcome.trace.processor_fallback_reason,
+                "collection_name": outcome.trace.collection_name,
+                "corpus_version": outcome.trace.corpus_version,
                 "pre_fusion_query_route_coverage": outcome.trace.pre_fusion_query_route_coverage,
                 "post_fusion_query_route_coverage": outcome.trace.post_fusion_query_route_coverage,
             },

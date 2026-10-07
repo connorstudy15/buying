@@ -24,8 +24,9 @@ from app.application.prompts.loader import load_prompts  # noqa: E402
 from app.application.retrieval.query_processor import QueryPlan, QueryProcessor  # noqa: E402
 from app.infrastructure.llm import create_chat_model  # noqa: E402
 from app.infrastructure.rag.category_knowledge import (  # noqa: E402
-    bootstrap_category_knowledge,
-    build_category_knowledge_base,
+    EVALUATION_KNOWLEDGE_DIR,
+    build_evaluation_knowledge_base,
+    verify_evaluation_knowledge_base,
 )
 from app.infrastructure.settings import load_settings  # noqa: E402
 from scripts.eval.run_category_recall import load_dataset, run_dataset  # noqa: E402
@@ -258,9 +259,9 @@ async def main(argv: list[str] | None = None) -> None:
 
     cases, selection = select_cases(load_dataset(args.dataset), "all")
     settings = load_settings()
-    knowledge_base = build_category_knowledge_base(settings)
-    inserted = await bootstrap_category_knowledge(knowledge_base)
-    print(f"知识库就绪（本次新增 {inserted} 篇）；共 {len(cases)} 题")
+    knowledge_base = build_evaluation_knowledge_base(settings)
+    document_count = await verify_evaluation_knowledge_base(knowledge_base, EVALUATION_KNOWLEDGE_DIR)
+    print(f"冻结评测知识库就绪（{document_count} 篇；未执行自动重建）；共 {len(cases)} 题")
     processor_settings = replace(
         settings,
         llm_base_url=settings.query_processor_base_url or settings.llm_base_url,

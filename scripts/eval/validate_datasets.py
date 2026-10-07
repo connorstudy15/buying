@@ -31,7 +31,7 @@ from scripts.eval.eval_quality import validate_official_eval_fixture as _validat
 
 _PRODUCT_DATASET = Path("eval/product_recall.jsonl")
 _CATEGORY_DATASET = Path("eval/category_recall.jsonl")
-_KNOWLEDGE_DIR = Path("knowledge")
+_KNOWLEDGE_DIR = Path("eval/knowledge/corpus")
 _FORMAL_EVAL_DIR = Path("eval") / "v1"
 _CATALOG_FIXTURE = Path("data") / "catalog-v1.jsonl"
 
@@ -182,7 +182,7 @@ def validate_categories() -> list[str]:
             if name not in docs:
                 problems.append(
                     f"L{lineno} [{case['query']}] 知识文档不存在：{name}"
-                    f"（标注单位应为 knowledge/*.md 的文件名）",
+                    f"（标注单位应为 eval/knowledge/corpus/*.md 的文件名）",
                 )
     return problems
 

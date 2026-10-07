@@ -44,13 +44,13 @@ def _safe_env(path: Path) -> dict[str, str]:
     allowed = {
         "EMBEDDING_MODEL",
         "EMBEDDING_DIM",
-        "CATEGORY_KB_COLLECTION",
+        "KNOWLEDGE_COLLECTION_EVAL",
         "QDRANT_URL",
     }
     values: dict[str, str] = {
         "EMBEDDING_MODEL": "text-embedding-v4",
         "EMBEDDING_DIM": "1024",
-        "CATEGORY_KB_COLLECTION": "globex_category_kb",
+        "KNOWLEDGE_COLLECTION_EVAL": "globex_category_kb_eval",
     }
     present: set[str] = set()
     if not path.is_file():
@@ -93,7 +93,7 @@ def _eval_asset(path: Path) -> dict[str, Any]:
 
 
 async def build_snapshot(root: Path) -> dict[str, Any]:
-    knowledge_dir = root / "knowledge"
+    knowledge_dir = root / "eval" / "knowledge" / "corpus"
     manifest = load_knowledge_manifest(knowledge_dir)
     problems = validate_knowledge_manifest(knowledge_dir, manifest)
     problems.extend(validate_knowledge_content(knowledge_dir))

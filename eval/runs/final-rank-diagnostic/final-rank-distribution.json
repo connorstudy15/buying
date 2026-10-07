@@ -1,0 +1,224 @@
+{
+  "schema_version": "final-rank-distribution-v1",
+  "experiment": "knowledge-v5-20261004213019-b44b5ce8",
+  "strategy": "decompose_per_need_rerank",
+  "top_k_loss_evidence_observations": 12,
+  "rank_buckets": {
+    "rank_4_5": 2,
+    "rank_gt_10": 8,
+    "rank_6_10": 1,
+    "rank_1_3": 1
+  },
+  "rank_bucket_rates": {
+    "rank_4_5": 0.1667,
+    "rank_gt_10": 0.6667,
+    "rank_6_10": 0.0833,
+    "rank_1_3": 0.0833
+  },
+  "score_gap_to_rank3": {
+    "median": 0.0034165985,
+    "p95": 0.0061839718
+  },
+  "information_need_coverage_loss_cases": [
+    "blind-006",
+    "blind-008",
+    "blind-014",
+    "blind-025",
+    "human-mh-001",
+    "human-mh-002",
+    "v4-006",
+    "v4-022",
+    "v4-043",
+    "v4-060"
+  ],
+  "selected_same_document_cases": [
+    "blind-025"
+  ],
+  "selected_same_section_cases": [],
+  "details": [
+    {
+      "repetition": 1,
+      "case_id": "blind-006",
+      "evidence_id": "travel-gear.md#关键属性与判断口径#3cc9021c0b71",
+      "rank": 5,
+      "rank_bucket": "rank_4_5",
+      "rrf_score": null,
+      "rank3_cutoff_score": null,
+      "score_gap_to_rank3": null,
+      "pre_need_coverage": 1.0,
+      "post_need_coverage": 0.0,
+      "selected_documents": [],
+      "selected_sections": []
+    },
+    {
+      "repetition": 1,
+      "case_id": "blind-008",
+      "evidence_id": "cross-border-guide.md#材质与合规#f6bfddbb08fc",
+      "rank": 25,
+      "rank_bucket": "rank_gt_10",
+      "rrf_score": null,
+      "rank3_cutoff_score": null,
+      "score_gap_to_rank3": null,
+      "pre_need_coverage": 1.0,
+      "post_need_coverage": 0.0,
+      "selected_documents": [],
+      "selected_sections": []
+    },
+    {
+      "repetition": 1,
+      "case_id": "blind-014",
+      "evidence_id": "home-living.md#避坑点#cc9519301550",
+      "rank": 23,
+      "rank_bucket": "rank_gt_10",
+      "rrf_score": null,
+      "rank3_cutoff_score": null,
+      "score_gap_to_rank3": null,
+      "pre_need_coverage": 1.0,
+      "post_need_coverage": 0.0,
+      "selected_documents": [],
+      "selected_sections": []
+    },
+    {
+      "repetition": 1,
+      "case_id": "blind-025",
+      "evidence_id": "cross-border-guide.md#材质与合规#ec2498127b7d",
+      "rank": 12,
+      "rank_bucket": "rank_gt_10",
+      "rrf_score": 0.0402394172,
+      "rank3_cutoff_score": 0.046423389,
+      "score_gap_to_rank3": 0.0061839718,
+      "pre_need_coverage": 1.0,
+      "post_need_coverage": 0.0,
+      "selected_documents": [
+        "digital-accessories",
+        "digital-accessories",
+        "eval-digital-accessories-概览"
+      ],
+      "selected_sections": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "repetition": 1,
+      "case_id": "human-mh-001",
+      "evidence_id": "cross-border-guide.md#材质与合规#f6bfddbb08fc",
+      "rank": 25,
+      "rank_bucket": "rank_gt_10",
+      "rrf_score": null,
+      "rank3_cutoff_score": null,
+      "score_gap_to_rank3": null,
+      "pre_need_coverage": 1.0,
+      "post_need_coverage": 0.0,
+      "selected_documents": [],
+      "selected_sections": []
+    },
+    {
+      "repetition": 1,
+      "case_id": "human-mh-002",
+      "evidence_id": "travel-gear.md#当前热卖款型#36bc545a10ef",
+      "rank": 4,
+      "rank_bucket": "rank_4_5",
+      "rrf_score": null,
+      "rank3_cutoff_score": null,
+      "score_gap_to_rank3": null,
+      "pre_need_coverage": 1.0,
+      "post_need_coverage": 0.0,
+      "selected_documents": [],
+      "selected_sections": []
+    },
+    {
+      "repetition": 1,
+      "case_id": "v4-006",
+      "evidence_id": "travel-gear.md#关键属性与判断口径#c8cbfcdaef5e",
+      "rank": 17,
+      "rank_bucket": "rank_gt_10",
+      "rrf_score": null,
+      "rank3_cutoff_score": null,
+      "score_gap_to_rank3": null,
+      "pre_need_coverage": 1.0,
+      "post_need_coverage": 0.0,
+      "selected_documents": [],
+      "selected_sections": []
+    },
+    {
+      "repetition": 1,
+      "case_id": "v4-022",
+      "evidence_id": "cross-border-guide.md#运费口径#a6d0645c2de4",
+      "rank": 25,
+      "rank_bucket": "rank_gt_10",
+      "rrf_score": null,
+      "rank3_cutoff_score": null,
+      "score_gap_to_rank3": null,
+      "pre_need_coverage": 1.0,
+      "post_need_coverage": 0.0,
+      "selected_documents": [],
+      "selected_sections": []
+    },
+    {
+      "repetition": 1,
+      "case_id": "v4-043",
+      "evidence_id": "cross-border-guide.md#材质与合规#19aa6758a0c6",
+      "rank": 6,
+      "rank_bucket": "rank_6_10",
+      "rrf_score": 0.0433819392,
+      "rank3_cutoff_score": 0.0440311644,
+      "score_gap_to_rank3": 0.0006492252,
+      "pre_need_coverage": 1.0,
+      "post_need_coverage": 0.5,
+      "selected_documents": [
+        "eval-travel-gear-避坑与合规",
+        "eval-policy-battery",
+        "digital-accessories"
+      ],
+      "selected_sections": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "repetition": 1,
+      "case_id": "v4-060",
+      "evidence_id": "cross-border-guide.md#材质与合规#19aa6758a0c6",
+      "rank": 25,
+      "rank_bucket": "rank_gt_10",
+      "rrf_score": null,
+      "rank3_cutoff_score": null,
+      "score_gap_to_rank3": null,
+      "pre_need_coverage": 1.0,
+      "post_need_coverage": 0.0,
+      "selected_documents": [],
+      "selected_sections": []
+    },
+    {
+      "repetition": 1,
+      "case_id": "v4-060",
+      "evidence_id": "eval-policy-battery.md#29-升级#0a81df2ca50b",
+      "rank": 21,
+      "rank_bucket": "rank_gt_10",
+      "rrf_score": null,
+      "rank3_cutoff_score": null,
+      "score_gap_to_rank3": null,
+      "pre_need_coverage": 1.0,
+      "post_need_coverage": 0.0,
+      "selected_documents": [],
+      "selected_sections": []
+    },
+    {
+      "repetition": 1,
+      "case_id": "v4-060",
+      "evidence_id": "eval-policy-battery.md#适用范围#f12478f064a8",
+      "rank": 3,
+      "rank_bucket": "rank_1_3",
+      "rrf_score": null,
+      "rank3_cutoff_score": null,
+      "score_gap_to_rank3": null,
+      "pre_need_coverage": 1.0,
+      "post_need_coverage": 0.0,
+      "selected_documents": [],
+      "selected_sections": []
+    }
+  ]
+}

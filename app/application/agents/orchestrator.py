@@ -39,6 +39,8 @@ from agentscope.event import (
     ToolResultEndEvent,
 )
 from agentscope.message import Msg, UserMsg
+from opentelemetry import trace as otel_trace
+from opentelemetry.trace import Status, StatusCode
 
 from app.application.agents.main_agent import SessionRegistry
 from app.application.agents.product_candidate_projection import ProductCandidateProjection
@@ -69,6 +71,7 @@ from app.infrastructure.capability_registry import CapabilityVersionChanged
 from app.infrastructure.prompt_registry import PromptContractChanged
 
 from app.infrastructure.operational_metrics import begin_request, finish_request
+from app.infrastructure.turn_trace import TurnTraceCollector
 
 logger = logging.getLogger(__name__)
 
@@ -209,19 +212,62 @@ class MainAgentOrchestrator:
             observer_token = self._native_observer.set(event_observer)
             metrics = begin_request()
             metrics_status = "error"
-            try:
-                result = await self._handle_intent(
-                    intent, use_semantic_cache=use_semantic_cache, persistence_guard=persistence_guard,
-                )
-                metrics_status = "error" if result.error else "success"
-                return result
-            except asyncio.CancelledError:
-                metrics_status = "cancelled"
-                raise
-            finally:
-                self._native_observer.reset(observer_token)
-                summary = finish_request(metrics, metrics_status)
-                self._bus.publish(intent.shopping_session_id, "usage.summary", summary)
+            collector = TurnTraceCollector(intent.shopping_session_id)
+            tracer = otel_trace.get_tracer(__name__)
+            with tracer.start_as_current_span(
+                "commerce.turn",
+                attributes={
+                    "langfuse.observation.type": "chain",
+                    "globex.trace.stage": "agent_turn",
+                },
+                record_exception=False,
+                set_status_on_exception=False,
+            ) as turn_span:
+                turn_span.set_attribute("langfuse.observation.input", json.dumps({
+                    "query": intent.raw_query,
+                    "locale": intent.locale,
+                    "currency": intent.currency,
+                    "fresh_session": fresh_session,
+                    "confirmation_count": len(intent.confirmations),
+                    "selected_skill_id": intent.selected_skill.id if intent.selected_skill else None,
+                }, ensure_ascii=False, separators=(",", ":")))
+                try:
+                    with observe_run_events(collector.observe):
+                        result = await self._handle_intent(
+                            intent, use_semantic_cache=use_semantic_cache,
+                            persistence_guard=persistence_guard,
+                        )
+                    metrics_status = "error" if result.error else "success"
+                    diagnostic = collector.summary(
+                        result.final_text,
+                        error_code=result.error_code or ("TURN_ERROR" if result.error else None),
+                    )
+                    turn_span.set_attribute(
+                        "langfuse.observation.output",
+                        json.dumps(diagnostic, ensure_ascii=False, separators=(",", ":")),
+                    )
+                    turn_span.set_attributes({
+                        "globex.agent.dispatch_count": diagnostic["dispatch_count"],
+                        "globex.agent.tool_call_count": diagnostic["tool_invoke_count"],
+                        "globex.agent.degraded_count": diagnostic["degraded_count"],
+                        "globex.agent.unverified_id_count": len(diagnostic["unverified_product_ids"]),
+                    })
+                    if result.error:
+                        turn_span.set_status(Status(StatusCode.ERROR))
+                    return result
+                except asyncio.CancelledError:
+                    metrics_status = "cancelled"
+                    turn_span.set_attribute("error.type", "CancelledError")
+                    turn_span.set_status(Status(StatusCode.ERROR))
+                    raise
+                except BaseException as error:
+                    turn_span.set_attribute("error.type", type(error).__name__)
+                    turn_span.set_status(Status(StatusCode.ERROR))
+                    raise
+                finally:
+                    self._native_observer.reset(observer_token)
+                    summary = finish_request(metrics, metrics_status)
+                    self._bus.publish(intent.shopping_session_id, "usage.summary", summary)
 
     async def _handle_intent(
         self, intent: SubmitIntentInput, *, use_semantic_cache: bool = True,
@@ -322,6 +368,36 @@ class MainAgentOrchestrator:
                 hint = UserMsg("trade_state", "以下是本轮从服务端账本恢复的交易事实，以此为准核对历史；待确认不等于已执行，不能代用户批准。\n"
                                + json.dumps(trade_state, ensure_ascii=False))
                 inputs.insert(0, hint)
+
+            with otel_trace.get_tracer(__name__).start_as_current_span(
+                "context.assembly",
+                attributes={
+                    "langfuse.observation.type": "chain",
+                    "globex.trace.stage": "context_assembly",
+                },
+                record_exception=False,
+                set_status_on_exception=False,
+            ) as assembly_span:
+                assembly_span.set_attribute(
+                    "langfuse.observation.input",
+                    json.dumps({"query": intent.raw_query}, ensure_ascii=False, separators=(",", ":")),
+                )
+                input_names = [str(getattr(message, "name", "")) for message in inputs]
+                assembly_span.set_attribute(
+                    "langfuse.observation.output",
+                    json.dumps({
+                        "input_message_count": len(inputs),
+                        "input_message_names": input_names,
+                        "stored_context_message_count": len(agent.state.context),
+                        "stored_summary_characters": len(agent.state.summary or ""),
+                        "has_history": has_history,
+                        "memory_hint_injected": "memory_hint" in input_names,
+                        "candidate_state_injected": "candidate_state" in input_names,
+                        "trade_state_injected": "trade_state" in input_names,
+                        "selected_skill_injected": "selected_skill_reference" in input_names,
+                        "personal_skill_catalog_injected": "personal_skill_catalog" in input_names,
+                    }, ensure_ascii=False, separators=(",", ":")),
+                )
 
             with observe_run_events(collect_candidates):
                 final_text = await self._reply_with_retry(session_id, agent, inputs)
@@ -504,29 +580,72 @@ class MainAgentOrchestrator:
         """跑一轮 Agent 并映射事件流；上游瞬时错误按指数退避重试。"""
         last_error: Exception | None = None
         for attempt in range(_MAX_TURN_RETRIES + 1):
-            try:
-                return await self._consume_reply(session_id, agent, inputs)
-            except Exception as err:  # noqa: BLE001
-                if not is_transient_error(err) or attempt >= _MAX_TURN_RETRIES:
+            with otel_trace.get_tracer(__name__).start_as_current_span(
+                "agent.turn_attempt",
+                attributes={
+                    "langfuse.observation.type": "chain",
+                    "globex.trace.stage": "turn_attempt",
+                    "globex.agent.attempt": attempt + 1,
+                },
+                record_exception=False,
+                set_status_on_exception=False,
+            ) as attempt_span:
+                attempt_span.set_attribute(
+                    "langfuse.observation.input",
+                    json.dumps({
+                        "attempt": attempt + 1,
+                        "input_message_count": len(inputs),
+                        "input_message_names": [str(getattr(message, "name", "")) for message in inputs],
+                        "reused_agent_context": not bool(inputs),
+                    }, ensure_ascii=False, separators=(",", ":")),
+                )
+                try:
+                    result = await self._consume_reply(session_id, agent, inputs)
+                    attempt_span.set_attribute(
+                        "langfuse.observation.output",
+                        json.dumps({"status": "completed", "reply_characters": len(result)}, separators=(",", ":")),
+                    )
+                    return result
+                except asyncio.CancelledError:
+                    attempt_span.set_attribute("error.type", "CancelledError")
+                    attempt_span.set_attribute(
+                        "langfuse.observation.output",
+                        json.dumps({"status": "cancelled"}, separators=(",", ":")),
+                    )
+                    attempt_span.set_status(Status(StatusCode.ERROR))
                     raise
-                last_error = err
-                # 指数退避：网关速率类限流对固定间隔重试不敏感
-                delay = _RETRY_BASE_SECONDS * (3**attempt)
-                logger.warning(
-                    "上游瞬时故障，%.0fs 后重试（第 %d/%d 次）：%s",
-                    delay,
-                    attempt + 1,
-                    _MAX_TURN_RETRIES,
-                    err,
-                )
-                self._bus.publish(
-                    session_id,
-                    "error",
-                    {"message": f"上游瞬时故障，正在重试：{err}", "retrying": True},
-                )
-                # 重试时不再重复送入 inputs，避免上下文里出现两次买家发言
-                inputs = []
-                await asyncio.sleep(delay)
+                except Exception as err:  # noqa: BLE001
+                    transient = is_transient_error(err)
+                    retrying = transient and attempt < _MAX_TURN_RETRIES
+                    attempt_span.set_attribute("error.type", type(err).__name__)
+                    attempt_span.set_status(Status(StatusCode.ERROR))
+                    attempt_span.set_attribute(
+                        "langfuse.observation.output",
+                        json.dumps({
+                            "status": "retrying" if retrying else "failed",
+                            "transient": transient,
+                        }, separators=(",", ":")),
+                    )
+                    if not retrying:
+                        raise
+                    last_error = err
+                    # 指数退避：网关速率类限流对固定间隔重试不敏感
+                    delay = _RETRY_BASE_SECONDS * (3**attempt)
+                    logger.warning(
+                        "上游瞬时故障，%.0fs 后重试（第 %d/%d 次）：%s",
+                        delay,
+                        attempt + 1,
+                        _MAX_TURN_RETRIES,
+                        err,
+                    )
+                    self._bus.publish(
+                        session_id,
+                        "error",
+                        {"message": f"上游瞬时故障，正在重试：{err}", "retrying": True},
+                    )
+                    # 重试时不再重复送入 inputs，避免上下文里出现两次买家发言
+                    inputs = []
+                    await asyncio.sleep(delay)
         raise last_error if last_error else RuntimeError("reply 重试耗尽")
 
     async def _consume_reply(self, session_id: str, agent: Agent, inputs: list[Msg]) -> str:

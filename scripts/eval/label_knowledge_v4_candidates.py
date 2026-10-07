@@ -200,7 +200,7 @@ def main() -> None:
     output.parent.mkdir(parents=True, exist_ok=True)
     rows = _jsonl(pool_path)
     completed = {row["id"]: row for row in _jsonl(output)} if args.resume and output.exists() else {}
-    knowledge_root = PROJECT_ROOT / "knowledge"
+    knowledge_root = PROJECT_ROOT / "eval" / "knowledge" / "corpus"
     usage_total = Counter()
     started = time.perf_counter()
     with httpx.Client(timeout=180) as client:

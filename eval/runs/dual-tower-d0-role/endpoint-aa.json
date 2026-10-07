@@ -1,0 +1,31 @@
+{
+  "sample_size": 20,
+  "seed": 20261004,
+  "paired_cosine_mean": 0.9349846494995595,
+  "paired_cosine_min": 0.8921928439003001,
+  "paired_cosine_median": 0.9325619926678396,
+  "nearest_neighbor_top1_consistency": 0.75,
+  "nearest_neighbor_top5_mean_jaccard": 0.7928571428571428,
+  "attribution_warning": "Endpoint and text_type change together; material document-vector differences limit causal attribution to role alone.",
+  "compatible_usage": {
+    "request_count": 2,
+    "batch_sizes": [
+      10,
+      10
+    ],
+    "total_latency_ms": 676.77,
+    "request_latencies_ms": [
+      455.692,
+      221.078
+    ],
+    "total_tokens": 8732
+  },
+  "native_usage": {
+    "vectors": "<20 omitted>",
+    "latency_ms": 594.4852999818977,
+    "attempts": 1,
+    "request_count": 1,
+    "total_tokens": 8732,
+    "text_type": "document"
+  }
+}

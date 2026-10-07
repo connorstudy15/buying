@@ -1,0 +1,878 @@
+[
+  {
+    "template_group_id": "category-template::价格与预算::chunk-0",
+    "chunk_count": 8,
+    "chunk_ids": [
+      "268c92ef-357b-43d2-b59d-509811f39901",
+      "6e697084-e1d4-4cea-afd9-fa951b94baac",
+      "8949269c-bd02-403f-b44d-ba61c319e4e3",
+      "9208ef4b-86f5-4a82-9420-a3804d1d8188",
+      "97082cb9-0c8c-48a8-9641-1363f0f7a229",
+      "b6b74e07-d3ed-41fb-bf6a-a5c9b8f36339",
+      "c8c8c63c-c780-449c-9880-d8d3217bec1a",
+      "ffb59f81-44db-4012-80cd-7db2f01302cc"
+    ],
+    "sources": [
+      "eval-kitchen-dining-价格与预算.md",
+      "eval-digital-accessories-价格与预算.md",
+      "eval-outdoor-sports-价格与预算.md",
+      "eval-office-study-价格与预算.md",
+      "eval-travel-gear-价格与预算.md",
+      "eval-home-living-价格与预算.md",
+      "eval-beauty-care-价格与预算.md",
+      "eval-baby-pet-价格与预算.md"
+    ],
+    "document_ids": [
+      "eval-kitchen-dining-价格与预算",
+      "eval-digital-accessories-价格与预算",
+      "eval-outdoor-sports-价格与预算",
+      "eval-office-study-价格与预算",
+      "eval-travel-gear-价格与预算",
+      "eval-home-living-价格与预算",
+      "eval-beauty-care-价格与预算",
+      "eval-baby-pet-价格与预算"
+    ],
+    "chunk_index": 0,
+    "text_similarity": {
+      "method": "SequenceMatcher after whitespace/category-slot normalization",
+      "mean": 0.9041526941950868,
+      "min": 0.8344459279038718,
+      "max": 0.9695044472681067
+    },
+    "semantic_similarity": {
+      "method": "cosine on existing production Flash vectors",
+      "mean": 0.734398511672067,
+      "min": 0.6659122678622581,
+      "max": 0.7878560720464962
+    },
+    "information_need_relation": "same template slot; category/region term varies",
+    "independent_knowledge_assessment": "low_independence_template_repetition"
+  },
+  {
+    "template_group_id": "category-template::价格与预算::chunk-1",
+    "chunk_count": 8,
+    "chunk_ids": [
+      "347f4844-9bb6-44fc-8a5b-4bc8c5ee9421",
+      "5e38d412-ce7a-499e-9d9e-59d7d0d55d8d",
+      "70ea2817-6ab3-41d1-879a-3e24bd638ecf",
+      "77b04b59-d0c1-4288-8d41-42b49a3e9657",
+      "94e19a76-23d4-42ef-8111-f61c60c1defa",
+      "9ce6931d-444e-4cb4-94d1-a47d4bbbb448",
+      "b526cec2-d3cc-4225-94d3-a6fbfa70c29e",
+      "c71a7f81-8b2d-491d-b359-cfc3a1b3f6dc"
+    ],
+    "sources": [
+      "eval-baby-pet-价格与预算.md",
+      "eval-digital-accessories-价格与预算.md",
+      "eval-outdoor-sports-价格与预算.md",
+      "eval-kitchen-dining-价格与预算.md",
+      "eval-beauty-care-价格与预算.md",
+      "eval-travel-gear-价格与预算.md",
+      "eval-office-study-价格与预算.md",
+      "eval-home-living-价格与预算.md"
+    ],
+    "document_ids": [
+      "eval-baby-pet-价格与预算",
+      "eval-digital-accessories-价格与预算",
+      "eval-outdoor-sports-价格与预算",
+      "eval-kitchen-dining-价格与预算",
+      "eval-beauty-care-价格与预算",
+      "eval-travel-gear-价格与预算",
+      "eval-office-study-价格与预算",
+      "eval-home-living-价格与预算"
+    ],
+    "chunk_index": 1,
+    "text_similarity": {
+      "method": "SequenceMatcher after whitespace/category-slot normalization",
+      "mean": 0.869225301009644,
+      "min": 0.8002680965147453,
+      "max": 0.938382541720154
+    },
+    "semantic_similarity": {
+      "method": "cosine on existing production Flash vectors",
+      "mean": 0.8263800821166569,
+      "min": 0.7997824205116343,
+      "max": 0.865531724106913
+    },
+    "information_need_relation": "same template slot; category/region term varies",
+    "independent_knowledge_assessment": "low_independence_template_repetition"
+  },
+  {
+    "template_group_id": "category-template::价格与预算::chunk-2",
+    "chunk_count": 8,
+    "chunk_ids": [
+      "36d585a8-ccee-4433-a8f9-05321f9d593b",
+      "5919f6ee-4448-4fd9-ad2c-347f0b886791",
+      "650d29e2-b1eb-470c-ab11-dee3d8f23b60",
+      "9dfdee98-f481-492c-abd1-6abbb26b1af8",
+      "a9bbf803-9541-4ff8-abc5-5075049e3f70",
+      "b60de6d4-1fd7-4a99-9951-028e59a043d2",
+      "c14ea3ed-b681-4c66-b35a-34121123e743",
+      "f5ba279a-9871-487c-b9db-03173e3f1f23"
+    ],
+    "sources": [
+      "eval-baby-pet-价格与预算.md",
+      "eval-home-living-价格与预算.md",
+      "eval-digital-accessories-价格与预算.md",
+      "eval-travel-gear-价格与预算.md",
+      "eval-beauty-care-价格与预算.md",
+      "eval-office-study-价格与预算.md",
+      "eval-kitchen-dining-价格与预算.md",
+      "eval-outdoor-sports-价格与预算.md"
+    ],
+    "document_ids": [
+      "eval-baby-pet-价格与预算",
+      "eval-home-living-价格与预算",
+      "eval-digital-accessories-价格与预算",
+      "eval-travel-gear-价格与预算",
+      "eval-beauty-care-价格与预算",
+      "eval-office-study-价格与预算",
+      "eval-kitchen-dining-价格与预算",
+      "eval-outdoor-sports-价格与预算"
+    ],
+    "chunk_index": 2,
+    "text_similarity": {
+      "method": "SequenceMatcher after whitespace/category-slot normalization",
+      "mean": 0.837288817196742,
+      "min": 0.7652292950034223,
+      "max": 0.9146183699870634
+    },
+    "semantic_similarity": {
+      "method": "cosine on existing production Flash vectors",
+      "mean": 0.6935028612416159,
+      "min": 0.6343744780696294,
+      "max": 0.773267715489015
+    },
+    "information_need_relation": "same template slot; category/region term varies",
+    "independent_knowledge_assessment": "low_independence_template_repetition"
+  },
+  {
+    "template_group_id": "category-template::价格与预算::chunk-3",
+    "chunk_count": 7,
+    "chunk_ids": [
+      "28639474-bc55-4f42-a94c-4acf9e3b843c",
+      "3185c56c-8356-418d-b0fa-43f735e1c025",
+      "39beb9b4-7149-4630-947c-84a861327be6",
+      "753d3c7d-a646-402c-a1fd-78407b2c09ed",
+      "7a49549b-d3ec-478a-8da0-1cf33b0cd9fe",
+      "8a728e6a-879f-4911-aab9-bd1d03a7f59c",
+      "b003ce7c-ce85-4435-9ad0-f96d29373c36"
+    ],
+    "sources": [
+      "eval-beauty-care-价格与预算.md",
+      "eval-office-study-价格与预算.md",
+      "eval-travel-gear-价格与预算.md",
+      "eval-home-living-价格与预算.md",
+      "eval-baby-pet-价格与预算.md",
+      "eval-outdoor-sports-价格与预算.md",
+      "eval-kitchen-dining-价格与预算.md"
+    ],
+    "document_ids": [
+      "eval-beauty-care-价格与预算",
+      "eval-office-study-价格与预算",
+      "eval-travel-gear-价格与预算",
+      "eval-home-living-价格与预算",
+      "eval-baby-pet-价格与预算",
+      "eval-outdoor-sports-价格与预算",
+      "eval-kitchen-dining-价格与预算"
+    ],
+    "chunk_index": 3,
+    "text_similarity": {
+      "method": "SequenceMatcher after whitespace/category-slot normalization",
+      "mean": 0.8065711987800165,
+      "min": 0.7628865979381443,
+      "max": 0.88
+    },
+    "semantic_similarity": {
+      "method": "cosine on existing production Flash vectors",
+      "mean": 0.7719438442926072,
+      "min": 0.723320756039549,
+      "max": 0.8192313307161792
+    },
+    "information_need_relation": "same template slot; category/region term varies",
+    "independent_knowledge_assessment": "low_independence_template_repetition"
+  },
+  {
+    "template_group_id": "category-template::参数判断::chunk-0",
+    "chunk_count": 8,
+    "chunk_ids": [
+      "106fc90c-d8d1-40dc-a680-f71f24eb88fa",
+      "72be5add-e472-4fd8-878b-de1143ffda51",
+      "9f9e1961-90c1-4b30-82e6-874f973530cc",
+      "afa9a475-0630-4249-aa30-fc58057e5866",
+      "b6f86320-71ba-4a9c-940f-d7c8fb9bed25",
+      "c2122f81-ec4a-424d-b45f-a1b3be8fc032",
+      "ca35634b-d20a-4af1-9ccb-89414a7f3240",
+      "ec23ed98-377e-4e0d-ae7e-20d7edc70d24"
+    ],
+    "sources": [
+      "eval-baby-pet-参数判断.md",
+      "eval-beauty-care-参数判断.md",
+      "eval-digital-accessories-参数判断.md",
+      "eval-kitchen-dining-参数判断.md",
+      "eval-travel-gear-参数判断.md",
+      "eval-outdoor-sports-参数判断.md",
+      "eval-home-living-参数判断.md",
+      "eval-office-study-参数判断.md"
+    ],
+    "document_ids": [
+      "eval-baby-pet-参数判断",
+      "eval-beauty-care-参数判断",
+      "eval-digital-accessories-参数判断",
+      "eval-kitchen-dining-参数判断",
+      "eval-travel-gear-参数判断",
+      "eval-outdoor-sports-参数判断",
+      "eval-home-living-参数判断",
+      "eval-office-study-参数判断"
+    ],
+    "chunk_index": 0,
+    "text_similarity": {
+      "method": "SequenceMatcher after whitespace/category-slot normalization",
+      "mean": 0.9048831988363201,
+      "min": 0.836,
+      "max": 0.9695817490494296
+    },
+    "semantic_similarity": {
+      "method": "cosine on existing production Flash vectors",
+      "mean": 0.784473787498925,
+      "min": 0.747398127195426,
+      "max": 0.8425784111870878
+    },
+    "information_need_relation": "same template slot; category/region term varies",
+    "independent_knowledge_assessment": "low_independence_template_repetition"
+  },
+  {
+    "template_group_id": "category-template::参数判断::chunk-1",
+    "chunk_count": 8,
+    "chunk_ids": [
+      "0759a091-98db-48f1-9403-b0f372d1217a",
+      "55d186fa-47a7-41d2-9e75-ac819bedcfee",
+      "973af222-0c45-41dd-82fb-fc35b8f7c398",
+      "a2d846b2-a224-4618-b749-6c95b061d864",
+      "a4cbe1b1-6c40-4143-9d3e-4ce60617b539",
+      "c4433987-2141-4e4e-ba44-29b397370dc3",
+      "c5f97266-608b-414b-bb3b-ddd56304dbb2",
+      "ea6b1f98-208e-4626-9f15-0c942cdebae5"
+    ],
+    "sources": [
+      "eval-digital-accessories-参数判断.md",
+      "eval-home-living-参数判断.md",
+      "eval-outdoor-sports-参数判断.md",
+      "eval-office-study-参数判断.md",
+      "eval-baby-pet-参数判断.md",
+      "eval-beauty-care-参数判断.md",
+      "eval-kitchen-dining-参数判断.md",
+      "eval-travel-gear-参数判断.md"
+    ],
+    "document_ids": [
+      "eval-digital-accessories-参数判断",
+      "eval-home-living-参数判断",
+      "eval-outdoor-sports-参数判断",
+      "eval-office-study-参数判断",
+      "eval-baby-pet-参数判断",
+      "eval-beauty-care-参数判断",
+      "eval-kitchen-dining-参数判断",
+      "eval-travel-gear-参数判断"
+    ],
+    "chunk_index": 1,
+    "text_similarity": {
+      "method": "SequenceMatcher after whitespace/category-slot normalization",
+      "mean": 0.8578890928867748,
+      "min": 0.7853333333333333,
+      "max": 0.9306803594351734
+    },
+    "semantic_similarity": {
+      "method": "cosine on existing production Flash vectors",
+      "mean": 0.8073906284570554,
+      "min": 0.7691730378226804,
+      "max": 0.8470494834048334
+    },
+    "information_need_relation": "same template slot; category/region term varies",
+    "independent_knowledge_assessment": "low_independence_template_repetition"
+  },
+  {
+    "template_group_id": "category-template::参数判断::chunk-2",
+    "chunk_count": 8,
+    "chunk_ids": [
+      "0fecbaca-32de-417b-ad85-4969b61694a2",
+      "51199a93-b776-4e80-8fe5-90e615445eb6",
+      "70054e2b-7b73-480b-b01a-48d5dcb81f66",
+      "87641417-4618-4171-9dc5-399e72c61136",
+      "9d8ce852-cfdb-48eb-a41a-aea0b46d2f09",
+      "aaa2b590-09b1-4efd-907c-00cc875a36bd",
+      "d9a69ae2-dd53-4b30-9b6b-0d8092e274ec",
+      "f7f93adc-c894-431d-9087-dc9effdaaef4"
+    ],
+    "sources": [
+      "eval-travel-gear-参数判断.md",
+      "eval-kitchen-dining-参数判断.md",
+      "eval-outdoor-sports-参数判断.md",
+      "eval-baby-pet-参数判断.md",
+      "eval-beauty-care-参数判断.md",
+      "eval-office-study-参数判断.md",
+      "eval-digital-accessories-参数判断.md",
+      "eval-home-living-参数判断.md"
+    ],
+    "document_ids": [
+      "eval-travel-gear-参数判断",
+      "eval-kitchen-dining-参数判断",
+      "eval-outdoor-sports-参数判断",
+      "eval-baby-pet-参数判断",
+      "eval-beauty-care-参数判断",
+      "eval-office-study-参数判断",
+      "eval-digital-accessories-参数判断",
+      "eval-home-living-参数判断"
+    ],
+    "chunk_index": 2,
+    "text_similarity": {
+      "method": "SequenceMatcher after whitespace/category-slot normalization",
+      "mean": 0.8362431827985229,
+      "min": 0.7740112994350282,
+      "max": 0.9140625
+    },
+    "semantic_similarity": {
+      "method": "cosine on existing production Flash vectors",
+      "mean": 0.7411204229971836,
+      "min": 0.6789817960959756,
+      "max": 0.8012565441763857
+    },
+    "information_need_relation": "same template slot; category/region term varies",
+    "independent_knowledge_assessment": "low_independence_template_repetition"
+  },
+  {
+    "template_group_id": "category-template::概览::chunk-0",
+    "chunk_count": 8,
+    "chunk_ids": [
+      "1265d591-e2e6-47d7-96dc-b5879c354786",
+      "5231603e-e0fc-468a-84ba-3d3c74fcb71f",
+      "582607c3-0bc2-435a-a389-55499ae9d697",
+      "6c9bcce5-594d-432b-af9b-6a2b66c3ebe3",
+      "b2f36973-39d1-40e1-bae6-e2ae66fb43b9",
+      "b7c096c9-593b-479d-abf6-43d0ebc87bbf",
+      "f4c3bb5e-9475-439a-ba12-e2649849b6c5",
+      "fcf16af8-a006-4925-afea-438053311545"
+    ],
+    "sources": [
+      "eval-office-study-概览.md",
+      "eval-travel-gear-概览.md",
+      "eval-kitchen-dining-概览.md",
+      "eval-home-living-概览.md",
+      "eval-digital-accessories-概览.md",
+      "eval-beauty-care-概览.md",
+      "eval-baby-pet-概览.md",
+      "eval-outdoor-sports-概览.md"
+    ],
+    "document_ids": [
+      "eval-office-study-概览",
+      "eval-travel-gear-概览",
+      "eval-kitchen-dining-概览",
+      "eval-home-living-概览",
+      "eval-digital-accessories-概览",
+      "eval-beauty-care-概览",
+      "eval-baby-pet-概览",
+      "eval-outdoor-sports-概览"
+    ],
+    "chunk_index": 0,
+    "text_similarity": {
+      "method": "SequenceMatcher after whitespace/category-slot normalization",
+      "mean": 0.9027732410117272,
+      "min": 0.8317880794701987,
+      "max": 0.9683944374209861
+    },
+    "semantic_similarity": {
+      "method": "cosine on existing production Flash vectors",
+      "mean": 0.7390422048862846,
+      "min": 0.6862831951311164,
+      "max": 0.7939083912930519
+    },
+    "information_need_relation": "same template slot; category/region term varies",
+    "independent_knowledge_assessment": "low_independence_template_repetition"
+  },
+  {
+    "template_group_id": "category-template::概览::chunk-1",
+    "chunk_count": 8,
+    "chunk_ids": [
+      "283dac87-3b47-45f6-971c-5bf3aa0fd1cd",
+      "2c64467c-1144-4950-84de-3c9f57b3cd3d",
+      "38a7b0f1-75d0-4e9a-b23f-df48a1048a2e",
+      "545a128d-528e-4b47-a8c0-de76c6a07d23",
+      "59e18459-f124-4b97-a74d-904e7c7269da",
+      "661281df-c470-43e3-8077-09831744b584",
+      "8fcecadd-c9bf-4589-a4da-9879cc946800",
+      "b9bf09c5-3463-481f-aaf5-27754ed8a0bf"
+    ],
+    "sources": [
+      "eval-baby-pet-概览.md",
+      "eval-beauty-care-概览.md",
+      "eval-digital-accessories-概览.md",
+      "eval-office-study-概览.md",
+      "eval-kitchen-dining-概览.md",
+      "eval-travel-gear-概览.md",
+      "eval-home-living-概览.md",
+      "eval-outdoor-sports-概览.md"
+    ],
+    "document_ids": [
+      "eval-baby-pet-概览",
+      "eval-beauty-care-概览",
+      "eval-digital-accessories-概览",
+      "eval-office-study-概览",
+      "eval-kitchen-dining-概览",
+      "eval-travel-gear-概览",
+      "eval-home-living-概览",
+      "eval-outdoor-sports-概览"
+    ],
+    "chunk_index": 1,
+    "text_similarity": {
+      "method": "SequenceMatcher after whitespace/category-slot normalization",
+      "mean": 0.8551684115824425,
+      "min": 0.7787375415282392,
+      "max": 0.9313850063532402
+    },
+    "semantic_similarity": {
+      "method": "cosine on existing production Flash vectors",
+      "mean": 0.7930947962019202,
+      "min": 0.7444814750159293,
+      "max": 0.8308150341859758
+    },
+    "information_need_relation": "same template slot; category/region term varies",
+    "independent_knowledge_assessment": "low_independence_template_repetition"
+  },
+  {
+    "template_group_id": "category-template::概览::chunk-2",
+    "chunk_count": 8,
+    "chunk_ids": [
+      "0a588487-793e-4bc9-88d5-6de1b68390be",
+      "142faa9d-4264-4e57-82d5-bcc65f2146c8",
+      "19b2cd13-89b9-4a54-9449-e73ff791b2b2",
+      "49f97380-143f-4026-88b9-64383f38af31",
+      "5037f3bf-056f-4482-ab02-1debd708709c",
+      "507618b9-6de2-4004-8fc3-168dfb4a8bbc",
+      "94caf440-f949-41be-8c4f-94d30cc36d1d",
+      "9fcf873b-c91d-4585-ad6e-2b925037e462"
+    ],
+    "sources": [
+      "eval-office-study-概览.md",
+      "eval-baby-pet-概览.md",
+      "eval-kitchen-dining-概览.md",
+      "eval-home-living-概览.md",
+      "eval-beauty-care-概览.md",
+      "eval-travel-gear-概览.md",
+      "eval-digital-accessories-概览.md",
+      "eval-outdoor-sports-概览.md"
+    ],
+    "document_ids": [
+      "eval-office-study-概览",
+      "eval-baby-pet-概览",
+      "eval-kitchen-dining-概览",
+      "eval-home-living-概览",
+      "eval-beauty-care-概览",
+      "eval-travel-gear-概览",
+      "eval-digital-accessories-概览",
+      "eval-outdoor-sports-概览"
+    ],
+    "chunk_index": 2,
+    "text_similarity": {
+      "method": "SequenceMatcher after whitespace/category-slot normalization",
+      "mean": 0.8266258468103816,
+      "min": 0.7610894941634241,
+      "max": 0.9051724137931034
+    },
+    "semantic_similarity": {
+      "method": "cosine on existing production Flash vectors",
+      "mean": 0.7252569591033228,
+      "min": 0.6516708891243654,
+      "max": 0.7899755068056464
+    },
+    "information_need_relation": "same template slot; category/region term varies",
+    "independent_knowledge_assessment": "low_independence_template_repetition"
+  },
+  {
+    "template_group_id": "category-template::避坑与合规::chunk-0",
+    "chunk_count": 8,
+    "chunk_ids": [
+      "04ffd965-ac9b-44a6-ab1e-81be81e63695",
+      "0749615f-3e6a-40bb-a3ee-268f7672bac9",
+      "250971bb-2bca-4cd3-afe3-a3af0b92a58b",
+      "7885d5f8-8519-4f91-9936-17ac73086121",
+      "d7b77a62-2bf3-4d82-84e6-7044f9dd687d",
+      "f0f7aef1-bfba-47e4-9f13-35cd9e81238f",
+      "f7aad019-ab85-41f5-bbf8-76bf6f68653b",
+      "fcd2b4bf-a593-45f9-85bb-05597e328714"
+    ],
+    "sources": [
+      "eval-digital-accessories-避坑与合规.md",
+      "eval-office-study-避坑与合规.md",
+      "eval-beauty-care-避坑与合规.md",
+      "eval-baby-pet-避坑与合规.md",
+      "eval-kitchen-dining-避坑与合规.md",
+      "eval-outdoor-sports-避坑与合规.md",
+      "eval-travel-gear-避坑与合规.md",
+      "eval-home-living-避坑与合规.md"
+    ],
+    "document_ids": [
+      "eval-digital-accessories-避坑与合规",
+      "eval-office-study-避坑与合规",
+      "eval-beauty-care-避坑与合规",
+      "eval-baby-pet-避坑与合规",
+      "eval-kitchen-dining-避坑与合规",
+      "eval-outdoor-sports-避坑与合规",
+      "eval-travel-gear-避坑与合规",
+      "eval-home-living-避坑与合规"
+    ],
+    "chunk_index": 0,
+    "text_similarity": {
+      "method": "SequenceMatcher after whitespace/category-slot normalization",
+      "mean": 0.9043339849855146,
+      "min": 0.8344459279038718,
+      "max": 0.9695044472681067
+    },
+    "semantic_similarity": {
+      "method": "cosine on existing production Flash vectors",
+      "mean": 0.7792538242926578,
+      "min": 0.7265897966254993,
+      "max": 0.8288849477699805
+    },
+    "information_need_relation": "same template slot; category/region term varies",
+    "independent_knowledge_assessment": "low_independence_template_repetition"
+  },
+  {
+    "template_group_id": "category-template::避坑与合规::chunk-1",
+    "chunk_count": 8,
+    "chunk_ids": [
+      "1a343e79-1ece-49e7-9a09-025c8a246693",
+      "31ba89ef-26ba-4acf-823f-70a395cc5ac7",
+      "5758d3de-3e2c-4d19-ac43-66a3e8de8a1d",
+      "65bddc2c-e3d4-4dda-8af8-38ad5fe452ba",
+      "668fb215-2c47-45e3-b0aa-42dc5a4d1747",
+      "a8daecf7-ba8b-4acf-9ae6-3cbd987d0201",
+      "a9f0b95c-16f7-43dc-8e0f-4c7190c48aff",
+      "b6f914a0-bddf-4e7c-b341-246de7903c70"
+    ],
+    "sources": [
+      "eval-travel-gear-避坑与合规.md",
+      "eval-office-study-避坑与合规.md",
+      "eval-home-living-避坑与合规.md",
+      "eval-outdoor-sports-避坑与合规.md",
+      "eval-baby-pet-避坑与合规.md",
+      "eval-beauty-care-避坑与合规.md",
+      "eval-digital-accessories-避坑与合规.md",
+      "eval-kitchen-dining-避坑与合规.md"
+    ],
+    "document_ids": [
+      "eval-travel-gear-避坑与合规",
+      "eval-office-study-避坑与合规",
+      "eval-home-living-避坑与合规",
+      "eval-outdoor-sports-避坑与合规",
+      "eval-baby-pet-避坑与合规",
+      "eval-beauty-care-避坑与合规",
+      "eval-digital-accessories-避坑与合规",
+      "eval-kitchen-dining-避坑与合规"
+    ],
+    "chunk_index": 1,
+    "text_similarity": {
+      "method": "SequenceMatcher after whitespace/category-slot normalization",
+      "mean": 0.869225301009644,
+      "min": 0.8002680965147453,
+      "max": 0.938382541720154
+    },
+    "semantic_similarity": {
+      "method": "cosine on existing production Flash vectors",
+      "mean": 0.8336788089096564,
+      "min": 0.792110732872595,
+      "max": 0.875122115395769
+    },
+    "information_need_relation": "same template slot; category/region term varies",
+    "independent_knowledge_assessment": "low_independence_template_repetition"
+  },
+  {
+    "template_group_id": "category-template::避坑与合规::chunk-2",
+    "chunk_count": 8,
+    "chunk_ids": [
+      "0e0d2da5-0977-4fc2-8374-d8e94a0415e2",
+      "1d9fdea0-57da-410a-8fb8-d4a7859d6eef",
+      "29d2cc62-9424-49cb-8db3-a498e67c2bf5",
+      "3eb0a86e-f5cc-4c77-b9d8-e52707f03ee7",
+      "8530e99b-39c3-43e1-aee8-a6cd4c555cb5",
+      "8a66f442-3321-411b-ba7d-b8708040f05d",
+      "a4f72363-80db-4039-bad4-d6c48ac42d81",
+      "de15ff87-f123-4a17-8a9c-96bf6e201700"
+    ],
+    "sources": [
+      "eval-travel-gear-避坑与合规.md",
+      "eval-kitchen-dining-避坑与合规.md",
+      "eval-baby-pet-避坑与合规.md",
+      "eval-home-living-避坑与合规.md",
+      "eval-outdoor-sports-避坑与合规.md",
+      "eval-beauty-care-避坑与合规.md",
+      "eval-digital-accessories-避坑与合规.md",
+      "eval-office-study-避坑与合规.md"
+    ],
+    "document_ids": [
+      "eval-travel-gear-避坑与合规",
+      "eval-kitchen-dining-避坑与合规",
+      "eval-baby-pet-避坑与合规",
+      "eval-home-living-避坑与合规",
+      "eval-outdoor-sports-避坑与合规",
+      "eval-beauty-care-避坑与合规",
+      "eval-digital-accessories-避坑与合规",
+      "eval-office-study-避坑与合规"
+    ],
+    "chunk_index": 2,
+    "text_similarity": {
+      "method": "SequenceMatcher after whitespace/category-slot normalization",
+      "mean": 0.8368210465914468,
+      "min": 0.7652292950034223,
+      "max": 0.9146183699870634
+    },
+    "semantic_similarity": {
+      "method": "cosine on existing production Flash vectors",
+      "mean": 0.6856678493808984,
+      "min": 0.6359067561018892,
+      "max": 0.7553840108192628
+    },
+    "information_need_relation": "same template slot; category/region term varies",
+    "independent_knowledge_assessment": "low_independence_template_repetition"
+  },
+  {
+    "template_group_id": "category-template::避坑与合规::chunk-3",
+    "chunk_count": 7,
+    "chunk_ids": [
+      "0a5edc07-8b59-4f14-b72c-560a85136daf",
+      "9de59a3e-5f28-4ff0-9444-6e9d97fcad0b",
+      "a1bfe001-0a2d-440f-b461-467b4ee359a4",
+      "a99a5941-82f6-41e1-b58f-b7b22e1d969c",
+      "ab37936c-6447-4d4e-bbda-8a0fbb6abd83",
+      "ca9c8fac-8851-4ff9-932f-3cbe1b1ea240",
+      "e5aa232a-0368-440b-9716-de8d416dec25"
+    ],
+    "sources": [
+      "eval-beauty-care-避坑与合规.md",
+      "eval-outdoor-sports-避坑与合规.md",
+      "eval-home-living-避坑与合规.md",
+      "eval-office-study-避坑与合规.md",
+      "eval-baby-pet-避坑与合规.md",
+      "eval-travel-gear-避坑与合规.md",
+      "eval-kitchen-dining-避坑与合规.md"
+    ],
+    "document_ids": [
+      "eval-beauty-care-避坑与合规",
+      "eval-outdoor-sports-避坑与合规",
+      "eval-home-living-避坑与合规",
+      "eval-office-study-避坑与合规",
+      "eval-baby-pet-避坑与合规",
+      "eval-travel-gear-避坑与合规",
+      "eval-kitchen-dining-避坑与合规"
+    ],
+    "chunk_index": 3,
+    "text_similarity": {
+      "method": "SequenceMatcher after whitespace/category-slot normalization",
+      "mean": 0.8065711987800165,
+      "min": 0.7628865979381443,
+      "max": 0.88
+    },
+    "semantic_similarity": {
+      "method": "cosine on existing production Flash vectors",
+      "mean": 0.7684195858070197,
+      "min": 0.7246117302719159,
+      "max": 0.8171306224400778
+    },
+    "information_need_relation": "same template slot; category/region term varies",
+    "independent_knowledge_assessment": "low_independence_template_repetition"
+  },
+  {
+    "template_group_id": "policy-template::chunk-0",
+    "chunk_count": 8,
+    "chunk_ids": [
+      "557075d9-be8b-43a4-bb9d-a09a5901d152",
+      "7ab1e992-2d3a-491e-b38a-06622c4916d3",
+      "a75fc5d8-90ff-45d0-a87a-88f5dfca9fcf",
+      "b8c66930-cd91-4fe5-8da0-5a3092625c28",
+      "bd9b1b3b-7399-4990-a142-575e53b678e0",
+      "da034ebc-6504-4c50-89a3-31059f51ef1a",
+      "dbc486c0-ad86-4ed5-b5ec-fcbe9044843f",
+      "f5cde0e8-4692-4876-98c4-9802211e9fae"
+    ],
+    "sources": [
+      "eval-policy-cn.md",
+      "eval-policy-sg.md",
+      "eval-policy-material.md",
+      "eval-policy-battery.md",
+      "eval-policy-eu.md",
+      "eval-policy-jp.md",
+      "eval-policy-us.md",
+      "eval-policy-global-shipping.md"
+    ],
+    "document_ids": [
+      "eval-policy-cn",
+      "eval-policy-sg",
+      "eval-policy-material",
+      "eval-policy-battery",
+      "eval-policy-eu",
+      "eval-policy-jp",
+      "eval-policy-us",
+      "eval-policy-global-shipping"
+    ],
+    "chunk_index": 0,
+    "text_similarity": {
+      "method": "SequenceMatcher after whitespace/category-slot normalization",
+      "mean": 0.8248861991309043,
+      "min": 0.6961852861035422,
+      "max": 0.9833101529902643
+    },
+    "semantic_similarity": {
+      "method": "cosine on existing production Flash vectors",
+      "mean": 0.849139771302121,
+      "min": 0.7616285485958411,
+      "max": 0.9277937990459056
+    },
+    "information_need_relation": "same template slot; category/region term varies",
+    "independent_knowledge_assessment": "low_independence_template_repetition"
+  },
+  {
+    "template_group_id": "policy-template::chunk-1",
+    "chunk_count": 8,
+    "chunk_ids": [
+      "2f402de5-8df7-44ef-b99b-4c102189e02c",
+      "390b0241-2848-4aee-86cb-6ff32056d24c",
+      "5c16dabf-9872-4a4d-960b-9eafe68a6d21",
+      "69acd81e-40ee-4eba-8017-131e73e05b4d",
+      "6e8bddb3-7a60-4296-893c-09811ab43e4e",
+      "7e464ee3-d191-49fc-8c5c-46acfae3af03",
+      "8f778637-6246-47e9-9178-d88434f12707",
+      "ea5cccab-3160-4e9b-9e62-3ccfe211db33"
+    ],
+    "sources": [
+      "eval-policy-material.md",
+      "eval-policy-us.md",
+      "eval-policy-global-shipping.md",
+      "eval-policy-eu.md",
+      "eval-policy-cn.md",
+      "eval-policy-battery.md",
+      "eval-policy-jp.md",
+      "eval-policy-sg.md"
+    ],
+    "document_ids": [
+      "eval-policy-material",
+      "eval-policy-us",
+      "eval-policy-global-shipping",
+      "eval-policy-eu",
+      "eval-policy-cn",
+      "eval-policy-battery",
+      "eval-policy-jp",
+      "eval-policy-sg"
+    ],
+    "chunk_index": 1,
+    "text_similarity": {
+      "method": "SequenceMatcher after whitespace/category-slot normalization",
+      "mean": 0.7731791042539041,
+      "min": 0.5980926430517711,
+      "max": 0.9848066298342542
+    },
+    "semantic_similarity": {
+      "method": "cosine on existing production Flash vectors",
+      "mean": 0.8351606634502746,
+      "min": 0.7419927969659995,
+      "max": 0.9430258556832325
+    },
+    "information_need_relation": "same template slot; category/region term varies",
+    "independent_knowledge_assessment": "low_independence_template_repetition"
+  },
+  {
+    "template_group_id": "policy-template::chunk-2",
+    "chunk_count": 8,
+    "chunk_ids": [
+      "009e68a7-5e59-4dd2-afb6-9986d00ccd36",
+      "1c7c1a4d-a229-4a9f-8e2b-53f9842a9f4c",
+      "1ebb482b-9bc2-4de2-acec-2daebd58c340",
+      "2318dc8b-6d54-4c1b-9dc9-303f370eea81",
+      "a38fac7d-6723-4eb3-8ebb-3855820323dc",
+      "a664aaa7-a9dd-47d3-b66a-eafb70c4f955",
+      "a8013f2e-b014-4267-9af0-d7558cd74d95",
+      "e46d9984-0ca5-4049-abf6-dd6b52906d96"
+    ],
+    "sources": [
+      "eval-policy-global-shipping.md",
+      "eval-policy-battery.md",
+      "eval-policy-material.md",
+      "eval-policy-cn.md",
+      "eval-policy-eu.md",
+      "eval-policy-jp.md",
+      "eval-policy-us.md",
+      "eval-policy-sg.md"
+    ],
+    "document_ids": [
+      "eval-policy-global-shipping",
+      "eval-policy-battery",
+      "eval-policy-material",
+      "eval-policy-cn",
+      "eval-policy-eu",
+      "eval-policy-jp",
+      "eval-policy-us",
+      "eval-policy-sg"
+    ],
+    "chunk_index": 2,
+    "text_similarity": {
+      "method": "SequenceMatcher after whitespace/category-slot normalization",
+      "mean": 0.7153252690401494,
+      "min": 0.4761255115961801,
+      "max": 0.9860529986052998
+    },
+    "semantic_similarity": {
+      "method": "cosine on existing production Flash vectors",
+      "mean": 0.7624241322726746,
+      "min": 0.5958982623343538,
+      "max": 0.9253516978552955
+    },
+    "information_need_relation": "same template slot; category/region term varies",
+    "independent_knowledge_assessment": "low_independence_template_repetition"
+  },
+  {
+    "template_group_id": "policy-template::chunk-3",
+    "chunk_count": 8,
+    "chunk_ids": [
+      "16f0a8d9-f83a-42ee-b305-d1e691185c38",
+      "49bfb950-9ffa-4483-81cc-9b3f362a69da",
+      "a8ddd53e-dc49-4a5a-ae7d-05c87de6fb9b",
+      "d53e75a7-4796-44cb-9d56-ae46f6a32e15",
+      "da126ff4-a51c-4a54-82c8-96288971cfbe",
+      "dfd1717c-8427-4aac-be24-2f7a0083ae6f",
+      "f9b029e8-1f3b-4f96-8180-408491da3256",
+      "fa25cc0e-1427-4bdb-a0d5-1f5c596a2ea9"
+    ],
+    "sources": [
+      "eval-policy-jp.md",
+      "eval-policy-cn.md",
+      "eval-policy-eu.md",
+      "eval-policy-sg.md",
+      "eval-policy-material.md",
+      "eval-policy-global-shipping.md",
+      "eval-policy-us.md",
+      "eval-policy-battery.md"
+    ],
+    "document_ids": [
+      "eval-policy-jp",
+      "eval-policy-cn",
+      "eval-policy-eu",
+      "eval-policy-sg",
+      "eval-policy-material",
+      "eval-policy-global-shipping",
+      "eval-policy-us",
+      "eval-policy-battery"
+    ],
+    "chunk_index": 3,
+    "text_similarity": {
+      "method": "SequenceMatcher after whitespace/category-slot normalization",
+      "mean": 0.6921088410258053,
+      "min": 0.44413793103448274,
+      "max": 0.9858490566037735
+    },
+    "semantic_similarity": {
+      "method": "cosine on existing production Flash vectors",
+      "mean": 0.7904535136325561,
+      "min": 0.6013483972850686,
+      "max": 0.958617853683309
+    },
+    "information_need_relation": "same template slot; category/region term varies",
+    "independent_knowledge_assessment": "requires_human_review"
+  }
+]

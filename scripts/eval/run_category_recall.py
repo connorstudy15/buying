@@ -32,8 +32,9 @@ from app.application.retrieval.query_processor import QueryProcessor
 from app.application.prompts.loader import load_prompts
 from app.infrastructure.llm import create_chat_model
 from app.infrastructure.rag.category_knowledge import (  # noqa: E402
-    bootstrap_category_knowledge,
-    build_category_knowledge_base,
+    EVALUATION_KNOWLEDGE_DIR,
+    build_evaluation_knowledge_base,
+    verify_evaluation_knowledge_base,
     has_answerable_knowledge,
     policy_fact_status,
 )
@@ -197,7 +198,9 @@ def information_need_coverage(
     if not groups:
         return None
     retrieved = set(retrieved_evidence_ids)
-    return sum(bool(group) and group.issubset(retrieved) for group in groups) / len(groups)
+    # 同一 need 下的多个 gold evidence 是可替代支持证据：命中任意一个即可满足该 need。
+    # 不同 need 仍分别计数，因此多证据问题不会被降成“任意命中一条即满分”。
+    return sum(bool(group) and bool(group & retrieved) for group in groups) / len(groups)
 
 
 async def run_dataset(
@@ -273,7 +276,7 @@ async def run_dataset(
         candidate_items = [candidate.item for candidate in outcome.trace.candidates]
         raw_evidence_ids, _ = matched_evidence_ids(raw_candidate_items, evidence)
         reranked_evidence_ids, _ = matched_evidence_ids(reranked_candidate_items, evidence)
-        fusion_evidence_ids, _ = matched_evidence_ids(fusion_candidate_items, evidence)
+        fusion_evidence_ids, fusion_evidence_ranks = matched_evidence_ids(fusion_candidate_items, evidence)
         candidate_evidence_ids, _ = matched_evidence_ids(candidate_items, evidence)
         gold_set = set(gold_evidence_ids)
         raw_set = set(raw_evidence_ids)
@@ -284,6 +287,32 @@ async def run_dataset(
         reranker_loss_ids = sorted((gold_set & raw_set) - reranked_set)
         fusion_loss_ids = sorted((gold_set & reranked_set) - fusion_set)
         top_k_loss_ids = sorted((gold_set & fusion_set) - final_set)
+        fusion_ranking = []
+        for rank, entry in enumerate(outcome.trace.fusion_ranked, 1):
+            item = entry["item"]
+            metadata = getattr(getattr(item, "chunk", None), "metadata", None) or {}
+            matched_ids, _ = matched_evidence_ids([item], evidence)
+            fusion_ranking.append({
+                "rank": rank,
+                "candidate_id": entry["candidate_id"],
+                "document_id": str(entry["document_id"]),
+                "source": str(metadata.get("source") or entry["document_id"]),
+                "section": str(metadata.get("section") or metadata.get("heading") or ""),
+                "rrf_score": (
+                    round(float(entry["rrf_score"]), 10)
+                    if entry.get("rrf_score") is not None else None
+                ),
+                "ranking_score": round(float(entry["ranking_score"]), 10),
+                "ranking_score_type": str(entry["ranking_score_type"]),
+                "best_rank": int(entry["best_rank"]),
+                "eligible": bool(entry["eligible"]),
+                "selected": bool(entry["selected"]),
+                "information_need_ids": sorted({
+                    str(source.get("information_need_id") or "")
+                    for source in entry["provenance"]
+                }),
+                "matched_gold_evidence_ids": matched_ids,
+            })
         gold_count = len(gold_set)
         need_groups = information_need_groups(case, gold_evidence_ids)
         pre_need_coverage = information_need_coverage(candidate_evidence_ids, need_groups)
@@ -292,8 +321,16 @@ async def run_dataset(
             recall_at_k(retrieved_evidence_ids, gold_evidence_ids, len(retrieved_evidence_ids) or top_k)
             if gold_evidence_ids else None
         )
-        all_evidence_recall = (
+        strict_all_gold_evidence_recall = (
             float(set(gold_evidence_ids).issubset(retrieved_evidence_ids)) if gold_evidence_ids else None
+        )
+        all_required_needs_recall = (
+            float(post_need_coverage == 1.0) if post_need_coverage is not None else None
+        )
+        # v5 显式 needs 按“全部需求均有至少一条有效证据”判完整；旧集继续沿用全部 gold 命中。
+        all_evidence_recall = (
+            all_required_needs_recall
+            if case.get("required_information_needs") else strict_all_gold_evidence_recall
         )
 
         hard_negative_sources = [item["source"] for item in case.get("hard_negatives") or []]
@@ -334,6 +371,8 @@ async def run_dataset(
             "evidence_recall": evidence_recall,
             "available_evidence_recall": evidence_recall if case_coverage == "partial" else None,
             "all_evidence_recall": all_evidence_recall if case_coverage == "complete" else None,
+            "strict_all_gold_evidence_recall": strict_all_gold_evidence_recall,
+            "all_required_needs_recall": all_required_needs_recall,
             "hard_negative_hit": hard_negative_hit,
             "hard_negative_above_positive": hard_negative_above_positive,
             "hop_recall": hop_recall,
@@ -375,6 +414,8 @@ async def run_dataset(
             "raw_retrieval_evidence_ids": raw_evidence_ids,
             "post_rerank_evidence_ids": reranked_evidence_ids,
             "post_fusion_evidence_ids": fusion_evidence_ids,
+            "post_fusion_evidence_ranks": fusion_evidence_ranks,
+            "post_fusion_ranking": fusion_ranking,
             "final_top_k_evidence_ids": retrieved_evidence_ids,
             "evidence_stage_presence": {
                 evidence_id: {
@@ -463,6 +504,7 @@ def render_report(
         f"# 品类知识库召回评测报告（{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}）",
         "",
         f"标注集 `{dataset}`，正例 {agg.count} 条。兼容文档级指标；存在 evidence_ground_truth 时同时按原文证据评分。",
+        "v5 显式 required_information_needs 的完整正确口径是：每个 need 至少命中一条有效 gold，而不是把同一 need 的替代证据全部塞入 Top-K。",
         "",
         f"| 指标 | 值 | 阈值 |",
         "|---|---|---|",
@@ -599,9 +641,9 @@ async def main(argv: list[str] | None = None) -> None:
             setup_tracing(settings)
         evaluation_run_id = f"knowledge-{datetime.now().strftime('%Y%m%d%H%M%S')}-{uuid.uuid4().hex[:8]}"
         dataset_hash = hashlib.sha256(Path(args.dataset).read_bytes()).hexdigest()
-        knowledge_base = build_category_knowledge_base(settings)
-        inserted = await bootstrap_category_knowledge(knowledge_base)
-        print(f"知识库就绪（本次新增 {inserted} 篇）")
+        knowledge_base = build_evaluation_knowledge_base(settings)
+        document_count = await verify_evaluation_knowledge_base(knowledge_base, EVALUATION_KNOWLEDGE_DIR)
+        print(f"冻结评测知识库就绪（{document_count} 篇；未执行自动重建）")
         query_processor = None
         if args.strategy in {"query-transform", "query-decompose"}:
             processor_settings = replace(

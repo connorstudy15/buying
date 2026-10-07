@@ -1,0 +1,23 @@
+{
+  "status": "passed",
+  "generated_at": "2026-10-04T18:34:16.088391+00:00",
+  "provider": "dashscope_native",
+  "model": "qwen3.7-text-embedding",
+  "dimension_expected": 1024,
+  "query": {
+    "request_mode": "dashscope_native:text_type=query",
+    "dimension": 1024,
+    "latency_ms": 320.538,
+    "attempts": 1,
+    "total_tokens": 27
+  },
+  "document": {
+    "request_mode": "dashscope_native:text_type=document",
+    "dimension": 1024,
+    "latency_ms": 255.741,
+    "attempts": 1,
+    "total_tokens": 32
+  },
+  "fallback_used": false,
+  "gate": "continue_to_endpoint_aa_check"
+}

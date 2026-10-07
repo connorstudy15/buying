@@ -11,6 +11,7 @@ from agentscope.agent import Agent
 from agentscope.message import ToolResultBlock, ToolCallBlock, TextBlock, UserMsg
 from agentscope.middleware import MiddlewareBase
 from opentelemetry import trace
+from opentelemetry.trace import Status, StatusCode
 from app.infrastructure.context import ShoppingContext
 from app.infrastructure.context_products import business_view, token_estimate, result_identity
 
@@ -353,9 +354,47 @@ class LayeredContextMiddleware(MiddlewareBase):
         await self.run(agent, next_handler=next_handler)
 
     async def run(self, agent, *, force=False, next_handler=None):
+        with trace.get_tracer(__name__).start_as_current_span(
+            "context.compaction",
+            attributes={
+                "langfuse.observation.type": "chain",
+                "globex.trace.stage": "context_compaction",
+            },
+            record_exception=False,
+            set_status_on_exception=False,
+        ) as compaction_span:
+            try:
+                return await self._run_impl(
+                    agent,
+                    force=force,
+                    next_handler=next_handler,
+                    trace_span=compaction_span,
+                )
+            except BaseException as error:
+                compaction_span.set_attribute("error.type", type(error).__name__)
+                compaction_span.set_status(Status(StatusCode.ERROR))
+                raise
+
+    async def _run_impl(self, agent, *, force=False, next_handler=None, trace_span=None):
         state = governance(agent)
         target, available = self.limits(agent)
         before = await self.count(agent)
+        working = state.get('working', {})
+        if trace_span is not None:
+            trace_span.set_attribute("langfuse.observation.input", json.dumps({
+                "reason": "manual" if force else "pressure",
+                "before_tokens": before,
+                "target_tokens": target,
+                "available_tokens": available,
+                "context_message_count": len(agent.state.context),
+                "summary_characters": len(agent.state.summary or ''),
+                "working_state": {
+                    "selected_count": len(working.get('selected') or []),
+                    "comparison_count": len(working.get('comparisons') or []),
+                    "pending_count": len(working.get('pending') or []),
+                    "has_latest_request": bool(working.get('latest_request')),
+                },
+            }, ensure_ascii=False, separators=(",", ":")))
         started = time.monotonic()
         old_state = agent.state.model_copy(deep=True)
         try:
@@ -472,12 +511,32 @@ class LayeredContextMiddleware(MiddlewareBase):
             if changed or archived:
                 state['checkpoint_id'] = hashlib.sha256(json.dumps(report,sort_keys=True).encode()+str(time.time_ns()).encode()).hexdigest()
             trace.get_current_span().set_attributes({'globex.context.'+k:v for k,v in report.items() if isinstance(v,(str,int,float,bool))})
+            if trace_span is not None:
+                trace_span.set_attribute("langfuse.observation.output", json.dumps({
+                    **report,
+                    "context_message_count": len(agent.state.context),
+                    "summary_characters": len(agent.state.summary or ''),
+                    "summary_revision": state.get('summary_revision', 0),
+                    "summary_ref": state.get('summary_ref'),
+                    "checkpoint_id": state.get('checkpoint_id'),
+                    "summary_attempts": state.get('summary_attempts', []),
+                }, ensure_ascii=False, separators=(",", ":")))
             return report
         except BaseException as error:
             agent.state = old_state
             state = governance(agent)
             state['failures'] = state.get('failures',0)+1
             state['last_compaction'] = {'status':'interrupted' if isinstance(error,asyncio.CancelledError) else 'failed','reason':type(error).__name__}
+            if trace_span is not None:
+                trace_span.set_attribute("langfuse.observation.output", json.dumps({
+                    **state['last_compaction'],
+                    "rollback_applied": True,
+                    "failure_count": state['failures'],
+                    "context_message_count": len(agent.state.context),
+                    "summary_characters": len(agent.state.summary or ''),
+                }, ensure_ascii=False, separators=(",", ":")))
+                trace_span.set_attribute("error.type", type(error).__name__)
+                trace_span.set_status(Status(StatusCode.ERROR))
             if isinstance(error,(asyncio.CancelledError,ContextCapacityError)) or force: raise
             if await self.count(agent) > available: raise ContextCapacityError('摘要失败且安全窗口不足，原始记录已保留') from error
             return state['last_compaction']

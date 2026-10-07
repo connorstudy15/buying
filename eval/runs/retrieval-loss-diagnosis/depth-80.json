@@ -1,0 +1,281 @@
+{
+  "schema_version": "knowledge-retrieval-loss-diagnosis-v1",
+  "dataset": "eval\\knowledge\\v5\\knowledge_eval_core_61.jsonl",
+  "experiment": "eval\\runs\\end-to-end-stage-attribution-formal\\experiment-b-20261004-171023.json",
+  "repetition": 2,
+  "diagnostic_depth": 80,
+  "cases": [
+    {
+      "case_id": "blind-008",
+      "query": "移动电源带出门坐飞机，锂电池运输这块一般有什么讲究？",
+      "primary_kind": "cross_evidence",
+      "processor_plan_mode": "DIRECT",
+      "lost_evidence_ids": [
+        "cross-border-guide.md#材质与合规#f6bfddbb08fc"
+      ],
+      "best_rank_at_depth": {},
+      "unresolved_at_depth": [
+        "cross-border-guide.md#材质与合规#f6bfddbb08fc"
+      ],
+      "diagnosis": "decomposition_gap",
+      "variants": [
+        {
+          "query_id": "original",
+          "information_need_id": "overall",
+          "text": "移动电源带出门坐飞机，锂电池运输这块一般有什么讲究？",
+          "candidate_count": 80,
+          "matched_lost_evidence_ids": [],
+          "lost_evidence_ranks": {}
+        }
+      ]
+    },
+    {
+      "case_id": "blind-025",
+      "query": "磁吸无线充带到国外用，电器电压和手机兼容性是不是都得确认？",
+      "primary_kind": "cross_evidence",
+      "processor_plan_mode": "DECOMPOSE",
+      "lost_evidence_ids": [
+        "cross-border-guide.md#材质与合规#ec2498127b7d"
+      ],
+      "best_rank_at_depth": {},
+      "unresolved_at_depth": [
+        "cross-border-guide.md#材质与合规#ec2498127b7d"
+      ],
+      "diagnosis": "semantic_or_query_mismatch",
+      "variants": [
+        {
+          "query_id": "original",
+          "information_need_id": "overall",
+          "text": "磁吸无线充带到国外用，电器电压和手机兼容性是不是都得确认？",
+          "candidate_count": 80,
+          "matched_lost_evidence_ids": [],
+          "lost_evidence_ranks": {}
+        },
+        {
+          "query_id": "subquery_1",
+          "information_need_id": "voltage_compatibility",
+          "text": "磁吸无线充在国外使用需要确认电器电压吗",
+          "candidate_count": 80,
+          "matched_lost_evidence_ids": [],
+          "lost_evidence_ranks": {}
+        },
+        {
+          "query_id": "subquery_2",
+          "information_need_id": "phone_compatibility",
+          "text": "磁吸无线充在国外使用需要确认手机兼容性吗",
+          "candidate_count": 80,
+          "matched_lost_evidence_ids": [],
+          "lost_evidence_ranks": {}
+        }
+      ]
+    },
+    {
+      "case_id": "blind-030",
+      "query": "我在网上翻到一份演示用的地区政策资料，版本好像是旧的，我能拿它当现在海关政策的权威结论吗？",
+      "primary_kind": "policy_boundary",
+      "processor_plan_mode": "DIRECT",
+      "lost_evidence_ids": [
+        "eval-policy-us.md#适用范围#70ca23bcc1bc"
+      ],
+      "best_rank_at_depth": {
+        "eval-policy-us.md#适用范围#70ca23bcc1bc": 51
+      },
+      "unresolved_at_depth": [],
+      "diagnosis": "depth_ceiling",
+      "variants": [
+        {
+          "query_id": "original",
+          "information_need_id": "overall",
+          "text": "我在网上翻到一份演示用的地区政策资料，版本好像是旧的，我能拿它当现在海关政策的权威结论吗？",
+          "candidate_count": 80,
+          "matched_lost_evidence_ids": [
+            "eval-policy-us.md#适用范围#70ca23bcc1bc"
+          ],
+          "lost_evidence_ranks": {
+            "eval-policy-us.md#适用范围#70ca23bcc1bc": 51
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "human-mh-001",
+      "query": "我要买个充电宝带着飞日本",
+      "primary_kind": "implicit_constraint_multi_hop",
+      "processor_plan_mode": "REWRITE",
+      "lost_evidence_ids": [
+        "cross-border-guide.md#材质与合规#f6bfddbb08fc"
+      ],
+      "best_rank_at_depth": {
+        "cross-border-guide.md#材质与合规#f6bfddbb08fc": 28
+      },
+      "unresolved_at_depth": [],
+      "diagnosis": "depth_ceiling",
+      "variants": [
+        {
+          "query_id": "original",
+          "information_need_id": "overall",
+          "text": "我要买个充电宝带着飞日本",
+          "candidate_count": 80,
+          "matched_lost_evidence_ids": [
+            "cross-border-guide.md#材质与合规#f6bfddbb08fc"
+          ],
+          "lost_evidence_ranks": {
+            "cross-border-guide.md#材质与合规#f6bfddbb08fc": 28
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "v4-022",
+      "query": "体积重是怎么计算的？",
+      "primary_kind": "single_evidence",
+      "processor_plan_mode": "DIRECT",
+      "lost_evidence_ids": [
+        "cross-border-guide.md#运费口径#a6d0645c2de4"
+      ],
+      "best_rank_at_depth": {
+        "cross-border-guide.md#运费口径#a6d0645c2de4": 44
+      },
+      "unresolved_at_depth": [],
+      "diagnosis": "depth_ceiling",
+      "variants": [
+        {
+          "query_id": "original",
+          "information_need_id": "overall",
+          "text": "体积重是怎么计算的？",
+          "candidate_count": 80,
+          "matched_lost_evidence_ids": [
+            "cross-border-guide.md#运费口径#a6d0645c2de4"
+          ],
+          "lost_evidence_ranks": {
+            "cross-border-guide.md#运费口径#a6d0645c2de4": 44
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "v4-043",
+      "query": "暑假坐飞机去欧洲露营，想带移动电源和露营灯，出发前该核对什么？",
+      "primary_kind": "implicit_constraint",
+      "processor_plan_mode": "DECOMPOSE",
+      "lost_evidence_ids": [
+        "cross-border-guide.md#材质与合规#19aa6758a0c6"
+      ],
+      "best_rank_at_depth": {
+        "cross-border-guide.md#材质与合规#19aa6758a0c6": 36
+      },
+      "unresolved_at_depth": [],
+      "diagnosis": "depth_ceiling",
+      "variants": [
+        {
+          "query_id": "original",
+          "information_need_id": "overall",
+          "text": "暑假坐飞机去欧洲露营，想带移动电源和露营灯，出发前该核对什么？",
+          "candidate_count": 80,
+          "matched_lost_evidence_ids": [],
+          "lost_evidence_ranks": {}
+        },
+        {
+          "query_id": "subquery_1",
+          "information_need_id": "power_bank_air_rules",
+          "text": "暑假坐飞机去欧洲，携带移动电源的航空安检规定和限制是什么？",
+          "candidate_count": 80,
+          "matched_lost_evidence_ids": [
+            "cross-border-guide.md#材质与合规#19aa6758a0c6"
+          ],
+          "lost_evidence_ranks": {
+            "cross-border-guide.md#材质与合规#19aa6758a0c6": 36
+          }
+        },
+        {
+          "query_id": "subquery_2",
+          "information_need_id": "camping_lantern_air_rules",
+          "text": "暑假坐飞机去欧洲，携带露营灯的航空安检规定和限制是什么？",
+          "candidate_count": 80,
+          "matched_lost_evidence_ids": [
+            "cross-border-guide.md#材质与合规#19aa6758a0c6"
+          ],
+          "lost_evidence_ranks": {
+            "cross-border-guide.md#材质与合规#19aa6758a0c6": 45
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "v4-048",
+      "query": "我要搬到加拿大，想把棉麻织物和收纳用品一起寄过去，怎么预估运费才不吃亏？",
+      "primary_kind": "implicit_constraint",
+      "processor_plan_mode": "DECOMPOSE",
+      "lost_evidence_ids": [
+        "home-living.md#避坑点#4e6f39bf3889"
+      ],
+      "best_rank_at_depth": {
+        "home-living.md#避坑点#4e6f39bf3889": 32
+      },
+      "unresolved_at_depth": [],
+      "diagnosis": "depth_ceiling",
+      "variants": [
+        {
+          "query_id": "original",
+          "information_need_id": "overall",
+          "text": "我要搬到加拿大，想把棉麻织物和收纳用品一起寄过去，怎么预估运费才不吃亏？",
+          "candidate_count": 80,
+          "matched_lost_evidence_ids": [
+            "home-living.md#避坑点#4e6f39bf3889"
+          ],
+          "lost_evidence_ranks": {
+            "home-living.md#避坑点#4e6f39bf3889": 43
+          }
+        },
+        {
+          "query_id": "subquery_1",
+          "information_need_id": "textile_shipping_cost",
+          "text": "棉麻织物寄往加拿大的国际运费如何预估",
+          "candidate_count": 80,
+          "matched_lost_evidence_ids": [
+            "home-living.md#避坑点#4e6f39bf3889"
+          ],
+          "lost_evidence_ranks": {
+            "home-living.md#避坑点#4e6f39bf3889": 32
+          }
+        },
+        {
+          "query_id": "subquery_2",
+          "information_need_id": "storage_shipping_cost",
+          "text": "收纳用品寄往加拿大的国际运费如何预估",
+          "candidate_count": 80,
+          "matched_lost_evidence_ids": [
+            "home-living.md#避坑点#4e6f39bf3889"
+          ],
+          "lost_evidence_ranks": {
+            "home-living.md#避坑点#4e6f39bf3889": 77
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "v4-060",
+      "query": "你们展示的电池运输说明像是演示资料，我今天坐飞机能把它当成航空公司的最新规定吗？",
+      "primary_kind": "policy_boundary",
+      "processor_plan_mode": "DIRECT",
+      "lost_evidence_ids": [
+        "cross-border-guide.md#材质与合规#19aa6758a0c6"
+      ],
+      "best_rank_at_depth": {},
+      "unresolved_at_depth": [
+        "cross-border-guide.md#材质与合规#19aa6758a0c6"
+      ],
+      "diagnosis": "semantic_or_query_mismatch",
+      "variants": [
+        {
+          "query_id": "original",
+          "information_need_id": "overall",
+          "text": "你们展示的电池运输说明像是演示资料，我今天坐飞机能把它当成航空公司的最新规定吗？",
+          "candidate_count": 80,
+          "matched_lost_evidence_ids": [],
+          "lost_evidence_ranks": {}
+        }
+      ]
+    }
+  ]
+}

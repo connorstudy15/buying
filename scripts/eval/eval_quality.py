@@ -143,7 +143,7 @@ def validate_official_eval_fixture(root: Path) -> tuple[list[str], dict[str, dic
     # 金标必须能回指当前版本的数据；跨平台同款只能算一个相关实体，不能靠重复 id 虚增 Recall。
     project_root = root.parents[1]
     catalog_path = project_root / "data" / "catalog-v1.jsonl"
-    knowledge_dir = project_root / "knowledge"
+    knowledge_dir = project_root / "eval" / "knowledge" / "corpus"
     if catalog_path.is_file() and "product" in loaded:
         catalog = {row["product_id"]: row for row in _load_jsonl(catalog_path)}
         product_splits: dict[str, set[str]] = defaultdict(set)

@@ -1,0 +1,2 @@
+{"query_id":"frozen-demo-direct","case_id":"frozen-demo-direct","query":"示例冻结查询","query_scope":"DIRECT","gold_evidence_ids":["frozen.md#answer#demo"],"hard_negative_sources":["frozen-hard-negative.md"],"buckets":["DIRECT","single_evidence"]}
+{"query_id":"frozen-demo-subquery","case_id":"frozen-demo-parent","query":"示例冻结子查询","query_scope":"DECOMPOSE_SUBQUERY","information_need_id":"need_1","gold_evidence_ids":["frozen-rule.md#answer#demo"],"hard_negative_sources":["frozen-product.md"],"buckets":["DECOMPOSE_SUBQUERY","multi_evidence","implicit_cross_domain","domain_rule"]}

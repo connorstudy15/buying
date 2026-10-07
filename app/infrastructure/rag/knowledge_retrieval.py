@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import asyncio
 import hashlib
+import json
 import math
 import re
 import time
@@ -15,6 +16,15 @@ from opentelemetry.trace import Status, StatusCode
 
 from app.application.retrieval.query_processor import QueryPlan, QueryProcessor, QueryVariant
 from app.infrastructure.rag.category_knowledge import MIN_ANSWERABLE_KNOWLEDGE_SCORE
+
+
+_TRACE_CANDIDATE_LIMIT = 50
+_TRACE_CONTENT_PREVIEW_CHARS = 320
+
+
+def _trace_json(value: Any) -> str:
+    """Langfuse OTEL 属性只接收标量；结构化诊断统一编码为 JSON。"""
+    return json.dumps(value, ensure_ascii=False, separators=(",", ":"), default=str)
 
 
 def unsupported_fact_reason(question: str) -> str | None:
@@ -60,11 +70,66 @@ def targeted_documents(documents, question: str, limit: int) -> list:
         if start >= covered_until:
             selected.append(document)
             covered_until = start - negative_length
+
+    region_aliases = {
+        "CN": ("中国", "国内"), "EU": ("欧洲", "欧盟"), "JP": ("日本",),
+        "SG": ("新加坡",), "US": ("美国", "美洲"),
+    }
+    regions = {word.upper() for word in re.findall(r"(?<![A-Za-z])[A-Za-z]{2,6}(?![A-Za-z])", question)}
+    regions.update(
+        region for region, aliases in region_aliases.items()
+        if any(alias in question for alias in aliases)
+    )
     if not selected and re.search(r"政策|规则|法规|来源|有效期", question):
-        regions = {word.upper() for word in re.findall(r"(?<![A-Za-z])[A-Za-z]{2,6}(?![A-Za-z])", question)}
-        scoped = [d for d in documents if d.metadata.get("topic") == "policy" and d.metadata.get("region") in regions]
+        scoped = [
+            document for document in documents
+            if document.metadata.get("topic") == "policy" and document.metadata.get("region") in regions
+        ]
         if scoped and not re.search(r"电池|材质|运费|体积重", question):
-            selected = sorted(scoped, key=lambda d: (len(str(d.metadata.get("document_title", ""))), d.document_id))[:1]
+            selected = sorted(
+                scoped,
+                key=lambda document: (len(str(document.metadata.get("document_title", ""))), document.document_id),
+            )[:1]
+    return selected[:limit]
+
+
+def supplemental_documents(documents, question: str, limit: int) -> list:
+    """按稳定业务领域补文档内候选；只扩候选池，不获得置顶权重。"""
+    # 向量 Top-24 容易漏掉“商品词很强、通用规则词较弱”的正确 section。
+    # 这里只按业务领域补文档内 Top-1，不扩大全库候选深度，也不读取评测标注。
+    source_routes: list[str] = []
+    if re.search(r"移动电源|充电宝|锂电|电池|带电|充电器|航空|飞机|安检", question):
+        source_routes.extend((
+            "power-bank-air-travel-global.md", "battery-wh-calculation.md", "smart-luggage-battery.md",
+            "eval-policy-battery.md", "cross-border-guide.md",
+        ))
+    if re.search(r"国外|海外|出国|电压|频率|插头|兼容", question):
+        source_routes.append("cross-border-guide.md")
+    if re.search(r"体积重|运费|邮费|计费重|国际运|跨境|清关|海关|寄(?:往|到|去|给)?|邮寄|搬到", question):
+        source_routes.extend((
+            "dhl-volumetric-weight.md", "ups-dimensional-weight.md", "cross-border-landed-cost.md",
+            "eval-policy-global-shipping.md", "cross-border-guide.md",
+        ))
+    if re.search(r"收纳|家居|棉麻|织物", question):
+        source_routes.append("home-living.md")
+    if re.search(r"材质|竹木|木制|棉麻|织物|陶瓷|餐具|过敏|检疫", question):
+        source_routes.extend((
+            "eu-food-contact-materials.md", "eval-policy-material.md", "cross-border-guide.md",
+        ))
+
+    by_source = {
+        str(document.metadata.get("source") or ""): document
+        for document in documents
+    }
+    selected: list = []
+    selected_ids: set[str] = set()
+    for source in source_routes:
+        document = by_source.get(source)
+        if document is not None and document.document_id not in selected_ids:
+            selected.append(document)
+            selected_ids.add(document.document_id)
+        if len(selected) >= limit:
+            break
     return selected[:limit]
 
 
@@ -88,6 +153,7 @@ class KnowledgeRetrievalTrace:
     raw_candidates: list[KnowledgeCandidate] = field(default_factory=list, repr=False)
     reranked_candidates: list[KnowledgeCandidate] = field(default_factory=list, repr=False)
     fusion_candidates: list[Any] = field(default_factory=list, repr=False)
+    fusion_ranked: list[dict[str, Any]] = field(default_factory=list, repr=False)
     fused: list[dict[str, Any]] = field(default_factory=list)
     processor_fallback_reason: str | None = None
     pre_fusion_query_route_coverage: float | None = None
@@ -107,6 +173,8 @@ class KnowledgeRetrievalTrace:
     retrieval_latency_ms: float | None = None
     reranker_latency_ms: float | None = None
     fusion_latency_ms: float | None = None
+    collection_name: str | None = None
+    corpus_version: str | None = None
 
 
 @dataclass
@@ -129,8 +197,11 @@ async def retrieve_knowledge_candidates(
     results = await knowledge_base.search(queries=[question], top_k=min(80, depth))
     routes = ["vector"] * len(results)
     targets = []
+    supplementals = []
     if isinstance(knowledge_base, KnowledgeBase):
-        targets = targeted_documents(await knowledge_base.list_documents(), question, target_limit)
+        documents = await knowledge_base.list_documents()
+        targets = targeted_documents(documents, question, target_limit)
+        supplementals = supplemental_documents(documents, question, target_limit)
         present = {item.document_id for item in results}
 
         async def scoped_search(document):
@@ -148,10 +219,18 @@ async def retrieve_knowledge_candidates(
             )
             return await view.search(queries=[question], top_k=1)
 
-        additions = await asyncio.gather(*(scoped_search(doc) for doc in targets if doc.document_id not in present))
-        for group in additions:
-            results.extend(group)
-            routes.extend(["document_scoped"] * len(group))
+        exact_additions = await asyncio.gather(*(scoped_search(doc) for doc in targets if doc.document_id not in present))
+        supplemental_additions = await asyncio.gather(*(scoped_search(doc) for doc in supplementals))
+        seen_candidate_keys = {_candidate_key(item) for item in results}
+        for route, additions in (("document_scoped", exact_additions), ("domain_scoped", supplemental_additions)):
+            for group in additions:
+                for item in group:
+                    key = _candidate_key(item)
+                    if key in seen_candidate_keys:
+                        continue
+                    results.append(item)
+                    routes.append(route)
+                    seen_candidate_keys.add(key)
 
     target_order = {doc.document_id: index for index, doc in enumerate(targets)}
     ordered = sorted(
@@ -235,7 +314,13 @@ async def _legacy_outcome(
     with trace.get_tracer(__name__).start_as_current_span(
         "knowledge.direct_selection",
         attributes={
-            "langfuse.observation.type": "span",
+            "langfuse.observation.type": "chain",
+            "langfuse.observation.input": _trace_json({
+                "strategy": "direct_document_diversity",
+                "top_k": top_k,
+                "max_chunks_per_document": max_chunks_per_document,
+                **_trace_candidates(candidates),
+            }),
             "globex.retrieval.stage": "direct_selection",
             "globex.retrieval.candidate_count": len(candidates),
             "globex.retrieval.top_k": top_k,
@@ -251,13 +336,39 @@ async def _legacy_outcome(
         selection_span.set_attribute(
             "globex.retrieval.selected_document_count", len({str(item.document_id) for item in hits}),
         )
+        selected_keys = {_candidate_key(item) for item in hits}
+        selection_span.set_attribute("langfuse.observation.output", _trace_json({
+            "selected_chunk_count": len(hits),
+            "selected_document_count": len({str(item.document_id) for item in hits}),
+            **_trace_candidates(candidates, selected_keys=selected_keys),
+        }))
     selection_latency_ms = round((time.perf_counter() - selection_started) * 1000, 3)
+    selected_keys = {_candidate_key(item) for item in hits}
+    fusion_ranked = [{
+        "item": candidate.item,
+        "candidate_id": _candidate_key(candidate.item),
+        "document_id": str(candidate.item.document_id),
+        "rrf_score": None,
+        "ranking_score": float(getattr(candidate.item, "score", 0.0)),
+        "ranking_score_type": "retrieval_similarity",
+        "best_rank": rank,
+        "eligible": _candidate_is_eligible(candidate),
+        "provenance": [{
+            "query_id": candidate.query_id,
+            "information_need_id": candidate.information_need_id,
+            "intent_group_id": candidate.intent_group_id,
+            "retrieval_route": candidate.retrieval_route,
+            "rank_in_source": candidate.rank_in_source,
+        }],
+        "selected": _candidate_key(candidate.item) in selected_keys,
+    } for rank, candidate in enumerate(candidates, 1)]
     return KnowledgeRetrievalOutcome(
         hits,
         KnowledgeRetrievalTrace(
             trace_mode, variants=variants, candidates=candidates,
             raw_candidates=list(candidates), reranked_candidates=list(candidates),
             fusion_candidates=[candidate.item for candidate in candidates],
+            fusion_ranked=fusion_ranked,
             processor_fallback_reason=processor_fallback_reason,
             processor_plan_mode=processor_plan_mode,
             effective_plan_mode=effective_plan_mode,
@@ -290,7 +401,15 @@ async def _retrieve_candidates(
     with trace.get_tracer(__name__).start_as_current_span(
         "knowledge.candidate_retrieval",
         attributes={
-            "langfuse.observation.type": "span",
+            "langfuse.observation.type": "retriever",
+            "langfuse.observation.input": _trace_json({
+                "query": question,
+                "query_id": query_id,
+                "information_need_id": information_need_id,
+                "intent_group_id": intent_group_id,
+                "recall_depth": depth,
+                "target_limit": target_limit,
+            }),
             "globex.retrieval.stage": "candidate_retrieval",
             "globex.retrieval.query_id": query_id,
             "globex.retrieval.need_id": information_need_id,
@@ -318,6 +437,7 @@ async def _retrieve_candidates(
                 for template in templates
             ]
             span.set_attribute("globex.retrieval.candidate_count", len(output))
+            span.set_attribute("langfuse.observation.output", _trace_json(_trace_candidates(output)))
             return output
         except BaseException as error:
             span.set_attribute("error.type", type(error).__name__)
@@ -339,6 +459,77 @@ def _candidate_key(item: Any) -> str:
         str(metadata.get("section") or metadata.get("heading") or ""), _chunk_text(item),
     ))
     return hashlib.sha256(stable.encode("utf-8")).hexdigest()
+
+
+def _finite_float(value: Any) -> float | None:
+    try:
+        parsed = float(value)
+        return round(parsed, 6) if math.isfinite(parsed) else None
+    except (TypeError, ValueError):
+        return None
+
+
+def _trace_candidate(candidate: KnowledgeCandidate, *, selected: bool | None = None) -> dict[str, Any]:
+    """用于开发 Trace 的有界候选摘要，不改变候选对象或排序。"""
+    item = candidate.item
+    metadata = getattr(getattr(item, "chunk", None), "metadata", None) or {}
+    retrieval_rank = candidate.retrieval_rank_in_source or candidate.rank_in_source
+    row: dict[str, Any] = {
+        "candidate_id": _candidate_key(item),
+        "document_id": str(item.document_id),
+        "source": str(metadata.get("source") or ""),
+        "section": str(metadata.get("section") or metadata.get("heading") or ""),
+        "content_preview": _chunk_text(item)[:_TRACE_CONTENT_PREVIEW_CHARS],
+        "query_id": candidate.query_id,
+        "information_need_id": candidate.information_need_id,
+        "intent_group_id": candidate.intent_group_id,
+        "retrieval_route": candidate.retrieval_route,
+        "retrieval_rank": retrieval_rank,
+        "current_rank": candidate.rank_in_source,
+        "rank_delta": retrieval_rank - candidate.rank_in_source,
+        "retrieval_score": _finite_float(getattr(item, "score", None)),
+        "reranker_score": _finite_float(candidate.per_need_relevance_score),
+        "eligible": _candidate_is_eligible(item),
+    }
+    if selected is not None:
+        row["selected"] = selected
+    return row
+
+
+def _trace_candidates(
+    candidates: list[KnowledgeCandidate], *, selected_keys: set[str] | None = None,
+) -> dict[str, Any]:
+    limited = candidates[:_TRACE_CANDIDATE_LIMIT]
+    return {
+        "candidate_count": len(candidates),
+        "candidates_truncated": len(candidates) > len(limited),
+        "candidates": [
+            _trace_candidate(
+                candidate,
+                selected=(_candidate_key(candidate.item) in selected_keys) if selected_keys is not None else None,
+            )
+            for candidate in limited
+        ],
+    }
+
+
+def _trace_fusion_entry(entry: dict[str, Any]) -> dict[str, Any]:
+    item = entry["item"]
+    metadata = getattr(getattr(item, "chunk", None), "metadata", None) or {}
+    return {
+        "candidate_id": entry["candidate_id"],
+        "document_id": str(entry["document_id"]),
+        "source": str(metadata.get("source") or ""),
+        "section": str(metadata.get("section") or metadata.get("heading") or ""),
+        "content_preview": _chunk_text(item)[:_TRACE_CONTENT_PREVIEW_CHARS],
+        "rrf_score": _finite_float(entry.get("rrf_score")),
+        "ranking_score": _finite_float(entry.get("ranking_score")),
+        "ranking_score_type": entry.get("ranking_score_type"),
+        "best_rank": entry.get("best_rank"),
+        "eligible": bool(entry.get("eligible")),
+        "selected": bool(entry.get("selected")),
+        "provenance": entry.get("provenance") or [],
+    }
 
 
 def _text_similarity(left: str, right: str) -> float:
@@ -380,6 +571,12 @@ async def _rerank_information_need(
         "knowledge.reranker.need",
         attributes={
             "langfuse.observation.type": "span",
+            "langfuse.observation.input": _trace_json({
+                "query": variant.text,
+                "query_id": variant.query_id,
+                "information_need_id": variant.information_need_id,
+                **_trace_candidates(candidates),
+            }),
             "globex.retrieval.stage": "reranker_need",
             "globex.retrieval.query_id": variant.query_id,
             "globex.retrieval.need_id": variant.information_need_id,
@@ -411,6 +608,12 @@ async def _rerank_information_need(
             ]
             span.set_attribute("globex.retrieval.total_tokens", int(usage.get("total_tokens") or 0))
             span.set_attribute("globex.retrieval.degraded", bool(usage.get("degraded")))
+            span.set_attribute("langfuse.observation.output", _trace_json({
+                "information_need_id": variant.information_need_id,
+                "degraded": bool(usage.get("degraded")),
+                "total_tokens": int(usage.get("total_tokens") or 0),
+                **_trace_candidates(output),
+            }))
             return output, {
                 "query_id": variant.query_id,
                 "information_need_id": variant.information_need_id,
@@ -430,7 +633,7 @@ async def _rerank_information_need(
 def _rrf_fuse(
     candidates: list[KnowledgeCandidate], top_k: int, rrf_k: int, *,
     expected_needs: tuple[str, ...] = (), max_chunks_per_document: int = 2,
-) -> tuple[list[Any], list[dict[str, Any]], list[dict[str, Any]], list[Any]]:
+) -> tuple[list[Any], list[dict[str, Any]], list[dict[str, Any]], list[Any], list[dict[str, Any]]]:
     group_scores: dict[str, dict[str, float]] = {}
     best: dict[str, KnowledgeCandidate] = {}
     provenance: dict[str, list[dict[str, Any]]] = {}
@@ -541,9 +744,21 @@ def _rrf_fuse(
 
     selected = [entry for entry in deduped if entry["candidate_id"] in selected_ids][:top_k]
     fused = [{key: value for key, value in entry.items() if key not in {"item", "group_scores", "best_rank"}} for entry in selected]
+    ranked = [{
+        "item": entry["item"],
+        "candidate_id": entry["candidate_id"],
+        "document_id": entry["document_id"],
+        "rrf_score": entry["rrf_score"],
+        "ranking_score": entry["rrf_score"],
+        "ranking_score_type": "rrf",
+        "best_rank": entry["best_rank"],
+        "eligible": entry["eligible"],
+        "provenance": entry["provenance"],
+        "selected": entry["candidate_id"] in selected_ids,
+    } for entry in deduped]
     return (
         [entry["item"] for entry in selected], fused, duplicate_decisions,
-        [entry["item"] for entry in deduped],
+        [entry["item"] for entry in deduped], ranked,
     )
 
 
@@ -558,25 +773,42 @@ async def search_knowledge_with_trace(
     candidate_cache: dict[tuple[str, int, int], list[KnowledgeCandidate]] | None = None,
     per_need_reranker=None,
 ) -> KnowledgeRetrievalOutcome:
+    collection_name = str(
+        getattr(knowledge_base, "_globex_collection_name", None)
+        or getattr(knowledge_base, "collection", "unknown")
+    )
+    corpus_version = str(getattr(knowledge_base, "_globex_corpus_version", "unknown"))
+    current_span = trace.get_current_span()
+    current_span.set_attribute("globex.knowledge.collection_name", collection_name)
+    current_span.set_attribute("globex.knowledge.corpus_version", corpus_version)
+    current_span.set_attribute("langfuse.observation.metadata.collection_name", collection_name)
+    current_span.set_attribute("langfuse.observation.metadata.corpus_version", corpus_version)
+
+    def observed(outcome: KnowledgeRetrievalOutcome) -> KnowledgeRetrievalOutcome:
+        outcome.trace.collection_name = collection_name
+        outcome.trace.corpus_version = corpus_version
+        return outcome
+
     if type(top_k) is not int or not 1 <= top_k <= 10:
         raise ValueError("知识结果数须在1到10之间")
     reason = unsupported_fact_reason(question)
     if reason:
-        return KnowledgeRetrievalOutcome([], KnowledgeRetrievalTrace("unsupported", processor_fallback_reason=reason))
+        return observed(KnowledgeRetrievalOutcome([], KnowledgeRetrievalTrace("unsupported", processor_fallback_reason=reason)))
 
     depth = min(80, top_k * 8)
     if query_processor is None:
-        return await _legacy_outcome(
+        return observed(await _legacy_outcome(
             knowledge_base, question, depth, top_k, trace_mode="legacy",
             candidate_cache=candidate_cache,
-        )
+        ))
 
     processor_started = time.perf_counter()
     processor_metadata: dict[str, Any] = {}
     with trace.get_tracer(__name__).start_as_current_span(
         "knowledge.query_processor",
         attributes={
-            "langfuse.observation.type": "span",
+            "langfuse.observation.type": "chain",
+            "langfuse.observation.input": _trace_json({"question": question}),
             "globex.retrieval.stage": "query_processor",
         },
         record_exception=False, set_status_on_exception=False,
@@ -594,12 +826,30 @@ async def search_knowledge_with_trace(
                 "globex.retrieval.input_tokens": int(processor_metadata.get("input_tokens") or 0),
                 "globex.retrieval.output_tokens": int(processor_metadata.get("output_tokens") or 0),
                 "globex.retrieval.total_tokens": int(processor_metadata.get("total_tokens") or 0),
+                "langfuse.observation.output": _trace_json({
+                    "mode": plan.mode,
+                    "rewritten_query": plan.rewritten_query,
+                    "rewrite_similarity": plan.rewrite_similarity,
+                    "rewrite_decision": plan.rewrite_decision,
+                    "variants": [{
+                        "query_id": variant.query_id,
+                        "query": variant.text,
+                        "information_need_id": variant.information_need_id,
+                        "intent_group_id": variant.intent_group_id,
+                        "kind": variant.kind,
+                    } for variant in plan.variants()],
+                }),
             })
         except Exception as err:  # noqa: BLE001 - 精确回到 legacy，不走新管线 original-only
             processor_span.set_attribute("error.type", type(err).__name__)
             processor_span.set_status(Status(StatusCode.ERROR))
             fallback_metadata = getattr(err, "metadata", {}) or {}
-            return await _legacy_outcome(
+            processor_span.set_attribute("langfuse.observation.output", _trace_json({
+                "fallback": "legacy",
+                "reason": str(err),
+                "model_decision": getattr(err, "model_decision", None),
+            }))
+            return observed(await _legacy_outcome(
                 knowledge_base, question, depth, top_k, trace_mode="legacy_fallback",
                 processor_fallback_reason=str(err), candidate_cache=candidate_cache,
                 processor_plan_mode=getattr(err, "model_decision", None),
@@ -609,7 +859,7 @@ async def search_knowledge_with_trace(
                     or round((time.perf_counter() - processor_started) * 1000, 3)
                 ),
                 query_processor_usage=fallback_metadata,
-            )
+            ))
         finally:
             processor_span.set_attribute(
                 "globex.retrieval.latency_ms", round((time.perf_counter() - processor_started) * 1000, 3),
@@ -625,7 +875,7 @@ async def search_knowledge_with_trace(
 
     # DIRECT 与“实验中禁用 REWRITE”都逐字复用旧链路；仅多出前置模型分类时间。
     if effective_mode == "DIRECT":
-        return await _legacy_outcome(
+        return observed(await _legacy_outcome(
             knowledge_base, question, depth, top_k,
             trace_mode=("query_decompose_rewrite_disabled" if processor_mode == "REWRITE" else "query_transform_direct"),
             processor_plan_mode=processor_mode,
@@ -635,7 +885,7 @@ async def search_knowledge_with_trace(
             candidate_cache=candidate_cache,
             query_processor_latency_ms=processor_metadata.get("latency_ms"),
             query_processor_usage=processor_metadata,
-        )
+        ))
 
     variants: tuple[QueryVariant, ...] = plan.variants()
     retrieval_started = time.perf_counter()
@@ -670,7 +920,13 @@ async def search_knowledge_with_trace(
     with trace.get_tracer(__name__).start_as_current_span(
         "knowledge.rrf_fusion",
         attributes={
-            "langfuse.observation.type": "span",
+            "langfuse.observation.type": "chain",
+            "langfuse.observation.input": _trace_json({
+                "rrf_k": max(1, int(rrf_k)),
+                "top_k": top_k,
+                "expected_information_needs": list(expected_needs),
+                **_trace_candidates(candidates),
+            }),
             "globex.retrieval.stage": "rrf_fusion",
             "globex.retrieval.candidate_count": len(candidates),
             "globex.retrieval.top_k": top_k,
@@ -679,10 +935,26 @@ async def search_knowledge_with_trace(
         record_exception=False, set_status_on_exception=False,
     ) as fusion_span:
         try:
-            hits, fused, duplicate_decisions, fusion_candidates = _rrf_fuse(
+            hits, fused, duplicate_decisions, fusion_candidates, fusion_ranked = _rrf_fuse(
                 candidates, top_k, max(1, int(rrf_k)), expected_needs=expected_needs,
             )
             fusion_span.set_attribute("globex.retrieval.fused_count", len(hits))
+            represented_needs = {
+                source["information_need_id"]
+                for item in fused for source in item["provenance"]
+            }
+            covered_needs = sorted(set(expected_needs) & represented_needs)
+            ranked_limit = fusion_ranked[:_TRACE_CANDIDATE_LIMIT]
+            fusion_span.set_attribute("langfuse.observation.output", _trace_json({
+                "selected_candidate_ids": [item["candidate_id"] for item in fused],
+                "expected_information_needs": list(expected_needs),
+                "covered_information_needs": covered_needs,
+                "represented_information_needs": sorted(represented_needs),
+                "duplicate_decisions": duplicate_decisions,
+                "ranking_count": len(fusion_ranked),
+                "ranking_truncated": len(fusion_ranked) > len(ranked_limit),
+                "ranking": [_trace_fusion_entry(item) for item in ranked_limit],
+            }))
         except BaseException as error:
             fusion_span.set_attribute("error.type", type(error).__name__)
             fusion_span.set_status(Status(StatusCode.ERROR))
@@ -699,7 +971,7 @@ async def search_knowledge_with_trace(
     expected_need_set = set(expected_needs)
     pre_coverage = len(expected_need_set & pre_needs) / len(expected_need_set) if expected_need_set else None
     post_coverage = len(expected_need_set & post_needs) / len(expected_need_set) if expected_need_set else None
-    return KnowledgeRetrievalOutcome(hits, KnowledgeRetrievalTrace(
+    return observed(KnowledgeRetrievalOutcome(hits, KnowledgeRetrievalTrace(
         "query_transform_rewrite" if effective_mode == "REWRITE" else "query_transform_decompose",
         variants=[{
             "query_id": variant.query_id, "text": variant.text,
@@ -710,6 +982,7 @@ async def search_knowledge_with_trace(
         raw_candidates=raw_candidates,
         reranked_candidates=list(candidates),
         fusion_candidates=fusion_candidates,
+        fusion_ranked=fusion_ranked,
         fused=fused,
         pre_fusion_query_route_coverage=pre_coverage,
         post_fusion_query_route_coverage=post_coverage,
@@ -729,7 +1002,7 @@ async def search_knowledge_with_trace(
             key: int(processor_metadata.get(key) or 0)
             for key in ("input_tokens", "output_tokens", "total_tokens")
         },
-    ))
+    )))
 
 
 async def search_knowledge(

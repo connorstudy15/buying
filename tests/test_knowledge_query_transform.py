@@ -1,4 +1,5 @@
 import asyncio
+import json
 from types import SimpleNamespace
 from unittest.mock import AsyncMock
 
@@ -13,6 +14,7 @@ from app.infrastructure.rag.knowledge_retrieval import (
     search_knowledge_with_trace,
     unsupported_fact_reason,
 )
+from app.infrastructure.rag import knowledge_retrieval
 from scripts.eval.run_query_decompose_ablation import SharedPlanProcessor
 from scripts.eval.run_per_need_rerank_ablation import RetryingReranker
 
@@ -37,6 +39,37 @@ class PlannedProcessor:
         if self.error:
             raise self.error
         return self.plan
+
+
+class CapturingSpan:
+    def __init__(self, name, attributes=None):
+        self.name = name
+        self.attributes = dict(attributes or {})
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *_args):
+        return False
+
+    def set_attribute(self, key, value):
+        self.attributes[key] = value
+
+    def set_attributes(self, values):
+        self.attributes.update(values)
+
+    def set_status(self, _status):
+        pass
+
+
+class CapturingTracer:
+    def __init__(self):
+        self.spans = []
+
+    def start_as_current_span(self, name, *, attributes=None, **_kwargs):
+        span = CapturingSpan(name, attributes)
+        self.spans.append(span)
+        return span
 
 
 def test_query_processor_prompt_decomposes_single_goal_with_independent_evidence_needs():
@@ -107,6 +140,9 @@ async def test_direct_plan_uses_exact_legacy_ranking():
     outcome = await search_knowledge_with_trace(kb, "怎么挑", 2, query_processor=PlannedProcessor(plan))
     assert [item.document_id for item in outcome.hits] == ["a", "b"]
     assert outcome.trace.mode == "query_transform_direct"
+    assert [entry["best_rank"] for entry in outcome.trace.fusion_ranked] == [1, 2, 3]
+    assert [entry["selected"] for entry in outcome.trace.fusion_ranked] == [True, False, True]
+    assert all(entry["ranking_score_type"] == "retrieval_similarity" for entry in outcome.trace.fusion_ranked)
     assert outcome.trace.processor_plan_mode == "DIRECT"
     assert outcome.trace.effective_plan_mode == "DIRECT"
     assert kb.search.await_count == 1
@@ -211,6 +247,78 @@ async def test_per_need_reranker_scores_each_subquery_not_global_question():
     assert reranker.calls == ["登机箱尺寸", "移动电源限制"]
     assert outcome.trace.per_need_rerank_applied is True
     assert len(outcome.trace.per_need_rerank_calls) == 2
+
+
+@pytest.mark.asyncio
+async def test_decompose_trace_explains_query_retrieval_rerank_and_fusion(monkeypatch):
+    tracer = CapturingTracer()
+    monkeypatch.setattr(knowledge_retrieval.trace, "get_tracer", lambda _name: tracer)
+    distractor = hit("generic", "通用旅行用品介绍", section="概览", score=0.91)
+    size = hit("travel", "登机箱尺寸因航空公司而异", section="尺寸", score=0.82)
+    battery = hit("battery", "移动电源航空运输容量限制", section="电池", score=0.80)
+
+    async def search(queries, top_k):
+        return [distractor, size, battery]
+
+    class NeedReranker:
+        async def rerank(self, query, documents):
+            return [0.1, 1.0, 0.2] if "尺寸" in query else [0.1, 0.2, 1.0]
+
+    plan = QueryPlan("箱子和充电宝能否登机", "", (
+        QueryVariant("subquery_1", "登机箱尺寸", "size", "subquery", "size"),
+        QueryVariant("subquery_2", "移动电源限制", "battery", "subquery", "battery"),
+    ), mode="DECOMPOSE")
+    await search_knowledge_with_trace(
+        SimpleNamespace(search=search), plan.original_query, 2,
+        query_processor=PlannedProcessor(plan), per_need_reranker=NeedReranker(),
+    )
+
+    processor = next(span for span in tracer.spans if span.name == "knowledge.query_processor")
+    processor_output = json.loads(processor.attributes["langfuse.observation.output"])
+    assert processor_output["mode"] == "DECOMPOSE"
+    assert {item["information_need_id"] for item in processor_output["variants"]} >= {"size", "battery"}
+
+    retrieval = next(span for span in tracer.spans
+                     if span.name == "knowledge.candidate_retrieval"
+                     and span.attributes["globex.retrieval.need_id"] == "size")
+    retrieval_output = json.loads(retrieval.attributes["langfuse.observation.output"])
+    assert retrieval.attributes["langfuse.observation.type"] == "retriever"
+    assert retrieval_output["candidate_count"] == 3
+    assert retrieval_output["candidates"][0]["retrieval_rank"] == 1
+
+    reranker = next(span for span in tracer.spans
+                    if span.name == "knowledge.reranker.need"
+                    and span.attributes["globex.retrieval.need_id"] == "size")
+    reranker_output = json.loads(reranker.attributes["langfuse.observation.output"])
+    promoted = next(item for item in reranker_output["candidates"] if item["document_id"] == "travel")
+    assert promoted["retrieval_rank"] == 2 and promoted["current_rank"] == 1
+    assert promoted["rank_delta"] == 1 and promoted["reranker_score"] == 1.0
+
+    fusion = next(span for span in tracer.spans if span.name == "knowledge.rrf_fusion")
+    fusion_output = json.loads(fusion.attributes["langfuse.observation.output"])
+    assert fusion_output["covered_information_needs"] == ["battery", "size"]
+    assert len(fusion_output["selected_candidate_ids"]) == 2
+    assert all(item["provenance"] for item in fusion_output["ranking"])
+
+
+@pytest.mark.asyncio
+async def test_direct_selection_trace_marks_selected_candidates(monkeypatch):
+    tracer = CapturingTracer()
+    monkeypatch.setattr(knowledge_retrieval.trace, "get_tracer", lambda _name: tracer)
+    values = [
+        hit("travel", "第一段", section="属性"),
+        hit("travel", "第二段", section="限制"),
+        hit("other", "其他文档", section="概览"),
+    ]
+    plan = QueryPlan("同一主题需要两段证据", "", (), mode="DIRECT")
+    await search_knowledge_with_trace(
+        SimpleNamespace(search=AsyncMock(return_value=values)), plan.original_query, 2,
+        query_processor=PlannedProcessor(plan),
+    )
+    selection = next(span for span in tracer.spans if span.name == "knowledge.direct_selection")
+    output = json.loads(selection.attributes["langfuse.observation.output"])
+    assert output["selected_chunk_count"] == 2
+    assert sum(bool(item["selected"]) for item in output["candidates"]) == 2
 
 
 @pytest.mark.asyncio
@@ -368,8 +476,9 @@ def test_same_intent_original_and_rewrite_do_not_double_vote():
         SimpleNamespace(item=item, query_id="original", information_need_id="overall", retrieval_route="vector", rank_in_source=1, intent_group_id="overall"),
         SimpleNamespace(item=item, query_id="rewrite", information_need_id="overall", retrieval_route="vector", rank_in_source=2, intent_group_id="overall"),
     ]
-    _, fused, _, _ = _rrf_fuse(candidates, 1, 60)
+    _, fused, _, _, ranked = _rrf_fuse(candidates, 1, 60)
     assert fused[0]["rrf_score"] == pytest.approx(1 / 61)
+    assert ranked[0]["selected"] is True
 
 
 @pytest.mark.parametrize("question", [

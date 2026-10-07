@@ -7,7 +7,7 @@ from pathlib import Path
 
 
 _ROOT = Path(__file__).resolve().parents[1]
-_KNOWLEDGE = _ROOT / "knowledge"
+_KNOWLEDGE = _ROOT / "eval" / "knowledge" / "corpus"
 _MANIFEST = _KNOWLEDGE / "manifest.jsonl"
 _CATEGORIES = (
     ("travel-gear", "旅行装备", "收纳、舒适与行李组织"),
@@ -78,6 +78,7 @@ def _entry(filename: str, document_id: str, *, region: str, topic: str) -> dict:
         "filename": filename,
         "source": "Globex 离线评测知识快照（合成演示，不用于实时法规结论）",
         "source_type": "synthetic_evaluation_fixture",
+        "corpus_role": "evaluation",
         "published_at": "2026-08-01",
         "effective_from": "2026-08-01",
         "effective_to": "2026-12-31",

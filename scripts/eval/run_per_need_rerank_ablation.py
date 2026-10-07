@@ -21,8 +21,9 @@ from app.application.retrieval.query_processor import QueryProcessor  # noqa: E4
 from app.infrastructure.llm import create_chat_model  # noqa: E402
 from app.infrastructure.langfuse_config import LangfuseConfig  # noqa: E402
 from app.infrastructure.rag.category_knowledge import (  # noqa: E402
-    bootstrap_category_knowledge,
-    build_category_knowledge_base,
+    EVALUATION_KNOWLEDGE_DIR,
+    build_evaluation_knowledge_base,
+    verify_evaluation_knowledge_base,
 )
 from app.infrastructure.rerank.http_reranker import HttpReranker  # noqa: E402
 from app.infrastructure.settings import load_settings  # noqa: E402
@@ -347,6 +348,7 @@ def _render(
         + (f"；评测运行 ID：`{evaluation_run_id}`" if evaluation_run_id else ""),
         "- 同一轮两组复用相同查询计划和相同候选池。",
         "- 唯一变化：实验 B 用每条子查询分别重排自己的候选；原问题候选不做全局重排。",
+        "- v5 显式需求题的 All-Evidence 按 All-Needs 判定：每个 need 命中任一有效 gold 即满足。",
         "",
         "## 总体指标（多轮中位数）",
         "",
@@ -603,6 +605,10 @@ async def main(argv: list[str] | None = None) -> None:
         "--langfuse", action="store_true",
         help="把脱敏后的逐题评测 trace 发到 Langfuse；不上传 query 或知识正文",
     )
+    parser.add_argument(
+        "--skip-latency-probe", action="store_true",
+        help="只跑质量配对 pass；用于排名诊断，省略额外的无缓存延迟探针",
+    )
     args = parser.parse_args(argv)
     if not 1 <= args.repetitions <= 5:
         parser.error("--repetitions 必须在 1 到 5 之间")
@@ -623,9 +629,9 @@ async def main(argv: list[str] | None = None) -> None:
     evaluation_run_id = f"knowledge-v5-{datetime.now().strftime('%Y%m%d%H%M%S')}-{uuid.uuid4().hex[:8]}"
     if not settings.reranker_base_url or not settings.reranker_model:
         parser.error("实验 B 必须配置 RERANKER_BASE_URL 和 RERANKER_MODEL")
-    knowledge_base = build_category_knowledge_base(settings)
-    inserted = await bootstrap_category_knowledge(knowledge_base)
-    print(f"知识库就绪（本次新增 {inserted} 篇）；共 {len(cases)} 题")
+    knowledge_base = build_evaluation_knowledge_base(settings)
+    document_count = await verify_evaluation_knowledge_base(knowledge_base, EVALUATION_KNOWLEDGE_DIR)
+    print(f"冻结评测知识库就绪（{document_count} 篇；未执行自动重建）；共 {len(cases)} 题")
     processor_settings = replace(
         settings,
         llm_base_url=settings.query_processor_base_url or settings.llm_base_url,
@@ -705,29 +711,35 @@ async def main(argv: list[str] | None = None) -> None:
         # 质量结果先落盘；无缓存探针依赖远程 embedding，失败时不能丢掉已完成的质量 pass。
         write_checkpoint(repetition - 1)
         latency_observations: list[dict] = []
-        try:
-            await run_dataset(
-                knowledge_base, cases, 3, observations=latency_observations, query_processor=shared,
-                rrf_k=args.rrf_k, execute_rewrite=False, candidate_cache=None,
-                per_need_reranker=reranker,
-                langfuse_enabled=args.langfuse, evaluation_run_id=evaluation_run_id,
-                evaluation_strategy="decompose_per_need_rerank_latency_uncached", dataset_hash=dataset_hash,
-                repetition=repetition,
-            )
-        except BaseException as error:
+        if args.skip_latency_probe:
             run_record["decompose_per_need_rerank_latency_uncached"] = {
-                "status": "failed",
-                "error_type": type(error).__name__,
-                "status_code": getattr(error, "status_code", None),
-                "completed_observation_count": len(latency_observations),
+                "status": "skipped_by_final_rank_diagnostic",
+                "observations": [],
+            }
+        else:
+            try:
+                await run_dataset(
+                    knowledge_base, cases, 3, observations=latency_observations, query_processor=shared,
+                    rrf_k=args.rrf_k, execute_rewrite=False, candidate_cache=None,
+                    per_need_reranker=reranker,
+                    langfuse_enabled=args.langfuse, evaluation_run_id=evaluation_run_id,
+                    evaluation_strategy="decompose_per_need_rerank_latency_uncached", dataset_hash=dataset_hash,
+                    repetition=repetition,
+                )
+            except BaseException as error:
+                run_record["decompose_per_need_rerank_latency_uncached"] = {
+                    "status": "failed",
+                    "error_type": type(error).__name__,
+                    "status_code": getattr(error, "status_code", None),
+                    "completed_observation_count": len(latency_observations),
+                    "observations": latency_observations,
+                }
+                write_checkpoint(repetition - 1)
+                raise
+            run_record["decompose_per_need_rerank_latency_uncached"] = {
+                "status": "complete",
                 "observations": latency_observations,
             }
-            write_checkpoint(repetition - 1)
-            raise
-        run_record["decompose_per_need_rerank_latency_uncached"] = {
-            "status": "complete",
-            "observations": latency_observations,
-        }
         write_checkpoint(repetition)
         print(
             f"第 {repetition} 轮：A evidence={experiment_a.evidence_recall:.4f}，"
@@ -750,6 +762,7 @@ async def main(argv: list[str] | None = None) -> None:
             "shared_query_plan_within_repetition": True,
             "shared_candidate_pool_within_repetition": True,
             "quality_and_latency_measurement_separated": True,
+            "latency_probe_skipped": args.skip_latency_probe,
             "latency_probe_candidate_cache": False,
             "global_original_query_rerank": False,
             "reranker_attempt_timeout_seconds": args.reranker_timeout_seconds,

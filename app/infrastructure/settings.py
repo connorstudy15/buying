@@ -115,6 +115,8 @@ class Settings:
     langfuse_secret_key: str = field(default="", repr=False)
     otel_service_name: str = "globex-agent"
     otlp_timeout_seconds: float = 5.0
+    # off：只导出长度；development：仅导出白名单只读工具的脱敏、截断后 I/O。
+    trace_content_mode: str = "off"
     session_owner_binding: bool = True
     identity_mode: str = "demo"
     prompt_pin_version: str = ""
@@ -131,6 +133,8 @@ class Settings:
     query_processor_max_subqueries: int = 3
     query_processor_disable_thinking: bool = False
     knowledge_rrf_k: int = 60
+    # Production / Evaluation 知识库必须使用不同 collection。评测代码只能显式读取后者。
+    category_kb_eval_collection: str = "globex_category_kb_eval"
 
 
 def load_settings() -> Settings:
@@ -144,6 +148,19 @@ def load_settings() -> Settings:
         )
     data_dir = Path(os.getenv("DATA_DIR", str(PROJECT_ROOT / "data")))
     data_dir.mkdir(parents=True, exist_ok=True)  # SQLite 默认落在此目录，建库前必须存在
+    production_collection = os.getenv(
+        "KNOWLEDGE_COLLECTION_PRODUCTION",
+        os.getenv("CATEGORY_KB_COLLECTION", "globex_category_kb"),
+    )
+    evaluation_collection = os.getenv("KNOWLEDGE_COLLECTION_EVAL", "globex_category_kb_eval")
+    if production_collection == evaluation_collection:
+        raise RuntimeError(
+            "KNOWLEDGE_COLLECTION_PRODUCTION 与 KNOWLEDGE_COLLECTION_EVAL 不允许相同；"
+            "正式知识和评测语料必须物理隔离"
+        )
+    trace_content_mode = os.getenv("TRACE_CONTENT_MODE", "off").strip().lower()
+    if trace_content_mode not in {"off", "development"}:
+        raise RuntimeError("TRACE_CONTENT_MODE 只允许 off 或 development")
     return Settings(
         context_strategy=os.getenv("CONTEXT_STRATEGY", "legacy"),
         context_pruning_timing=os.getenv("CONTEXT_PRUNING_TIMING", "after_use"),
@@ -175,7 +192,8 @@ def load_settings() -> Settings:
         tavily_api_key=os.getenv("TAVILY_API_KEY", ""),
         otlp_endpoint=os.getenv("OTEL_EXPORTER_OTLP_ENDPOINT", ""),
         data_dir=data_dir,
-        category_kb_collection=os.getenv("CATEGORY_KB_COLLECTION", "globex_category_kb"),
+        category_kb_collection=production_collection,
+        category_kb_eval_collection=evaluation_collection,
         context_size=int(os.getenv("CONTEXT_SIZE", "128000")),
         tool_result_limit=int(os.getenv("TOOL_RESULT_LIMIT", "20000")),
         reply_token_budget=int(os.getenv("REPLY_TOKEN_BUDGET", "0")),
@@ -226,6 +244,7 @@ def load_settings() -> Settings:
         langfuse_secret_key=os.getenv("LANGFUSE_SECRET_KEY", ""),
         otel_service_name=os.getenv("OTEL_SERVICE_NAME", "globex-agent"),
         otlp_timeout_seconds=float(os.getenv("OTEL_EXPORTER_OTLP_TRACES_TIMEOUT") or os.getenv("OTEL_EXPORTER_OTLP_TIMEOUT", "5")),
+        trace_content_mode=trace_content_mode,
         session_owner_binding=os.getenv("SESSION_OWNER_BINDING", "1") not in ("0", "false", "False"),
         identity_mode=os.getenv("IDENTITY_MODE", "demo"),
         prompt_pin_version=os.getenv("PROMPT_PIN_VERSION", ""),

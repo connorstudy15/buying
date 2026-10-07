@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import asyncio
 import hashlib
+import json
 import logging
 import re
 import uuid
@@ -55,6 +56,7 @@ _SAFE_ATTRIBUTES = {
     "langfuse.trace.metadata.request_id", "langfuse.trace.metadata.task_id",
     "globex.request_id", "globex.task_id", "globex.session_hash", "globex.cancelled",
     "globex.input.characters", "globex.output.characters", "globex.content.redacted",
+    "globex.content.sanitized", "globex.content.truncated", "globex.trace.content_mode",
     "globex.prompt_version", "globex.prompt_variant", "globex.prompt_deployment_id",
     "langfuse.trace.metadata.prompt_version",
     "globex.capability_digest", "langfuse.trace.metadata.capability_digest",
@@ -87,13 +89,58 @@ _SAFE_ATTRIBUTES = {
     "globex.retrieval.fused_count", "globex.retrieval.degraded",
     "globex.retrieval.max_chunks_per_document", "globex.retrieval.selected_chunk_count",
     "globex.retrieval.selected_document_count",
+    "globex.knowledge.collection_name", "globex.knowledge.corpus_version",
+    "langfuse.observation.metadata.collection_name", "langfuse.observation.metadata.corpus_version",
+    "globex.trace.stage", "globex.agent.subagent", "globex.agent.attempt",
+    "globex.agent.dispatch_count", "globex.agent.tool_call_count", "globex.agent.degraded_count",
+    "globex.agent.unverified_id_count", "globex.context.before_tokens", "globex.context.after_tokens",
+    "globex.context.archived_results", "globex.context.summary_changed", "globex.context.elapsed_ms",
+    "globex.context.status", "globex.context.reason", "globex.context.policy_version",
 }
 _CONTENT_FIELDS = {
     "gen_ai.input.messages": "globex.input.characters",
     "gen_ai.output.messages": "globex.output.characters",
     "gen_ai.tool.call.arguments": "globex.input.characters",
     "gen_ai.tool.call.result": "globex.output.characters",
+    "langfuse.observation.input": "globex.input.characters",
+    "langfuse.observation.output": "globex.output.characters",
 }
+_DEVELOPMENT_TRACE_TOOLS = frozenset({
+    "product_search_tool",
+    "category_insight_tool",
+    "conversation_fact_lookup",
+})
+_DEVELOPMENT_CONTENT_LIMITS = {
+    "gen_ai.tool.call.arguments": 12_000,
+    "gen_ai.tool.call.result": 50_000,
+    "langfuse.observation.input": 12_000,
+    "langfuse.observation.output": 50_000,
+}
+_DEVELOPMENT_RAG_STAGES = frozenset({
+    "query_processor",
+    "candidate_retrieval",
+    "reranker_need",
+    "rrf_fusion",
+    "direct_selection",
+})
+_DEVELOPMENT_AGENT_STAGES = frozenset({
+    "agent_turn",
+    "context_assembly",
+    "subagent_handoff",
+    "turn_attempt",
+    "context_compaction",
+})
+_SENSITIVE_FIELD = re.compile(
+    r"(?:^|[_-])(?:api[_-]?key|secret|token|authorization|cookie|password|buyer[_-]?id|"
+    r"session[_-]?id|shipping[_-]?address|address|phone|mobile|e-?mail)(?:$|[_-])",
+    re.IGNORECASE,
+)
+_SENSITIVE_TEXT = (
+    (re.compile(r"(?i)\bBearer\s+[A-Za-z0-9._~+/=-]+"), "Bearer [REDACTED]"),
+    (re.compile(r"(?i)\b(?:sk|pk)-[A-Za-z0-9._-]{8,}"), "[REDACTED_KEY]"),
+    (re.compile(r"(?<!\d)1[3-9]\d{9}(?!\d)"), "[REDACTED_PHONE]"),
+    (re.compile(r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b"), "[REDACTED_EMAIL]"),
+)
 
 
 def _safe_id(value: object) -> str:
@@ -230,8 +277,54 @@ class CorrelationSpanProcessor(SpanProcessor):
         span.set_attributes(_span_correlation(current_correlation()))
 
 
-def _sanitize_attributes(attributes) -> dict:
+def _redact_development_value(value):
+    if isinstance(value, dict):
+        return {
+            str(key): "[REDACTED]" if _SENSITIVE_FIELD.search(str(key)) else _redact_development_value(item)
+            for key, item in value.items()
+        }
+    if isinstance(value, (list, tuple)):
+        return [_redact_development_value(item) for item in value]
+    if isinstance(value, str):
+        for pattern, replacement in _SENSITIVE_TEXT:
+            value = pattern.sub(replacement, value)
+        return value
+    return value
+
+
+def _sanitize_development_payload(value, limit: int) -> tuple[str, bool]:
+    """把只读工具 I/O 变成 Langfuse 可展示的、有界且脱敏的 JSON/文本。"""
+    if isinstance(value, str):
+        try:
+            payload = json.loads(value)
+        except (TypeError, ValueError):
+            payload = value
+    else:
+        payload = value
+    payload = _redact_development_value(payload)
+    if isinstance(payload, str):
+        rendered = payload
+    else:
+        try:
+            rendered = json.dumps(payload, ensure_ascii=False, separators=(",", ":"), default=str)
+        except (TypeError, ValueError):
+            rendered = str(payload)
+    # JSON 解析失败时仍执行文本级掩码；例如 SDK 传来 Python repr。
+    rendered = _redact_development_value(rendered)
+    truncated = len(rendered) > limit
+    if truncated:
+        rendered = rendered[:limit] + f"…[TRUNCATED original_chars={len(rendered)}]"
+    return rendered, truncated
+
+
+def _sanitize_attributes(attributes, *, content_mode: str = "off") -> dict:
     result = {}
+    tool_name = (attributes or {}).get("gen_ai.tool.name", "")
+    development_tool = content_mode == "development" and tool_name in _DEVELOPMENT_TRACE_TOOLS
+    retrieval_stage = (attributes or {}).get("globex.retrieval.stage", "")
+    trace_stage = (attributes or {}).get("globex.trace.stage", "")
+    development_rag = content_mode == "development" and retrieval_stage in _DEVELOPMENT_RAG_STAGES
+    development_agent = content_mode == "development" and trace_stage in _DEVELOPMENT_AGENT_STAGES
     for key, value in (attributes or {}).items():
         if key in _SAFE_ATTRIBUTES:
             # 名称是固定技术标签；异常正文、业务字段和自由文本没有白名单入口。
@@ -244,12 +337,23 @@ def _sanitize_attributes(attributes) -> dict:
             result[key] = value
         elif key in _CONTENT_FIELDS:
             result[_CONTENT_FIELDS[key]] = len(value) if isinstance(value, (str, tuple, list)) else 0
-            result["globex.content.redacted"] = True
+            expose_tool = development_tool and key.startswith("gen_ai.tool.call.")
+            expose_observation = (development_rag or development_agent) and key.startswith("langfuse.observation.")
+            if (expose_tool or expose_observation) and key in _DEVELOPMENT_CONTENT_LIMITS:
+                rendered, truncated = _sanitize_development_payload(value, _DEVELOPMENT_CONTENT_LIMITS[key])
+                result[key] = rendered
+                result["globex.content.sanitized"] = True
+                if truncated:
+                    result["globex.content.truncated"] = True
+            else:
+                result["globex.content.redacted"] = True
+    if content_mode != "off":
+        result["globex.trace.content_mode"] = content_mode
     return result
 
 
-def sanitize_span(span: ReadableSpan) -> ReadableSpan:
-    attributes = _sanitize_attributes(span.attributes)
+def sanitize_span(span: ReadableSpan, *, content_mode: str = "off") -> ReadableSpan:
+    attributes = _sanitize_attributes(span.attributes, content_mode=content_mode)
     operation = attributes.get("gen_ai.operation.name")
     if operation in {"chat", "invoke_agent", "execute_tool"}:
         attributes["langfuse.observation.type"] = {"chat": "generation", "invoke_agent": "agent", "execute_tool": "tool"}[operation]
@@ -278,12 +382,13 @@ def sanitize_span(span: ReadableSpan) -> ReadableSpan:
 
 
 class SanitizingSpanExporter(SpanExporter):
-    def __init__(self, exporter: SpanExporter) -> None:
+    def __init__(self, exporter: SpanExporter, *, content_mode: str = "off") -> None:
         self._exporter = exporter
+        self._content_mode = content_mode
 
     def export(self, spans) -> SpanExportResult:
         try:
-            return self._exporter.export([sanitize_span(span) for span in spans])
+            return self._exporter.export([sanitize_span(span, content_mode=self._content_mode) for span in spans])
         except Exception as error:
             # 不记录异常正文，以免导出器把含认证信息的配置或远端响应写进日志。
             logger.warning("OTLP 导出失败（%s）", type(error).__name__)
@@ -357,7 +462,7 @@ def create_tracer_provider(settings: Settings) -> TracerProvider:
     provider.add_span_processor(CorrelationSpanProcessor())
     provider.add_span_processor(BatchSpanProcessor(SanitizingSpanExporter(OTLPSpanExporter(
         endpoint=endpoint, headers=headers, timeout=settings.otlp_timeout_seconds,
-    )), max_queue_size=1024, max_export_batch_size=128, schedule_delay_millis=1000))
+    ), content_mode=settings.trace_content_mode), max_queue_size=1024, max_export_batch_size=128, schedule_delay_millis=1000))
     return provider
 
 
@@ -376,7 +481,7 @@ def setup_tracing(settings: Settings) -> None:
         provider = create_tracer_provider(settings)
         trace.set_tracer_provider(provider)
         _provider, _initialized = provider, True
-        logger.info("OTel tracing 已启用，正文脱敏过滤已生效")
+        logger.info("OTel tracing 已启用，内容模式=%s，脱敏过滤已生效", settings.trace_content_mode)
     except Exception as error:
         logger.warning("OTel tracing 初始化失败，业务继续运行（%s）", type(error).__name__)
 

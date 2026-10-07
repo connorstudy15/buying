@@ -15,7 +15,7 @@ from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from app.infrastructure.rag.category_knowledge import build_category_knowledge_base
+from app.infrastructure.rag.category_knowledge import build_evaluation_knowledge_base
 from app.infrastructure.rag.knowledge_retrieval import targeted_documents
 from app.infrastructure.settings import PROJECT_ROOT, load_settings
 
@@ -74,9 +74,10 @@ async def main() -> None:
     query_path = args.queries if args.queries.is_absolute() else PROJECT_ROOT / args.queries
     output = args.output if args.output.is_absolute() else PROJECT_ROOT / args.output
     queries = [json.loads(line) for line in query_path.read_text(encoding="utf-8").splitlines() if line.strip()]
-    documents = {path.name: path.read_text(encoding="utf-8") for path in sorted((PROJECT_ROOT / "knowledge").glob("*.md"))}
+    corpus = PROJECT_ROOT / "eval" / "knowledge" / "corpus"
+    documents = {path.name: path.read_text(encoding="utf-8") for path in sorted(corpus.glob("*.md"))}
     settings = load_settings()
-    kb = build_category_knowledge_base(settings)
+    kb = build_evaluation_knowledge_base(settings)
     # 阶段 B 只允许读取既有本地索引：不得在候选池构建时把正文重新提交给外部 Embedding。
     await kb.ensure_collection()
     registered = await kb.list_documents()

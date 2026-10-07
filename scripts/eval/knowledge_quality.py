@@ -15,7 +15,7 @@ from agentscope.rag import ApproxTokenChunker, TextParser
 _MANIFEST = "manifest.jsonl"
 _REQUIRED = {
     "document_id", "filename", "source", "source_type", "published_at",
-    "effective_from", "effective_to", "region", "version", "topic",
+    "effective_from", "effective_to", "region", "version", "topic", "corpus_role",
 }
 
 
@@ -54,7 +54,12 @@ def validate_knowledge_manifest(knowledge_dir: Path, manifest: list[dict[str, An
             problems.append(f"{label} 日期必须使用 ISO 格式")
         if not entry["source"].strip():
             problems.append(f"{label} 缺少来源")
-        if entry["topic"] == "policy" and entry["source_type"] not in {"official_snapshot", "synthetic_evaluation_fixture"}:
+        if entry["corpus_role"] not in {"production", "evaluation"}:
+            problems.append(f"{label} corpus_role 非法")
+        if entry["topic"] == "policy" and entry["source_type"] not in {
+            "official_snapshot", "official_guide", "production_knowledge",
+            "curated_knowledge", "synthetic_evaluation_fixture",
+        }:
             problems.append(f"{label} 政策文档 source_type 非法")
     markdowns = {path.name for path in knowledge_dir.glob("*.md")}
     unregistered = markdowns - seen_files

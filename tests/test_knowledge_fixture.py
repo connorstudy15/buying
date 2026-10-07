@@ -11,19 +11,21 @@ from scripts.eval.knowledge_quality import count_knowledge_chunks, load_knowledg
 
 
 _ROOT = Path(__file__).resolve().parents[1]
+_EVAL_CORPUS = _ROOT / "eval" / "knowledge" / "corpus"
+_PRODUCTION_CORPUS = _ROOT / "knowledge" / "production"
 
 
 def test_knowledge_fixture_has_versioned_metadata_and_required_document_count():
-    manifest = load_knowledge_manifest(_ROOT / "knowledge")
+    manifest = load_knowledge_manifest(_EVAL_CORPUS)
 
     assert len(manifest) >= 40
-    assert validate_knowledge_manifest(_ROOT / "knowledge", manifest) == []
+    assert validate_knowledge_manifest(_EVAL_CORPUS, manifest) == []
     assert {entry["region"] for entry in manifest} >= {"GLOBAL", "US", "EU", "JP", "SG", "CN"}
 
 
 @pytest.mark.asyncio
 async def test_knowledge_fixture_chunk_count_is_large_enough_to_make_recall_discriminative():
-    chunk_count = await count_knowledge_chunks(_ROOT / "knowledge")
+    chunk_count = await count_knowledge_chunks(_EVAL_CORPUS)
 
     assert 150 <= chunk_count <= 250
 
@@ -31,7 +33,7 @@ async def test_knowledge_fixture_chunk_count_is_large_enough_to_make_recall_disc
 def test_runtime_knowledge_loader_exposes_manifest_metadata():
     from app.infrastructure.rag.category_knowledge import load_knowledge_metadata
 
-    metadata = load_knowledge_metadata(_ROOT / "knowledge")
+    metadata = load_knowledge_metadata(_EVAL_CORPUS, corpus_role="evaluation")
     policy = metadata["eval-policy-us"]
 
     assert policy["region"] == "US"
@@ -78,3 +80,12 @@ async def test_dataset_validator_includes_knowledge_metadata_and_chunk_gate():
     from scripts.eval.validate_datasets import validate_knowledge_fixture
 
     assert await validate_knowledge_fixture() == []
+
+
+def test_production_manifest_is_valid_and_has_required_provenance():
+    manifest = load_knowledge_manifest(_PRODUCTION_CORPUS)
+    assert 10 <= len(manifest) <= 20
+    assert validate_knowledge_manifest(_PRODUCTION_CORPUS, manifest) == []
+    assert all(entry["corpus_role"] == "production" for entry in manifest)
+    assert all(entry.get("source_type") for entry in manifest)
+    assert all(entry.get("source_url") and entry.get("authority_level") for entry in manifest)

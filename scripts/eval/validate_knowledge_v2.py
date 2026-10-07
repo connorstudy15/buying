@@ -42,12 +42,12 @@ def validate(path: Path) -> tuple[list[str], Counter[str]]:
         for source, grade in grades.items():
             if type(grade) is not int or not 0 <= grade <= 3:
                 problems.append(f"{case_id}: {source} grade 必须是 0..3 整数")
-            if not (PROJECT_ROOT / "knowledge" / source).is_file():
+            if not (PROJECT_ROOT / "eval" / "knowledge" / "corpus" / source).is_file():
                 problems.append(f"{case_id}: graded 文档不存在：{source}")
         for item in evidence:
             source = item.get("source")
             quote = item.get("quote")
-            source_path = PROJECT_ROOT / "knowledge" / str(source)
+            source_path = PROJECT_ROOT / "eval" / "knowledge" / "corpus" / str(source)
             if source not in relevant:
                 problems.append(f"{case_id}: evidence 来源不在 relevant：{source}")
             if not source_path.is_file():

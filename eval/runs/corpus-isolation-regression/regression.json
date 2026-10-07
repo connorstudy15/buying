@@ -1,0 +1,74 @@
+{
+  "created_at": "2026-10-04T19:13:41.234424+00:00",
+  "source_collection": "knowledge_dual_tower_exp",
+  "target_collection": "globex_category_kb_eval",
+  "production_collection": "globex_category_kb",
+  "chunk_count": 151,
+  "corpus_manifest_sha256": "c0473ab320aca136281cc719559ef930bd371b0722f867826c282b8c41a4171b",
+  "frozen_corpus_manifest_sha256": "c0473ab320aca136281cc719559ef930bd371b0722f867826c282b8c41a4171b",
+  "query_plan_sha256": "4fd24d67ed9c903df3ff5970e06efdeaf032f69b79fa85be89e3dc853ad38403",
+  "exact_ranking_match": true,
+  "metric_match": true,
+  "gold_rank_match": true,
+  "mrr_absolute_delta": 0.0,
+  "mrr_tolerance": 0.0001,
+  "metrics": {
+    "query_count": 71,
+    "recall_at_5": 0.795774647887324,
+    "recall_at_10": 0.8450704225352113,
+    "recall_at_24": 0.8802816901408451,
+    "recall_at_50": 0.9436619718309859,
+    "mrr": 0.782080215782429,
+    "gold_mean_rank_censored_at_51": 7.838709677419355,
+    "gold_median_rank_censored_at_51": 1,
+    "retrieval_loss_gold_count_at_50": 6,
+    "retrieval_loss_query_count_at_50": 6,
+    "hard_negative_outrank_positive_rate": 0.08333333333333333,
+    "hard_negative_annotated_query_count": 48
+  },
+  "frozen_run_provider_drift": {
+    "frozen_metrics": {
+      "query_count": 71,
+      "recall_at_5": 0.795774647887324,
+      "recall_at_10": 0.8309859154929577,
+      "recall_at_24": 0.8732394366197183,
+      "recall_at_50": 0.9436619718309859,
+      "mrr": 0.7818784970897646,
+      "gold_mean_rank_censored_at_51": 7.870967741935484,
+      "gold_median_rank_censored_at_51": 1,
+      "retrieval_loss_gold_count_at_50": 6,
+      "retrieval_loss_query_count_at_50": 6,
+      "hard_negative_outrank_positive_rate": 0.08333333333333333,
+      "hard_negative_annotated_query_count": 48
+    },
+    "fresh_metrics": {
+      "query_count": 71,
+      "recall_at_5": 0.795774647887324,
+      "recall_at_10": 0.8450704225352113,
+      "recall_at_24": 0.8802816901408451,
+      "recall_at_50": 0.9436619718309859,
+      "mrr": 0.782080215782429,
+      "gold_mean_rank_censored_at_51": 7.838709677419355,
+      "gold_median_rank_censored_at_51": 1,
+      "retrieval_loss_gold_count_at_50": 6,
+      "retrieval_loss_query_count_at_50": 6,
+      "hard_negative_outrank_positive_rate": 0.08333333333333333,
+      "hard_negative_annotated_query_count": 48
+    },
+    "delta": {
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.014084507042253502,
+      "recall_at_24": 0.007042253521126862,
+      "recall_at_50": 0.0,
+      "mrr": 0.0002017186926643877
+    },
+    "note": "同一远端模型重复编码的非确定性诊断，不归因于 collection 迁移。"
+  },
+  "embedding_telemetry": {
+    "model": "qwen3.7-text-embedding-flash",
+    "text_type": "query",
+    "request_count": 4,
+    "latency_ms": 1114.7000000055414,
+    "total_tokens": 1921
+  }
+}

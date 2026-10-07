@@ -123,7 +123,8 @@ def build_manifest(*, runner: str, dataset: Path, selection: dict, parameters: d
     catalog_source = catalog.resolve() if catalog is not None else root / "catalog/catalog-v1.jsonl"
     if catalog is None and not catalog_source.is_file():
         catalog_source = root / "data/catalog-v1.jsonl"
-    data_paths = [dataset.resolve(), catalog_source, *(root / "knowledge").glob("*.md"), root / "knowledge/manifest.jsonl"]
+    evaluation_corpus = root / "eval/knowledge/corpus"
+    data_paths = [dataset.resolve(), catalog_source, *evaluation_corpus.glob("*.md"), evaluation_corpus / "manifest.jsonl"]
     if baseline:
         data_paths.append(baseline.resolve())
     dependencies = {}
@@ -151,7 +152,7 @@ def build_manifest(*, runner: str, dataset: Path, selection: dict, parameters: d
             "reranker_endpoint": public_endpoint(os.getenv("RERANKER_BASE_URL", "")),
             "qdrant_endpoint": public_endpoint(os.getenv("QDRANT_URL", "")) or "local_embedded",
             "qdrant_product_collection": os.getenv("QDRANT_COLLECTION", "globex_products"),
-            "qdrant_category_collection": os.getenv("CATEGORY_KB_COLLECTION", "globex_category_kb"),
+            "qdrant_category_collection": os.getenv("KNOWLEDGE_COLLECTION_EVAL", "globex_category_kb_eval"),
         },
         "execution": {"status": "NOT_RUN", "actual_strategies": [], "gate": "NOT_RUN"},
     }

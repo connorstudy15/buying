@@ -141,7 +141,7 @@ async def test_product_release_runs_only_selected_queries_and_records_real_degra
 
     usecase.execute = execute
 
-    async def build(_strategy):
+    async def build(_strategy, *_args, **_kwargs):
         # 请求 embedding_rerank，但确实执行无外部依赖的关键词链，不能记成 online-main 通过。
         return usecase, repo, "embedding_rerank"
 
@@ -181,9 +181,9 @@ async def test_category_release_metrics_exclude_dev_and_initialization_errors_le
             return [SimpleNamespace(document_id="release.md", score=.9, chunk=SimpleNamespace(metadata={"source": "release.md"}))]
     observed = queries
     monkeypatch.setattr(category, "load_settings", lambda: object())
-    monkeypatch.setattr(category, "build_category_knowledge_base", lambda _: Knowledge())
-    async def bootstrap(_): return 0
-    monkeypatch.setattr(category, "bootstrap_category_knowledge", bootstrap)
+    monkeypatch.setattr(category, "build_evaluation_knowledge_base", lambda _: Knowledge())
+    async def verify(_, __): return 45
+    monkeypatch.setattr(category, "verify_evaluation_knowledge_base", verify)
     path = _dataset(tmp_path / "cases.jsonl", [
         {"id": "d", "split": "dev", "query": "dev", "relevant": ["dev.md"]},
         {"id": "r", "split": "release", "query": "release", "relevant": ["release.md"]},
@@ -193,7 +193,7 @@ async def test_category_release_metrics_exclude_dev_and_initialization_errors_le
     assert _manifest(tmp_path / "ok")["execution"]["metrics"]["count"] == 1
     assert [item["case_id"] for item in _manifest(tmp_path / "ok")["execution"]["observations"]] == ["r"]
     def unavailable(_): raise RuntimeError("service unavailable")
-    monkeypatch.setattr(category, "build_category_knowledge_base", unavailable)
+    monkeypatch.setattr(category, "build_evaluation_knowledge_base", unavailable)
     with pytest.raises(SystemExit):
         await category.main(["--dataset", str(path), "--split", "release", "--report-dir", str(tmp_path / "error")])
     failed = _manifest(tmp_path / "error")["execution"]
