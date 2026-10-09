@@ -274,6 +274,7 @@ async def build_container() -> Container:
 
     search_factory = SearchAgentFactory(
         settings, catalog_search, bus, knowledge_base, circuit_registry, throttle,
+        knowledge_reranker=reranker,
     )
     trade_factory = TradeAgentFactory(
         settings, place_order, query_order, cancel_order, bus, circuit_registry, throttle,
@@ -307,6 +308,10 @@ async def build_container() -> Container:
         session_lease_factory=task_queue.session_lease if task_queue is not None else None,
         evidence_store=search_factory.evidence_store,
         trade_state_provider=confirmations.agent_state,
+        resource_governor_shadow_enabled=settings.resource_governor_shadow_enabled,
+        resource_governor_model=settings.llm_model,
+        resource_planning_safety_factor=settings.resource_planning_safety_factor,
+        resource_chat_absolute_hard_cap=settings.resource_chat_absolute_hard_cap,
     )
 
     from app.application.agents.context_service import ContextService

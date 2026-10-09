@@ -48,6 +48,7 @@ class SearchAgentFactory:
         knowledge_base: KnowledgeBase,
         circuit_registry: CircuitBreakerRegistry,
         throttle: GatewayThrottle,
+        knowledge_reranker=None,
     ) -> None:
         self._settings = settings
         self._catalog_search = catalog_search
@@ -56,6 +57,9 @@ class SearchAgentFactory:
         self._circuit_registry = circuit_registry
         # 闸门由组装根下发，三个工厂必须共用同一个，否则各限一份等于没限
         self._throttle = throttle
+        # 与商品召回复用同一受控 HTTP reranker；知识链路只在 DECOMPOSE
+        # 时按 information need 分别调用，DIRECT 不增加精排请求。
+        self._knowledge_reranker = knowledge_reranker
         self.evidence_store = ContextEvidenceStore(settings.data_dir / "context_evidence.db")
         self._query_processor_model = None
         if settings.knowledge_query_transform_enabled:
@@ -102,6 +106,7 @@ class SearchAgentFactory:
                     fallback_knowledge_dir=KNOWLEDGE_DIR,
                     query_processor=query_processor,
                     rrf_k=self._settings.knowledge_rrf_k,
+                    per_need_reranker=self._knowledge_reranker,
                 ),
                 is_read_only=True,
                 middlewares=self._resilience(),

@@ -4,18 +4,24 @@ from __future__ import annotations
 import asyncio
 import hashlib
 import json
+import logging
 import math
 import re
 import time
+import uuid
 from dataclasses import dataclass, field, replace
 from typing import Any
 
 from agentscope.rag import KnowledgeBase
 from opentelemetry import trace
 from opentelemetry.trace import Status, StatusCode
+from app.infrastructure.resource_governance.models import ContextScope
+from app.infrastructure.resource_governance.operation import resource_operation
 
 from app.application.retrieval.query_processor import QueryPlan, QueryProcessor, QueryVariant
 from app.infrastructure.rag.category_knowledge import MIN_ANSWERABLE_KNOWLEDGE_SCORE
+
+logger = logging.getLogger(__name__)
 
 
 _TRACE_CANDIDATE_LIMIT = 50
@@ -421,11 +427,15 @@ async def _retrieve_candidates(
     ) as span:
         try:
             if templates is None:
-                templates = await retrieve_knowledge_candidates(
-                    knowledge_base, question, depth, target_limit=target_limit,
-                    query_id="candidate_cache", information_need_id="candidate_cache",
-                    intent_group_id="candidate_cache",
-                )
+                with resource_operation(
+                    "embedding.knowledge_query", component="knowledge_retrieval",
+                    context_scope=ContextScope.KNOWLEDGE,
+                ):
+                    templates = await retrieve_knowledge_candidates(
+                        knowledge_base, question, depth, target_limit=target_limit,
+                        query_id="candidate_cache", information_need_id="candidate_cache",
+                        intent_group_id="candidate_cache",
+                    )
                 if candidate_cache is not None:
                     candidate_cache[key] = templates
             output = [
@@ -586,11 +596,17 @@ async def _rerank_information_need(
         record_exception=False, set_status_on_exception=False,
     ) as span:
         try:
-            if hasattr(reranker, "rerank_with_metadata"):
-                scores, usage = await reranker.rerank_with_metadata(variant.text, documents)
-            else:
-                scores = await reranker.rerank(variant.text, documents)
-                usage = {}
+            with resource_operation(
+                "reranker.knowledge.need", component="knowledge_retrieval",
+                context_scope=ContextScope.KNOWLEDGE,
+                logical_call_id=f"rerank:{variant.query_id}:{variant.information_need_id}:{uuid.uuid4().hex[:8]}",
+                information_need_id=variant.information_need_id,
+            ):
+                if hasattr(reranker, "rerank_with_metadata"):
+                    scores, usage = await reranker.rerank_with_metadata(variant.text, documents)
+                else:
+                    scores = await reranker.rerank(variant.text, documents)
+                    usage = {}
             if len(scores) != len(candidates) or not all(math.isfinite(float(score)) for score in scores):
                 raise RuntimeError("per_need_reranker_invalid_scores")
             ranked = sorted(
@@ -822,10 +838,39 @@ async def search_knowledge_with_trace(
                 "latency_ms", round((time.perf_counter() - processor_started) * 1000, 3),
             )
             processor_span.set_attributes({
+                "globex.resource.operation": f"query_processor.{plan.mode.casefold()}",
+                "globex.resource.component": "query_processor",
+                "globex.resource.context_scope": ContextScope.QUERY_PROCESSOR.value,
+                "globex.resource.api_calls": 1,
+                "globex.resource.shadow_only": True,
                 "globex.retrieval.plan_mode": plan.mode,
                 "globex.retrieval.input_tokens": int(processor_metadata.get("input_tokens") or 0),
                 "globex.retrieval.output_tokens": int(processor_metadata.get("output_tokens") or 0),
                 "globex.retrieval.total_tokens": int(processor_metadata.get("total_tokens") or 0),
+                "globex.resource.actual_input_tokens": int(processor_metadata.get("input_tokens") or 0),
+                "globex.resource.actual_output_tokens": int(processor_metadata.get("output_tokens") or 0),
+                "globex.resource.old_estimated_prompt_tokens": int(processor_metadata.get("old_estimated_prompt_tokens") or 0),
+                "globex.resource.deepseek_estimated_prompt_tokens": int(processor_metadata.get("deepseek_estimated_prompt_tokens") or 0),
+                "globex.resource.deepseek_safe_estimated_prompt_tokens": int(processor_metadata.get("deepseek_safe_estimated_prompt_tokens") or 0),
+                "globex.resource.deepseek_estimator_method": str(processor_metadata.get("deepseek_estimator_method") or "unknown"),
+                "globex.resource.deepseek_estimator_confidence": str(processor_metadata.get("deepseek_estimator_confidence") or "low"),
+                "globex.resource.local_estimated_output_reserve": int(processor_metadata.get("local_estimated_output_reserve") or 1000),
+                "globex.resource.profile_id": str(processor_metadata.get("calibration_profile_id") or "bootstrap:query_processor.classify"),
+                "globex.resource.profile_confidence": str(processor_metadata.get("calibration_confidence") or "bootstrap"),
+                "globex.resource.calibration_samples": int(processor_metadata.get("calibration_samples") or 0),
+                "globex.resource.calibration_confidence": str(processor_metadata.get("calibration_confidence") or "bootstrap"),
+                "globex.resource.estimator_input_stage": str(processor_metadata.get("estimator_input_stage") or "agent_message_fallback"),
+                "globex.resource.thinking_mode": str(processor_metadata.get("thinking_mode") or "unspecified"),
+                "globex.resource.reasoning_effort": str(processor_metadata.get("reasoning_effort") or "unspecified"),
+                "globex.resource.tooling_mode": str(processor_metadata.get("tooling_mode") or "none"),
+                "globex.resource.old_actual_estimate_ratio": round(
+                    int(processor_metadata.get("input_tokens") or 0)
+                    / max(int(processor_metadata.get("old_estimated_prompt_tokens") or 0), 1), 6,
+                ),
+                "globex.resource.deepseek_actual_estimate_ratio": round(
+                    int(processor_metadata.get("input_tokens") or 0)
+                    / max(int(processor_metadata.get("deepseek_estimated_prompt_tokens") or 0), 1), 6,
+                ),
                 "langfuse.observation.output": _trace_json({
                     "mode": plan.mode,
                     "rewritten_query": plan.rewritten_query,
@@ -840,6 +885,25 @@ async def search_knowledge_with_trace(
                     } for variant in plan.variants()],
                 }),
             })
+            from app.infrastructure.resource_governance.governor import current_governor
+            from app.infrastructure.resource_governance.models import ResourceEstimate
+            resource_governor = current_governor()
+            if resource_governor is not None:
+                try:
+                    resource_governor.record_observed_usage(
+                        logical_call_id=f"{resource_governor.request_id}:query_processor:{uuid.uuid4().hex[:8]}",
+                        attempt=1,
+                        operation=f"query_processor.{plan.mode.casefold()}",
+                        estimate=ResourceEstimate(
+                            chat_input_tokens=int(processor_metadata.get("input_tokens") or 0),
+                            chat_output_tokens=int(processor_metadata.get("output_tokens") or 0),
+                            api_calls=1,
+                            monetary_cost=None,
+                            latency_ms=round(float(processor_metadata.get("latency_ms") or 0)),
+                        ),
+                    )
+                except Exception as observation_error:
+                    logger.warning("query processor shadow usage failed error_type=%s", type(observation_error).__name__)
         except Exception as err:  # noqa: BLE001 - 精确回到 legacy，不走新管线 original-only
             processor_span.set_attribute("error.type", type(err).__name__)
             processor_span.set_status(Status(StatusCode.ERROR))
@@ -872,6 +936,15 @@ async def search_knowledge_with_trace(
         if processor_mode == "REWRITE" and not execute_rewrite
         else plan.rewrite_decision
     )
+    resource_governor = current_governor()
+    if resource_governor is not None:
+        try:
+            await resource_governor.observe_query_plan(
+                effective_mode,
+                [variant.information_need_id for variant in plan.subqueries],
+            )
+        except Exception as observation_error:
+            logger.warning("query plan shadow prediction failed error_type=%s", type(observation_error).__name__)
 
     # DIRECT 与“实验中禁用 REWRITE”都逐字复用旧链路；仅多出前置模型分类时间。
     if effective_mode == "DIRECT":

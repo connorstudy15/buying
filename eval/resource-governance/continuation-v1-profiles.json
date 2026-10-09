@@ -1,0 +1,9252 @@
+{
+  "version": "continuation-v1",
+  "source_groups": [
+    "p25v3-direct-01",
+    "p25v3-knowledge-01",
+    "p25v3-product-01",
+    "p25v3-product-03",
+    "p25v3-search-01",
+    "p25v3-search-03"
+  ],
+  "source_trace_ids": [
+    "2d9abc5d75a7a441397816206b74f1c8",
+    "69ae4d94f54d995d0180e16658a12ce1",
+    "bb5a098dc4fdb5f6c54dd85b3b312f3f",
+    "e032ea23ed8aaa7bfe67a7c52b43e7b5",
+    "e5517b48918a52361a1b2d4963d2bafe",
+    "f7bb2bd2c784e395efb3c0c724f15421"
+  ],
+  "support_groups": [
+    {
+      "key": [
+        "main",
+        "main.plan",
+        "unknown",
+        "none",
+        "simple_direct"
+      ],
+      "groups": [
+        "p25v3-direct-01",
+        "p25v3-knowledge-01",
+        "p25v3-product-01",
+        "p25v3-product-03",
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "main.plan",
+        "unknown",
+        "none"
+      ],
+      "groups": [
+        "p25v3-direct-01",
+        "p25v3-knowledge-01",
+        "p25v3-product-01",
+        "p25v3-product-03",
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "main.plan",
+        "unknown"
+      ],
+      "groups": [
+        "p25v3-direct-01",
+        "p25v3-knowledge-01",
+        "p25v3-product-01",
+        "p25v3-product-03",
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "main.plan"
+      ],
+      "groups": [
+        "p25v3-direct-01",
+        "p25v3-knowledge-01",
+        "p25v3-product-01",
+        "p25v3-product-03",
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "main.plan",
+        "unknown",
+        "none",
+        "simple_direct",
+        "UNKNOWN",
+        0,
+        1,
+        false
+      ],
+      "groups": [
+        "p25v3-direct-01",
+        "p25v3-knowledge-01",
+        "p25v3-product-01",
+        "p25v3-product-03",
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "main.plan",
+        "unknown",
+        "none",
+        "simple_direct"
+      ],
+      "groups": [
+        "p25v3-direct-01",
+        "p25v3-knowledge-01",
+        "p25v3-product-01",
+        "p25v3-product-03",
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "main.plan",
+        "unknown",
+        "none"
+      ],
+      "groups": [
+        "p25v3-direct-01",
+        "p25v3-knowledge-01",
+        "p25v3-product-01",
+        "p25v3-product-03",
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "main.plan",
+        "unknown"
+      ],
+      "groups": [
+        "p25v3-direct-01",
+        "p25v3-knowledge-01",
+        "p25v3-product-01",
+        "p25v3-product-03",
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "main.plan"
+      ],
+      "groups": [
+        "p25v3-direct-01",
+        "p25v3-knowledge-01",
+        "p25v3-product-01",
+        "p25v3-product-03",
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "tool.permitted",
+        "unknown",
+        "none",
+        "simple_direct"
+      ],
+      "groups": [
+        "p25v3-direct-01",
+        "p25v3-knowledge-01",
+        "p25v3-product-01",
+        "p25v3-product-03",
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "tool.permitted",
+        "unknown",
+        "none"
+      ],
+      "groups": [
+        "p25v3-direct-01",
+        "p25v3-knowledge-01",
+        "p25v3-product-01",
+        "p25v3-product-03",
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "tool.permitted",
+        "unknown"
+      ],
+      "groups": [
+        "p25v3-direct-01",
+        "p25v3-knowledge-01",
+        "p25v3-product-01",
+        "p25v3-product-03",
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "tool.permitted"
+      ],
+      "groups": [
+        "p25v3-direct-01",
+        "p25v3-knowledge-01",
+        "p25v3-product-01",
+        "p25v3-product-03",
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.permitted",
+        "unknown",
+        "none",
+        "simple_direct",
+        "LOW_PROGRESS",
+        0,
+        1,
+        false
+      ],
+      "groups": [
+        "p25v3-direct-01",
+        "p25v3-knowledge-01",
+        "p25v3-product-01",
+        "p25v3-product-03",
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.permitted",
+        "unknown",
+        "none",
+        "simple_direct"
+      ],
+      "groups": [
+        "p25v3-direct-01",
+        "p25v3-knowledge-01",
+        "p25v3-product-01",
+        "p25v3-product-03",
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.permitted",
+        "unknown",
+        "none"
+      ],
+      "groups": [
+        "p25v3-direct-01",
+        "p25v3-knowledge-01",
+        "p25v3-product-01",
+        "p25v3-product-03",
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.permitted",
+        "unknown"
+      ],
+      "groups": [
+        "p25v3-direct-01",
+        "p25v3-knowledge-01",
+        "p25v3-product-01",
+        "p25v3-product-03",
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.permitted"
+      ],
+      "groups": [
+        "p25v3-direct-01",
+        "p25v3-knowledge-01",
+        "p25v3-product-01",
+        "p25v3-product-03",
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "tool.category_insight_tool.result",
+        "unknown",
+        "none",
+        "simple_direct"
+      ],
+      "groups": [
+        "p25v3-direct-01"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "tool.category_insight_tool.result",
+        "unknown",
+        "none"
+      ],
+      "groups": [
+        "p25v3-direct-01",
+        "p25v3-knowledge-01",
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "tool.category_insight_tool.result",
+        "unknown"
+      ],
+      "groups": [
+        "p25v3-direct-01",
+        "p25v3-knowledge-01",
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "tool.category_insight_tool.result"
+      ],
+      "groups": [
+        "p25v3-direct-01",
+        "p25v3-knowledge-01",
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.category_insight_tool.result",
+        "unknown",
+        "none",
+        "simple_direct",
+        "LOW_PROGRESS",
+        0,
+        1,
+        true
+      ],
+      "groups": [
+        "p25v3-direct-01"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.category_insight_tool.result",
+        "unknown",
+        "none",
+        "simple_direct"
+      ],
+      "groups": [
+        "p25v3-direct-01"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.category_insight_tool.result",
+        "unknown",
+        "none"
+      ],
+      "groups": [
+        "p25v3-direct-01",
+        "p25v3-knowledge-01",
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.category_insight_tool.result",
+        "unknown"
+      ],
+      "groups": [
+        "p25v3-direct-01",
+        "p25v3-knowledge-01",
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.category_insight_tool.result"
+      ],
+      "groups": [
+        "p25v3-direct-01",
+        "p25v3-knowledge-01",
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "main.final",
+        "unknown",
+        "none",
+        "simple_direct"
+      ],
+      "groups": [
+        "p25v3-direct-01"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "main.final",
+        "unknown",
+        "none"
+      ],
+      "groups": [
+        "p25v3-direct-01",
+        "p25v3-knowledge-01",
+        "p25v3-product-01",
+        "p25v3-product-03",
+        "p25v3-search-01"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "main.final",
+        "unknown"
+      ],
+      "groups": [
+        "p25v3-direct-01",
+        "p25v3-knowledge-01",
+        "p25v3-product-01",
+        "p25v3-product-03",
+        "p25v3-search-01"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "main.final"
+      ],
+      "groups": [
+        "p25v3-direct-01",
+        "p25v3-knowledge-01",
+        "p25v3-product-01",
+        "p25v3-product-03",
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "main.final",
+        "unknown",
+        "none",
+        "simple_direct",
+        "UNKNOWN",
+        0,
+        1,
+        false
+      ],
+      "groups": [
+        "p25v3-direct-01"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "main.final",
+        "unknown",
+        "none",
+        "simple_direct"
+      ],
+      "groups": [
+        "p25v3-direct-01"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "main.final",
+        "unknown",
+        "none"
+      ],
+      "groups": [
+        "p25v3-direct-01",
+        "p25v3-knowledge-01",
+        "p25v3-product-01",
+        "p25v3-product-03",
+        "p25v3-search-01"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "main.final",
+        "unknown"
+      ],
+      "groups": [
+        "p25v3-direct-01",
+        "p25v3-knowledge-01",
+        "p25v3-product-01",
+        "p25v3-product-03",
+        "p25v3-search-01"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "main.final"
+      ],
+      "groups": [
+        "p25v3-direct-01",
+        "p25v3-knowledge-01",
+        "p25v3-product-01",
+        "p25v3-product-03",
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "tool.product_search_tool.result",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "groups": [
+        "p25v3-knowledge-01",
+        "p25v3-product-01",
+        "p25v3-product-03",
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "tool.product_search_tool.result",
+        "unknown",
+        "none"
+      ],
+      "groups": [
+        "p25v3-knowledge-01",
+        "p25v3-product-01",
+        "p25v3-product-03",
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "tool.product_search_tool.result",
+        "unknown"
+      ],
+      "groups": [
+        "p25v3-knowledge-01",
+        "p25v3-product-01",
+        "p25v3-product-03",
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "tool.product_search_tool.result"
+      ],
+      "groups": [
+        "p25v3-knowledge-01",
+        "p25v3-product-01",
+        "p25v3-product-03",
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.product_search_tool.result",
+        "unknown",
+        "none",
+        "product_search",
+        "LOW_PROGRESS",
+        0,
+        1,
+        true
+      ],
+      "groups": [
+        "p25v3-knowledge-01",
+        "p25v3-product-01",
+        "p25v3-product-03",
+        "p25v3-search-01"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.product_search_tool.result",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "groups": [
+        "p25v3-knowledge-01",
+        "p25v3-product-01",
+        "p25v3-product-03",
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.product_search_tool.result",
+        "unknown",
+        "none"
+      ],
+      "groups": [
+        "p25v3-knowledge-01",
+        "p25v3-product-01",
+        "p25v3-product-03",
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.product_search_tool.result",
+        "unknown"
+      ],
+      "groups": [
+        "p25v3-knowledge-01",
+        "p25v3-product-01",
+        "p25v3-product-03",
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.product_search_tool.result"
+      ],
+      "groups": [
+        "p25v3-knowledge-01",
+        "p25v3-product-01",
+        "p25v3-product-03",
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "query_processor.direct",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "groups": [
+        "p25v3-knowledge-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "query_processor.direct",
+        "unknown",
+        "none"
+      ],
+      "groups": [
+        "p25v3-knowledge-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "query_processor.direct",
+        "unknown"
+      ],
+      "groups": [
+        "p25v3-knowledge-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "query_processor.direct"
+      ],
+      "groups": [
+        "p25v3-knowledge-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "query_processor.direct",
+        "unknown",
+        "none",
+        "product_search",
+        "UNKNOWN",
+        0,
+        1,
+        false
+      ],
+      "groups": [
+        "p25v3-knowledge-01"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "query_processor.direct",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "groups": [
+        "p25v3-knowledge-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "query_processor.direct",
+        "unknown",
+        "none"
+      ],
+      "groups": [
+        "p25v3-knowledge-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "query_processor.direct",
+        "unknown"
+      ],
+      "groups": [
+        "p25v3-knowledge-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "query_processor.direct"
+      ],
+      "groups": [
+        "p25v3-knowledge-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "tool.category_insight_tool.result",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "groups": [
+        "p25v3-knowledge-01",
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.category_insight_tool.result",
+        "unknown",
+        "none",
+        "product_search",
+        "LOW_PROGRESS",
+        0,
+        1,
+        true
+      ],
+      "groups": [
+        "p25v3-knowledge-01"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.category_insight_tool.result",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "groups": [
+        "p25v3-knowledge-01",
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "query_processor.rewrite",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "groups": [
+        "p25v3-knowledge-01"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "query_processor.rewrite",
+        "unknown",
+        "none"
+      ],
+      "groups": [
+        "p25v3-knowledge-01"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "query_processor.rewrite",
+        "unknown"
+      ],
+      "groups": [
+        "p25v3-knowledge-01"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "query_processor.rewrite"
+      ],
+      "groups": [
+        "p25v3-knowledge-01"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "query_processor.rewrite",
+        "unknown",
+        "none",
+        "product_search",
+        "UNKNOWN",
+        0,
+        1,
+        false
+      ],
+      "groups": [
+        "p25v3-knowledge-01"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "query_processor.rewrite",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "groups": [
+        "p25v3-knowledge-01"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "query_processor.rewrite",
+        "unknown",
+        "none"
+      ],
+      "groups": [
+        "p25v3-knowledge-01"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "query_processor.rewrite",
+        "unknown"
+      ],
+      "groups": [
+        "p25v3-knowledge-01"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "query_processor.rewrite"
+      ],
+      "groups": [
+        "p25v3-knowledge-01"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "main.plan",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "groups": [
+        "p25v3-knowledge-01",
+        "p25v3-product-01",
+        "p25v3-product-03",
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "main.plan",
+        "unknown",
+        "none",
+        "product_search",
+        "UNKNOWN",
+        0,
+        2,
+        false
+      ],
+      "groups": [
+        "p25v3-knowledge-01",
+        "p25v3-product-01",
+        "p25v3-product-03",
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "main.plan",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "groups": [
+        "p25v3-knowledge-01",
+        "p25v3-product-01",
+        "p25v3-product-03",
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "tool.permitted",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "groups": [
+        "p25v3-knowledge-01",
+        "p25v3-product-01",
+        "p25v3-product-03",
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.permitted",
+        "unknown",
+        "none",
+        "product_search",
+        "LOW_PROGRESS",
+        0,
+        2,
+        false
+      ],
+      "groups": [
+        "p25v3-knowledge-01",
+        "p25v3-product-01",
+        "p25v3-product-03",
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.permitted",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "groups": [
+        "p25v3-knowledge-01",
+        "p25v3-product-01",
+        "p25v3-product-03",
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.product_search_tool.result",
+        "unknown",
+        "none",
+        "product_search",
+        "LOW_PROGRESS",
+        0,
+        2,
+        true
+      ],
+      "groups": [
+        "p25v3-knowledge-01",
+        "p25v3-product-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "main.final",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "groups": [
+        "p25v3-knowledge-01",
+        "p25v3-product-01",
+        "p25v3-product-03",
+        "p25v3-search-01"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "main.final",
+        "unknown",
+        "none",
+        "product_search",
+        "UNKNOWN",
+        0,
+        2,
+        false
+      ],
+      "groups": [
+        "p25v3-knowledge-01",
+        "p25v3-product-01"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "main.final",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "groups": [
+        "p25v3-knowledge-01",
+        "p25v3-product-01",
+        "p25v3-product-03",
+        "p25v3-search-01"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.product_search_tool.result",
+        "unknown",
+        "none",
+        "product_search",
+        "UNKNOWN",
+        0,
+        2,
+        false
+      ],
+      "groups": [
+        "p25v3-product-03",
+        "p25v3-search-01"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "main.plan",
+        "unknown",
+        "none",
+        "product_search",
+        "UNKNOWN",
+        0,
+        3,
+        false
+      ],
+      "groups": [
+        "p25v3-product-03",
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.permitted",
+        "unknown",
+        "none",
+        "product_search",
+        "LOW_PROGRESS",
+        0,
+        3,
+        false
+      ],
+      "groups": [
+        "p25v3-product-03",
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.product_search_tool.result",
+        "unknown",
+        "none",
+        "product_search",
+        "LOW_PROGRESS",
+        0,
+        3,
+        true
+      ],
+      "groups": [
+        "p25v3-product-03",
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.product_search_tool.result",
+        "unknown",
+        "none",
+        "product_search",
+        "UNKNOWN",
+        0,
+        3,
+        false
+      ],
+      "groups": [
+        "p25v3-product-03",
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "main.final",
+        "unknown",
+        "none",
+        "product_search",
+        "UNKNOWN",
+        0,
+        3,
+        false
+      ],
+      "groups": [
+        "p25v3-product-03",
+        "p25v3-search-01"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "tool.TaskCreate.result",
+        "unknown",
+        "none",
+        "simple_direct"
+      ],
+      "groups": [
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "tool.TaskCreate.result",
+        "unknown",
+        "none"
+      ],
+      "groups": [
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "tool.TaskCreate.result",
+        "unknown"
+      ],
+      "groups": [
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "tool.TaskCreate.result"
+      ],
+      "groups": [
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.TaskCreate.result",
+        "unknown",
+        "none",
+        "simple_direct",
+        "UNKNOWN",
+        0,
+        1,
+        false
+      ],
+      "groups": [
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.TaskCreate.result",
+        "unknown",
+        "none",
+        "simple_direct"
+      ],
+      "groups": [
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.TaskCreate.result",
+        "unknown",
+        "none"
+      ],
+      "groups": [
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.TaskCreate.result",
+        "unknown"
+      ],
+      "groups": [
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.TaskCreate.result"
+      ],
+      "groups": [
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.product_search_tool.result",
+        "unknown",
+        "none",
+        "product_search",
+        "UNKNOWN",
+        0,
+        1,
+        false
+      ],
+      "groups": [
+        "p25v3-search-01"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.category_insight_tool.result",
+        "unknown",
+        "none",
+        "product_search",
+        "LOW_PROGRESS",
+        0,
+        3,
+        true
+      ],
+      "groups": [
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "tool.TaskUpdate.result",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "groups": [
+        "p25v3-search-01"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "tool.TaskUpdate.result",
+        "unknown",
+        "none"
+      ],
+      "groups": [
+        "p25v3-search-01"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "tool.TaskUpdate.result",
+        "unknown"
+      ],
+      "groups": [
+        "p25v3-search-01"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "tool.TaskUpdate.result"
+      ],
+      "groups": [
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.TaskUpdate.result",
+        "unknown",
+        "none",
+        "product_search",
+        "UNKNOWN",
+        0,
+        3,
+        false
+      ],
+      "groups": [
+        "p25v3-search-01"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.TaskUpdate.result",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "groups": [
+        "p25v3-search-01"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.TaskUpdate.result",
+        "unknown",
+        "none"
+      ],
+      "groups": [
+        "p25v3-search-01"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.TaskUpdate.result",
+        "unknown"
+      ],
+      "groups": [
+        "p25v3-search-01"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.TaskUpdate.result"
+      ],
+      "groups": [
+        "p25v3-search-01",
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "tool.task_dispatch.result",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "tool.task_dispatch.result",
+        "unknown",
+        "none"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "tool.task_dispatch.result",
+        "unknown"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "tool.task_dispatch.result"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.task_dispatch.result",
+        "unknown",
+        "none",
+        "product_search",
+        "UNKNOWN",
+        0,
+        1,
+        false
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.task_dispatch.result",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.task_dispatch.result",
+        "unknown",
+        "none"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.task_dispatch.result",
+        "unknown"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.task_dispatch.result"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "query_processor.direct",
+        "unknown",
+        "none",
+        "product_search",
+        "UNKNOWN",
+        0,
+        3,
+        false
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "query_processor.decompose",
+        "yes",
+        "none",
+        "product_search"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "query_processor.decompose",
+        "yes",
+        "none"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "query_processor.decompose",
+        "yes"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "query_processor.decompose"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "query_processor.decompose",
+        "yes",
+        "none",
+        "product_search",
+        "MEDIUM_PROGRESS",
+        0,
+        3,
+        false
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "query_processor.decompose",
+        "yes",
+        "none",
+        "product_search"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "query_processor.decompose",
+        "yes",
+        "none"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "query_processor.decompose",
+        "yes"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "query_processor.decompose"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "tool.category_insight_tool.result",
+        "yes",
+        "none",
+        "product_search"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "tool.category_insight_tool.result",
+        "yes",
+        "none"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "tool.category_insight_tool.result",
+        "yes"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.category_insight_tool.result",
+        "yes",
+        "none",
+        "product_search",
+        "UNKNOWN",
+        0,
+        3,
+        false
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.category_insight_tool.result",
+        "yes",
+        "none",
+        "product_search"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.category_insight_tool.result",
+        "yes",
+        "none"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.category_insight_tool.result",
+        "yes"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "main.plan",
+        "yes",
+        "none",
+        "product_search"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "main.plan",
+        "yes",
+        "none"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "main.plan",
+        "yes"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "main.plan",
+        "yes",
+        "none",
+        "product_search",
+        "UNKNOWN",
+        0,
+        3,
+        false
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "main.plan",
+        "yes",
+        "none",
+        "product_search"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "main.plan",
+        "yes",
+        "none"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "main.plan",
+        "yes"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "tool.permitted",
+        "yes",
+        "none",
+        "product_search"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "tool.permitted",
+        "yes",
+        "none"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "tool.permitted",
+        "yes"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.permitted",
+        "yes",
+        "none",
+        "product_search",
+        "LOW_PROGRESS",
+        0,
+        3,
+        false
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.permitted",
+        "yes",
+        "none",
+        "product_search"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.permitted",
+        "yes",
+        "none"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.permitted",
+        "yes"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "tool.product_search_tool.result",
+        "yes",
+        "none",
+        "product_search"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "tool.product_search_tool.result",
+        "yes",
+        "none"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "tool.product_search_tool.result",
+        "yes"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.product_search_tool.result",
+        "yes",
+        "none",
+        "product_search",
+        "UNKNOWN",
+        0,
+        3,
+        false
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.product_search_tool.result",
+        "yes",
+        "none",
+        "product_search"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.product_search_tool.result",
+        "yes",
+        "none"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.product_search_tool.result",
+        "yes"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.product_search_tool.result",
+        "yes",
+        "none",
+        "product_search",
+        "LOW_PROGRESS",
+        0,
+        3,
+        true
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "tool.TaskUpdate.result",
+        "yes",
+        "none",
+        "product_search"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "tool.TaskUpdate.result",
+        "yes",
+        "none"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "tool.TaskUpdate.result",
+        "yes"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.TaskUpdate.result",
+        "yes",
+        "none",
+        "product_search",
+        "UNKNOWN",
+        0,
+        3,
+        false
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.TaskUpdate.result",
+        "yes",
+        "none",
+        "product_search"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.TaskUpdate.result",
+        "yes",
+        "none"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.TaskUpdate.result",
+        "yes"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "main.final",
+        "yes",
+        "none",
+        "product_search"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "main.final",
+        "yes",
+        "none"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "main",
+        "main.final",
+        "yes"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "main.final",
+        "yes",
+        "none",
+        "product_search",
+        "UNKNOWN",
+        0,
+        3,
+        false
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "main.final",
+        "yes",
+        "none",
+        "product_search"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "main.final",
+        "yes",
+        "none"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "main.final",
+        "yes"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "search",
+        "search.plan",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "search",
+        "search.plan",
+        "unknown",
+        "none"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "search",
+        "search.plan",
+        "unknown"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "search",
+        "search.plan"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "search.plan",
+        "unknown",
+        "none",
+        "product_search",
+        "UNKNOWN",
+        0,
+        1,
+        false
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "search.plan",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "search.plan",
+        "unknown",
+        "none"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "search.plan",
+        "unknown"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "search.plan"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "search",
+        "tool.permitted",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "search",
+        "tool.permitted",
+        "unknown",
+        "none"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "search",
+        "tool.permitted",
+        "unknown"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "search",
+        "tool.permitted"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "tool.permitted",
+        "unknown",
+        "none",
+        "product_search",
+        "LOW_PROGRESS",
+        0,
+        1,
+        false
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "tool.permitted",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "tool.permitted",
+        "unknown",
+        "none"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "tool.permitted",
+        "unknown"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "tool.permitted"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "search",
+        "tool.product_search_tool.result",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "search",
+        "tool.product_search_tool.result",
+        "unknown",
+        "none"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "search",
+        "tool.product_search_tool.result",
+        "unknown"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "search",
+        "tool.product_search_tool.result"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "tool.product_search_tool.result",
+        "unknown",
+        "none",
+        "product_search",
+        "LOW_PROGRESS",
+        0,
+        1,
+        true
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "tool.product_search_tool.result",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "tool.product_search_tool.result",
+        "unknown",
+        "none"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "tool.product_search_tool.result",
+        "unknown"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "tool.product_search_tool.result"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "search",
+        "query_processor.rewrite",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "search",
+        "query_processor.rewrite",
+        "unknown",
+        "none"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "search",
+        "query_processor.rewrite",
+        "unknown"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "search",
+        "query_processor.rewrite"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "query_processor.rewrite",
+        "unknown",
+        "none",
+        "product_search",
+        "UNKNOWN",
+        0,
+        1,
+        false
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "query_processor.rewrite",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "query_processor.rewrite",
+        "unknown",
+        "none"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "query_processor.rewrite",
+        "unknown"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "query_processor.rewrite"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "search",
+        "tool.category_insight_tool.result",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "search",
+        "tool.category_insight_tool.result",
+        "unknown",
+        "none"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "search",
+        "tool.category_insight_tool.result",
+        "unknown"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "search",
+        "tool.category_insight_tool.result"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "tool.category_insight_tool.result",
+        "unknown",
+        "none",
+        "product_search",
+        "LOW_PROGRESS",
+        0,
+        1,
+        true
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "tool.category_insight_tool.result",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "tool.category_insight_tool.result",
+        "unknown",
+        "none"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "tool.category_insight_tool.result",
+        "unknown"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "tool.category_insight_tool.result"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "search.plan",
+        "unknown",
+        "none",
+        "product_search",
+        "UNKNOWN",
+        0,
+        2,
+        false
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "tool.permitted",
+        "unknown",
+        "none",
+        "product_search",
+        "LOW_PROGRESS",
+        0,
+        2,
+        false
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "tool.product_search_tool.result",
+        "unknown",
+        "none",
+        "product_search",
+        "UNKNOWN",
+        0,
+        2,
+        false
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "tool.product_search_tool.result",
+        "unknown",
+        "none",
+        "product_search",
+        "LOW_PROGRESS",
+        0,
+        2,
+        true
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "search",
+        "search.final",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "search",
+        "search.final",
+        "unknown",
+        "none"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "search",
+        "search.final",
+        "unknown"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "search",
+        "search.final"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "search.final",
+        "unknown",
+        "none",
+        "product_search",
+        "UNKNOWN",
+        0,
+        2,
+        false
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "search.final",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "search.final",
+        "unknown",
+        "none"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "search.final",
+        "unknown"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "search.final"
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "search.plan",
+        "unknown",
+        "none",
+        "product_search",
+        "UNKNOWN",
+        0,
+        3,
+        false
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "tool.permitted",
+        "unknown",
+        "none",
+        "product_search",
+        "LOW_PROGRESS",
+        0,
+        3,
+        false
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "tool.product_search_tool.result",
+        "unknown",
+        "none",
+        "product_search",
+        "LOW_PROGRESS",
+        0,
+        3,
+        true
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "search.final",
+        "unknown",
+        "none",
+        "product_search",
+        "UNKNOWN",
+        0,
+        3,
+        false
+      ],
+      "groups": [
+        "p25v3-search-03"
+      ]
+    }
+  ],
+  "next": [
+    {
+      "key": [
+        "main",
+        "main.plan",
+        "unknown",
+        "none",
+        "simple_direct"
+      ],
+      "counts": {
+        "tool.category_insight_tool.result": 1,
+        "tool.product_search_tool.result": 3,
+        "tool.TaskCreate.result": 2
+      }
+    },
+    {
+      "key": [
+        "main",
+        "main.plan",
+        "unknown",
+        "none"
+      ],
+      "counts": {
+        "tool.category_insight_tool.result": 1,
+        "tool.product_search_tool.result": 15,
+        "tool.TaskCreate.result": 2,
+        "main.plan": 1,
+        "tool.TaskUpdate.result": 1
+      }
+    },
+    {
+      "key": [
+        "main",
+        "main.plan",
+        "unknown"
+      ],
+      "counts": {
+        "tool.category_insight_tool.result": 1,
+        "tool.product_search_tool.result": 15,
+        "tool.TaskCreate.result": 2,
+        "main.plan": 1,
+        "tool.TaskUpdate.result": 1
+      }
+    },
+    {
+      "key": [
+        "main",
+        "main.plan"
+      ],
+      "counts": {
+        "tool.category_insight_tool.result": 1,
+        "tool.product_search_tool.result": 16,
+        "tool.TaskCreate.result": 2,
+        "main.plan": 1,
+        "tool.TaskUpdate.result": 2
+      }
+    },
+    {
+      "key": [
+        "main",
+        "tool.permitted",
+        "unknown",
+        "none",
+        "simple_direct"
+      ],
+      "counts": {
+        "tool.category_insight_tool.result": 1,
+        "tool.product_search_tool.result": 8,
+        "tool.TaskCreate.result": 6,
+        "tool.task_dispatch.result": 2
+      }
+    },
+    {
+      "key": [
+        "main",
+        "tool.permitted",
+        "unknown",
+        "none"
+      ],
+      "counts": {
+        "tool.category_insight_tool.result": 1,
+        "tool.product_search_tool.result": 39,
+        "tool.TaskCreate.result": 6,
+        "tool.TaskUpdate.result": 3,
+        "tool.task_dispatch.result": 2
+      }
+    },
+    {
+      "key": [
+        "main",
+        "tool.permitted",
+        "unknown"
+      ],
+      "counts": {
+        "tool.category_insight_tool.result": 1,
+        "tool.product_search_tool.result": 39,
+        "tool.TaskCreate.result": 6,
+        "tool.TaskUpdate.result": 3,
+        "tool.task_dispatch.result": 2
+      }
+    },
+    {
+      "key": [
+        "main",
+        "tool.permitted"
+      ],
+      "counts": {
+        "tool.category_insight_tool.result": 1,
+        "tool.product_search_tool.result": 41,
+        "tool.TaskCreate.result": 6,
+        "tool.TaskUpdate.result": 6,
+        "tool.task_dispatch.result": 2
+      }
+    },
+    {
+      "key": [
+        "main",
+        "tool.category_insight_tool.result",
+        "unknown",
+        "none",
+        "simple_direct"
+      ],
+      "counts": {
+        "main.final": 1
+      }
+    },
+    {
+      "key": [
+        "main",
+        "tool.category_insight_tool.result",
+        "unknown",
+        "none"
+      ],
+      "counts": {
+        "main.final": 1,
+        "query_processor.rewrite": 1,
+        "main.plan": 2,
+        "query_processor.decompose": 1
+      }
+    },
+    {
+      "key": [
+        "main",
+        "tool.category_insight_tool.result",
+        "unknown"
+      ],
+      "counts": {
+        "main.final": 1,
+        "query_processor.rewrite": 1,
+        "main.plan": 2,
+        "query_processor.decompose": 1
+      }
+    },
+    {
+      "key": [
+        "main",
+        "tool.category_insight_tool.result"
+      ],
+      "counts": {
+        "main.final": 1,
+        "query_processor.rewrite": 1,
+        "main.plan": 3,
+        "query_processor.decompose": 1
+      }
+    },
+    {
+      "key": [
+        "main",
+        "main.final",
+        "unknown",
+        "none",
+        "simple_direct"
+      ],
+      "counts": {
+        "END": 1
+      }
+    },
+    {
+      "key": [
+        "main",
+        "main.final",
+        "unknown",
+        "none"
+      ],
+      "counts": {
+        "END": 5
+      }
+    },
+    {
+      "key": [
+        "main",
+        "main.final",
+        "unknown"
+      ],
+      "counts": {
+        "END": 5
+      }
+    },
+    {
+      "key": [
+        "main",
+        "main.final"
+      ],
+      "counts": {
+        "END": 6
+      }
+    },
+    {
+      "key": [
+        "main",
+        "tool.product_search_tool.result",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "counts": {
+        "query_processor.direct": 2,
+        "tool.product_search_tool.result": 18,
+        "main.final": 3,
+        "main.plan": 10,
+        "tool.category_insight_tool.result": 1
+      }
+    },
+    {
+      "key": [
+        "main",
+        "tool.product_search_tool.result",
+        "unknown",
+        "none"
+      ],
+      "counts": {
+        "query_processor.direct": 2,
+        "tool.product_search_tool.result": 18,
+        "main.final": 3,
+        "main.plan": 10,
+        "tool.category_insight_tool.result": 1
+      }
+    },
+    {
+      "key": [
+        "main",
+        "tool.product_search_tool.result",
+        "unknown"
+      ],
+      "counts": {
+        "query_processor.direct": 2,
+        "tool.product_search_tool.result": 18,
+        "main.final": 3,
+        "main.plan": 10,
+        "tool.category_insight_tool.result": 1
+      }
+    },
+    {
+      "key": [
+        "main",
+        "tool.product_search_tool.result"
+      ],
+      "counts": {
+        "query_processor.direct": 2,
+        "tool.product_search_tool.result": 19,
+        "main.final": 3,
+        "main.plan": 11,
+        "tool.category_insight_tool.result": 1
+      }
+    },
+    {
+      "key": [
+        "main",
+        "query_processor.direct",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "counts": {
+        "tool.category_insight_tool.result": 2
+      }
+    },
+    {
+      "key": [
+        "main",
+        "query_processor.direct",
+        "unknown",
+        "none"
+      ],
+      "counts": {
+        "tool.category_insight_tool.result": 2
+      }
+    },
+    {
+      "key": [
+        "main",
+        "query_processor.direct",
+        "unknown"
+      ],
+      "counts": {
+        "tool.category_insight_tool.result": 2
+      }
+    },
+    {
+      "key": [
+        "main",
+        "query_processor.direct"
+      ],
+      "counts": {
+        "tool.category_insight_tool.result": 2
+      }
+    },
+    {
+      "key": [
+        "main",
+        "tool.category_insight_tool.result",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "counts": {
+        "query_processor.rewrite": 1,
+        "main.plan": 2,
+        "query_processor.decompose": 1
+      }
+    },
+    {
+      "key": [
+        "main",
+        "query_processor.rewrite",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "counts": {
+        "tool.category_insight_tool.result": 1
+      }
+    },
+    {
+      "key": [
+        "main",
+        "query_processor.rewrite",
+        "unknown",
+        "none"
+      ],
+      "counts": {
+        "tool.category_insight_tool.result": 1
+      }
+    },
+    {
+      "key": [
+        "main",
+        "query_processor.rewrite",
+        "unknown"
+      ],
+      "counts": {
+        "tool.category_insight_tool.result": 1
+      }
+    },
+    {
+      "key": [
+        "main",
+        "query_processor.rewrite"
+      ],
+      "counts": {
+        "tool.category_insight_tool.result": 1
+      }
+    },
+    {
+      "key": [
+        "main",
+        "main.plan",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "counts": {
+        "tool.product_search_tool.result": 12,
+        "main.plan": 1,
+        "tool.TaskUpdate.result": 1
+      }
+    },
+    {
+      "key": [
+        "main",
+        "tool.permitted",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "counts": {
+        "tool.product_search_tool.result": 31,
+        "tool.TaskUpdate.result": 3
+      }
+    },
+    {
+      "key": [
+        "main",
+        "main.final",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "counts": {
+        "END": 4
+      }
+    },
+    {
+      "key": [
+        "main",
+        "tool.TaskCreate.result",
+        "unknown",
+        "none",
+        "simple_direct"
+      ],
+      "counts": {
+        "tool.TaskCreate.result": 4,
+        "tool.product_search_tool.result": 1,
+        "tool.task_dispatch.result": 1
+      }
+    },
+    {
+      "key": [
+        "main",
+        "tool.TaskCreate.result",
+        "unknown",
+        "none"
+      ],
+      "counts": {
+        "tool.TaskCreate.result": 4,
+        "tool.product_search_tool.result": 1,
+        "tool.task_dispatch.result": 1
+      }
+    },
+    {
+      "key": [
+        "main",
+        "tool.TaskCreate.result",
+        "unknown"
+      ],
+      "counts": {
+        "tool.TaskCreate.result": 4,
+        "tool.product_search_tool.result": 1,
+        "tool.task_dispatch.result": 1
+      }
+    },
+    {
+      "key": [
+        "main",
+        "tool.TaskCreate.result"
+      ],
+      "counts": {
+        "tool.TaskCreate.result": 4,
+        "tool.product_search_tool.result": 1,
+        "tool.task_dispatch.result": 1
+      }
+    },
+    {
+      "key": [
+        "main",
+        "tool.TaskUpdate.result",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "counts": {
+        "tool.TaskUpdate.result": 2,
+        "main.final": 1
+      }
+    },
+    {
+      "key": [
+        "main",
+        "tool.TaskUpdate.result",
+        "unknown",
+        "none"
+      ],
+      "counts": {
+        "tool.TaskUpdate.result": 2,
+        "main.final": 1
+      }
+    },
+    {
+      "key": [
+        "main",
+        "tool.TaskUpdate.result",
+        "unknown"
+      ],
+      "counts": {
+        "tool.TaskUpdate.result": 2,
+        "main.final": 1
+      }
+    },
+    {
+      "key": [
+        "main",
+        "tool.TaskUpdate.result"
+      ],
+      "counts": {
+        "tool.TaskUpdate.result": 4,
+        "main.final": 2
+      }
+    },
+    {
+      "key": [
+        "main",
+        "tool.task_dispatch.result",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "counts": {
+        "tool.task_dispatch.result": 1,
+        "main.plan": 1
+      }
+    },
+    {
+      "key": [
+        "main",
+        "tool.task_dispatch.result",
+        "unknown",
+        "none"
+      ],
+      "counts": {
+        "tool.task_dispatch.result": 1,
+        "main.plan": 1
+      }
+    },
+    {
+      "key": [
+        "main",
+        "tool.task_dispatch.result",
+        "unknown"
+      ],
+      "counts": {
+        "tool.task_dispatch.result": 1,
+        "main.plan": 1
+      }
+    },
+    {
+      "key": [
+        "main",
+        "tool.task_dispatch.result"
+      ],
+      "counts": {
+        "tool.task_dispatch.result": 1,
+        "main.plan": 1
+      }
+    },
+    {
+      "key": [
+        "main",
+        "query_processor.decompose",
+        "yes",
+        "none",
+        "product_search"
+      ],
+      "counts": {
+        "tool.category_insight_tool.result": 1
+      }
+    },
+    {
+      "key": [
+        "main",
+        "query_processor.decompose",
+        "yes",
+        "none"
+      ],
+      "counts": {
+        "tool.category_insight_tool.result": 1
+      }
+    },
+    {
+      "key": [
+        "main",
+        "query_processor.decompose",
+        "yes"
+      ],
+      "counts": {
+        "tool.category_insight_tool.result": 1
+      }
+    },
+    {
+      "key": [
+        "main",
+        "query_processor.decompose"
+      ],
+      "counts": {
+        "tool.category_insight_tool.result": 1
+      }
+    },
+    {
+      "key": [
+        "main",
+        "tool.category_insight_tool.result",
+        "yes",
+        "none",
+        "product_search"
+      ],
+      "counts": {
+        "main.plan": 1
+      }
+    },
+    {
+      "key": [
+        "main",
+        "tool.category_insight_tool.result",
+        "yes",
+        "none"
+      ],
+      "counts": {
+        "main.plan": 1
+      }
+    },
+    {
+      "key": [
+        "main",
+        "tool.category_insight_tool.result",
+        "yes"
+      ],
+      "counts": {
+        "main.plan": 1
+      }
+    },
+    {
+      "key": [
+        "main",
+        "main.plan",
+        "yes",
+        "none",
+        "product_search"
+      ],
+      "counts": {
+        "tool.product_search_tool.result": 1,
+        "tool.TaskUpdate.result": 1
+      }
+    },
+    {
+      "key": [
+        "main",
+        "main.plan",
+        "yes",
+        "none"
+      ],
+      "counts": {
+        "tool.product_search_tool.result": 1,
+        "tool.TaskUpdate.result": 1
+      }
+    },
+    {
+      "key": [
+        "main",
+        "main.plan",
+        "yes"
+      ],
+      "counts": {
+        "tool.product_search_tool.result": 1,
+        "tool.TaskUpdate.result": 1
+      }
+    },
+    {
+      "key": [
+        "main",
+        "tool.permitted",
+        "yes",
+        "none",
+        "product_search"
+      ],
+      "counts": {
+        "tool.product_search_tool.result": 2,
+        "tool.TaskUpdate.result": 3
+      }
+    },
+    {
+      "key": [
+        "main",
+        "tool.permitted",
+        "yes",
+        "none"
+      ],
+      "counts": {
+        "tool.product_search_tool.result": 2,
+        "tool.TaskUpdate.result": 3
+      }
+    },
+    {
+      "key": [
+        "main",
+        "tool.permitted",
+        "yes"
+      ],
+      "counts": {
+        "tool.product_search_tool.result": 2,
+        "tool.TaskUpdate.result": 3
+      }
+    },
+    {
+      "key": [
+        "main",
+        "tool.product_search_tool.result",
+        "yes",
+        "none",
+        "product_search"
+      ],
+      "counts": {
+        "tool.product_search_tool.result": 1,
+        "main.plan": 1
+      }
+    },
+    {
+      "key": [
+        "main",
+        "tool.product_search_tool.result",
+        "yes",
+        "none"
+      ],
+      "counts": {
+        "tool.product_search_tool.result": 1,
+        "main.plan": 1
+      }
+    },
+    {
+      "key": [
+        "main",
+        "tool.product_search_tool.result",
+        "yes"
+      ],
+      "counts": {
+        "tool.product_search_tool.result": 1,
+        "main.plan": 1
+      }
+    },
+    {
+      "key": [
+        "main",
+        "tool.TaskUpdate.result",
+        "yes",
+        "none",
+        "product_search"
+      ],
+      "counts": {
+        "tool.TaskUpdate.result": 2,
+        "main.final": 1
+      }
+    },
+    {
+      "key": [
+        "main",
+        "tool.TaskUpdate.result",
+        "yes",
+        "none"
+      ],
+      "counts": {
+        "tool.TaskUpdate.result": 2,
+        "main.final": 1
+      }
+    },
+    {
+      "key": [
+        "main",
+        "tool.TaskUpdate.result",
+        "yes"
+      ],
+      "counts": {
+        "tool.TaskUpdate.result": 2,
+        "main.final": 1
+      }
+    },
+    {
+      "key": [
+        "main",
+        "main.final",
+        "yes",
+        "none",
+        "product_search"
+      ],
+      "counts": {
+        "END": 1
+      }
+    },
+    {
+      "key": [
+        "main",
+        "main.final",
+        "yes",
+        "none"
+      ],
+      "counts": {
+        "END": 1
+      }
+    },
+    {
+      "key": [
+        "main",
+        "main.final",
+        "yes"
+      ],
+      "counts": {
+        "END": 1
+      }
+    },
+    {
+      "key": [
+        "search",
+        "search.plan",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "counts": {
+        "tool.product_search_tool.result": 5
+      }
+    },
+    {
+      "key": [
+        "search",
+        "search.plan",
+        "unknown",
+        "none"
+      ],
+      "counts": {
+        "tool.product_search_tool.result": 5
+      }
+    },
+    {
+      "key": [
+        "search",
+        "search.plan",
+        "unknown"
+      ],
+      "counts": {
+        "tool.product_search_tool.result": 5
+      }
+    },
+    {
+      "key": [
+        "search",
+        "search.plan"
+      ],
+      "counts": {
+        "tool.product_search_tool.result": 5
+      }
+    },
+    {
+      "key": [
+        "search",
+        "tool.permitted",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "counts": {
+        "tool.product_search_tool.result": 10
+      }
+    },
+    {
+      "key": [
+        "search",
+        "tool.permitted",
+        "unknown",
+        "none"
+      ],
+      "counts": {
+        "tool.product_search_tool.result": 10
+      }
+    },
+    {
+      "key": [
+        "search",
+        "tool.permitted",
+        "unknown"
+      ],
+      "counts": {
+        "tool.product_search_tool.result": 10
+      }
+    },
+    {
+      "key": [
+        "search",
+        "tool.permitted"
+      ],
+      "counts": {
+        "tool.product_search_tool.result": 10
+      }
+    },
+    {
+      "key": [
+        "search",
+        "tool.product_search_tool.result",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "counts": {
+        "query_processor.rewrite": 1,
+        "tool.product_search_tool.result": 3,
+        "search.final": 2,
+        "tool.category_insight_tool.result": 1,
+        "search.plan": 1
+      }
+    },
+    {
+      "key": [
+        "search",
+        "tool.product_search_tool.result",
+        "unknown",
+        "none"
+      ],
+      "counts": {
+        "query_processor.rewrite": 1,
+        "tool.product_search_tool.result": 3,
+        "search.final": 2,
+        "tool.category_insight_tool.result": 1,
+        "search.plan": 1
+      }
+    },
+    {
+      "key": [
+        "search",
+        "tool.product_search_tool.result",
+        "unknown"
+      ],
+      "counts": {
+        "query_processor.rewrite": 1,
+        "tool.product_search_tool.result": 3,
+        "search.final": 2,
+        "tool.category_insight_tool.result": 1,
+        "search.plan": 1
+      }
+    },
+    {
+      "key": [
+        "search",
+        "tool.product_search_tool.result"
+      ],
+      "counts": {
+        "query_processor.rewrite": 1,
+        "tool.product_search_tool.result": 3,
+        "search.final": 2,
+        "tool.category_insight_tool.result": 1,
+        "search.plan": 1
+      }
+    },
+    {
+      "key": [
+        "search",
+        "query_processor.rewrite",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "counts": {
+        "tool.category_insight_tool.result": 1
+      }
+    },
+    {
+      "key": [
+        "search",
+        "query_processor.rewrite",
+        "unknown",
+        "none"
+      ],
+      "counts": {
+        "tool.category_insight_tool.result": 1
+      }
+    },
+    {
+      "key": [
+        "search",
+        "query_processor.rewrite",
+        "unknown"
+      ],
+      "counts": {
+        "tool.category_insight_tool.result": 1
+      }
+    },
+    {
+      "key": [
+        "search",
+        "query_processor.rewrite"
+      ],
+      "counts": {
+        "tool.category_insight_tool.result": 1
+      }
+    },
+    {
+      "key": [
+        "search",
+        "tool.category_insight_tool.result",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "counts": {
+        "search.plan": 2
+      }
+    },
+    {
+      "key": [
+        "search",
+        "tool.category_insight_tool.result",
+        "unknown",
+        "none"
+      ],
+      "counts": {
+        "search.plan": 2
+      }
+    },
+    {
+      "key": [
+        "search",
+        "tool.category_insight_tool.result",
+        "unknown"
+      ],
+      "counts": {
+        "search.plan": 2
+      }
+    },
+    {
+      "key": [
+        "search",
+        "tool.category_insight_tool.result"
+      ],
+      "counts": {
+        "search.plan": 2
+      }
+    },
+    {
+      "key": [
+        "search",
+        "search.final",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "counts": {
+        "END": 2
+      }
+    },
+    {
+      "key": [
+        "search",
+        "search.final",
+        "unknown",
+        "none"
+      ],
+      "counts": {
+        "END": 2
+      }
+    },
+    {
+      "key": [
+        "search",
+        "search.final",
+        "unknown"
+      ],
+      "counts": {
+        "END": 2
+      }
+    },
+    {
+      "key": [
+        "search",
+        "search.final"
+      ],
+      "counts": {
+        "END": 2
+      }
+    }
+  ],
+  "loops": [
+    {
+      "key": [
+        "loop",
+        "main",
+        "main.plan",
+        "unknown",
+        "none",
+        "simple_direct",
+        "UNKNOWN",
+        0,
+        1,
+        false
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          5,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "main.plan",
+        "unknown",
+        "none",
+        "simple_direct"
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          5,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "main.plan",
+        "unknown",
+        "none"
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          2,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "main.plan",
+        "unknown"
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          2,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "main.plan"
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.permitted",
+        "unknown",
+        "none",
+        "simple_direct",
+        "LOW_PROGRESS",
+        0,
+        1,
+        false
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.permitted",
+        "unknown",
+        "none",
+        "simple_direct"
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.permitted",
+        "unknown",
+        "none"
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.permitted",
+        "unknown"
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.permitted"
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.category_insight_tool.result",
+        "unknown",
+        "none",
+        "simple_direct",
+        "LOW_PROGRESS",
+        0,
+        1,
+        true
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.category_insight_tool.result",
+        "unknown",
+        "none",
+        "simple_direct"
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.category_insight_tool.result",
+        "unknown",
+        "none"
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          2,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.category_insight_tool.result",
+        "unknown"
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          2,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.category_insight_tool.result"
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "main.final",
+        "unknown",
+        "none",
+        "simple_direct",
+        "UNKNOWN",
+        0,
+        1,
+        false
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "main.final",
+        "unknown",
+        "none",
+        "simple_direct"
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "main.final",
+        "unknown",
+        "none"
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "main.final",
+        "unknown"
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "main.final"
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.product_search_tool.result",
+        "unknown",
+        "none",
+        "product_search",
+        "LOW_PROGRESS",
+        0,
+        1,
+        true
+      ],
+      "counts": [
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          7,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.product_search_tool.result",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "counts": [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.product_search_tool.result",
+        "unknown",
+        "none"
+      ],
+      "counts": [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.product_search_tool.result",
+        "unknown"
+      ],
+      "counts": [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.product_search_tool.result"
+      ],
+      "counts": [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "query_processor.direct",
+        "unknown",
+        "none",
+        "product_search",
+        "UNKNOWN",
+        0,
+        1,
+        false
+      ],
+      "counts": [
+        [
+          1,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "query_processor.direct",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "counts": [
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "query_processor.direct",
+        "unknown",
+        "none"
+      ],
+      "counts": [
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "query_processor.direct",
+        "unknown"
+      ],
+      "counts": [
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "query_processor.direct"
+      ],
+      "counts": [
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.category_insight_tool.result",
+        "unknown",
+        "none",
+        "product_search",
+        "LOW_PROGRESS",
+        0,
+        1,
+        true
+      ],
+      "counts": [
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.category_insight_tool.result",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "counts": [
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          2,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "query_processor.rewrite",
+        "unknown",
+        "none",
+        "product_search",
+        "UNKNOWN",
+        0,
+        1,
+        false
+      ],
+      "counts": [
+        [
+          1,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "query_processor.rewrite",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "counts": [
+        [
+          1,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "query_processor.rewrite",
+        "unknown",
+        "none"
+      ],
+      "counts": [
+        [
+          1,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "query_processor.rewrite",
+        "unknown"
+      ],
+      "counts": [
+        [
+          1,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "query_processor.rewrite"
+      ],
+      "counts": [
+        [
+          1,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "main.plan",
+        "unknown",
+        "none",
+        "product_search",
+        "UNKNOWN",
+        0,
+        2,
+        false
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          4,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "main.plan",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          2,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.permitted",
+        "unknown",
+        "none",
+        "product_search",
+        "LOW_PROGRESS",
+        0,
+        2,
+        false
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.permitted",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.product_search_tool.result",
+        "unknown",
+        "none",
+        "product_search",
+        "LOW_PROGRESS",
+        0,
+        2,
+        true
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "main.final",
+        "unknown",
+        "none",
+        "product_search",
+        "UNKNOWN",
+        0,
+        2,
+        false
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "main.final",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.product_search_tool.result",
+        "unknown",
+        "none",
+        "product_search",
+        "UNKNOWN",
+        0,
+        2,
+        false
+      ],
+      "counts": [
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          6,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "main.plan",
+        "unknown",
+        "none",
+        "product_search",
+        "UNKNOWN",
+        0,
+        3,
+        false
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          2,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.permitted",
+        "unknown",
+        "none",
+        "product_search",
+        "LOW_PROGRESS",
+        0,
+        3,
+        false
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.product_search_tool.result",
+        "unknown",
+        "none",
+        "product_search",
+        "LOW_PROGRESS",
+        0,
+        3,
+        true
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.product_search_tool.result",
+        "unknown",
+        "none",
+        "product_search",
+        "UNKNOWN",
+        0,
+        3,
+        false
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "main.final",
+        "unknown",
+        "none",
+        "product_search",
+        "UNKNOWN",
+        0,
+        3,
+        false
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.TaskCreate.result",
+        "unknown",
+        "none",
+        "simple_direct",
+        "UNKNOWN",
+        0,
+        1,
+        false
+      ],
+      "counts": [
+        [
+          7,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.TaskCreate.result",
+        "unknown",
+        "none",
+        "simple_direct"
+      ],
+      "counts": [
+        [
+          7,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.TaskCreate.result",
+        "unknown",
+        "none"
+      ],
+      "counts": [
+        [
+          7,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.TaskCreate.result",
+        "unknown"
+      ],
+      "counts": [
+        [
+          7,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.TaskCreate.result"
+      ],
+      "counts": [
+        [
+          7,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.product_search_tool.result",
+        "unknown",
+        "none",
+        "product_search",
+        "UNKNOWN",
+        0,
+        1,
+        false
+      ],
+      "counts": [
+        [
+          7,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.category_insight_tool.result",
+        "unknown",
+        "none",
+        "product_search",
+        "LOW_PROGRESS",
+        0,
+        3,
+        true
+      ],
+      "counts": [
+        [
+          3,
+          0
+        ],
+        [
+          2,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.TaskUpdate.result",
+        "unknown",
+        "none",
+        "product_search",
+        "UNKNOWN",
+        0,
+        3,
+        false
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.TaskUpdate.result",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.TaskUpdate.result",
+        "unknown",
+        "none"
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.TaskUpdate.result",
+        "unknown"
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.TaskUpdate.result"
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.task_dispatch.result",
+        "unknown",
+        "none",
+        "product_search",
+        "UNKNOWN",
+        0,
+        1,
+        false
+      ],
+      "counts": [
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.task_dispatch.result",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "counts": [
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.task_dispatch.result",
+        "unknown",
+        "none"
+      ],
+      "counts": [
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.task_dispatch.result",
+        "unknown"
+      ],
+      "counts": [
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.task_dispatch.result"
+      ],
+      "counts": [
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "query_processor.direct",
+        "unknown",
+        "none",
+        "product_search",
+        "UNKNOWN",
+        0,
+        3,
+        false
+      ],
+      "counts": [
+        [
+          2,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "query_processor.decompose",
+        "yes",
+        "none",
+        "product_search",
+        "MEDIUM_PROGRESS",
+        0,
+        3,
+        false
+      ],
+      "counts": [
+        [
+          2,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "query_processor.decompose",
+        "yes",
+        "none",
+        "product_search"
+      ],
+      "counts": [
+        [
+          2,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "query_processor.decompose",
+        "yes",
+        "none"
+      ],
+      "counts": [
+        [
+          2,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "query_processor.decompose",
+        "yes"
+      ],
+      "counts": [
+        [
+          2,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "query_processor.decompose"
+      ],
+      "counts": [
+        [
+          2,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.category_insight_tool.result",
+        "yes",
+        "none",
+        "product_search",
+        "UNKNOWN",
+        0,
+        3,
+        false
+      ],
+      "counts": [
+        [
+          2,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.category_insight_tool.result",
+        "yes",
+        "none",
+        "product_search"
+      ],
+      "counts": [
+        [
+          2,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.category_insight_tool.result",
+        "yes",
+        "none"
+      ],
+      "counts": [
+        [
+          2,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.category_insight_tool.result",
+        "yes"
+      ],
+      "counts": [
+        [
+          2,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "main.plan",
+        "yes",
+        "none",
+        "product_search",
+        "UNKNOWN",
+        0,
+        3,
+        false
+      ],
+      "counts": [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "main.plan",
+        "yes",
+        "none",
+        "product_search"
+      ],
+      "counts": [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "main.plan",
+        "yes",
+        "none"
+      ],
+      "counts": [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "main.plan",
+        "yes"
+      ],
+      "counts": [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.permitted",
+        "yes",
+        "none",
+        "product_search",
+        "LOW_PROGRESS",
+        0,
+        3,
+        false
+      ],
+      "counts": [
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.permitted",
+        "yes",
+        "none",
+        "product_search"
+      ],
+      "counts": [
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.permitted",
+        "yes",
+        "none"
+      ],
+      "counts": [
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.permitted",
+        "yes"
+      ],
+      "counts": [
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.product_search_tool.result",
+        "yes",
+        "none",
+        "product_search",
+        "UNKNOWN",
+        0,
+        3,
+        false
+      ],
+      "counts": [
+        [
+          1,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.product_search_tool.result",
+        "yes",
+        "none",
+        "product_search"
+      ],
+      "counts": [
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.product_search_tool.result",
+        "yes",
+        "none"
+      ],
+      "counts": [
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.product_search_tool.result",
+        "yes"
+      ],
+      "counts": [
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.product_search_tool.result",
+        "yes",
+        "none",
+        "product_search",
+        "LOW_PROGRESS",
+        0,
+        3,
+        true
+      ],
+      "counts": [
+        [
+          1,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.TaskUpdate.result",
+        "yes",
+        "none",
+        "product_search",
+        "UNKNOWN",
+        0,
+        3,
+        false
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.TaskUpdate.result",
+        "yes",
+        "none",
+        "product_search"
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.TaskUpdate.result",
+        "yes",
+        "none"
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "tool.TaskUpdate.result",
+        "yes"
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "main.final",
+        "yes",
+        "none",
+        "product_search",
+        "UNKNOWN",
+        0,
+        3,
+        false
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "main.final",
+        "yes",
+        "none",
+        "product_search"
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "main.final",
+        "yes",
+        "none"
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "main",
+        "main.final",
+        "yes"
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "search.plan",
+        "unknown",
+        "none",
+        "product_search",
+        "UNKNOWN",
+        0,
+        1,
+        false
+      ],
+      "counts": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "search.plan",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "counts": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "search.plan",
+        "unknown",
+        "none"
+      ],
+      "counts": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "search.plan",
+        "unknown"
+      ],
+      "counts": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "search.plan"
+      ],
+      "counts": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "tool.permitted",
+        "unknown",
+        "none",
+        "product_search",
+        "LOW_PROGRESS",
+        0,
+        1,
+        false
+      ],
+      "counts": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          2
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "tool.permitted",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "counts": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "tool.permitted",
+        "unknown",
+        "none"
+      ],
+      "counts": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "tool.permitted",
+        "unknown"
+      ],
+      "counts": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "tool.permitted"
+      ],
+      "counts": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "tool.product_search_tool.result",
+        "unknown",
+        "none",
+        "product_search",
+        "LOW_PROGRESS",
+        0,
+        1,
+        true
+      ],
+      "counts": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "tool.product_search_tool.result",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "counts": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "tool.product_search_tool.result",
+        "unknown",
+        "none"
+      ],
+      "counts": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "tool.product_search_tool.result",
+        "unknown"
+      ],
+      "counts": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "tool.product_search_tool.result"
+      ],
+      "counts": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "query_processor.rewrite",
+        "unknown",
+        "none",
+        "product_search",
+        "UNKNOWN",
+        0,
+        1,
+        false
+      ],
+      "counts": [
+        [
+          0,
+          1
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "query_processor.rewrite",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "counts": [
+        [
+          0,
+          1
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "query_processor.rewrite",
+        "unknown",
+        "none"
+      ],
+      "counts": [
+        [
+          0,
+          1
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "query_processor.rewrite",
+        "unknown"
+      ],
+      "counts": [
+        [
+          0,
+          1
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "query_processor.rewrite"
+      ],
+      "counts": [
+        [
+          0,
+          1
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "tool.category_insight_tool.result",
+        "unknown",
+        "none",
+        "product_search",
+        "LOW_PROGRESS",
+        0,
+        1,
+        true
+      ],
+      "counts": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "tool.category_insight_tool.result",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "counts": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "tool.category_insight_tool.result",
+        "unknown",
+        "none"
+      ],
+      "counts": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "tool.category_insight_tool.result",
+        "unknown"
+      ],
+      "counts": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "tool.category_insight_tool.result"
+      ],
+      "counts": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "search.plan",
+        "unknown",
+        "none",
+        "product_search",
+        "UNKNOWN",
+        0,
+        2,
+        false
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "tool.permitted",
+        "unknown",
+        "none",
+        "product_search",
+        "LOW_PROGRESS",
+        0,
+        2,
+        false
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "tool.product_search_tool.result",
+        "unknown",
+        "none",
+        "product_search",
+        "UNKNOWN",
+        0,
+        2,
+        false
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "tool.product_search_tool.result",
+        "unknown",
+        "none",
+        "product_search",
+        "LOW_PROGRESS",
+        0,
+        2,
+        true
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "search.final",
+        "unknown",
+        "none",
+        "product_search",
+        "UNKNOWN",
+        0,
+        2,
+        false
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "search.final",
+        "unknown",
+        "none",
+        "product_search"
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "search.final",
+        "unknown",
+        "none"
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "search.final",
+        "unknown"
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "search.final"
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "search.plan",
+        "unknown",
+        "none",
+        "product_search",
+        "UNKNOWN",
+        0,
+        3,
+        false
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "tool.permitted",
+        "unknown",
+        "none",
+        "product_search",
+        "LOW_PROGRESS",
+        0,
+        3,
+        false
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "tool.product_search_tool.result",
+        "unknown",
+        "none",
+        "product_search",
+        "LOW_PROGRESS",
+        0,
+        3,
+        true
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "key": [
+        "loop",
+        "search",
+        "search.final",
+        "unknown",
+        "none",
+        "product_search",
+        "UNKNOWN",
+        0,
+        3,
+        false
+      ],
+      "counts": [
+        [
+          0,
+          0
+        ]
+      ]
+    }
+  ]
+}

@@ -4,6 +4,9 @@ __pycache__/
 *.pyc
 .env
 .pytest_cache/
+# 本机运行日志、完整模型上下文快照和临时文件可能含敏感数据，禁止入库。
+.runlogs/
+.tmp/
 # 运行态数据仍忽略；评测基准商品集必须随代码版本化。
 data/*
 !data/catalog-v1.jsonl

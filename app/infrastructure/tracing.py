@@ -62,6 +62,7 @@ _SAFE_ATTRIBUTES = {
     "globex.capability_digest", "langfuse.trace.metadata.capability_digest",
     "globex.skill.source", "globex.skill.id", "globex.skill.version", "globex.skill.content_hash",
     "globex.eval.run_id", "globex.eval.case_id", "globex.eval.strategy", "globex.eval.dataset_hash",
+    "globex.eval.query_type",
     "globex.eval.answerability", "globex.eval.missing_reason", "globex.eval.repetition",
     "globex.eval.top_k", "globex.eval.rrf_k", "globex.eval.latency_ms",
     "globex.eval.retrieval_mode", "globex.eval.processor_plan_mode", "globex.eval.effective_plan_mode",
@@ -96,6 +97,84 @@ _SAFE_ATTRIBUTES = {
     "globex.agent.unverified_id_count", "globex.context.before_tokens", "globex.context.after_tokens",
     "globex.context.archived_results", "globex.context.summary_changed", "globex.context.elapsed_ms",
     "globex.context.status", "globex.context.reason", "globex.context.policy_version",
+    "globex.resource.logical_call_id", "globex.resource.operation", "globex.resource.component",
+    "globex.resource.flow_id", "globex.resource.actual_call_id",
+    "globex.resource.tool_call_id",
+    "globex.resource.progress_class", "globex.resource.refinement_class",
+    "globex.resource.zero_progress_streak", "globex.resource.loop_risk",
+    "globex.resource.runtime_sequence",
+    "globex.resource.runtime_field_count",
+    "globex.resource.next_prediction_confidence", "globex.resource.loop_prediction_confidence",
+    "globex.resource.matched_future_call_id", "globex.resource.identity_match_quality",
+    "globex.resource.planned_budget_scope", "globex.resource.inflight_chat_tokens",
+    "globex.resource.planned_remaining_chat_budget", "globex.resource.planned_total_chat_budget",
+    "globex.resource.context_scope", "globex.resource.shadow_only", "globex.resource.attempt",
+    "globex.resource.retry", "globex.resource.fallback", "globex.resource.usage_source",
+    "globex.resource.estimated_input_tokens_raw", "globex.resource.estimated_input_tokens_safe",
+    "globex.resource.old_estimated_prompt_tokens",
+    "globex.resource.deepseek_estimated_prompt_tokens",
+    "globex.resource.deepseek_safe_estimated_prompt_tokens",
+    "globex.resource.deepseek_estimator_method",
+    "globex.resource.deepseek_estimator_confidence",
+    "globex.resource.old_actual_estimate_ratio",
+    "globex.resource.deepseek_actual_estimate_ratio",
+    "globex.resource.local_estimated_output_reserve",
+    "globex.resource.actual_input_tokens", "globex.resource.actual_output_tokens",
+    "globex.resource.embedding_tokens", "globex.resource.rerank_tokens",
+    "globex.resource.api_calls", "globex.resource.latency_ms",
+    "globex.resource.estimator_version", "globex.resource.estimator_method",
+    "globex.resource.estimator_confidence", "globex.resource.input_message_count",
+    "globex.resource.tool_count", "globex.resource.document_count",
+    "globex.resource.information_need_id", "globex.resource.search_iteration",
+    "globex.resource.actual_result_count",
+    "globex.product_search.operation",
+    "globex.resource.plan_revision", "globex.resource.decision", "globex.resource.decision_reason",
+    "globex.resource.revision_sequence", "globex.resource.revision_trigger",
+    "globex.resource.revision_operations", "globex.resource.query_mode",
+    "globex.resource.information_need_count", "globex.resource.known_operation_count",
+    "globex.resource.completed_operation", "globex.resource.emitted_tool_names",
+    "globex.resource.tool_call_source_role",
+    "globex.resource.used_chat_tokens", "globex.resource.active_reserved_chat_tokens",
+    "globex.resource.protected_future_chat_tokens", "globex.resource.predicted_future_chat_tokens",
+    "globex.resource.projected_chat_tokens", "globex.resource.planned_chat_limit",
+    "globex.resource.budget_profile_source", "globex.resource.budget_floor",
+    "globex.resource.budget_cap", "globex.resource.safety_factor",
+    "globex.resource.absolute_chat_hard_cap", "globex.resource.prediction_route",
+    "globex.resource.prediction_confidence", "globex.resource.operation_hard_safety_tokens",
+    "globex.resource.initial_prediction_route", "globex.resource.execution_route",
+    "globex.resource.predicted_request_tokens", "globex.resource.actual_request_tokens",
+    "globex.resource.predicted_operation_count", "globex.resource.actual_operation_count",
+    "globex.resource.revision_operation_count",
+    "globex.resource.budget_recomputed", "globex.resource.previous_planned_budget",
+    "globex.resource.new_planned_budget", "globex.resource.previous_projected_total",
+    "globex.resource.new_projected_total", "globex.resource.previous_predicted_unreserved",
+    "globex.resource.new_predicted_unreserved", "globex.resource.budget_protected_future",
+    "globex.resource.budget_recompute_reason", "globex.resource.budget_unchanged_reason",
+    "globex.resource.main_plan_prediction_reasons",
+    "globex.resource.lifecycle_event", "globex.resource.transition_reason",
+    "globex.resource.previous_bucket", "globex.resource.new_bucket",
+    "globex.resource.previous_state", "globex.resource.new_state",
+    "globex.resource.future_work_plan",
+    "globex.resource.plan_revision_history", "globex.resource.route_after_query_processor",
+    "globex.resource.route_revision_count",
+    "globex.resource.closing_projected_request_tokens",
+    "globex.resource.execution_path", "globex.resource.context_bucket",
+    "globex.resource.candidate_bucket", "globex.resource.prompt_version",
+    "globex.resource.policy_version", "globex.resource.relevant_code_version",
+    "globex.resource.execution_contract_hash",
+    "globex.resource.profile_id", "globex.resource.profile_confidence",
+    "globex.resource.calibration_samples", "globex.resource.calibration_confidence",
+    "globex.resource.calibration_profile_id", "globex.resource.estimator_input_stage",
+    "globex.resource.thinking_mode", "globex.resource.reasoning_effort",
+    "globex.resource.tooling_mode", "globex.resource.lifecycle_owner",
+    "globex.resource.accounting_ok", "globex.resource.accounting_error_count",
+    "globex.resource.reservation_leak_count", "globex.resource.duplicate_accounting_count",
+    "globex.resource.usage_missing_count", "globex.resource.timeout_estimated_count",
+    "globex.context.old_context_revision", "globex.context.new_context_revision",
+    "globex.context.old_context_tokens", "globex.context.compacted_context_tokens",
+    "globex.context.removed_segment_count", "globex.context.estimator_version",
+    "globex.context.counterfactual_input_tokens", "globex.context.counterfactual_realized_saving",
+    "globex.context.counterfactual_realized_roi",
 }
 _CONTENT_FIELDS = {
     "gen_ai.input.messages": "globex.input.characters",
@@ -111,6 +190,10 @@ _DEVELOPMENT_TRACE_TOOLS = frozenset({
     "conversation_fact_lookup",
 })
 _DEVELOPMENT_CONTENT_LIMITS = {
+    # development_full 专用。上限覆盖当前 128k 上下文的常见 JSON 体积，
+    # 同时避免无界属性拖垮 OTLP exporter；发生截断时会显式标记。
+    "gen_ai.input.messages": 1_500_000,
+    "gen_ai.output.messages": 300_000,
     "gen_ai.tool.call.arguments": 12_000,
     "gen_ai.tool.call.result": 50_000,
     "langfuse.observation.input": 12_000,
@@ -129,6 +212,7 @@ _DEVELOPMENT_AGENT_STAGES = frozenset({
     "subagent_handoff",
     "turn_attempt",
     "context_compaction",
+    "resource_operation",
 })
 _SENSITIVE_FIELD = re.compile(
     r"(?:^|[_-])(?:api[_-]?key|secret|token|authorization|cookie|password|buyer[_-]?id|"
@@ -320,13 +404,43 @@ def _sanitize_development_payload(value, limit: int) -> tuple[str, bool]:
 def _sanitize_attributes(attributes, *, content_mode: str = "off") -> dict:
     result = {}
     tool_name = (attributes or {}).get("gen_ai.tool.name", "")
-    development_tool = content_mode == "development" and tool_name in _DEVELOPMENT_TRACE_TOOLS
+    development_enabled = content_mode in {"development", "development_full"}
+    development_tool = development_enabled and tool_name in _DEVELOPMENT_TRACE_TOOLS
     retrieval_stage = (attributes or {}).get("globex.retrieval.stage", "")
     trace_stage = (attributes or {}).get("globex.trace.stage", "")
-    development_rag = content_mode == "development" and retrieval_stage in _DEVELOPMENT_RAG_STAGES
-    development_agent = content_mode == "development" and trace_stage in _DEVELOPMENT_AGENT_STAGES
+    development_rag = development_enabled and retrieval_stage in _DEVELOPMENT_RAG_STAGES
+    development_agent = development_enabled and trace_stage in _DEVELOPMENT_AGENT_STAGES
+    bounded_technical_json = {
+        "globex.resource.future_work_plan": 16_000,
+        "globex.resource.plan_revision_history": 64_000,
+        "globex.resource.runtime_state": 8_000,
+        "globex.resource.continuation_forecast": 6_000,
+    }
+    bounded_resource_metadata = {
+        "globex.resource.normalized_query": 512,
+        "globex.resource.query_hash": 64,
+        "globex.resource.constraints_signature": 64,
+        "globex.resource.result_ref": 128,
+        "globex.resource.evidence_ref": 128,
+    }
     for key, value in (attributes or {}).items():
-        if key in _SAFE_ATTRIBUTES:
+        if key in bounded_technical_json:
+            # These two fields contain only operation names, counters and
+            # resource estimates.  They are required for causal replay and are
+            # still parsed, redacted and bounded before export.
+            rendered, truncated = _sanitize_development_payload(
+                value, bounded_technical_json[key],
+            )
+            result[key] = rendered
+            if truncated:
+                result["globex.content.truncated"] = True
+        elif key in bounded_resource_metadata:
+            rendered, truncated = _sanitize_development_payload(value, bounded_resource_metadata[key])
+            result[key] = rendered
+            result["globex.content.sanitized"] = True
+            if truncated:
+                result["globex.content.truncated"] = True
+        elif key in _SAFE_ATTRIBUTES or key.startswith(("globex.resource.revision_operation.", "globex.resource.runtime_field.")):
             # 名称是固定技术标签；异常正文、业务字段和自由文本没有白名单入口。
             if isinstance(value, str):
                 if not _SAFE_NAME.fullmatch(value):
@@ -339,7 +453,10 @@ def _sanitize_attributes(attributes, *, content_mode: str = "off") -> dict:
             result[_CONTENT_FIELDS[key]] = len(value) if isinstance(value, (str, tuple, list)) else 0
             expose_tool = development_tool and key.startswith("gen_ai.tool.call.")
             expose_observation = (development_rag or development_agent) and key.startswith("langfuse.observation.")
-            if (expose_tool or expose_observation) and key in _DEVELOPMENT_CONTENT_LIMITS:
+            expose_model = content_mode == "development_full" and key in {
+                "gen_ai.input.messages", "gen_ai.output.messages",
+            }
+            if (expose_tool or expose_observation or expose_model) and key in _DEVELOPMENT_CONTENT_LIMITS:
                 rendered, truncated = _sanitize_development_payload(value, _DEVELOPMENT_CONTENT_LIMITS[key])
                 result[key] = rendered
                 result["globex.content.sanitized"] = True
@@ -546,7 +663,7 @@ class TracingASGIMiddleware:
 
 
 def build_agent_middlewares(settings: Settings) -> list:
-    """全部 Agent 统一的中间件列表（Trace + 可选 Token 预算）。"""
+    """全部 Agent 统一的中间件列表（Trace、Context、预算与本机排障）。"""
     from app.infrastructure.context_compaction import EvidenceCompactionMiddleware
     from app.infrastructure.persistence.context_evidence import ContextEvidenceStore
     middlewares: list = [TracingMiddleware(), EvidenceCompactionMiddleware(
@@ -566,4 +683,23 @@ def build_agent_middlewares(settings: Settings) -> list:
                 hint_message=_BUDGET_HINT,
             ),
         )
+    if settings.resource_governor_shadow_enabled:
+        # 只观察最终送模参数和结果；不修改输入、不拒绝调用、不切模型。
+        from app.infrastructure.resource_governance.middleware import ResourceOperationTracingMiddleware
+        from app.infrastructure.resource_governance.estimator import TokenEstimator
+        middlewares.append(ResourceOperationTracingMiddleware(
+            estimator=TokenEstimator(
+                tokenizer_path=settings.deepseek_v41_tokenizer_path,
+                deepseek_primary=settings.deepseek_v41_tokenizer_primary,
+            ),
+            settings=settings,
+        ))
+    if settings.trace_context_capture == "local_only":
+        # 放在所有会改写/拦截 model call 的中间件之后，记录真正即将送模的输入。
+        # 该中间件不创建 OTel 事件，文件不会进入 Langfuse。
+        from app.infrastructure.local_context_capture import LocalContextCaptureMiddleware
+        middlewares.append(LocalContextCaptureMiddleware(
+            settings.trace_context_capture_dir,
+            session_id=settings.trace_context_session_id,
+        ))
     return middlewares

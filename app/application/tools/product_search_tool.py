@@ -8,11 +8,15 @@ MainAgent 单干与 SearchAgent 派发两条路径共用同一工具实例。
 注意：本模块不能用 `from __future__ import annotations`——
 AgentScope 用 pydantic 从函数签名动态生成 JSON schema，字符串化注解会解析失败。
 """
+import hashlib
 import json
+import time
+from contextvars import ContextVar
 from typing import Optional
 
 from agentscope.message import TextBlock, ToolResultState
 from agentscope.tool import ToolChunk
+from opentelemetry import trace
 
 from app.application.usecases.catalog_search import CatalogSearchUseCase
 from app.domain.catalog.product_search_spec import ProductSearchSpec
@@ -60,6 +64,9 @@ def _normalize_category(category: Optional[str], normalized_query: str) -> Optio
 
 
 def build_product_search_tool(usecase: CatalogSearchUseCase, bus: TradeEventBus, evidence_store=None, context_strategy="legacy"):
+    search_iteration = ContextVar("product_search_iteration", default=0)
+    search_session = ContextVar("product_search_session", default=None)
+
     async def product_search_tool(
         normalized_query: str,
         category: Optional[str] = None,
@@ -69,6 +76,7 @@ def build_product_search_tool(usecase: CatalogSearchUseCase, bus: TradeEventBus,
         target_currency: str = "CNY",
         excluded_material_tags: list[str] | None = None,
         required_material_tags: list[str] | None = None,
+        information_need_id: Optional[str] = None,
     ) -> ToolChunk:
         """检索跨境商品库（embedding+rerank 二阶段召回），返回 Top-K 商品卡 JSON。
         传入 ship_to 时商品卡自动内联 landed_price 到手价明细（小计+运费+关税，统一折算 target_currency），
@@ -91,6 +99,9 @@ def build_product_search_tool(usecase: CatalogSearchUseCase, bus: TradeEventBus,
                 材质黑名单，如买家明确不要塑料时传 ["合成聚合物"]。
             required_material_tags (`list[str] | None`):
                 材质白名单，如必须是金属时传 ["金属"]。
+            information_need_id (`str | None`):
+                当前检索所服务的稳定信息需求 ID。多需求任务应传 need_price、need_capacity、
+                need_delivery 等稳定 ID；普通单一商品检索可省略。
         """
         # 模型有时会把数字参数当字符串传（实测 qwen3-max 传 "300"），
         # schema 层放宽为接受数字字符串，这里统一强转后再进检索链路。
@@ -126,6 +137,7 @@ def build_product_search_tool(usecase: CatalogSearchUseCase, bus: TradeEventBus,
             "target_currency": target_currency,
             "excluded_material_tags": excluded_material_tags or [],
             "required_material_tags": required_material_tags or [],
+            "information_need_id": information_need_id or "overall",
         }
         bus.publish(session_id, "tool.invoke", {"tool": "product_search_tool", "args": args})
         if ship_to and ship_to not in TariffSchedule(ExchangeRateTable()).supported_destinations():
@@ -135,6 +147,39 @@ def build_product_search_tool(usecase: CatalogSearchUseCase, bus: TradeEventBus,
                 content=[TextBlock(type="text", text=f"[error] {error}")],
                 state=ToolResultState.ERROR,
             )
+        if search_session.get() != session_id:
+            search_session.set(session_id)
+            search_iteration.set(0)
+        iteration = search_iteration.get() + 1
+        search_iteration.set(iteration)
+        constraints_signature = hashlib.sha256(json.dumps({
+            "category": category,
+            "ship_to": ship_to,
+            "price_max_major": price_max_major,
+            "target_currency": target_currency,
+            "excluded_material_tags": excluded_material_tags or [],
+            "required_material_tags": required_material_tags or [],
+        }, ensure_ascii=False, sort_keys=True, default=str).encode("utf-8")).hexdigest()[:16]
+        query_hash = hashlib.sha256(normalized_query.encode("utf-8")).hexdigest()[:16]
+        product_span = trace.get_tracer(__name__).start_as_current_span(
+            "resource.product_search",
+            attributes={
+                "langfuse.observation.type": "span",
+                "globex.trace.stage": "resource_operation",
+                "globex.product_search.operation": "search",
+                "globex.resource.component": "catalog_search",
+                "globex.resource.shadow_only": True,
+                "globex.resource.information_need_id": information_need_id or "overall",
+                "globex.resource.normalized_query": normalized_query[:512],
+                "globex.resource.query_hash": query_hash,
+                "globex.resource.constraints_signature": constraints_signature,
+                "globex.resource.search_iteration": iteration,
+                "globex.resource.information_need_id": information_need_id or "overall",
+            },
+            record_exception=False, set_status_on_exception=False,
+        )
+        started = time.perf_counter()
+        product_span.__enter__()
         try:
             spec = ProductSearchSpec(
                 normalized_query=normalized_query,
@@ -148,17 +193,39 @@ def build_product_search_tool(usecase: CatalogSearchUseCase, bus: TradeEventBus,
             )
             result = await usecase.execute(spec)
         except ValueError as err:
+            product_span.__exit__(type(err), err, err.__traceback__)
             bus.publish(session_id, "tool.result", {"tool": "product_search_tool", "error": str(err)})
             return ToolChunk(
                 content=[TextBlock(type="text", text=f"[error] {err}")],
                 state=ToolResultState.ERROR,
             )
+        except BaseException as err:
+            product_span.__exit__(type(err), err, err.__traceback__)
+            raise
         result["query_conditions"] = args
         from datetime import datetime, timezone
         result["observed_at"] = datetime.now(timezone.utc).isoformat()
         remember_verified_result("products", result)
         if evidence_store is not None and snapshot_ctx is not None:
             result["result_ref"] = await evidence_store.save(snapshot_ctx.buyer_id, session_id, "products", result)
+        product_span.__exit__(None, None, None)
+        # Set terminal metadata after persistence through a short child span;
+        # the result reference is deliberately an opaque evidence handle.
+        with trace.get_tracer(__name__).start_as_current_span(
+            "resource.product_search.result",
+            attributes={
+                "langfuse.observation.type": "span",
+                "globex.trace.stage": "resource_operation",
+                "globex.product_search.operation": "result",
+                "globex.resource.result_ref": str(result.get("result_ref") or ""),
+                "globex.resource.evidence_ref": str(result.get("result_ref") or ""),
+                "globex.resource.search_iteration": iteration,
+                "globex.resource.actual_result_count": len(result.get("hits") or []),
+                "globex.resource.latency_ms": round((time.perf_counter() - started) * 1000, 3),
+            },
+            record_exception=False, set_status_on_exception=False,
+        ):
+            pass
         bus.publish(
             session_id,
             "tool.result",

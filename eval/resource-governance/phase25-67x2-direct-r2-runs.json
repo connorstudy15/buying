@@ -1,0 +1,2285 @@
+{
+  "shadow_only": true,
+  "repetitions": 2,
+  "observation_count": 134,
+  "observations": [
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "blind-001",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 16387.615,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "0d8b60aea488560a016d0b03467869e0"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "blind-002",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 16876.843,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "b2665470369835f6715d7de8ec8be366"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "blind-005",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 23004.276,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "764c9c357475f3ed0dd019e5b12ea341"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "blind-006",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 12567.225,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "cdfc6c344aae4b3da0641236dfde7902"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "blind-007",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 12978.849,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "6a6cfcd8e60cbd083bfa2c7d70524e7d"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "blind-008",
+      "query_type": "cross_evidence",
+      "buckets": [
+        "Cross Evidence",
+        "DIRECT",
+        "Simple request",
+        "Single-hop",
+        "cross_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 15542.472,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "af8f2252a609440760e8e484a7340995"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "blind-010",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 27685.603,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "2f4fc9abb08dd5ac6585ad542eb6b65c"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "blind-012",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 27065.017,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "38c72afce0ae93a0e1e4e5dd072ded76"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "blind-013",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 27334.315,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "68dc39af2c9efab076e7fcb663b6700b"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "blind-014",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 37819.881,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "61954a523ade6680f5f8985707e5731d"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "blind-016",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 16807.933,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "b8fc05381a155ffd0f308495690e615e"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "blind-017",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 20900.435,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "f042d57b5fb66c21a5d6fa36b6034967"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "blind-018",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 17835.075,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "53500889dc6663cbab3aefa1434381e3"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "blind-019",
+      "query_type": "cross_evidence",
+      "buckets": [
+        "Cross Evidence",
+        "DIRECT",
+        "Simple request",
+        "Single-hop",
+        "cross_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 27503.13,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "6cfd322c519faa2c6554b44ad93ae601"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "blind-021",
+      "query_type": "cross_evidence",
+      "buckets": [
+        "Cross Evidence",
+        "DIRECT",
+        "Simple request",
+        "Single-hop",
+        "cross_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 17594.726,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "fa595a59cf52e158147ea5eb18a069ed"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "blind-025",
+      "query_type": "cross_evidence",
+      "buckets": [
+        "Cross Evidence",
+        "DIRECT",
+        "Simple request",
+        "Single-hop",
+        "cross_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 27250.568,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "8622549e6cdd12745eb6e6dd95239a88"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "blind-027",
+      "query_type": "unanswerable",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "unanswerable"
+      ],
+      "repetition": 1,
+      "latency_ms": 5175.563,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "c3c8a8579c50b3de11ae93712f5e06f1"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "blind-028",
+      "query_type": "unanswerable",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "unanswerable"
+      ],
+      "repetition": 1,
+      "latency_ms": 10683.879,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "22f4ed31c992b7c12b256574aaf7165b"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "blind-029",
+      "query_type": "unanswerable",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "unanswerable"
+      ],
+      "repetition": 1,
+      "latency_ms": 18052.569,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "2dde66930d66f23f7597be3268051571"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "blind-030",
+      "query_type": "policy_boundary",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "policy_boundary"
+      ],
+      "repetition": 1,
+      "latency_ms": 13527.562,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "7da7646fe92c7e2fd12c11f980a704d7"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "human-mh-001",
+      "query_type": "implicit_constraint_multi_hop",
+      "buckets": [
+        "Cross Evidence",
+        "DIRECT",
+        "Simple request",
+        "Single-hop",
+        "implicit_constraint_multi_hop"
+      ],
+      "repetition": 1,
+      "latency_ms": 22434.348,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "4d47ca3680e274d9667de8232fcd469d"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "human-mh-002",
+      "query_type": "implicit_constraint_multi_hop",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "implicit_constraint_multi_hop"
+      ],
+      "repetition": 1,
+      "latency_ms": 25889.773,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "a106fcbbe6d58b7a7d5a1b10fb98d256"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-002",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 14327.678,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "2c2a5ff72d1220a73660bea65dce2ddb"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-005",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 13729.944,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "6119d0c08ef974269a2e1d86b2961165"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-006",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 25620.598,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "755b25b2f588060a0610a9e568341dd7"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-017",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 27816.753,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "bff50ec2dbdab65eb267b1d13b10b437"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-020",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 9202.12,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "60649184dae32e5e29237ae0ae1cbf10"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-021",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 22809.495,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "57a13b36974beb4d246c47f5b39a9165"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-022",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 8057.436,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "e1300cf3699337eb71fae74e71e129e9"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-024",
+      "query_type": "cross_evidence",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "cross_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 34717.246,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "1b71c54860c6635f7ad2080122664956"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-026",
+      "query_type": "cross_evidence",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "cross_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 33221.838,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "e9527fd7e8c62cdf69cfe9d175ff3da0"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-027",
+      "query_type": "cross_evidence",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "cross_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 60032.212,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "fd327ee1022517057f16bc6db31df4de"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-028",
+      "query_type": "cross_evidence",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "cross_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 30861.242,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "4391d417aa2e286617416ff4359668c3"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-029",
+      "query_type": "cross_evidence",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "cross_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 30765.207,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "069f5ef6b03dbccfc2246048c072b776"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-030",
+      "query_type": "cross_evidence",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "cross_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 24312.8,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "018e6bbde30011531d87d69c9a9bcfbb"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-031",
+      "query_type": "cross_evidence",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "cross_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 38099.388,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "a4e1fc6b0341619178f65d040926c17b"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-034",
+      "query_type": "cross_evidence",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "cross_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 24391.02,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "1f6739b4a37b293bb497fe0f2ff6c113"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-035",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 19291.321,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "76a42ab9d3af877ef7f39e53031ad7cf"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-037",
+      "query_type": "cross_evidence",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "cross_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 27699.843,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "b6aaa9cf55ca351956a487aa6ae91a9d"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-038",
+      "query_type": "cross_evidence",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "cross_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 95246.606,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "ee85ec4bafd5948347d6762158dc237e"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-040",
+      "query_type": "cross_evidence",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "cross_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 33071.32,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "700bdb28105a36cd99667a3b9b00604a"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-041",
+      "query_type": "cross_evidence",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "cross_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 19963.862,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "a8968f63d35369be79984801e308855c"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-043",
+      "query_type": "implicit_constraint",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "implicit_constraint"
+      ],
+      "repetition": 1,
+      "latency_ms": 25221.634,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "4d9e1a3ae84cf96dbb12e44ed0843e2f"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-046",
+      "query_type": "implicit_constraint",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "implicit_constraint"
+      ],
+      "repetition": 1,
+      "latency_ms": 26232.415,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "90c1b013b7a24cf7467495fe05a52e5e"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-048",
+      "query_type": "implicit_constraint",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "implicit_constraint"
+      ],
+      "repetition": 1,
+      "latency_ms": 39349.411,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "720b779f422e5925a5be26cc515d0c35"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-049",
+      "query_type": "implicit_constraint",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DIRECT",
+        "Multi-hop",
+        "implicit_constraint"
+      ],
+      "repetition": 1,
+      "latency_ms": 27759.857,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "ff9c7ea6b1ce3247b62e9e18a8c6f107"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-051",
+      "query_type": "implicit_constraint",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "implicit_constraint"
+      ],
+      "repetition": 1,
+      "latency_ms": 20006.905,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "5ae69b12a38c733a5b55815579a61a6d"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-054",
+      "query_type": "unanswerable",
+      "buckets": [
+        "BYPASS",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "unanswerable"
+      ],
+      "repetition": 1,
+      "latency_ms": 11515.272,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "90bedd499cca83333888329a0dde1c4a"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-055",
+      "query_type": "unanswerable",
+      "buckets": [
+        "BYPASS",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "unanswerable"
+      ],
+      "repetition": 1,
+      "latency_ms": 6197.226,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "0825cc41efe9ef7bb8c76405f2e82210"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-057",
+      "query_type": "unanswerable",
+      "buckets": [
+        "BYPASS",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "unanswerable"
+      ],
+      "repetition": 1,
+      "latency_ms": 5292.259,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "38880402eea7e42b39ca3025a918ee1e"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-058",
+      "query_type": "unanswerable",
+      "buckets": [
+        "BYPASS",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "unanswerable"
+      ],
+      "repetition": 1,
+      "latency_ms": 26333.931,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "257a8e8a4e7356fd59df2f50f1a6da3a"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-r002",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 20719.785,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "2b157a55f26c28b87a15838d3070223c"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-r006",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 22237.218,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "8d44c99dc64fe46272f029e724ca6721"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-r007",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 18892.472,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "027402fcebdaaed7c1dbd8526d1def29"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-r008",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 20338.12,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "0b32f203162d2af696b29eba7824c0be"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-r010",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 15272.139,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "c790a655c0b8820fa16de0dfc3eac451"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-r015",
+      "query_type": "unanswerable",
+      "buckets": [
+        "BYPASS",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "unanswerable"
+      ],
+      "repetition": 1,
+      "latency_ms": 18725.255,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "8eba77455515382bf4aa60ccb225279b"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-r016",
+      "query_type": "unanswerable",
+      "buckets": [
+        "BYPASS",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "unanswerable"
+      ],
+      "repetition": 1,
+      "latency_ms": 29430.808,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "68933590d21d857c5b6818110c02c37d"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-r017",
+      "query_type": "unanswerable",
+      "buckets": [
+        "BYPASS",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "unanswerable"
+      ],
+      "repetition": 1,
+      "latency_ms": 16502.861,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "aff749b74bc04800db34a42706de3b0e"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-045",
+      "query_type": "implicit_constraint",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "implicit_constraint"
+      ],
+      "repetition": 1,
+      "latency_ms": 22350.981,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "1563abaf4ea7ccd5a18112e34bac0c0c"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-060",
+      "query_type": "policy_boundary",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DIRECT",
+        "Multi-hop",
+        "policy_boundary"
+      ],
+      "repetition": 1,
+      "latency_ms": 6330.31,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "26112ed4938e899465f9ebc9d365cb7a"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-044",
+      "query_type": "implicit_constraint",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "implicit_constraint"
+      ],
+      "repetition": 1,
+      "latency_ms": 49173.647,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "17e075340e150d1c4fea265066a71a92"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-047",
+      "query_type": "implicit_constraint",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "implicit_constraint"
+      ],
+      "repetition": 1,
+      "latency_ms": 34472.542,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "653da8dca57aeadb99abb4c6e5650a7f"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-r009",
+      "query_type": "single_evidence",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DIRECT",
+        "Multi-hop",
+        "single_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 19894.392,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "750abc097a801ce5d7a2718e0e169f89"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-r011",
+      "query_type": "cross_evidence",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "cross_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 30043.465,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "7950e1ccf9b913afc4caa9cfcf011bd0"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-r012",
+      "query_type": "cross_evidence",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "cross_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 33329.069,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "8f590b1c9ba327136830b476543eecd6"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-r014",
+      "query_type": "implicit_constraint",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "implicit_constraint"
+      ],
+      "repetition": 1,
+      "latency_ms": 20182.626,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "eb19f038dbde6e1c2dd8a80d01557373"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "blind-001",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 2,
+      "latency_ms": 16375.246,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "19091146850f5b084bdf6c624791b163"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "blind-002",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 2,
+      "latency_ms": 20135.877,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "944c150fbe753f31b0e78c526dff918b"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "blind-005",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 2,
+      "latency_ms": 17205.632,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "18d657e10a2a620b49f5aae81a56535c"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "blind-006",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 2,
+      "latency_ms": 13380.286,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "0112e2979c2955451299018910af326a"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "blind-007",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 2,
+      "latency_ms": 26401.507,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "693ae975298290ce7581cdeb2f8de4be"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "blind-008",
+      "query_type": "cross_evidence",
+      "buckets": [
+        "Cross Evidence",
+        "DIRECT",
+        "Simple request",
+        "Single-hop",
+        "cross_evidence"
+      ],
+      "repetition": 2,
+      "latency_ms": 23851.811,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "319d093a214736edf57b152fbf16771e"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "blind-010",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 2,
+      "latency_ms": 15621.876,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "735afe0ab5f56cf710ebccb988fe5986"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "blind-012",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 2,
+      "latency_ms": 26231.246,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "7401397d9b2fe9897661d54fbe3a600e"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "blind-013",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 2,
+      "latency_ms": 19779.464,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "a46a42d2b72be7812890ef98ec85556e"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "blind-014",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 2,
+      "latency_ms": 23538.388,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "ce18b0b7b08a53920ccc2c33e77d07f3"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "blind-016",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 2,
+      "latency_ms": 12451.218,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "7a7005460780a7f9b96d5f25d6d21650"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "blind-017",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 2,
+      "latency_ms": 22214.221,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "d56463d3ce937926e492c3035c4ea183"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "blind-018",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 2,
+      "latency_ms": 19117.237,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "af944c00b4bde42fe64d8deb5f89b3f3"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "blind-019",
+      "query_type": "cross_evidence",
+      "buckets": [
+        "Cross Evidence",
+        "DIRECT",
+        "Simple request",
+        "Single-hop",
+        "cross_evidence"
+      ],
+      "repetition": 2,
+      "latency_ms": 16652.469,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "d1c2cca3954fbf944d25b355b1a643be"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "blind-021",
+      "query_type": "cross_evidence",
+      "buckets": [
+        "Cross Evidence",
+        "DIRECT",
+        "Simple request",
+        "Single-hop",
+        "cross_evidence"
+      ],
+      "repetition": 2,
+      "latency_ms": 18208.496,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "19cadb2783969f52e3f21eab269cc384"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "blind-025",
+      "query_type": "cross_evidence",
+      "buckets": [
+        "Cross Evidence",
+        "DIRECT",
+        "Simple request",
+        "Single-hop",
+        "cross_evidence"
+      ],
+      "repetition": 2,
+      "latency_ms": 42626.412,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "9e4e52cad01c5974f491d77501aff136"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "blind-027",
+      "query_type": "unanswerable",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "unanswerable"
+      ],
+      "repetition": 2,
+      "latency_ms": 7123.364,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "6e062dfeddc1276f2e26cac706c909a5"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "blind-028",
+      "query_type": "unanswerable",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "unanswerable"
+      ],
+      "repetition": 2,
+      "latency_ms": 10352.655,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "d04b73316cea2ab1f675fab3772a8b1e"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "blind-029",
+      "query_type": "unanswerable",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "unanswerable"
+      ],
+      "repetition": 2,
+      "latency_ms": 12035.477,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "2643687211449a68106029cd4700b17b"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "blind-030",
+      "query_type": "policy_boundary",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "policy_boundary"
+      ],
+      "repetition": 2,
+      "latency_ms": 5193.146,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "44bd9eacfdacf108a9f85190ea8e8f0a"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "human-mh-001",
+      "query_type": "implicit_constraint_multi_hop",
+      "buckets": [
+        "Cross Evidence",
+        "DIRECT",
+        "Simple request",
+        "Single-hop",
+        "implicit_constraint_multi_hop"
+      ],
+      "repetition": 2,
+      "latency_ms": 21060.502,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "12d1cfb498b38d470825b33fdc5debde"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "human-mh-002",
+      "query_type": "implicit_constraint_multi_hop",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "implicit_constraint_multi_hop"
+      ],
+      "repetition": 2,
+      "latency_ms": 26654.944,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "4f947e69d6d59417192dc5329c9e2184"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-002",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 2,
+      "latency_ms": 17615.869,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "5217dfa362c39d645e58f7b9c81bc7fd"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-005",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 2,
+      "latency_ms": 18079.511,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "774bc50b0c7245dbbb968136d6b1ce5f"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-006",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 2,
+      "latency_ms": 25178.86,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "6a3118edd5cc6f6057d1bfaf31694320"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-017",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 2,
+      "latency_ms": 29995.221,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "c97ffd7e2e3e08b80f978d308b14208c"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-020",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 2,
+      "latency_ms": 12870.675,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "7966e3a947657d4c8e17eb3259007c5a"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-021",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 2,
+      "latency_ms": 17786.143,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "91a2df9dbb1f8079ad56272a497ee3a0"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-022",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 2,
+      "latency_ms": 8188.351,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "ae9e6a6b9c694bd6b0310301bb1e0820"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-024",
+      "query_type": "cross_evidence",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "cross_evidence"
+      ],
+      "repetition": 2,
+      "latency_ms": 40847.423,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "fd7f9520adfe5b993786999354b9a0b0"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-026",
+      "query_type": "cross_evidence",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "cross_evidence"
+      ],
+      "repetition": 2,
+      "latency_ms": 37508.422,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "4b528619b03dc2e67c8ebe4cee85cf1b"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-027",
+      "query_type": "cross_evidence",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "cross_evidence"
+      ],
+      "repetition": 2,
+      "latency_ms": 73897.374,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "6eac91d2d5199863afae10b0104663a1"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-028",
+      "query_type": "cross_evidence",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "cross_evidence"
+      ],
+      "repetition": 2,
+      "latency_ms": 86729.578,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "c9ada9bff77bc27444ea4cd8b3ed7b28"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-029",
+      "query_type": "cross_evidence",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "cross_evidence"
+      ],
+      "repetition": 2,
+      "latency_ms": 21237.087,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "0c4e2fe371b8ec50a28e56e500ce9050"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-030",
+      "query_type": "cross_evidence",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "cross_evidence"
+      ],
+      "repetition": 2,
+      "latency_ms": 22654.493,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "89799e813f60f58074a56b4d87f2f0d5"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-031",
+      "query_type": "cross_evidence",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "cross_evidence"
+      ],
+      "repetition": 2,
+      "latency_ms": 28050.873,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "f23acbcb0862da404fc0bddd1a3d81c7"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-034",
+      "query_type": "cross_evidence",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "cross_evidence"
+      ],
+      "repetition": 2,
+      "latency_ms": 36948.819,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "e102b02477e9f485d35b56fefccff69b"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-035",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 2,
+      "latency_ms": 18108.133,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "4e9fd09f28117cc74c39cf3777c8424a"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-037",
+      "query_type": "cross_evidence",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "cross_evidence"
+      ],
+      "repetition": 2,
+      "latency_ms": 28991.015,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "eb781bf1591a3a251b3da4050df5e6ec"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-038",
+      "query_type": "cross_evidence",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "cross_evidence"
+      ],
+      "repetition": 2,
+      "latency_ms": 23653.069,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "ae3170bc1a56174ced4ff65735324370"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-040",
+      "query_type": "cross_evidence",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "cross_evidence"
+      ],
+      "repetition": 2,
+      "latency_ms": 29850.144,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "e13bef6c03dc78a0ba395b811cfd5466"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-041",
+      "query_type": "cross_evidence",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "cross_evidence"
+      ],
+      "repetition": 2,
+      "latency_ms": 30711.542,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "118f7f72ee5e23376a70a6c44aaaba61"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-043",
+      "query_type": "implicit_constraint",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "implicit_constraint"
+      ],
+      "repetition": 2,
+      "latency_ms": 50266.104,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "5e7eb11188c603a63848d8f424cf0663"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-046",
+      "query_type": "implicit_constraint",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "implicit_constraint"
+      ],
+      "repetition": 2,
+      "latency_ms": 25165.939,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "6d0e3f92cb52f94cf3a15864fea4536b"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-048",
+      "query_type": "implicit_constraint",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "implicit_constraint"
+      ],
+      "repetition": 2,
+      "latency_ms": 39491.057,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "20cf104aa6a43df4cd8bfdcd01315b75"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-049",
+      "query_type": "implicit_constraint",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DIRECT",
+        "Multi-hop",
+        "implicit_constraint"
+      ],
+      "repetition": 2,
+      "latency_ms": 28247.872,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "ef64cb46ab447f5ef1e09861d7e95775"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-051",
+      "query_type": "implicit_constraint",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "implicit_constraint"
+      ],
+      "repetition": 2,
+      "latency_ms": 26008.43,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "5e6950c512eff97f921b0f03c5d01d44"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-054",
+      "query_type": "unanswerable",
+      "buckets": [
+        "BYPASS",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "unanswerable"
+      ],
+      "repetition": 2,
+      "latency_ms": 10860.816,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "8c62ea68a67b996f77354cfcde7fc6c1"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-055",
+      "query_type": "unanswerable",
+      "buckets": [
+        "BYPASS",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "unanswerable"
+      ],
+      "repetition": 2,
+      "latency_ms": 13337.661,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "ab63ed9104598bb187e426f660bf5f2b"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-057",
+      "query_type": "unanswerable",
+      "buckets": [
+        "BYPASS",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "unanswerable"
+      ],
+      "repetition": 2,
+      "latency_ms": 4188.95,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "9eb49c782f4838114d73145b71385560"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-058",
+      "query_type": "unanswerable",
+      "buckets": [
+        "BYPASS",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "unanswerable"
+      ],
+      "repetition": 2,
+      "latency_ms": 15252.301,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "f4b69bdca4e59f82f672c50fee54be69"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-r002",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 2,
+      "latency_ms": 13705.023,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "305a6059eeec74b4eb268f005155461a"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-r006",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 2,
+      "latency_ms": 28754.921,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "b0717c58a2838bf87dbdc740e2cf1bd3"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-r007",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 2,
+      "latency_ms": 16441.807,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "2fa246f59d37a298b0c35aeda0301eb4"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-r008",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 2,
+      "latency_ms": 20634.367,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "a1cdaf6262753785959478cbebfef042"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-r010",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 2,
+      "latency_ms": 15986.346,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "9fe967cdb90e17939818aaa65b9b2c5f"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-r015",
+      "query_type": "unanswerable",
+      "buckets": [
+        "BYPASS",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "unanswerable"
+      ],
+      "repetition": 2,
+      "latency_ms": 15328.29,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "a5a6333abecf7d0629e4bdcecbc062e6"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-r016",
+      "query_type": "unanswerable",
+      "buckets": [
+        "BYPASS",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "unanswerable"
+      ],
+      "repetition": 2,
+      "latency_ms": 23801.363,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "24ca3b0155dde9fab8fffe9642e0cc61"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-r017",
+      "query_type": "unanswerable",
+      "buckets": [
+        "BYPASS",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "unanswerable"
+      ],
+      "repetition": 2,
+      "latency_ms": 15107.069,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "d74e17e471142746636db1c658603fca"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-045",
+      "query_type": "implicit_constraint",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "implicit_constraint"
+      ],
+      "repetition": 2,
+      "latency_ms": 20583.111,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "53f4db6346aea7cc44b735aeb7b7385f"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-060",
+      "query_type": "policy_boundary",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DIRECT",
+        "Multi-hop",
+        "policy_boundary"
+      ],
+      "repetition": 2,
+      "latency_ms": 22011.628,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "2792597d7e2c167175e68fe089bb2b5e"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-044",
+      "query_type": "implicit_constraint",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "implicit_constraint"
+      ],
+      "repetition": 2,
+      "latency_ms": 51439.502,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "4469505c15934c23ae80d22a01a5375c"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-047",
+      "query_type": "implicit_constraint",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "implicit_constraint"
+      ],
+      "repetition": 2,
+      "latency_ms": 40884.482,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "cd61eaa24780c069ba5642c4787c003c"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-r009",
+      "query_type": "single_evidence",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DIRECT",
+        "Multi-hop",
+        "single_evidence"
+      ],
+      "repetition": 2,
+      "latency_ms": 29742.407,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "2976b63acf68c03880a25f73847ce29d"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-r011",
+      "query_type": "cross_evidence",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "cross_evidence"
+      ],
+      "repetition": 2,
+      "latency_ms": 30724.876,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "c72a3e730bc541a7630b251e60f4c635"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-r012",
+      "query_type": "cross_evidence",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "cross_evidence"
+      ],
+      "repetition": 2,
+      "latency_ms": 79529.685,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "4fde757b50a92c0357a70eec92c3e9e5"
+    },
+    {
+      "run_id": "phase25-67x2-direct-20261008-r2",
+      "case_id": "v4-r014",
+      "query_type": "implicit_constraint",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "implicit_constraint"
+      ],
+      "repetition": 2,
+      "latency_ms": 20852.546,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "0a32821c2b3e925e1da7b2b103a98cab"
+    }
+  ]
+}

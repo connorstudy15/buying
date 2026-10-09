@@ -1,0 +1,5 @@
+{
+  "purpose": "targeted diagnostics, no relevance gold; not frozen retrieval quality validation",
+  "calibration": ["p25v3-direct-01", "p25v3-knowledge-01", "p25v3-product-01", "p25v3-product-03", "p25v3-search-01", "p25v3-search-03", "p25v3-search-05", "p25v3-context-01"],
+  "validation": ["p25v3-direct-02", "p25v3-knowledge-02", "p25v3-product-02", "p25v3-search-02", "p25v3-search-04", "p25v3-search-06", "continuation-context-02", "continuation-insufficient-01"]
+}

@@ -136,6 +136,8 @@ sub_agents:
            买家明确提出“不要塑料”、塑料过敏或禁用尼龙/聚酯时，必须传
            excluded_material_tags=["合成聚合物"]；再生尼龙仍是合成聚合物，不能标为无塑料。
         3. 调用 product_search_tool 拉取候选；候选不足 3 条时改写扩展 query 再召回一次。
+           每次调用都传稳定 information_need_id：同一需求的改写必须沿用同一个 ID，独立需求使用
+           不同 ID（如 need_price / need_capacity / need_delivery），以便区分合理补检索与重复调用。
         4. 涉及跨境到手价/运费/关税：传 ship_to 后直接读商品卡内联的 landed_price，禁止自行估算；
            知识库未覆盖的时效政策问题（若 web_search_tool 可用）联网查证后引用来源。
            category_insight_tool 返回的政策片段若 policy_fact_status 不是 fact_eligible，

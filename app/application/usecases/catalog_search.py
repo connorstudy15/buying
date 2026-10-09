@@ -37,6 +37,8 @@ from app.domain.catalog.product_search_spec import ProductSearchSpec
 from app.domain.shipping.tariff_schedule import TariffSchedule
 from app.application.usecases.product_media import product_media
 from app.infrastructure.retrieval.bm25 import bm25_rank, reciprocal_rank_fusion
+from app.infrastructure.resource_governance.models import ContextScope
+from app.infrastructure.resource_governance.operation import resource_operation
 
 logger = logging.getLogger(__name__)
 
@@ -371,7 +373,11 @@ class CatalogSearchUseCase:
     # ---- 一阶段：向量召回 ----
 
     async def _vector_recall(self, spec: ProductSearchSpec, adaptive: bool = False) -> list[tuple[float, Product]]:
-        embedding = await self._embedder.embed(spec.normalized_query)
+        with resource_operation(
+            "embedding.product_query", component="catalog_search",
+            context_scope=ContextScope.PRODUCT,
+        ):
+            embedding = await self._embedder.embed(spec.normalized_query)
         top_n = max(32, self._recall_top_n, spec.top_k * 4) if adaptive else self._recall_top_n
         while True:
             vector_hits = await self._vector_index.search(embedding, top_n=top_n)
@@ -392,7 +398,11 @@ class CatalogSearchUseCase:
         if self._reranker is None:
             raise RuntimeError("Reranker 未配置")
         documents = [product.searchable_text() for _, product in scored]
-        rerank_scores = await self._reranker.rerank(spec.normalized_query, documents)
+        with resource_operation(
+            "reranker.product", component="catalog_search",
+            context_scope=ContextScope.PRODUCT,
+        ):
+            rerank_scores = await self._reranker.rerank(spec.normalized_query, documents)
         import math
         if len(rerank_scores) != len(scored) or not all(math.isfinite(float(score)) for score in rerank_scores):
             raise ValueError("重排分数必须等长且有限")

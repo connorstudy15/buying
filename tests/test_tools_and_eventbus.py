@@ -54,7 +54,10 @@ class TestToolsDirectInvoke:
             ShoppingContextSnapshot(shopping_session_id="s1", buyer_id="b1", locale="zh-CN", currency="CNY"),
         )
         try:
-            response = await tool(normalized_query="旅行三件套 抗造")
+            response = await tool(
+                normalized_query="旅行三件套 抗造",
+                information_need_id="need_durability",
+            )
         finally:
             ShoppingContext.reset(token)
 
@@ -62,6 +65,8 @@ class TestToolsDirectInvoke:
         assert payload["hits"][0]["product_id"] == "P1001"
         # tool.invoke + tool.result 两条事件
         assert queue.qsize() == 2
+        invoke = await queue.get()
+        assert invoke.payload["args"]["information_need_id"] == "need_durability"
 
     async def test_product_search_tool_accepts_numeric_string(self):
         """回归：模型（如 qwen3-max）会把数字参数传成字符串，工具必须接住并强转，

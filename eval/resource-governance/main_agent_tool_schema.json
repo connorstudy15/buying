@@ -1,0 +1,628 @@
+[
+  {
+    "type": "function",
+    "function": {
+      "name": "product_search_tool",
+      "description": "检索跨境商品库（embedding+rerank 二阶段召回），返回 Top-K 商品卡 JSON。\n传入 ship_to 时商品卡自动内联 landed_price 到手价明细（小计+运费+关税，统一折算 target_currency），\n无需另行计算价格。",
+      "parameters": {
+        "properties": {
+          "normalized_query": {
+            "description": "标准化检索词，保留品类词与关键属性词（如\"旅行三件套 抗造 轻便 无塑料\"）。",
+            "type": "string"
+          },
+          "category": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "品类槽位，可选，如\"旅行装备\"、\"数码配件\"。"
+          },
+          "ship_to": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "收货国家二位码，可选，如 \"CN\"、\"US\"；传入后过滤不可送达商品并内联到手价。"
+          },
+          "top_k": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "default": 5,
+            "description": "返回候选数量，默认 5。"
+          },
+          "price_max_major": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "价格上限（target_currency 主单位），买家有预算硬约束时必传，由检索链路结构化过滤。"
+          },
+          "target_currency": {
+            "default": "CNY",
+            "description": "价格口径币种，默认 \"CNY\"。",
+            "type": "string"
+          },
+          "excluded_material_tags": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "材质黑名单，如买家明确不要塑料时传 [\"合成聚合物\"]。"
+          },
+          "required_material_tags": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "材质白名单，如必须是金属时传 [\"金属\"]。"
+          }
+        },
+        "required": [
+          "normalized_query"
+        ],
+        "type": "object"
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "category_insight_tool",
+      "description": "查询品类洞察知识库：热卖款型、关键属性判断口径、价格区间、避坑点、跨境通则。\n适用于\"这个品类怎么挑\"\"现在流行什么\"\"多少钱算合理\"\"有什么坑\"这类选购常识问题；\n需要具体商品清单与价格时用 product_search_tool。",
+      "parameters": {
+        "properties": {
+          "question": {
+            "description": "自然语言问题，建议带上品类词，如\"旅行装备怎么挑材质\"、\"美国免税额度多少\"。",
+            "type": "string"
+          },
+          "top_k": {
+            "default": 3,
+            "description": "返回知识片段数量，默认 3。",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "question"
+        ],
+        "type": "object"
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "conversation_fact_lookup",
+      "description": "回查本会话历史，不代表当前库存/报价。",
+      "parameters": {
+        "properties": {
+          "result_ref": {
+            "default": "",
+            "description": "ctx_ 证据引用；优先于批次序号。",
+            "type": "string"
+          },
+          "query": {
+            "default": "",
+            "description": "原文关键词；无引用时搜索历史。",
+            "type": "string"
+          },
+          "position": {
+            "default": 0,
+            "description": "展示批次中商品序号，从1开始；0不筛选。",
+            "type": "integer"
+          },
+          "batch": {
+            "default": 0,
+            "description": "原始展示批次，从1开始；0表示最新。",
+            "type": "integer"
+          },
+          "product_id": {
+            "default": "",
+            "description": "精确商品ID，可空。",
+            "type": "string"
+          },
+          "sku_id": {
+            "default": "",
+            "description": "精确规格ID，可空。",
+            "type": "string"
+          },
+          "fields": {
+            "default": "all",
+            "description": "all/identity/specs/price/stock 字段组，也接受 skus 或 price_major,currency 等字段列表。",
+            "type": "string"
+          },
+          "offset": {
+            "default": 0,
+            "description": "商品分页偏移，从0开始。",
+            "type": "integer"
+          },
+          "limit": {
+            "default": 5,
+            "description": "每页商品数量，1到5。",
+            "type": "integer"
+          },
+          "field_offset": {
+            "default": 0,
+            "description": "巨大单商品 JSON 文本片段偏移，从0开始。",
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "create_order_tool",
+      "description": "准备下单意向的权威确认卡，返回 confirmation_required，不创建订单或扣库存。\n即使买家在对话中说“同意”，也必须等待其点击页面确认卡；模型不能代为确认。\n金额仅含所选商品，不含运费和税费，不代表付款。买家身份由系统会话上下文注入。",
+      "parameters": {
+        "properties": {
+          "items": {
+            "description": "订单行列表，每项形如 {\"product_id\": \"P1001\", \"sku_id\": \"P1001-S1\", \"quantity\": 1}。",
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "shipping_address": {
+            "additionalProperties": true,
+            "description": "收货地址，形如 {\"recipient_name\": \"...\", \"country\": \"CN\", \"state\": \"...\",\n\"city\": \"...\", \"address_line\": \"...\", \"postal_code\": \"...\", \"phone\": \"...\"}。",
+            "type": "object"
+          }
+        },
+        "required": [
+          "items",
+          "shipping_address"
+        ],
+        "type": "object"
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "query_order_tool",
+      "description": "查询当前买家的订单详情；订单号本身不构成读取权限。",
+      "parameters": {
+        "properties": {
+          "order_id": {
+            "description": "订单号，如 \"GBX-000001\"。",
+            "type": "string"
+          }
+        },
+        "required": [
+          "order_id"
+        ],
+        "type": "object"
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "cancel_order_tool",
+      "description": "准备当前买家的订单取消确认卡，不立即取消或回补库存。\n用户必须点击页面确认卡才能执行。自然语言同意不能代替该用户动作。",
+      "parameters": {
+        "properties": {
+          "order_id": {
+            "description": "订单号，如 \"GBX-000001\"。",
+            "type": "string"
+          },
+          "reason": {
+            "description": "取消原因，必填。",
+            "type": "string"
+          }
+        },
+        "required": [
+          "order_id",
+          "reason"
+        ],
+        "type": "object"
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "TaskCreate",
+      "description": "Use this tool to create a structured task list for your current session. This helps you track progress, organize complex tasks, and demonstrate thoroughness to the user.\nIt also helps the user understand the progress of the task and overall progress of their requests.\n\n## When to Use This Tool\nUse this tool proactively in these scenarios:\n\n- Complex multi-step tasks - When a task requires 3 or more distinct steps or actions\n- Non-trivial and complex tasks - Tasks that require careful planning or multiple operations\n- Plan mode - When using plan mode, create a task list to track the work\n- User explicitly requests todo list - When the user directly asks you to use the todo list\n- User provides multiple tasks - When users provide a list of things to be done (numbered or comma-separated)\n- After receiving new instructions - Immediately capture user requirements as tasks\n- When you start working on a task - Mark it as in_progress BEFORE beginning work\n- After completing a task - Mark it as completed and add any new follow-up tasks discovered during implementation\n\n## When NOT to Use This Tool\n\nSkip using this tool when:\n- There is only **one single, straightforward** task\n- The task is trivial and tracking it provides no organizational benefit\n- The task can be completed in less than 3 trivial steps\n- The task is purely conversational or informational\n\nNOTE that you should **NOT** use this tool if there is only one trivial task to do. In this case you are better off just doing the task directly.\n\n## Task Fields\n\n- **subject**: A brief, actionable title in imperative form (e.g., \"Fix authentication bug in login flow\")\n- **description**: What needs to be done\n\nAll tasks are created with status `pending`.\n\n## Tips\n\n- Create tasks with clear, specific subjects that describe the outcome\n- After creating tasks, use TaskUpdate to set up dependencies (blocks/blockedBy) if needed\n- Check TaskList first to avoid creating duplicate tasks",
+      "parameters": {
+        "description": "The params of the creating task tool.",
+        "properties": {
+          "subject": {
+            "description": "A brief title for the task",
+            "type": "string"
+          },
+          "description": {
+            "description": "What needs to be done",
+            "type": "string"
+          },
+          "metadata": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Arbitrary metadata to attach to the task"
+          }
+        },
+        "required": [
+          "subject",
+          "description"
+        ],
+        "type": "object"
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "TaskUpdate",
+      "description": "Use this tool to update a task in the task list.\n\n## When to Use This Tool\n\n**Mark tasks as resolved:**\n- When you have completed the work described in a task\n- When a task is no longer needed or has been superseded\n- IMPORTANT: Always mark your assigned tasks as resolved when you finish them\n- After resolving, call TaskList to find your next task\n\n- ONLY mark a task as completed when you have FULLY accomplished it\n- If you encounter errors, blockers, or cannot finish, keep the task as in_progress\n- When blocked, create a new task describing what needs to be resolved\n- Never mark a task as completed if:\n  - Tests are failing\n  - Implementation is partial\n  - You encountered unresolved errors\n  - You couldn't find necessary files or dependencies\n\n**Delete tasks:**\n- When a task is no longer relevant or was created in error\n- Setting status to `deleted` permanently removes the task\n\n**Update task details:**\n- When requirements change or become clearer\n- When establishing dependencies between tasks\n\n## Fields You Can Update\n\n- **status**: The task status (see Status Workflow below)\n- **subject**: Change the task title (imperative form, e.g., \"Run tests\")\n- **description**: Change the task description\n- **owner**: Change the task owner (agent name)\n- **metadata**: Merge metadata keys into the task (set a key to null to delete it)\n- **add_blocks**: Mark tasks that cannot start until this one completes\n- **add_blocked_by**: Mark tasks that must complete before this one can start\n\n## Status Workflow\n\nStatus progresses: `pending` → `in_progress` → `completed`\n\nUse `deleted` to permanently remove a task.\n\n## Staleness\n\nMake sure to read a task's latest state using `TaskGet` before updating it.\n\n## Examples\n\nMark task as in progress when starting work:\n```json\n{\"task_id\": \"1\", \"status\": \"in_progress\"}\n```\n\nMark task as completed after finishing work:\n```json\n{\"task_id\": \"1\", \"status\": \"completed\"}\n```\n\nDelete a task:\n```json\n{\"task_id\": \"1\", \"status\": \"deleted\"}\n```\n\nClaim a task by setting owner:\n```json\n{\"task_id\": \"1\", \"owner\": \"my-name\"}\n```\n\nSet up task dependencies:\n```json\n{\"task_id\": \"2\", \"add_blocked_by\": [\"1\"]}\n```",
+      "parameters": {
+        "description": "The params of the update task.",
+        "properties": {
+          "task_id": {
+            "description": "The task id.",
+            "type": "string"
+          },
+          "subject": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "New subject for the task"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "New description for the task"
+          },
+          "add_blocks": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Task IDs that this task blocks"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "enum": [
+                  "pending",
+                  "in_progress",
+                  "completed",
+                  "deleted"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "New status for the task"
+          },
+          "add_blocked_by": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Task IDs that block this task"
+          },
+          "owner": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "New owner for the task"
+          },
+          "metadata": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Metadata keys to merge into the task. Set a key to null to delete it."
+          }
+        },
+        "required": [
+          "task_id"
+        ],
+        "type": "object"
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "TaskList",
+      "description": "Use this tool to list all tasks in the task list.\n\n## When to Use This Tool\n- To see what tasks are available to work on (status: 'pending', no owner, not blocked)\n- To check overall progress on the project\n- To find tasks that are blocked and need dependencies resolved\n- After completing a task, to check for newly unblocked work or claim the next available task\n- **Prefer working on tasks in ID order** (lowest ID first) when multiple tasks are available, as earlier tasks often set up context for later ones\n\n## Output\n\nReturns a summary of each task:\n- **id**: Task identifier (use with TaskGet, TaskUpdate)\n- **subject**: Brief description of the task\n- **status**: 'pending', 'in_progress', or 'completed'\n- **owner**: Agent ID if assigned, empty if available\n- **blockedBy**: List of open task IDs that must be resolved first (tasks with blockedBy cannot be claimed until dependencies resolve)\n\nUse TaskGet with a specific task ID to view full details including description and comments.",
+      "parameters": {
+        "description": "The params of the list task params.",
+        "properties": {},
+        "type": "object"
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "TaskGet",
+      "description": "Use this tool to retrieve a task by its ID from the task list.\n\n## When to Use This Tool\n\n- When you need the full description and context before starting work on a task\n- To understand task dependencies (what it blocks, what blocks it)\n- After being assigned a task, to get complete requirements\n\n## Output\n\nReturns full task details:\n- **subject**: Task title\n- **description**: Detailed requirements and context\n- **status**: 'pending', 'in_progress', or 'completed'\n- **blocks**: Tasks waiting on this one to complete\n- **blockedBy**: Tasks that must complete before this one can start\n\n## Tips\n\n- After fetching a task, verify its blockedBy list is empty before beginning work.\n- Use TaskList to see all tasks in summary form.",
+      "parameters": {
+        "description": "The params of the get task.",
+        "properties": {
+          "task_id": {
+            "description": "The ID of the task to retrieve",
+            "type": "string"
+          }
+        },
+        "required": [
+          "task_id"
+        ],
+        "type": "object"
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "task_dispatch",
+      "description": "调度专家子代理执行子任务，返回子代理的结论（JSON 字符串）。\n仅当子任务满足\"可并行 / 需要上下文隔离 / 内部调用链较深\"任一条件时使用；\n简单的单步工具调用应自己直接调业务工具完成。\n多个彼此独立的子任务请在同一轮一次性发起多个本工具调用，系统会并发执行。",
+      "parameters": {
+        "properties": {
+          "subagent_type": {
+            "description": "子代理类型：\"search_agent\"（跨境商品检索专家）或 \"trade_agent\"（下单交易专家）。",
+            "enum": [
+              "search_agent",
+              "trade_agent"
+            ],
+            "type": "string"
+          },
+          "demands": {
+            "description": "自包含的自然语言指令，必须包含子代理完成任务所需的全部上下文\n（买家偏好、预算、product_id/sku_id、收货地址等），子代理看不到主对话历史。",
+            "type": "string"
+          }
+        },
+        "required": [
+          "subagent_type",
+          "demands"
+        ],
+        "type": "object"
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "remember_preference_tool",
+      "description": "记住买家的一条长期偏好（跨会话生效）。仅在买家表达出稳定偏好时调用，\n一次性的临时要求（如\"这次要军绿色\"）不要记。",
+      "parameters": {
+        "properties": {
+          "kind": {
+            "description": "\"like\"（正向偏好，如\"喜欢小众设计\"）或 \"dislike\"（忌口/黑名单，如\"不要塑料材质\"）。",
+            "enum": [
+              "like",
+              "dislike"
+            ],
+            "type": "string"
+          },
+          "statement": {
+            "description": "一句话偏好陈述，10 字以内最佳，如\"不要塑料材质\"。",
+            "type": "string"
+          }
+        },
+        "required": [
+          "kind",
+          "statement"
+        ],
+        "type": "object"
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "update_preference_tool",
+      "description": "买家明确要求长期修改偏好时，原子替换旧偏好。本轮临时例外不要保存。",
+      "parameters": {
+        "properties": {
+          "previous_statement": {
+            "description": "当前 buyer-preferences 中旧偏好的完整原文。",
+            "type": "string"
+          },
+          "kind": {
+            "description": "新偏好类别，like 为喜欢，dislike 为避免。",
+            "enum": [
+              "like",
+              "dislike"
+            ],
+            "type": "string"
+          },
+          "statement": {
+            "description": "新偏好原文，最多 500 字符。",
+            "type": "string"
+          },
+          "memory_id": {
+            "description": "当前记忆的稳定 ID，必须从最新偏好提示中读取。",
+            "type": "string"
+          },
+          "expected_version": {
+            "description": "当前记忆版本，禁止猜测。",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "previous_statement",
+          "kind",
+          "statement",
+          "memory_id",
+          "expected_version"
+        ],
+        "type": "object"
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "forget_preference_tool",
+      "description": "删除买家的一条长期偏好（撤回后不再影响后续推荐）。\n仅在买家明确表示某条历史偏好不再适用时调用，例如\"以后不用避开塑料了\"。\n本轮的一次性例外（如\"这次可以接受塑料\"）不要调用，那属于临时要求。",
+      "parameters": {
+        "properties": {
+          "statement": {
+            "description": "要删除的偏好原文，必须与 <buyer-preferences> 里那一行的文字**完全一致**，\n如\"不要塑料材质\"。写错不会误删，工具会把现存偏好列出来供你重试。",
+            "type": "string"
+          },
+          "memory_id": {
+            "description": "最新记忆提示中的稳定 ID。",
+            "type": "string"
+          },
+          "expected_version": {
+            "description": "最新记忆版本，不允许猜测。",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "statement",
+          "memory_id",
+          "expected_version"
+        ],
+        "type": "object"
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "load_agent_skill_tool",
+      "description": "按明确版本读取已审核发布或当前买家个人 Skill 正文，不注册工具或改变权限。",
+      "parameters": {
+        "properties": {
+          "skill_id": {
+            "description": "当前 Skill 元数据里的 id。",
+            "type": "string"
+          },
+          "version": {
+            "description": "当前 Skill 元数据里的明确不可变版本。",
+            "type": "string"
+          }
+        },
+        "required": [
+          "skill_id",
+          "version"
+        ],
+        "type": "object"
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "lookup_strategy_memory_tool",
+      "description": "检索已审核、未过期且未撤销的选购策略；只是建议，不能替代买家硬约束。",
+      "parameters": {
+        "properties": {
+          "query": {
+            "description": "需要一般经验参考的选购问题，最多 2000 字符。",
+            "type": "string"
+          },
+          "scope": {
+            "default": "shopping",
+            "description": "shopping 或明确的 shopping:品类标识，如 shopping:backpack。",
+            "type": "string"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "type": "object"
+      }
+    }
+  }
+]

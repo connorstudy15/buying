@@ -1,0 +1,328 @@
+{
+  "schema_version": "deepseek-v41-golden-parity-v1",
+  "primary_enabled": false,
+  "content_persisted": false,
+  "tokenizer_status": {
+    "asset_status": "verified",
+    "asset_path": "D:\\globex-agent-main\\assets\\tokenizers\\deepseek-v41\\tokenizer.json",
+    "asset_sha256": "81f64d1248a68ce3663e07ab3ee48b851e5df0e32d27cb98e4c9a268151e8d99",
+    "expected_sha256": "81f64d1248a68ce3663e07ab3ee48b851e5df0e32d27cb98e4c9a268151e8d99",
+    "recipe_available": false,
+    "platform": "Windows",
+    "high_confidence_ready": false,
+    "primary_enabled": false
+  },
+  "summary": {
+    "n": 0,
+    "mae": null,
+    "mape": null,
+    "delta_ratio_p50": null,
+    "delta_ratio_p80": null,
+    "delta_ratio_p95": null,
+    "underprediction_rate": null,
+    "max_underprediction": null
+  },
+  "gate": {
+    "passed": false,
+    "conditions": {
+      "all_14_cases_comparable": false,
+      "official_prompt_encoder_available": false,
+      "mape_lte_5pct": false,
+      "p95_delta_ratio_lte_10pct": false,
+      "underprediction_rate_lt_10pct": false
+    }
+  },
+  "cases": [
+    {
+      "case_id": "single_zh",
+      "traits": {
+        "provider": "aliyun_bailian",
+        "protocol": "openai_chat_completions",
+        "prompt_encoder_version": "deepseek-v41-recipe@0.1.1",
+        "prompt_version": "runtime",
+        "thinking_mode": "unspecified",
+        "reasoning_effort": "unspecified",
+        "tooling_mode": "none"
+      },
+      "local_tokens": null,
+      "fallback_tokens": 52,
+      "provider_tokens": 37,
+      "absolute_delta": null,
+      "delta_ratio": null,
+      "underestimated": null,
+      "underprediction_shortfall": 0,
+      "error_type": null
+    },
+    {
+      "case_id": "single_en",
+      "traits": {
+        "provider": "aliyun_bailian",
+        "protocol": "openai_chat_completions",
+        "prompt_encoder_version": "deepseek-v41-recipe@0.1.1",
+        "prompt_version": "runtime",
+        "thinking_mode": "unspecified",
+        "reasoning_effort": "unspecified",
+        "tooling_mode": "none"
+      },
+      "local_tokens": null,
+      "fallback_tokens": 52,
+      "provider_tokens": 37,
+      "absolute_delta": null,
+      "delta_ratio": null,
+      "underestimated": null,
+      "underprediction_shortfall": 0,
+      "error_type": null
+    },
+    {
+      "case_id": "system_user",
+      "traits": {
+        "provider": "aliyun_bailian",
+        "protocol": "openai_chat_completions",
+        "prompt_encoder_version": "deepseek-v41-recipe@0.1.1",
+        "prompt_version": "runtime",
+        "thinking_mode": "unspecified",
+        "reasoning_effort": "unspecified",
+        "tooling_mode": "none"
+      },
+      "local_tokens": null,
+      "fallback_tokens": 61,
+      "provider_tokens": 37,
+      "absolute_delta": null,
+      "delta_ratio": null,
+      "underestimated": null,
+      "underprediction_shortfall": 0,
+      "error_type": null
+    },
+    {
+      "case_id": "multi_turn",
+      "traits": {
+        "provider": "aliyun_bailian",
+        "protocol": "openai_chat_completions",
+        "prompt_encoder_version": "deepseek-v41-recipe@0.1.1",
+        "prompt_version": "runtime",
+        "thinking_mode": "unspecified",
+        "reasoning_effort": "unspecified",
+        "tooling_mode": "none"
+      },
+      "local_tokens": null,
+      "fallback_tokens": 75,
+      "provider_tokens": 43,
+      "absolute_delta": null,
+      "delta_ratio": null,
+      "underestimated": null,
+      "underprediction_shortfall": 0,
+      "error_type": null
+    },
+    {
+      "case_id": "thinking_high",
+      "traits": {
+        "provider": "aliyun_bailian",
+        "protocol": "openai_chat_completions",
+        "prompt_encoder_version": "deepseek-v41-recipe@0.1.1",
+        "prompt_version": "runtime",
+        "thinking_mode": "enabled",
+        "reasoning_effort": "high",
+        "tooling_mode": "none"
+      },
+      "local_tokens": null,
+      "fallback_tokens": 64,
+      "provider_tokens": 34,
+      "absolute_delta": null,
+      "delta_ratio": null,
+      "underestimated": null,
+      "underprediction_shortfall": 0,
+      "error_type": null
+    },
+    {
+      "case_id": "thinking_disabled",
+      "traits": {
+        "provider": "aliyun_bailian",
+        "protocol": "openai_chat_completions",
+        "prompt_encoder_version": "deepseek-v41-recipe@0.1.1",
+        "prompt_version": "runtime",
+        "thinking_mode": "disabled",
+        "reasoning_effort": "unspecified",
+        "tooling_mode": "none"
+      },
+      "local_tokens": null,
+      "fallback_tokens": 52,
+      "provider_tokens": 6,
+      "absolute_delta": null,
+      "delta_ratio": null,
+      "underestimated": null,
+      "underprediction_shortfall": 0,
+      "error_type": null
+    },
+    {
+      "case_id": "reasoning_low",
+      "traits": {
+        "provider": "aliyun_bailian",
+        "protocol": "openai_chat_completions",
+        "prompt_encoder_version": "deepseek-v41-recipe@0.1.1",
+        "prompt_version": "runtime",
+        "thinking_mode": "enabled",
+        "reasoning_effort": "low",
+        "tooling_mode": "none"
+      },
+      "local_tokens": null,
+      "fallback_tokens": 60,
+      "provider_tokens": 32,
+      "absolute_delta": null,
+      "delta_ratio": null,
+      "underestimated": null,
+      "underprediction_shortfall": 0,
+      "error_type": null
+    },
+    {
+      "case_id": "tools_definition",
+      "traits": {
+        "provider": "aliyun_bailian",
+        "protocol": "openai_chat_completions",
+        "prompt_encoder_version": "deepseek-v41-recipe@0.1.1",
+        "prompt_version": "runtime",
+        "thinking_mode": "unspecified",
+        "reasoning_effort": "unspecified",
+        "tooling_mode": "auto"
+      },
+      "local_tokens": null,
+      "fallback_tokens": 116,
+      "provider_tokens": 288,
+      "absolute_delta": null,
+      "delta_ratio": null,
+      "underestimated": null,
+      "underprediction_shortfall": 0,
+      "error_type": null
+    },
+    {
+      "case_id": "assistant_tool_call",
+      "traits": {
+        "provider": "aliyun_bailian",
+        "protocol": "openai_chat_completions",
+        "prompt_encoder_version": "deepseek-v41-recipe@0.1.1",
+        "prompt_version": "runtime",
+        "thinking_mode": "unspecified",
+        "reasoning_effort": "unspecified",
+        "tooling_mode": "auto"
+      },
+      "local_tokens": null,
+      "fallback_tokens": 164,
+      "provider_tokens": 330,
+      "absolute_delta": null,
+      "delta_ratio": null,
+      "underestimated": null,
+      "underprediction_shortfall": 0,
+      "error_type": null
+    },
+    {
+      "case_id": "tool_result",
+      "traits": {
+        "provider": "aliyun_bailian",
+        "protocol": "openai_chat_completions",
+        "prompt_encoder_version": "deepseek-v41-recipe@0.1.1",
+        "prompt_version": "runtime",
+        "thinking_mode": "unspecified",
+        "reasoning_effort": "unspecified",
+        "tooling_mode": "auto"
+      },
+      "local_tokens": null,
+      "fallback_tokens": 187,
+      "provider_tokens": 345,
+      "absolute_delta": null,
+      "delta_ratio": null,
+      "underestimated": null,
+      "underprediction_shortfall": 0,
+      "error_type": null
+    },
+    {
+      "case_id": "multi_tool_results",
+      "traits": {
+        "provider": "aliyun_bailian",
+        "protocol": "openai_chat_completions",
+        "prompt_encoder_version": "deepseek-v41-recipe@0.1.1",
+        "prompt_version": "runtime",
+        "thinking_mode": "unspecified",
+        "reasoning_effort": "unspecified",
+        "tooling_mode": "auto"
+      },
+      "local_tokens": null,
+      "fallback_tokens": 313,
+      "provider_tokens": 439,
+      "absolute_delta": null,
+      "delta_ratio": null,
+      "underestimated": null,
+      "underprediction_shortfall": 0,
+      "error_type": null
+    },
+    {
+      "case_id": "main_agent_full_tools",
+      "traits": {
+        "provider": "aliyun_bailian",
+        "protocol": "openai_chat_completions",
+        "prompt_encoder_version": "deepseek-v41-recipe@0.1.1",
+        "prompt_version": "runtime",
+        "thinking_mode": "unspecified",
+        "reasoning_effort": "unspecified",
+        "tooling_mode": "auto"
+      },
+      "local_tokens": null,
+      "fallback_tokens": 6048,
+      "provider_tokens": 4824,
+      "absolute_delta": null,
+      "delta_ratio": null,
+      "underestimated": null,
+      "underprediction_shortfall": 0,
+      "error_type": null
+    },
+    {
+      "case_id": "long_context",
+      "traits": {
+        "provider": "aliyun_bailian",
+        "protocol": "openai_chat_completions",
+        "prompt_encoder_version": "deepseek-v41-recipe@0.1.1",
+        "prompt_version": "runtime",
+        "thinking_mode": "unspecified",
+        "reasoning_effort": "unspecified",
+        "tooling_mode": "none"
+      },
+      "local_tokens": null,
+      "fallback_tokens": 16062,
+      "provider_tokens": 10036,
+      "absolute_delta": null,
+      "delta_ratio": null,
+      "underestimated": null,
+      "underprediction_shortfall": 0,
+      "error_type": null
+    },
+    {
+      "case_id": "special_token_like_text",
+      "traits": {
+        "provider": "aliyun_bailian",
+        "protocol": "openai_chat_completions",
+        "prompt_encoder_version": "deepseek-v41-recipe@0.1.1",
+        "prompt_version": "runtime",
+        "thinking_mode": "unspecified",
+        "reasoning_effort": "unspecified",
+        "tooling_mode": "none"
+      },
+      "local_tokens": null,
+      "fallback_tokens": 67,
+      "provider_tokens": 49,
+      "absolute_delta": null,
+      "delta_ratio": null,
+      "underestimated": null,
+      "underprediction_shortfall": 0,
+      "error_type": null
+    }
+  ],
+  "fallback_summary": {
+    "n": 14,
+    "mae": 577.1428571428571,
+    "mape": 1.0496015216164885,
+    "delta_ratio_p50": 0.503030303030303,
+    "delta_ratio_p80": 0.875,
+    "delta_ratio_p95": 7.666666666666667,
+    "underprediction_rate": 0.2857142857142857,
+    "underprediction_p95": 172.0,
+    "max_underprediction": 172
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "shadow_only": true,
+  "repetitions": 1,
+  "observation_count": 3,
+  "observations": [
+    {
+      "run_id": "phase25-causal-smoke-20261009-r2",
+      "case_id": "blind-002",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 17299.378,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "417ee626a71c31e376017aa64dee1703"
+    },
+    {
+      "run_id": "phase25-causal-smoke-20261009-r2",
+      "case_id": "v4-026",
+      "query_type": "cross_evidence",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "cross_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 36973.271,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "991b095b46708666217417e177636414"
+    },
+    {
+      "run_id": "phase25-causal-smoke-20261009-r2",
+      "case_id": "v4-r012",
+      "query_type": "cross_evidence",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "cross_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 26834.177,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "0bb7d6bb5201386845b3e6a64713d5fc"
+    }
+  ]
+}

@@ -40,6 +40,7 @@ def build_category_insight_tool(
     fallback_knowledge_dir: Path | None = None,
     query_processor=None,
     rrf_k: int = 60,
+    per_need_reranker=None,
 ):
     async def category_insight_tool(question: str, top_k: int = 3) -> ToolChunk:
         """查询品类洞察知识库：热卖款型、关键属性判断口径、价格区间、避坑点、跨境通则。
@@ -64,6 +65,7 @@ def build_category_insight_tool(
             outcome = await search_knowledge_with_trace(
                 knowledge_base, question, top_k,
                 query_processor=query_processor, rrf_k=rrf_k,
+                per_need_reranker=per_need_reranker,
             )
             results = outcome.hits
         except Exception as err:  # noqa: BLE001 —— 知识库不可用时如实降级，不编造洞察

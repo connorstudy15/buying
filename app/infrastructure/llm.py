@@ -17,6 +17,7 @@ OpenAI 兼容网关）→ OpenAIChatModel(credential=..., model=...)。
 from __future__ import annotations
 
 import asyncio
+import json
 import logging
 import sys
 import time
@@ -37,6 +38,10 @@ from app.infrastructure.settings import Settings
 from app.infrastructure.throttle import GatewayThrottle
 from app.infrastructure.transient import is_transient_error
 from app.infrastructure.operational_metrics import observe_model, observe_model_started
+from app.infrastructure.resource_governance.operation import current_operation
+from app.infrastructure.resource_governance.estimator import TokenEstimator
+from opentelemetry import trace
+from opentelemetry.trace import Status, StatusCode
 
 logger = logging.getLogger(__name__)
 
@@ -57,12 +62,36 @@ class BudgetCall:
         self.started_at = None
         self.first_text_at = None
         self.last_usage_response = None
+        self.operation_context = current_operation()
+        self.attempt = 0
+        self._attempt_span = None
 
-    def mark_started(self):
+    def mark_started(self, *, attempt: int = 1, model_name: str = "", retry: bool = False,
+                     fallback: bool = False):
         observe_model_started()
         self.started_at = time.monotonic()
         self.first_text_at = None
         self.last_usage_response = None
+        self.attempt = attempt
+        operation = self.operation_context
+        self._attempt_span = trace.get_tracer(__name__).start_span(
+            "resource.model_attempt",
+            attributes={
+                "langfuse.observation.type": "span",
+                "globex.trace.stage": "resource_operation",
+                "globex.resource.logical_call_id": operation.logical_call_id if operation else "unclassified",
+                "globex.resource.operation": operation.operation if operation else "unclassified.model",
+                "globex.resource.component": operation.component if operation else "model_client",
+                "globex.resource.context_scope": operation.context_scope.value if operation else "system",
+                "globex.resource.attempt": attempt,
+                "globex.resource.retry": retry,
+                "globex.resource.fallback": fallback,
+                "globex.resource.shadow_only": True,
+                "gen_ai.request.model": model_name or "unknown",
+            },
+            record_exception=False,
+            set_status_on_exception=False,
+        )
 
     def observe_chunk(self, response):
         if _usage_tokens(response) is not None:
@@ -99,6 +128,21 @@ class BudgetCall:
             record_context_usage(input_tokens if input_tokens is not None else _safe_field(usage, "prompt_tokens"),
                                  output_tokens if output_tokens is not None else _safe_field(usage, "completion_tokens"),
                                  (time.monotonic()-self.started_at)*1000)
+            if self._attempt_span is not None:
+                operation = self.operation_context
+                actual_input = input_tokens if input_tokens is not None else _safe_field(usage, "prompt_tokens")
+                actual_output = output_tokens if output_tokens is not None else _safe_field(usage, "completion_tokens")
+                self._attempt_span.set_attributes({
+                    "globex.resource.operation": operation.operation if operation else "unclassified.model",
+                    "globex.resource.actual_input_tokens": int(actual_input or 0),
+                    "globex.resource.actual_output_tokens": int(actual_output or 0),
+                    "globex.resource.usage_source": "actual" if actual_input is not None else "estimated_missing_usage",
+                    "globex.resource.latency_ms": round((time.monotonic()-self.started_at)*1000, 3),
+                })
+                if response is None:
+                    self._attempt_span.set_status(Status(StatusCode.ERROR))
+                self._attempt_span.end()
+                self._attempt_span = None
             self.started_at = None
 
 
@@ -130,6 +174,9 @@ class ThrottledChatModel(StreamClosingOpenAIChatModel):
         max_transient_retries: int = 2,
         retry_base_seconds: float = 6.0,
         bus: Optional[TradeEventBus] = None,
+        resource_estimator: TokenEstimator | None = None,
+        prompt_version: str = "runtime",
+        provider_name: str = "aliyun_bailian",
         **kwargs: Any,
     ) -> None:
         super().__init__(**kwargs)
@@ -138,6 +185,56 @@ class ThrottledChatModel(StreamClosingOpenAIChatModel):
         self._max_transient_retries = max_transient_retries
         self._retry_base_seconds = retry_base_seconds
         self._bus = bus
+        self._resource_estimator = resource_estimator
+        self._resource_prompt_version = prompt_version
+        self._resource_provider_name = provider_name
+        if resource_estimator is not None:
+            hooks = self.client._client.event_hooks.setdefault("request", [])
+            hooks.append(self._observe_final_request_payload)
+            if fallback is not None:
+                fallback_hooks = fallback.client._client.event_hooks.setdefault("request", [])
+                fallback_hooks.append(self._observe_final_request_payload)
+
+    async def _observe_final_request_payload(self, request: Any) -> None:
+        """Count the exact OpenAI-compatible JSON body immediately pre-send.
+
+        This hook never persists messages, tools, headers, or credentials. It
+        records only numeric estimates and bounded enum-like request traits.
+        Failure is observability-only and must never interrupt a model call.
+        """
+        operation = current_operation()
+        if operation is None or self._resource_estimator is None:
+            return
+        try:
+            if request.method != "POST" or not request.url.path.rstrip("/").endswith("chat/completions"):
+                return
+            body = await request.aread()
+            payload = json.loads(body)
+            if not isinstance(payload, dict):
+                return
+            comparison = await self._resource_estimator.estimate_openai_payload_comparison(
+                payload, operation=operation.operation,
+                prompt_version=self._resource_prompt_version,
+                provider=self._resource_provider_name,
+            )
+            operation.pre_call_comparison = comparison
+            operation.request_traits = comparison.request_traits
+            call = _budget_call.get()
+            span = call._attempt_span if call is not None else None
+            if span is not None:
+                span.set_attributes({
+                    "globex.resource.estimator_input_stage": comparison.input_stage,
+                    "globex.resource.old_estimated_prompt_tokens": comparison.legacy.raw_tokens,
+                    "globex.resource.deepseek_estimated_prompt_tokens": comparison.deepseek_v41.raw_tokens,
+                    "globex.resource.calibration_samples": comparison.deepseek_v41.calibration_samples,
+                    "globex.resource.calibration_confidence": comparison.deepseek_v41.calibration_confidence,
+                    "globex.resource.calibration_profile_id": comparison.deepseek_v41.calibration_profile_id,
+                    "globex.resource.thinking_mode": comparison.request_traits["thinking_mode"],
+                    "globex.resource.reasoning_effort": comparison.request_traits["reasoning_effort"],
+                    "globex.resource.tooling_mode": comparison.request_traits["tooling_mode"],
+                })
+        except Exception as error:  # noqa: BLE001
+            logger.debug("final payload token observation skipped: %s", type(error).__name__)
 
     async def generate_structured_output(self, messages, structured_model, **kwargs):
         # SDK 2.0.6 的结构化生成直接调用 _call_api，不经过 __call__。
@@ -176,7 +273,7 @@ class ThrottledChatModel(StreamClosingOpenAIChatModel):
         _structured_finalizers.get().append(finalizer)
         token = current_stream_finalizer.set(finalizer)
         try:
-            call.mark_started()
+            call.mark_started(attempt=1, model_name=str(model_name))
             result = await super()._call_api(model_name, messages, tools, tool_choice, **kwargs)
             if isinstance(result, AsyncIterable):
                 finalizer.add(result)
@@ -326,7 +423,11 @@ class ThrottledChatModel(StreamClosingOpenAIChatModel):
                     kwargs["max_completion_tokens"] = budget_call.maximum_output
             try:
                 if budget_call is not None:
-                    budget_call.mark_started()
+                    budget_call.mark_started(
+                        attempt=attempt + 1,
+                        model_name=str(self.model),
+                        retry=attempt > 0,
+                    )
                 return await self._invoke_upstream(messages, tools, tool_choice, **kwargs)
             except asyncio.CancelledError:
                 raise
@@ -356,7 +457,12 @@ class ThrottledChatModel(StreamClosingOpenAIChatModel):
                 kwargs["max_completion_tokens"] = budget_call.maximum_output
         self._publish_fallback(str(last_error))
         if budget_call is not None:
-            budget_call.mark_started()
+            budget_call.mark_started(
+                attempt=self._max_transient_retries + 2,
+                model_name=str(self._fallback.model),
+                retry=True,
+                fallback=True,
+            )
         return await self._fallback(messages, tools, tool_choice, **kwargs)
 
     def _publish_fallback(self, reason: str) -> None:
@@ -470,5 +576,10 @@ def create_chat_model(
         fallback=fallback,
         max_transient_retries=settings.llm_max_retries,
         bus=bus,
+        resource_estimator=TokenEstimator(
+            tokenizer_path=settings.deepseek_v41_tokenizer_path,
+            deepseek_primary=settings.deepseek_v41_tokenizer_primary,
+        ),
+        prompt_version=settings.prompt_pin_version or "runtime",
         **common,
     )

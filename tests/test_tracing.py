@@ -33,6 +33,32 @@ from app.infrastructure.tracing import (
     current_correlation, inject_task_context, setup_tracing,
     trace_worker_task,
 )
+
+
+def test_resource_plan_json_is_exported_bounded_and_redacted():
+    history = json.dumps([{
+        "plan_revision": 3,
+        "trigger": "query_processor_result",
+        "operations": ["main.plan", "reranker.knowledge.need"],
+        "api_key": "must-not-leak",
+    }])
+    clean = tracing._sanitize_attributes({
+        "globex.resource.plan_revision_history": history,
+        "globex.resource.future_work_plan": json.dumps({"revision": 3, "operations": []}),
+    })
+    parsed = json.loads(clean["globex.resource.plan_revision_history"])
+    assert parsed[0]["plan_revision"] == 3
+    assert parsed[0]["api_key"] == "[REDACTED]"
+    assert "globex.resource.future_work_plan" in clean
+
+
+def test_indexed_revision_operation_attribute_is_exported():
+    clean = tracing._sanitize_attributes({
+        "globex.resource.revision_operation.0": "search.plan",
+        "globex.resource.revision_operation.1": "embedding.product_query",
+    })
+    assert clean["globex.resource.revision_operation.0"] == "search.plan"
+    assert clean["globex.resource.revision_operation.1"] == "embedding.product_query"
 from tests.test_phase4_model import _build
 from tests.test_retrieval import _settings
 
@@ -169,6 +195,27 @@ def test_development_mode_does_not_expose_model_or_mutating_tool_content():
         assert "gen_ai.tool.call.arguments" not in clean
         assert "gen_ai.tool.call.result" not in clean
         assert clean["globex.content.redacted"] is True
+
+
+def test_development_full_exposes_model_context_after_redaction():
+    clean = tracing._sanitize_attributes({
+        "gen_ai.operation.name": "chat",
+        "gen_ai.input.messages": json.dumps([{
+            "role": "user",
+            "content": "帮我找旅行充电器，邮箱 buyer@example.com，电话 13800000000",
+            "session_id": "session-private",
+        }], ensure_ascii=False),
+        "gen_ai.output.messages": json.dumps([{
+            "role": "assistant", "content": "建议先核对航空规则",
+        }], ensure_ascii=False),
+    }, content_mode="development_full")
+    assert "帮我找旅行充电器" in clean["gen_ai.input.messages"]
+    assert "建议先核对航空规则" in clean["gen_ai.output.messages"]
+    assert "buyer@example.com" not in clean["gen_ai.input.messages"]
+    assert "13800000000" not in clean["gen_ai.input.messages"]
+    assert "session-private" not in clean["gen_ai.input.messages"]
+    assert clean["globex.content.sanitized"] is True
+    assert clean["globex.trace.content_mode"] == "development_full"
 
 
 def test_development_mode_exposes_rag_stage_io_but_off_mode_does_not():

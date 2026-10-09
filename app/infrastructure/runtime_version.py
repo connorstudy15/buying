@@ -2,9 +2,11 @@
 from __future__ import annotations
 
 import hashlib
+from functools import lru_cache
 from pathlib import Path
 
 
+@lru_cache(maxsize=1)
 def app_source_fingerprint() -> str:
     root = Path(__file__).resolve().parents[1]
     digest = hashlib.sha256()

@@ -1,0 +1,177 @@
+{
+  "shadow_only": true,
+  "repetitions": 1,
+  "observation_count": 10,
+  "observations": [
+    {
+      "run_id": "phase25-causal-smoke-v3-cardinality-r2",
+      "case_id": "p25v3-direct-01",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 12839.0,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "c6b61120fd23d5320e9e01092a4643d3"
+    },
+    {
+      "run_id": "phase25-causal-smoke-v3-cardinality-r2",
+      "case_id": "p25v3-direct-02",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 12805.558,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "92ceaf82c9abac7140a1110c0ca3bb5c"
+    },
+    {
+      "run_id": "phase25-causal-smoke-v3-cardinality-r2",
+      "case_id": "p25v3-knowledge-01",
+      "query_type": "cross_evidence",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "cross_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 26690.277,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "cc19316dc73460add9fc07c0e5f26e4e"
+    },
+    {
+      "run_id": "phase25-causal-smoke-v3-cardinality-r2",
+      "case_id": "p25v3-product-01",
+      "query_type": "product_search",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "product_search"
+      ],
+      "repetition": 1,
+      "latency_ms": 13572.711,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "da0662d6ab56cb57de14013b7b82c54f"
+    },
+    {
+      "run_id": "phase25-causal-smoke-v3-cardinality-r2",
+      "case_id": "p25v3-search-01",
+      "query_type": "product_search_multi_plan",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "product_search_multi_plan"
+      ],
+      "repetition": 1,
+      "latency_ms": 108100.128,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "b75cc6ae44cbe627a462314f450e9457"
+    },
+    {
+      "run_id": "phase25-causal-smoke-v3-cardinality-r2",
+      "case_id": "p25v3-search-02",
+      "query_type": "product_search_multi_plan",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "product_search_multi_plan"
+      ],
+      "repetition": 1,
+      "latency_ms": 99271.345,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "58858cbd8c201287944cdcde8334684d"
+    },
+    {
+      "run_id": "phase25-causal-smoke-v3-cardinality-r2",
+      "case_id": "p25v3-search-03",
+      "query_type": "product_knowledge_mixed",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "product_knowledge_mixed"
+      ],
+      "repetition": 1,
+      "latency_ms": 109613.09,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "ec5222973062bce95d091d3aa6056f3c"
+    },
+    {
+      "run_id": "phase25-causal-smoke-v3-cardinality-r2",
+      "case_id": "p25v3-search-04",
+      "query_type": "product_search_multi_plan",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "product_search_multi_plan"
+      ],
+      "repetition": 1,
+      "latency_ms": 105860.499,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "9ff0eab302f51b6d0ef78abebca1b596"
+    },
+    {
+      "run_id": "phase25-causal-smoke-v3-cardinality-r2",
+      "case_id": "p25v3-search-05",
+      "query_type": "product_knowledge_mixed",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "product_knowledge_mixed"
+      ],
+      "repetition": 1,
+      "latency_ms": 130039.263,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "5ace2bbcc56a76ce07686e3cf7424db4"
+    },
+    {
+      "run_id": "phase25-causal-smoke-v3-cardinality-r2",
+      "case_id": "p25v3-search-06",
+      "query_type": "product_knowledge_mixed",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "product_knowledge_mixed"
+      ],
+      "repetition": 1,
+      "latency_ms": 151449.621,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "0c1cdd1359f4989c0701989f2e755008"
+    }
+  ]
+}

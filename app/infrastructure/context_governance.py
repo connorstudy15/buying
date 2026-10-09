@@ -277,6 +277,41 @@ class LayeredContextMiddleware(MiddlewareBase):
                     if isinstance(value, (int,float)) and math.isfinite(value): return value
                 return None
             actual = val('input_tokens','prompt_tokens')
+            # Counterfactual ROI is explicitly an estimate: the API only reports
+            # the compacted call.  Reconstruct the old-revision alternative from
+            # the saved baseline and the shared TokenEstimator.
+            baseline_payload = state.get('compaction_baseline')
+            if actual is not None and isinstance(baseline_payload, dict):
+                try:
+                    from app.infrastructure.resource_governance.governor import current_governor
+                    from app.infrastructure.resource_governance.models import CompactionBaseline, ContextScope
+                    governor = current_governor()
+                    if governor is not None:
+                        scope_name = str(baseline_payload.get('scope') or 'main')
+                        baseline = CompactionBaseline(
+                            scope=ContextScope(scope_name),
+                            old_context_revision=str(baseline_payload['old_context_revision']),
+                            new_context_revision=str(baseline_payload['new_context_revision']),
+                            old_context_tokens=int(baseline_payload['old_context_tokens']),
+                            compacted_context_tokens=int(baseline_payload['compacted_context_tokens']),
+                            removed_segment_refs=tuple(baseline_payload.get('removed_segment_refs') or ()),
+                            estimator_version=str(baseline_payload['estimator_version']),
+                            actual_summary_cost=int(baseline_payload.get('actual_summary_cost') or 0),
+                        )
+                        existing = governor.context.baseline(baseline.scope)
+                        if existing is None or existing.new_context_revision != baseline.new_context_revision:
+                            governor.context.save_baseline(baseline)
+                        roi = governor.context.observe_post_compaction_call(
+                            baseline.scope, actual_input_tokens=int(actual),
+                        )
+                        if roi is not None:
+                            trace.get_current_span().set_attributes({
+                                'globex.context.counterfactual_input_tokens': roi.counterfactual_input_tokens,
+                                'globex.context.counterfactual_realized_saving': roi.counterfactual_realized_saving,
+                                'globex.context.counterfactual_realized_roi': roi.counterfactual_realized_roi,
+                            })
+                except (KeyError, TypeError, ValueError):
+                    pass
             prior = state.get('calibration', {})
             ratios = prior.get('ratios', []) if prior.get('identity') == identity else []
             if actual is not None and raw:
@@ -510,6 +545,55 @@ class LayeredContextMiddleware(MiddlewareBase):
             state['last_compaction'] = report
             if changed or archived:
                 state['checkpoint_id'] = hashlib.sha256(json.dumps(report,sort_keys=True).encode()+str(time.time_ns()).encode()).hexdigest()
+            if changed:
+                from app.infrastructure.resource_governance.estimator import ESTIMATOR_VERSION
+                from app.infrastructure.resource_governance.models import CompactionBaseline, ContextScope
+                from app.infrastructure.resource_governance.governor import current_governor
+                role = str(getattr(agent, 'name', '')).casefold()
+                scope = ContextScope.SEARCH if 'search' in role else ContextScope.TRADE if 'trade' in role else ContextScope.MAIN
+                old_revision = hashlib.sha256(json.dumps(
+                    old_state.model_dump(mode='json'), ensure_ascii=False, sort_keys=True, default=str,
+                ).encode()).hexdigest()[:24]
+                new_revision = hashlib.sha256(json.dumps(
+                    agent.state.model_dump(mode='json'), ensure_ascii=False, sort_keys=True, default=str,
+                ).encode()).hexdigest()[:24]
+                refs = tuple(sorted(set([source_ref, *evidence_refs])))
+                summary_cost = sum(
+                    int(sample.get('input_tokens') or 0) + int(sample.get('output_tokens') or 0)
+                    for sample in usage_samples
+                )
+                baseline = CompactionBaseline(
+                    scope=scope,
+                    old_context_revision=old_revision,
+                    new_context_revision=new_revision,
+                    old_context_tokens=before,
+                    compacted_context_tokens=after,
+                    removed_segment_refs=refs,
+                    estimator_version=ESTIMATOR_VERSION,
+                    actual_summary_cost=summary_cost,
+                )
+                state['compaction_baseline'] = {
+                    'scope': scope.value,
+                    'old_context_revision': old_revision,
+                    'new_context_revision': new_revision,
+                    'old_context_tokens': before,
+                    'compacted_context_tokens': after,
+                    'removed_segment_refs': list(refs),
+                    'estimator_version': ESTIMATOR_VERSION,
+                    'actual_summary_cost': summary_cost,
+                }
+                governor = current_governor()
+                if governor is not None:
+                    governor.context.save_baseline(baseline)
+                if trace_span is not None:
+                    trace_span.set_attributes({
+                        'globex.context.old_context_revision': old_revision,
+                        'globex.context.new_context_revision': new_revision,
+                        'globex.context.old_context_tokens': before,
+                        'globex.context.compacted_context_tokens': after,
+                        'globex.context.removed_segment_count': len(refs),
+                        'globex.context.estimator_version': ESTIMATOR_VERSION,
+                    })
             trace.get_current_span().set_attributes({'globex.context.'+k:v for k,v in report.items() if isinstance(v,(str,int,float,bool))})
             if trace_span is not None:
                 trace_span.set_attribute("langfuse.observation.output", json.dumps({

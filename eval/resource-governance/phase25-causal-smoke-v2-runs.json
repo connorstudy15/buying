@@ -1,0 +1,211 @@
+{
+  "shadow_only": true,
+  "repetitions": 1,
+  "observation_count": 12,
+  "observations": [
+    {
+      "run_id": "phase25-causal-smoke-v2",
+      "case_id": "blind-002",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 18326.516,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "f109b01c6dad36dff374aaa2e9b66ac0"
+    },
+    {
+      "run_id": "phase25-causal-smoke-v2",
+      "case_id": "blind-007",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 16784.706,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "cbbda690d0b344ae0d9c95e3ccf33e62"
+    },
+    {
+      "run_id": "phase25-causal-smoke-v2",
+      "case_id": "v4-006",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 25383.173,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "85a3fe953ce9b5d850afef0252f5dfbe"
+    },
+    {
+      "run_id": "phase25-causal-smoke-v2",
+      "case_id": "v4-026",
+      "query_type": "cross_evidence",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "cross_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 33863.623,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "f28bbd3677046294b76e35d338898398"
+    },
+    {
+      "run_id": "phase25-causal-smoke-v2",
+      "case_id": "v4-027",
+      "query_type": "cross_evidence",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "cross_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 24840.607,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "8f92edb7a32e623eeb5620a423bd3ecb"
+    },
+    {
+      "run_id": "phase25-causal-smoke-v2",
+      "case_id": "v4-028",
+      "query_type": "cross_evidence",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "cross_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 38114.709,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "883dfdc23ac90ba7d0b7e8b4443b8900"
+    },
+    {
+      "run_id": "phase25-causal-smoke-v2",
+      "case_id": "v4-r014",
+      "query_type": "implicit_constraint",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "implicit_constraint"
+      ],
+      "repetition": 1,
+      "latency_ms": 17171.549,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "7bad5ba1abb6d0f0dee2a8a7fff75ce3"
+    },
+    {
+      "run_id": "phase25-causal-smoke-v2",
+      "case_id": "v4-047",
+      "query_type": "implicit_constraint",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "implicit_constraint"
+      ],
+      "repetition": 1,
+      "latency_ms": 35501.502,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "3b6734d690d75a68a7448e2c555bb69c"
+    },
+    {
+      "run_id": "phase25-causal-smoke-v2",
+      "case_id": "v4-044",
+      "query_type": "implicit_constraint",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "implicit_constraint"
+      ],
+      "repetition": 1,
+      "latency_ms": 40518.618,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "f04b8f307e0a313d2da1e298997213c8"
+    },
+    {
+      "run_id": "phase25-causal-smoke-v2",
+      "case_id": "v4-r012",
+      "query_type": "cross_evidence",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "cross_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 26250.632,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "3012209a61a0bd872fc7b5bbf565c039"
+    },
+    {
+      "run_id": "phase25-causal-smoke-v2",
+      "case_id": "v4-038",
+      "query_type": "cross_evidence",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "cross_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 31626.158,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "1fa0c56972649c0cfbd39929d86dea91"
+    },
+    {
+      "run_id": "phase25-causal-smoke-v2",
+      "case_id": "human-mh-001",
+      "query_type": "implicit_constraint_multi_hop",
+      "buckets": [
+        "Cross Evidence",
+        "DIRECT",
+        "Simple request",
+        "Single-hop",
+        "implicit_constraint_multi_hop"
+      ],
+      "repetition": 1,
+      "latency_ms": 24258.128,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "f3f3dac493c49f409f6f0576624993b3"
+    }
+  ]
+}

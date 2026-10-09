@@ -115,7 +115,7 @@ class Settings:
     langfuse_secret_key: str = field(default="", repr=False)
     otel_service_name: str = "globex-agent"
     otlp_timeout_seconds: float = 5.0
-    # off：只导出长度；development：仅导出白名单只读工具的脱敏、截断后 I/O。
+    # off：只导出长度；development：白名单链路；development_full：另含模型上下文。
     trace_content_mode: str = "off"
     session_owner_binding: bool = True
     identity_mode: str = "demo"
@@ -135,6 +135,20 @@ class Settings:
     knowledge_rrf_k: int = 60
     # Production / Evaluation 知识库必须使用不同 collection。评测代码只能显式读取后者。
     category_kb_eval_collection: str = "globex_category_kb_eval"
+    # 高敏感本机排障：显式 local_only 时保存每次实际送模请求；永不进入 OTel/Langfuse。
+    trace_context_capture: str = "off"
+    trace_context_session_id: str = field(default="", repr=False)
+    trace_context_capture_dir: Path = PROJECT_ROOT / ".runlogs" / "context-capture"
+    # Phase 0-2 request resource governance. Shadow mode only: records what the
+    # policy would do and cannot reject/degrade a real operation.
+    resource_governor_shadow_enabled: bool = True
+    resource_planning_safety_factor: float = 1.20
+    resource_chat_absolute_hard_cap: int = 80000
+    resource_context_high_pressure_tokens: int = 60000
+    # Phase 2.5 tokenizer comparison. A local matching tokenizer is optional;
+    # remote downloads never happen during request handling.
+    deepseek_v41_tokenizer_path: str = "assets/tokenizers/deepseek-v41/tokenizer.json"
+    deepseek_v41_tokenizer_primary: bool = False
 
 
 def load_settings() -> Settings:
@@ -159,8 +173,11 @@ def load_settings() -> Settings:
             "正式知识和评测语料必须物理隔离"
         )
     trace_content_mode = os.getenv("TRACE_CONTENT_MODE", "off").strip().lower()
-    if trace_content_mode not in {"off", "development"}:
-        raise RuntimeError("TRACE_CONTENT_MODE 只允许 off 或 development")
+    if trace_content_mode not in {"off", "development", "development_full"}:
+        raise RuntimeError("TRACE_CONTENT_MODE 只允许 off、development 或 development_full")
+    trace_context_capture = os.getenv("TRACE_CONTEXT_CAPTURE", "off").strip().lower()
+    if trace_context_capture not in {"off", "local_only"}:
+        raise RuntimeError("TRACE_CONTEXT_CAPTURE 只允许 off 或 local_only")
     return Settings(
         context_strategy=os.getenv("CONTEXT_STRATEGY", "legacy"),
         context_pruning_timing=os.getenv("CONTEXT_PRUNING_TIMING", "after_use"),
@@ -245,9 +262,22 @@ def load_settings() -> Settings:
         otel_service_name=os.getenv("OTEL_SERVICE_NAME", "globex-agent"),
         otlp_timeout_seconds=float(os.getenv("OTEL_EXPORTER_OTLP_TRACES_TIMEOUT") or os.getenv("OTEL_EXPORTER_OTLP_TIMEOUT", "5")),
         trace_content_mode=trace_content_mode,
+        trace_context_capture=trace_context_capture,
+        trace_context_session_id=os.getenv("TRACE_CONTEXT_SESSION_ID", "").strip(),
         session_owner_binding=os.getenv("SESSION_OWNER_BINDING", "1") not in ("0", "false", "False"),
         identity_mode=os.getenv("IDENTITY_MODE", "demo"),
         prompt_pin_version=os.getenv("PROMPT_PIN_VERSION", ""),
         metrics_reader_buyers=tuple(item.strip() for item in os.getenv("METRICS_READER_BUYERS", "").split(",") if item.strip()),
         identity_hmac_secret=os.getenv("IDENTITY_HMAC_SECRET", ""),
+        resource_governor_shadow_enabled=os.getenv("RESOURCE_GOVERNOR_SHADOW_ENABLED", "1")
+        not in ("0", "false", "False"),
+        resource_planning_safety_factor=float(os.getenv("RESOURCE_PLANNING_SAFETY_FACTOR", "1.20")),
+        resource_chat_absolute_hard_cap=int(os.getenv("RESOURCE_CHAT_ABSOLUTE_HARD_CAP", "80000")),
+        resource_context_high_pressure_tokens=int(os.getenv("RESOURCE_CONTEXT_HIGH_PRESSURE_TOKENS", "60000")),
+        deepseek_v41_tokenizer_path=os.getenv(
+            "DEEPSEEK_V41_TOKENIZER_PATH",
+            "assets/tokenizers/deepseek-v41/tokenizer.json",
+        ).strip(),
+        deepseek_v41_tokenizer_primary=os.getenv("DEEPSEEK_V41_TOKENIZER_PRIMARY", "0")
+        in ("1", "true", "True"),
     )

@@ -1,0 +1,37 @@
+{
+  "shadow_only": true,
+  "repetitions": 1,
+  "observation_count": 3,
+  "observations": [
+    {
+      "run_id": "phase25-smoke-20261008",
+      "case_id": "blind-001",
+      "query_type": "single_evidence",
+      "repetition": 1,
+      "latency_ms": 15372.204,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "bbaa6b96ea175b4b9ed14ec21807b429"
+    },
+    {
+      "run_id": "phase25-smoke-20261008",
+      "case_id": "blind-002",
+      "query_type": "single_evidence",
+      "repetition": 1,
+      "latency_ms": 30728.979,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "33de40089a5e001e9de924bc7d207149"
+    },
+    {
+      "run_id": "phase25-smoke-20261008",
+      "case_id": "blind-005",
+      "query_type": "single_evidence",
+      "repetition": 1,
+      "latency_ms": 38452.267,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "cfac950cfdefd44a26a09dd56a7c473a"
+    }
+  ]
+}

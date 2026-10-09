@@ -12,6 +12,11 @@ import time
 from dataclasses import dataclass
 
 from agentscope.message import Msg, TextBlock
+from app.infrastructure.resource_governance.models import ContextScope
+from app.infrastructure.resource_governance.operation import resource_operation
+from app.infrastructure.resource_governance.estimator import TokenEstimator
+
+_TOKEN_ESTIMATOR = TokenEstimator()
 
 
 @dataclass(frozen=True)
@@ -82,16 +87,25 @@ class QueryProcessor:
             if self._disable_thinking:
                 # 阿里云兼容网关的混合推理模型支持此开关；其他网关默认不发送该扩展字段。
                 request_kwargs["extra_body"] = {"enable_thinking": False}
-            response = await asyncio.wait_for(
-                self._model(messages=[
-                    Msg(name="system", role="system", content=[TextBlock(text=self._prompt)]),
-                    Msg(name="user", role="user", content=[TextBlock(text=json.dumps({
-                        "question": question,
-                        "max_subqueries": self._max_subqueries,
-                    }, ensure_ascii=False))]),
-                ], **request_kwargs),
-                timeout=self._timeout_seconds,
+            request_messages = [
+                Msg(name="system", role="system", content=[TextBlock(text=self._prompt)]),
+                Msg(name="user", role="user", content=[TextBlock(text=json.dumps({
+                    "question": question,
+                    "max_subqueries": self._max_subqueries,
+                }, ensure_ascii=False))]),
+            ]
+            estimate_comparison = await _TOKEN_ESTIMATOR.estimate_model_input_comparison(
+                self._model, request_messages, None,
+                operation="query_processor.classify",
             )
+            with resource_operation(
+                "query_processor.classify", component="query_processor",
+                context_scope=ContextScope.QUERY_PROCESSOR,
+            ) as operation_context:
+                response = await asyncio.wait_for(
+                    self._model(messages=request_messages, **request_kwargs),
+                    timeout=self._timeout_seconds,
+                )
             raw = "".join(
                 str(text) for block in response.content
                 if (text := getattr(block, "text", None)) is not None
@@ -111,11 +125,33 @@ class QueryProcessor:
             input_tokens = int(usage_data.get("input_tokens") or usage_data.get("prompt_tokens") or 0)
             output_tokens = int(usage_data.get("output_tokens") or usage_data.get("completion_tokens") or 0)
             total_tokens = int(usage_data.get("total_tokens") or input_tokens + output_tokens)
+            estimate_comparison = operation_context.pre_call_comparison or estimate_comparison
+            if input_tokens:
+                _TOKEN_ESTIMATOR.calibration.observe(
+                    str(getattr(self._model, "model", type(self._model).__name__)),
+                    "query_processor.classify",
+                    estimate_comparison.deepseek_v41.raw_tokens,
+                    input_tokens,
+                    traits=estimate_comparison.request_traits,
+                )
             metadata = {
                 "latency_ms": 0.0,
                 "input_tokens": input_tokens,
                 "output_tokens": output_tokens,
                 "total_tokens": total_tokens,
+                "old_estimated_prompt_tokens": estimate_comparison.legacy.raw_tokens,
+                "deepseek_estimated_prompt_tokens": estimate_comparison.deepseek_v41.raw_tokens,
+                "deepseek_safe_estimated_prompt_tokens": estimate_comparison.deepseek_v41.safe_tokens,
+                "deepseek_estimator_method": estimate_comparison.deepseek_v41.method,
+                "deepseek_estimator_confidence": estimate_comparison.deepseek_v41.confidence,
+                "estimator_input_stage": estimate_comparison.input_stage,
+                "calibration_samples": estimate_comparison.deepseek_v41.calibration_samples,
+                "calibration_confidence": estimate_comparison.deepseek_v41.calibration_confidence,
+                "calibration_profile_id": estimate_comparison.deepseek_v41.calibration_profile_id,
+                "thinking_mode": estimate_comparison.request_traits.get("thinking_mode", "unspecified"),
+                "reasoning_effort": estimate_comparison.request_traits.get("reasoning_effort", "unspecified"),
+                "tooling_mode": estimate_comparison.request_traits.get("tooling_mode", "none"),
+                "local_estimated_output_reserve": 1000,
             }
             try:
                 plan = self._validate(question, payload)

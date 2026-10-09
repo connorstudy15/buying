@@ -1,0 +1,244 @@
+{
+  "schema_version": 1,
+  "shadow_only": true,
+  "content_read": false,
+  "legacy_operation_reconstruction_confidence": "low",
+  "bootstrap_parameters_are_provisional": true,
+  "trace_count": 12,
+  "summary": {
+    "predicted_expected_chat_tokens_per_request": 41697,
+    "planned_chat_limit_per_request": 50037,
+    "actual_chat_tokens_p50": 36185,
+    "actual_chat_tokens_p80": 57639,
+    "actual_chat_tokens_p95": 60935,
+    "absolute_error_p50": 13308,
+    "absolute_error_p95": 34480,
+    "mean_absolute_percentage_error": 1.0538360738516748,
+    "underprediction_rate": 0.4166666666666667,
+    "planned_budget_breach_rate": 0.3333333333333333,
+    "absolute_cap_exceed_rate": 0.0
+  },
+  "legacy_profile_samples": {
+    "main.plan": 19,
+    "main.final": 12
+  },
+  "legacy_profile_percentiles": {
+    "main.plan": {
+      "sample_count": 19,
+      "chat_input_tokens": {
+        "p50": 9061,
+        "p80": 16318,
+        "p95": 27207
+      },
+      "chat_output_tokens": {
+        "p50": 555,
+        "p80": 819,
+        "p95": 1084
+      },
+      "latency_ms": {
+        "p50": 7793,
+        "p80": 9996,
+        "p95": 12193
+      }
+    },
+    "main.final": {
+      "sample_count": 12,
+      "chat_input_tokens": {
+        "p50": 14811,
+        "p80": 26220,
+        "p95": 32125
+      },
+      "chat_output_tokens": {
+        "p50": 954,
+        "p80": 2049,
+        "p95": 2972
+      },
+      "latency_ms": {
+        "p50": 11730,
+        "p80": 20833,
+        "p95": 35226
+      }
+    }
+  },
+  "generation_count_buckets": {
+    "one_generation": {
+      "trace_count": 1,
+      "actual_chat_tokens_p50": 7217,
+      "mean_absolute_percentage_error": 4.777608424553138,
+      "underprediction_rate": 0.0,
+      "planned_budget_breach_rate": 0.0
+    },
+    "two_generations": {
+      "trace_count": 6,
+      "actual_chat_tokens_p50": 36185,
+      "mean_absolute_percentage_error": 1.0078259264576725,
+      "underprediction_rate": 0.5,
+      "planned_budget_breach_rate": 0.3333333333333333
+    },
+    "three_or_more_generations": {
+      "trace_count": 5,
+      "actual_chat_tokens_p50": 40917,
+      "mean_absolute_percentage_error": 0.3642937805841846,
+      "underprediction_rate": 0.4,
+      "planned_budget_breach_rate": 0.4
+    }
+  },
+  "observations": [
+    {
+      "trace_sha256": "19d0007971c2af0a",
+      "generation_calls": 3,
+      "predicted_expected_chat_tokens": 41697,
+      "planned_chat_limit": 50037,
+      "actual_chat_tokens": 22601,
+      "signed_error_tokens": 19096,
+      "absolute_error_tokens": 19096,
+      "relative_error": 0.8449183664439627,
+      "underpredicted": false,
+      "planned_budget_breached": false,
+      "actual_exceeded_absolute_cap": false
+    },
+    {
+      "trace_sha256": "7599918ee0c47fde",
+      "generation_calls": 2,
+      "predicted_expected_chat_tokens": 41697,
+      "planned_chat_limit": 50037,
+      "actual_chat_tokens": 36185,
+      "signed_error_tokens": 5512,
+      "absolute_error_tokens": 5512,
+      "relative_error": 0.15232831283681084,
+      "underpredicted": false,
+      "planned_budget_breached": false,
+      "actual_exceeded_absolute_cap": false
+    },
+    {
+      "trace_sha256": "eac6cb4f98219e3b",
+      "generation_calls": 1,
+      "predicted_expected_chat_tokens": 41697,
+      "planned_chat_limit": 50037,
+      "actual_chat_tokens": 7217,
+      "signed_error_tokens": 34480,
+      "absolute_error_tokens": 34480,
+      "relative_error": 4.777608424553138,
+      "underpredicted": false,
+      "planned_budget_breached": false,
+      "actual_exceeded_absolute_cap": false
+    },
+    {
+      "trace_sha256": "af7d313423bbc353",
+      "generation_calls": 4,
+      "predicted_expected_chat_tokens": 41697,
+      "planned_chat_limit": 50037,
+      "actual_chat_tokens": 52941,
+      "signed_error_tokens": -11244,
+      "absolute_error_tokens": 11244,
+      "relative_error": 0.21238737462458207,
+      "underpredicted": true,
+      "planned_budget_breached": true,
+      "actual_exceeded_absolute_cap": false
+    },
+    {
+      "trace_sha256": "2564835b78fbeb86",
+      "generation_calls": 2,
+      "predicted_expected_chat_tokens": 41697,
+      "planned_chat_limit": 50037,
+      "actual_chat_tokens": 7324,
+      "signed_error_tokens": 34373,
+      "absolute_error_tokens": 34373,
+      "relative_error": 4.6932004369197164,
+      "underpredicted": false,
+      "planned_budget_breached": false,
+      "actual_exceeded_absolute_cap": false
+    },
+    {
+      "trace_sha256": "18b9752af41754ab",
+      "generation_calls": 2,
+      "predicted_expected_chat_tokens": 41697,
+      "planned_chat_limit": 50037,
+      "actual_chat_tokens": 60935,
+      "signed_error_tokens": -19238,
+      "absolute_error_tokens": 19238,
+      "relative_error": 0.31571346516780174,
+      "underpredicted": true,
+      "planned_budget_breached": true,
+      "actual_exceeded_absolute_cap": false
+    },
+    {
+      "trace_sha256": "870c438df3571efd",
+      "generation_calls": 4,
+      "predicted_expected_chat_tokens": 41697,
+      "planned_chat_limit": 50037,
+      "actual_chat_tokens": 40917,
+      "signed_error_tokens": 780,
+      "absolute_error_tokens": 780,
+      "relative_error": 0.019062981156976317,
+      "underpredicted": false,
+      "planned_budget_breached": false,
+      "actual_exceeded_absolute_cap": false
+    },
+    {
+      "trace_sha256": "8639f850ee877c07",
+      "generation_calls": 2,
+      "predicted_expected_chat_tokens": 41697,
+      "planned_chat_limit": 50037,
+      "actual_chat_tokens": 28389,
+      "signed_error_tokens": 13308,
+      "absolute_error_tokens": 13308,
+      "relative_error": 0.4687731163478812,
+      "underpredicted": false,
+      "planned_budget_breached": false,
+      "actual_exceeded_absolute_cap": false
+    },
+    {
+      "trace_sha256": "312a59e60f9b60c5",
+      "generation_calls": 2,
+      "predicted_expected_chat_tokens": 41697,
+      "planned_chat_limit": 50037,
+      "actual_chat_tokens": 57639,
+      "signed_error_tokens": -15942,
+      "absolute_error_tokens": 15942,
+      "relative_error": 0.2765835632124083,
+      "underpredicted": true,
+      "planned_budget_breached": true,
+      "actual_exceeded_absolute_cap": false
+    },
+    {
+      "trace_sha256": "9f6ff16c3adf7065",
+      "generation_calls": 3,
+      "predicted_expected_chat_tokens": 41697,
+      "planned_chat_limit": 50037,
+      "actual_chat_tokens": 28744,
+      "signed_error_tokens": 12953,
+      "absolute_error_tokens": 12953,
+      "relative_error": 0.4506331756192597,
+      "underpredicted": false,
+      "planned_budget_breached": false,
+      "actual_exceeded_absolute_cap": false
+    },
+    {
+      "trace_sha256": "a48806d0dae9325f",
+      "generation_calls": 4,
+      "predicted_expected_chat_tokens": 41697,
+      "planned_chat_limit": 50037,
+      "actual_chat_tokens": 59100,
+      "signed_error_tokens": -17403,
+      "absolute_error_tokens": 17403,
+      "relative_error": 0.29446700507614215,
+      "underpredicted": true,
+      "planned_budget_breached": true,
+      "actual_exceeded_absolute_cap": false
+    },
+    {
+      "trace_sha256": "95d82d93805038a2",
+      "generation_calls": 2,
+      "predicted_expected_chat_tokens": 41697,
+      "planned_chat_limit": 50037,
+      "actual_chat_tokens": 48505,
+      "signed_error_tokens": -6808,
+      "absolute_error_tokens": 6808,
+      "relative_error": 0.14035666426141635,
+      "underpredicted": true,
+      "planned_budget_breached": false,
+      "actual_exceeded_absolute_cap": false
+    }
+  ]
+}

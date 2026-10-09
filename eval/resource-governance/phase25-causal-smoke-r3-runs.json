@@ -1,0 +1,24 @@
+{
+  "shadow_only": true,
+  "repetitions": 1,
+  "observation_count": 1,
+  "observations": [
+    {
+      "run_id": "phase25-causal-smoke-20261009-r3",
+      "case_id": "v4-026",
+      "query_type": "cross_evidence",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "cross_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 32839.895,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "3c6fff9446d2e02e56a4362a03583cab"
+    }
+  ]
+}

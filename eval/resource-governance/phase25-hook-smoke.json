@@ -1,0 +1,24 @@
+{
+  "shadow_only": true,
+  "repetitions": 1,
+  "observation_count": 1,
+  "observations": [
+    {
+      "run_id": "phase25-hook-smoke-20261008",
+      "case_id": "blind-001",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 22582.725,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "e9eb0cfd64e1425cf36774e233ed2eb7"
+    }
+  ]
+}

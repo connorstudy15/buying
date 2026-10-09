@@ -1,0 +1,280 @@
+{
+  "shadow_only": true,
+  "complete": true,
+  "repetitions": 1,
+  "observation_count": 16,
+  "observations": [
+    {
+      "run_id": "phase25-continuation-v1-targeted-20261009",
+      "case_id": "p25v3-direct-01",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 11868.09,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "e032ea23ed8aaa7bfe67a7c52b43e7b5"
+    },
+    {
+      "run_id": "phase25-continuation-v1-targeted-20261009",
+      "case_id": "p25v3-direct-02",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 8507.511,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "230fc6da7bc474fbc928540f6caa2381"
+    },
+    {
+      "run_id": "phase25-continuation-v1-targeted-20261009",
+      "case_id": "p25v3-knowledge-01",
+      "query_type": "cross_evidence",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "cross_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 27615.474,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "2d9abc5d75a7a441397816206b74f1c8"
+    },
+    {
+      "run_id": "phase25-continuation-v1-targeted-20261009",
+      "case_id": "p25v3-knowledge-02",
+      "query_type": "multi_hop",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "multi_hop"
+      ],
+      "repetition": 1,
+      "latency_ms": 43667.247,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "a56f55b8e5a0063de51947a0bbd8bf30"
+    },
+    {
+      "run_id": "phase25-continuation-v1-targeted-20261009",
+      "case_id": "p25v3-product-01",
+      "query_type": "product_search",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "product_search"
+      ],
+      "repetition": 1,
+      "latency_ms": 10483.559,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "69ae4d94f54d995d0180e16658a12ce1"
+    },
+    {
+      "run_id": "phase25-continuation-v1-targeted-20261009",
+      "case_id": "p25v3-product-02",
+      "query_type": "product_search",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "product_search"
+      ],
+      "repetition": 1,
+      "latency_ms": 21948.273,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "809415d4e8ae141814b509102e0b11aa"
+    },
+    {
+      "run_id": "phase25-continuation-v1-targeted-20261009",
+      "case_id": "p25v3-product-03",
+      "query_type": "product_search",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "product_search"
+      ],
+      "repetition": 1,
+      "latency_ms": 19005.143,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "f7bb2bd2c784e395efb3c0c724f15421"
+    },
+    {
+      "run_id": "phase25-continuation-v1-targeted-20261009",
+      "case_id": "p25v3-search-01",
+      "query_type": "product_search_multi_plan",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "product_search_multi_plan"
+      ],
+      "repetition": 1,
+      "latency_ms": 75053.901,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "e5517b48918a52361a1b2d4963d2bafe"
+    },
+    {
+      "run_id": "phase25-continuation-v1-targeted-20261009",
+      "case_id": "p25v3-search-02",
+      "query_type": "product_search_multi_plan",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "product_search_multi_plan"
+      ],
+      "repetition": 1,
+      "latency_ms": 103122.994,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "cfeb6d08765cec0067dfc4e0fc0035f9"
+    },
+    {
+      "run_id": "phase25-continuation-v1-targeted-20261009",
+      "case_id": "p25v3-search-03",
+      "query_type": "product_knowledge_mixed",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "product_knowledge_mixed"
+      ],
+      "repetition": 1,
+      "latency_ms": 104512.872,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "bb5a098dc4fdb5f6c54dd85b3b312f3f"
+    },
+    {
+      "run_id": "phase25-continuation-v1-targeted-20261009",
+      "case_id": "p25v3-search-04",
+      "query_type": "product_search_multi_plan",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "product_search_multi_plan"
+      ],
+      "repetition": 1,
+      "latency_ms": 83085.984,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "d326b3867eacdd889b8eadd13d994bc6"
+    },
+    {
+      "run_id": "phase25-continuation-v1-targeted-20261009",
+      "case_id": "p25v3-search-05",
+      "query_type": "product_knowledge_mixed",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "product_knowledge_mixed"
+      ],
+      "repetition": 1,
+      "latency_ms": 102314.57,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "6166d810936bbb8e6535f822e4a7b938"
+    },
+    {
+      "run_id": "phase25-continuation-v1-targeted-20261009",
+      "case_id": "p25v3-search-06",
+      "query_type": "product_knowledge_mixed",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "product_knowledge_mixed"
+      ],
+      "repetition": 1,
+      "latency_ms": 1186.541,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "8796f28a11354d184cfc21ad6dc91189"
+    },
+    {
+      "run_id": "phase25-continuation-v1-targeted-20261009",
+      "case_id": "p25v3-context-01",
+      "query_type": "context_heavy_mixed",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "context_heavy_mixed"
+      ],
+      "repetition": 1,
+      "latency_ms": 1180.298,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "7a9c8f7145c30e7034b49f2ddd69a5ba"
+    },
+    {
+      "run_id": "phase25-continuation-v1-targeted-20261009",
+      "case_id": "continuation-context-02",
+      "query_type": "context_heavy_mixed",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "context_heavy_mixed"
+      ],
+      "repetition": 1,
+      "latency_ms": 727.489,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "80c3c2124ea4cfcd6ba06f06954b7f42"
+    },
+    {
+      "run_id": "phase25-continuation-v1-targeted-20261009",
+      "case_id": "continuation-insufficient-01",
+      "query_type": "evidence_insufficient",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "evidence_insufficient"
+      ],
+      "repetition": 1,
+      "latency_ms": 839.734,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "18c3db3412b3b0956c5f29cd666478ed"
+    }
+  ]
+}

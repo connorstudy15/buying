@@ -131,6 +131,10 @@ class MainAgentOrchestrator:
         session_lease_factory: Callable[..., Any] | None = None,
         trade_state_provider: Callable[[str, str], Awaitable[dict]] | None = None,
         evidence_store: Any = None,
+        resource_governor_shadow_enabled: bool = True,
+        resource_governor_model: str = "unknown",
+        resource_planning_safety_factor: float = 1.20,
+        resource_chat_absolute_hard_cap: int = 80000,
     ) -> None:
         self._evidence_store = evidence_store
         self._trade_state_provider = trade_state_provider
@@ -143,6 +147,10 @@ class MainAgentOrchestrator:
         self._output_guard_enabled = output_guard_enabled
         self._loop_detector = loop_detector
         self._token_budget_total = token_budget_total
+        self._resource_governor_shadow_enabled = resource_governor_shadow_enabled
+        self._resource_governor_model = resource_governor_model
+        self._resource_planning_safety_factor = resource_planning_safety_factor
+        self._resource_chat_absolute_hard_cap = resource_chat_absolute_hard_cap
         self._drift_detector = drift_detector
         # 默认 selector 不带 embedder，退化为“按时间倒序取 top_k”，单测与无凭据环境可直接跑
         self._preference_selector = preference_selector or PreferenceSelector()
@@ -223,6 +231,43 @@ class MainAgentOrchestrator:
                 record_exception=False,
                 set_status_on_exception=False,
             ) as turn_span:
+                from app.infrastructure.resource_governance.governor import (
+                    begin_shadow_request, end_shadow_request,
+                )
+                governor = None
+                governor_token = None
+                resource_request_id = uuid.uuid4().hex
+                turn_span.set_attributes({
+                    "globex.resource.lifecycle_owner": "commerce.turn",
+                    "globex.resource.logical_call_id": resource_request_id,
+                })
+                try:
+                    governor, governor_token = begin_shadow_request(
+                        resource_request_id,
+                        self._resource_governor_model,
+                        enabled=self._resource_governor_shadow_enabled,
+                        planning_safety_factor=self._resource_planning_safety_factor,
+                        absolute_chat_hard_cap=self._resource_chat_absolute_hard_cap,
+                    )
+                except Exception as observation_error:
+                    logger.warning("shadow governor initialization failed error_type=%s", type(observation_error).__name__)
+                if governor is not None:
+                    try:
+                        initial = governor.snapshot()
+                        turn_span.set_attributes({
+                            "globex.resource.shadow_only": True,
+                            "globex.resource.plan_revision": initial.plan_revision,
+                            "globex.resource.prediction_route": governor.prediction.route,
+                            "globex.resource.initial_prediction_route": governor.prediction.route,
+                            "globex.resource.prediction_confidence": governor.prediction.confidence,
+                            "globex.resource.planned_chat_limit": initial.planned_budget.chat_token_limit or 0,
+                            "globex.resource.predicted_request_tokens": initial.protected_future.plus(initial.predicted_unreserved).chat_total_tokens,
+                            "globex.resource.predicted_operation_count": len(governor.future_plan.operations()),
+                            "globex.resource.future_work_plan": governor.future_work_plan_json(),
+                            "globex.resource.absolute_chat_hard_cap": initial.absolute_hard_cap.chat_token_limit or 0,
+                        })
+                    except Exception as observation_error:
+                        logger.warning("shadow governor initial snapshot failed error_type=%s", type(observation_error).__name__)
                 turn_span.set_attribute("langfuse.observation.input", json.dumps({
                     "query": intent.raw_query,
                     "locale": intent.locale,
@@ -265,9 +310,46 @@ class MainAgentOrchestrator:
                     turn_span.set_status(Status(StatusCode.ERROR))
                     raise
                 finally:
-                    self._native_observer.reset(observer_token)
-                    summary = finish_request(metrics, metrics_status)
-                    self._bus.publish(intent.shopping_session_id, "usage.summary", summary)
+                    try:
+                        if governor is not None:
+                            try:
+                                resource_snapshot = governor.snapshot()
+                                policy_evaluation = governor.evaluate_current()
+                                reconciliation = governor.accounting_reconciliation()
+                                turn_span.set_attributes({
+                                    "globex.resource.plan_revision": resource_snapshot.plan_revision,
+                                    "globex.resource.used_chat_tokens": resource_snapshot.used.chat_total_tokens,
+                                    "globex.resource.active_reserved_chat_tokens": resource_snapshot.active_reserved.chat_total_tokens,
+                                    "globex.resource.protected_future_chat_tokens": resource_snapshot.protected_future.chat_total_tokens,
+                                    "globex.resource.predicted_future_chat_tokens": resource_snapshot.predicted_unreserved.chat_total_tokens,
+                                    "globex.resource.projected_chat_tokens": resource_snapshot.projected.chat_total_tokens,
+                                    "globex.resource.decision": policy_evaluation.would_action,
+                                    "globex.resource.decision_reason": policy_evaluation.reason,
+                                    "globex.resource.accounting_ok": bool(reconciliation["ok"]),
+                                    "globex.resource.accounting_error_count": len(reconciliation["errors"]),
+                                    "globex.resource.reservation_leak_count": int(reconciliation["active_reservation_count"]),
+                                    "globex.resource.duplicate_accounting_count": int(reconciliation["duplicate_attempt_count"]),
+                                    "globex.resource.usage_missing_count": int(reconciliation["usage_missing_count"]),
+                                    "globex.resource.timeout_estimated_count": int(reconciliation["timeout_estimated_count"]),
+                                    "globex.resource.actual_request_tokens": resource_snapshot.used.chat_total_tokens,
+                                    "globex.resource.actual_operation_count": len(governor.observed_operations),
+                                    "globex.resource.prediction_route": governor.prediction.route,
+                                    "globex.resource.execution_route": governor.prediction.route,
+                                    "globex.resource.prediction_confidence": governor.prediction.confidence,
+                                    "globex.resource.future_work_plan": governor.future_work_plan_json(),
+                                    "globex.resource.plan_revision_history": governor.plan_revision_history_json(),
+                                    "globex.resource.route_after_query_processor": governor.route_after_query_processor or "",
+                                    "globex.resource.route_revision_count": governor.route_revision_count,
+                                    "globex.resource.closing_projected_request_tokens": resource_snapshot.projected.chat_total_tokens,
+                                })
+                            except Exception as observation_error:
+                                logger.warning("shadow governor finalization failed error_type=%s", type(observation_error).__name__)
+                    finally:
+                        if governor_token is not None:
+                            end_shadow_request(governor_token)
+                        self._native_observer.reset(observer_token)
+                        summary = finish_request(metrics, metrics_status)
+                        self._bus.publish(intent.shopping_session_id, "usage.summary", summary)
 
     async def _handle_intent(
         self, intent: SubmitIntentInput, *, use_semantic_cache: bool = True,

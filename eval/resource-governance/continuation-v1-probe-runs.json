@@ -1,0 +1,25 @@
+{
+  "shadow_only": true,
+  "complete": true,
+  "repetitions": 1,
+  "observation_count": 1,
+  "observations": [
+    {
+      "run_id": "phase25-continuation-v1-probe-20261009",
+      "case_id": "p25v3-direct-01",
+      "query_type": "single_evidence",
+      "buckets": [
+        "DIRECT",
+        "Simple request",
+        "Single Evidence",
+        "Single-hop",
+        "single_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 14604.087,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "a66dce3235b3a6fec77dd5b47a115920"
+    }
+  ]
+}

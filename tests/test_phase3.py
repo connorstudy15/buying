@@ -88,6 +88,28 @@ class TestCategoryKnowledge:
         assert payload["insights"][0]["source"].endswith(".md")
         assert queue.qsize() == 2  # tool.invoke + tool.result
 
+    async def test_insight_tool_forwards_per_need_reranker(self, knowledge_base, monkeypatch):
+        from app.infrastructure.rag import knowledge_retrieval
+
+        original = knowledge_retrieval.search_knowledge_with_trace
+        captured = {}
+        reranker = object()
+
+        async def recording_search(*args, **kwargs):
+            captured.update(kwargs)
+            return await original(*args, **kwargs)
+
+        monkeypatch.setattr(knowledge_retrieval, "search_knowledge_with_trace", recording_search)
+        tool = build_category_insight_tool(
+            knowledge_base,
+            TradeEventBus(),
+            per_need_reranker=reranker,
+        )
+        response = await tool(question="美国免税额度是多少", top_k=2)
+
+        assert response.state == ToolResultState.SUCCESS
+        assert captured["per_need_reranker"] is reranker
+
     async def test_insight_tool_degrades_when_kb_broken(self):
         class BrokenKnowledgeBase:
             async def search(self, *args, **kwargs):

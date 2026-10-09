@@ -1,0 +1,5317 @@
+{
+  "schema_version": "resource-governance-execution-graph-audit-v1",
+  "source_trace_count": 134,
+  "shadow_only": true,
+  "phase3_decision": "NO_GO",
+  "route_selection_diagnostic": {
+    "legacy_route_selection_error_rate": 1.0,
+    "finding": "report_bug",
+    "reason": "bootstrap placeholder was compared with final execution route",
+    "comparable_initial_route_count": 0,
+    "corrected_error_rate": null
+  },
+  "old_predictor_metrics": {
+    "n": 134,
+    "actual_p50": 33740.0,
+    "actual_p80": 47069.0,
+    "actual_p95": 91594.0,
+    "predicted_p50": 41697.0,
+    "predicted_p80": 41697.0,
+    "predicted_p95": 41697.0,
+    "mae": 20744.783582089553,
+    "mape": 0.6378214763588578,
+    "absolute_error_p50": 16306.0,
+    "absolute_error_p95": 49897.0,
+    "underprediction_count": 39,
+    "underprediction_rate": 0.291044776119403,
+    "underprediction_p50": 15486.0,
+    "underprediction_p80": 45526.0,
+    "underprediction_p95": 196268.0,
+    "underprediction_max": 207068.0,
+    "underprediction_ratio_p50": 0.270814752636273,
+    "underprediction_ratio_p80": 0.5219494858007636,
+    "underprediction_ratio_p95": 0.8247767528838275,
+    "overprediction_count": 95,
+    "overprediction_rate": 0.7089552238805971,
+    "overprediction_p50": 17496.0,
+    "overprediction_p95": 26366.0
+  },
+  "operation_count_error": {
+    "mean_missing": 4.32089552238806,
+    "p50_missing": 3.0,
+    "p95_missing": 11.0
+  },
+  "most_frequently_missing_operations": [
+    {
+      "operation": "unclassified_observed_resource_operation",
+      "count": 295
+    },
+    {
+      "operation": "main.plan",
+      "count": 132
+    },
+    {
+      "operation": "query_processor.direct",
+      "count": 80
+    },
+    {
+      "operation": "query_processor.decompose",
+      "count": 57
+    },
+    {
+      "operation": "search.plan",
+      "count": 21
+    },
+    {
+      "operation": "query_processor.rewrite",
+      "count": 6
+    },
+    {
+      "operation": "search.final",
+      "count": 6
+    }
+  ],
+  "long_tail": {
+    "above_80k_count": 8,
+    "above_150k_count": 5,
+    "above_80k": [
+      {
+        "trace_id": "4469505c15934c23ae80d22a01a5375c",
+        "case_id": "v4-044",
+        "query_type": "implicit_constraint",
+        "initial_route": "unknown_one_plan_plus_final",
+        "route_after_query_processor": null,
+        "final_execution_route": "knowledge_decompose",
+        "route_revision_count": null,
+        "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+        "predicted_operations": {
+          "main.plan": 1,
+          "main.final": 1
+        },
+        "actual_named_operations": {
+          "main.final": 1,
+          "main.plan": 4,
+          "query_processor.direct": 3,
+          "query_processor.decompose": 2
+        },
+        "predicted_operation_count": 2,
+        "actual_operation_count": 11,
+        "missing_operations": {
+          "main.plan": 3,
+          "query_processor.direct": 3,
+          "query_processor.decompose": 2,
+          "unclassified_observed_resource_operation": 1
+        },
+        "unexpected_operations": {},
+        "predicted_request_tokens": 41697.0,
+        "actual_request_tokens": 91594.0,
+        "signed_error": -49897.0,
+        "absolute_error": 49897.0,
+        "underprediction_ratio": 0.544762757385855,
+        "candidate_retrieval_count_proxy": 9,
+        "final_context_tokens": 22471,
+        "root_cause_tags": [
+          "repeated_main_reasoning",
+          "legitimate_multi_branch_workload",
+          "predictor_missing_future_work"
+        ],
+        "primary_root_cause": "B_predictor_underprediction_repeated_reasoning_needs_review"
+      },
+      {
+        "trace_id": "4b528619b03dc2e67c8ebe4cee85cf1b",
+        "case_id": "v4-026",
+        "query_type": "cross_evidence",
+        "initial_route": "unknown_one_plan_plus_final",
+        "route_after_query_processor": null,
+        "final_execution_route": "simple_direct",
+        "route_revision_count": null,
+        "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+        "predicted_operations": {
+          "main.plan": 1,
+          "main.final": 1
+        },
+        "actual_named_operations": {
+          "main.final": 1,
+          "main.plan": 5
+        },
+        "predicted_operation_count": 2,
+        "actual_operation_count": 11,
+        "missing_operations": {
+          "main.plan": 4,
+          "unclassified_observed_resource_operation": 5
+        },
+        "unexpected_operations": {},
+        "predicted_request_tokens": 41697.0,
+        "actual_request_tokens": 87223.0,
+        "signed_error": -45526.0,
+        "absolute_error": 45526.0,
+        "underprediction_ratio": 0.5219494858007636,
+        "candidate_retrieval_count_proxy": 2,
+        "final_context_tokens": 18631,
+        "root_cause_tags": [
+          "repeated_main_reasoning",
+          "many_non_model_resource_operations",
+          "legitimate_multi_branch_workload",
+          "predictor_missing_future_work"
+        ],
+        "primary_root_cause": "B_predictor_underprediction_repeated_reasoning_needs_review"
+      },
+      {
+        "trace_id": "4fde757b50a92c0357a70eec92c3e9e5",
+        "case_id": "v4-r012",
+        "query_type": "cross_evidence",
+        "initial_route": "unknown_one_plan_plus_final",
+        "route_after_query_processor": null,
+        "final_execution_route": "product_search",
+        "route_revision_count": null,
+        "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+        "predicted_operations": {
+          "main.plan": 1,
+          "main.final": 1
+        },
+        "actual_named_operations": {
+          "main.final": 1,
+          "main.plan": 5,
+          "search.final": 1,
+          "search.plan": 4,
+          "query_processor.direct": 2
+        },
+        "predicted_operation_count": 2,
+        "actual_operation_count": 27,
+        "missing_operations": {
+          "main.plan": 4,
+          "search.final": 1,
+          "search.plan": 4,
+          "query_processor.direct": 2,
+          "unclassified_observed_resource_operation": 14
+        },
+        "unexpected_operations": {},
+        "predicted_request_tokens": 41697.0,
+        "actual_request_tokens": 210363.0,
+        "signed_error": -168666.0,
+        "absolute_error": 168666.0,
+        "underprediction_ratio": 0.8017854850900586,
+        "candidate_retrieval_count_proxy": 3,
+        "final_context_tokens": 26512,
+        "root_cause_tags": [
+          "product_or_mixed_flow_requires_trace_review",
+          "repeated_main_reasoning",
+          "many_non_model_resource_operations",
+          "legitimate_multi_branch_workload",
+          "predictor_missing_future_work"
+        ],
+        "primary_root_cause": "B_predictor_underprediction_repeated_reasoning_needs_review"
+      },
+      {
+        "trace_id": "5e7eb11188c603a63848d8f424cf0663",
+        "case_id": "v4-043",
+        "query_type": "implicit_constraint",
+        "initial_route": "unknown_one_plan_plus_final",
+        "route_after_query_processor": null,
+        "final_execution_route": "knowledge_decompose",
+        "route_revision_count": null,
+        "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+        "predicted_operations": {
+          "main.plan": 1,
+          "main.final": 1
+        },
+        "actual_named_operations": {
+          "main.final": 1,
+          "main.plan": 4,
+          "query_processor.decompose": 2,
+          "query_processor.direct": 1
+        },
+        "predicted_operation_count": 2,
+        "actual_operation_count": 13,
+        "missing_operations": {
+          "main.plan": 3,
+          "query_processor.decompose": 2,
+          "query_processor.direct": 1,
+          "unclassified_observed_resource_operation": 5
+        },
+        "unexpected_operations": {},
+        "predicted_request_tokens": 41697.0,
+        "actual_request_tokens": 104199.0,
+        "signed_error": -62502.0,
+        "absolute_error": 62502.0,
+        "underprediction_ratio": 0.599833011833127,
+        "candidate_retrieval_count_proxy": 7,
+        "final_context_tokens": 25458,
+        "root_cause_tags": [
+          "repeated_main_reasoning",
+          "many_non_model_resource_operations",
+          "legitimate_multi_branch_workload",
+          "predictor_missing_future_work"
+        ],
+        "primary_root_cause": "B_predictor_underprediction_repeated_reasoning_needs_review"
+      },
+      {
+        "trace_id": "6eac91d2d5199863afae10b0104663a1",
+        "case_id": "v4-027",
+        "query_type": "cross_evidence",
+        "initial_route": "unknown_one_plan_plus_final",
+        "route_after_query_processor": null,
+        "final_execution_route": "product_search",
+        "route_revision_count": null,
+        "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+        "predicted_operations": {
+          "main.plan": 1,
+          "main.final": 1
+        },
+        "actual_named_operations": {
+          "main.final": 1,
+          "main.plan": 5,
+          "search.final": 2,
+          "search.plan": 7,
+          "query_processor.direct": 2
+        },
+        "predicted_operation_count": 2,
+        "actual_operation_count": 38,
+        "missing_operations": {
+          "main.plan": 4,
+          "search.final": 2,
+          "search.plan": 7,
+          "query_processor.direct": 2,
+          "unclassified_observed_resource_operation": 21
+        },
+        "unexpected_operations": {},
+        "predicted_request_tokens": 41697.0,
+        "actual_request_tokens": 248765.0,
+        "signed_error": -207068.0,
+        "absolute_error": 207068.0,
+        "underprediction_ratio": 0.8323839768456174,
+        "candidate_retrieval_count_proxy": 3,
+        "final_context_tokens": 28533,
+        "root_cause_tags": [
+          "product_or_mixed_flow_requires_trace_review",
+          "repeated_main_reasoning",
+          "many_non_model_resource_operations",
+          "legitimate_multi_branch_workload",
+          "predictor_missing_future_work"
+        ],
+        "primary_root_cause": "B_predictor_underprediction_repeated_reasoning_needs_review"
+      },
+      {
+        "trace_id": "c9ada9bff77bc27444ea4cd8b3ed7b28",
+        "case_id": "v4-028",
+        "query_type": "cross_evidence",
+        "initial_route": "unknown_one_plan_plus_final",
+        "route_after_query_processor": null,
+        "final_execution_route": "product_search",
+        "route_revision_count": null,
+        "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+        "predicted_operations": {
+          "main.plan": 1,
+          "main.final": 1
+        },
+        "actual_named_operations": {
+          "main.final": 1,
+          "main.plan": 5,
+          "search.final": 1,
+          "search.plan": 4,
+          "query_processor.direct": 3,
+          "query_processor.decompose": 1
+        },
+        "predicted_operation_count": 2,
+        "actual_operation_count": 29,
+        "missing_operations": {
+          "main.plan": 4,
+          "search.final": 1,
+          "search.plan": 4,
+          "query_processor.direct": 3,
+          "query_processor.decompose": 1,
+          "unclassified_observed_resource_operation": 14
+        },
+        "unexpected_operations": {},
+        "predicted_request_tokens": 41697.0,
+        "actual_request_tokens": 205228.0,
+        "signed_error": -163531.0,
+        "absolute_error": 163531.0,
+        "underprediction_ratio": 0.7968259691660008,
+        "candidate_retrieval_count_proxy": 6,
+        "final_context_tokens": 23019,
+        "root_cause_tags": [
+          "product_or_mixed_flow_requires_trace_review",
+          "repeated_main_reasoning",
+          "many_non_model_resource_operations",
+          "legitimate_multi_branch_workload",
+          "predictor_missing_future_work"
+        ],
+        "primary_root_cause": "B_predictor_underprediction_repeated_reasoning_needs_review"
+      },
+      {
+        "trace_id": "ee85ec4bafd5948347d6762158dc237e",
+        "case_id": "v4-038",
+        "query_type": "cross_evidence",
+        "initial_route": "unknown_one_plan_plus_final",
+        "route_after_query_processor": null,
+        "final_execution_route": "product_search",
+        "route_revision_count": null,
+        "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+        "predicted_operations": {
+          "main.plan": 1,
+          "main.final": 1
+        },
+        "actual_named_operations": {
+          "main.final": 1,
+          "main.plan": 6,
+          "search.final": 1,
+          "query_processor.decompose": 2,
+          "search.plan": 3
+        },
+        "predicted_operation_count": 2,
+        "actual_operation_count": 35,
+        "missing_operations": {
+          "main.plan": 5,
+          "search.final": 1,
+          "query_processor.decompose": 2,
+          "search.plan": 3,
+          "unclassified_observed_resource_operation": 22
+        },
+        "unexpected_operations": {},
+        "predicted_request_tokens": 41697.0,
+        "actual_request_tokens": 237965.0,
+        "signed_error": -196268.0,
+        "absolute_error": 196268.0,
+        "underprediction_ratio": 0.8247767528838275,
+        "candidate_retrieval_count_proxy": 7,
+        "final_context_tokens": 35604,
+        "root_cause_tags": [
+          "product_or_mixed_flow_requires_trace_review",
+          "repeated_main_reasoning",
+          "many_non_model_resource_operations",
+          "legitimate_multi_branch_workload",
+          "predictor_missing_future_work"
+        ],
+        "primary_root_cause": "B_predictor_underprediction_repeated_reasoning_needs_review"
+      },
+      {
+        "trace_id": "fd327ee1022517057f16bc6db31df4de",
+        "case_id": "v4-027",
+        "query_type": "cross_evidence",
+        "initial_route": "unknown_one_plan_plus_final",
+        "route_after_query_processor": null,
+        "final_execution_route": "product_search",
+        "route_revision_count": null,
+        "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+        "predicted_operations": {
+          "main.plan": 1,
+          "main.final": 1
+        },
+        "actual_named_operations": {
+          "main.final": 1,
+          "search.final": 1,
+          "search.plan": 3,
+          "main.plan": 3,
+          "query_processor.direct": 1
+        },
+        "predicted_operation_count": 2,
+        "actual_operation_count": 24,
+        "missing_operations": {
+          "search.final": 1,
+          "search.plan": 3,
+          "main.plan": 2,
+          "query_processor.direct": 1,
+          "unclassified_observed_resource_operation": 15
+        },
+        "unexpected_operations": {},
+        "predicted_request_tokens": 41697.0,
+        "actual_request_tokens": 152875.0,
+        "signed_error": -111178.0,
+        "absolute_error": 111178.0,
+        "underprediction_ratio": 0.7272477514309076,
+        "candidate_retrieval_count_proxy": 2,
+        "final_context_tokens": 20993,
+        "root_cause_tags": [
+          "product_or_mixed_flow_requires_trace_review",
+          "repeated_main_reasoning",
+          "many_non_model_resource_operations",
+          "legitimate_multi_branch_workload",
+          "predictor_missing_future_work"
+        ],
+        "primary_root_cause": "B_predictor_underprediction_repeated_reasoning_needs_review"
+      }
+    ],
+    "above_150k": [
+      {
+        "trace_id": "4fde757b50a92c0357a70eec92c3e9e5",
+        "case_id": "v4-r012",
+        "query_type": "cross_evidence",
+        "initial_route": "unknown_one_plan_plus_final",
+        "route_after_query_processor": null,
+        "final_execution_route": "product_search",
+        "route_revision_count": null,
+        "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+        "predicted_operations": {
+          "main.plan": 1,
+          "main.final": 1
+        },
+        "actual_named_operations": {
+          "main.final": 1,
+          "main.plan": 5,
+          "search.final": 1,
+          "search.plan": 4,
+          "query_processor.direct": 2
+        },
+        "predicted_operation_count": 2,
+        "actual_operation_count": 27,
+        "missing_operations": {
+          "main.plan": 4,
+          "search.final": 1,
+          "search.plan": 4,
+          "query_processor.direct": 2,
+          "unclassified_observed_resource_operation": 14
+        },
+        "unexpected_operations": {},
+        "predicted_request_tokens": 41697.0,
+        "actual_request_tokens": 210363.0,
+        "signed_error": -168666.0,
+        "absolute_error": 168666.0,
+        "underprediction_ratio": 0.8017854850900586,
+        "candidate_retrieval_count_proxy": 3,
+        "final_context_tokens": 26512,
+        "root_cause_tags": [
+          "product_or_mixed_flow_requires_trace_review",
+          "repeated_main_reasoning",
+          "many_non_model_resource_operations",
+          "legitimate_multi_branch_workload",
+          "predictor_missing_future_work"
+        ],
+        "primary_root_cause": "B_predictor_underprediction_repeated_reasoning_needs_review"
+      },
+      {
+        "trace_id": "6eac91d2d5199863afae10b0104663a1",
+        "case_id": "v4-027",
+        "query_type": "cross_evidence",
+        "initial_route": "unknown_one_plan_plus_final",
+        "route_after_query_processor": null,
+        "final_execution_route": "product_search",
+        "route_revision_count": null,
+        "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+        "predicted_operations": {
+          "main.plan": 1,
+          "main.final": 1
+        },
+        "actual_named_operations": {
+          "main.final": 1,
+          "main.plan": 5,
+          "search.final": 2,
+          "search.plan": 7,
+          "query_processor.direct": 2
+        },
+        "predicted_operation_count": 2,
+        "actual_operation_count": 38,
+        "missing_operations": {
+          "main.plan": 4,
+          "search.final": 2,
+          "search.plan": 7,
+          "query_processor.direct": 2,
+          "unclassified_observed_resource_operation": 21
+        },
+        "unexpected_operations": {},
+        "predicted_request_tokens": 41697.0,
+        "actual_request_tokens": 248765.0,
+        "signed_error": -207068.0,
+        "absolute_error": 207068.0,
+        "underprediction_ratio": 0.8323839768456174,
+        "candidate_retrieval_count_proxy": 3,
+        "final_context_tokens": 28533,
+        "root_cause_tags": [
+          "product_or_mixed_flow_requires_trace_review",
+          "repeated_main_reasoning",
+          "many_non_model_resource_operations",
+          "legitimate_multi_branch_workload",
+          "predictor_missing_future_work"
+        ],
+        "primary_root_cause": "B_predictor_underprediction_repeated_reasoning_needs_review"
+      },
+      {
+        "trace_id": "c9ada9bff77bc27444ea4cd8b3ed7b28",
+        "case_id": "v4-028",
+        "query_type": "cross_evidence",
+        "initial_route": "unknown_one_plan_plus_final",
+        "route_after_query_processor": null,
+        "final_execution_route": "product_search",
+        "route_revision_count": null,
+        "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+        "predicted_operations": {
+          "main.plan": 1,
+          "main.final": 1
+        },
+        "actual_named_operations": {
+          "main.final": 1,
+          "main.plan": 5,
+          "search.final": 1,
+          "search.plan": 4,
+          "query_processor.direct": 3,
+          "query_processor.decompose": 1
+        },
+        "predicted_operation_count": 2,
+        "actual_operation_count": 29,
+        "missing_operations": {
+          "main.plan": 4,
+          "search.final": 1,
+          "search.plan": 4,
+          "query_processor.direct": 3,
+          "query_processor.decompose": 1,
+          "unclassified_observed_resource_operation": 14
+        },
+        "unexpected_operations": {},
+        "predicted_request_tokens": 41697.0,
+        "actual_request_tokens": 205228.0,
+        "signed_error": -163531.0,
+        "absolute_error": 163531.0,
+        "underprediction_ratio": 0.7968259691660008,
+        "candidate_retrieval_count_proxy": 6,
+        "final_context_tokens": 23019,
+        "root_cause_tags": [
+          "product_or_mixed_flow_requires_trace_review",
+          "repeated_main_reasoning",
+          "many_non_model_resource_operations",
+          "legitimate_multi_branch_workload",
+          "predictor_missing_future_work"
+        ],
+        "primary_root_cause": "B_predictor_underprediction_repeated_reasoning_needs_review"
+      },
+      {
+        "trace_id": "ee85ec4bafd5948347d6762158dc237e",
+        "case_id": "v4-038",
+        "query_type": "cross_evidence",
+        "initial_route": "unknown_one_plan_plus_final",
+        "route_after_query_processor": null,
+        "final_execution_route": "product_search",
+        "route_revision_count": null,
+        "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+        "predicted_operations": {
+          "main.plan": 1,
+          "main.final": 1
+        },
+        "actual_named_operations": {
+          "main.final": 1,
+          "main.plan": 6,
+          "search.final": 1,
+          "query_processor.decompose": 2,
+          "search.plan": 3
+        },
+        "predicted_operation_count": 2,
+        "actual_operation_count": 35,
+        "missing_operations": {
+          "main.plan": 5,
+          "search.final": 1,
+          "query_processor.decompose": 2,
+          "search.plan": 3,
+          "unclassified_observed_resource_operation": 22
+        },
+        "unexpected_operations": {},
+        "predicted_request_tokens": 41697.0,
+        "actual_request_tokens": 237965.0,
+        "signed_error": -196268.0,
+        "absolute_error": 196268.0,
+        "underprediction_ratio": 0.8247767528838275,
+        "candidate_retrieval_count_proxy": 7,
+        "final_context_tokens": 35604,
+        "root_cause_tags": [
+          "product_or_mixed_flow_requires_trace_review",
+          "repeated_main_reasoning",
+          "many_non_model_resource_operations",
+          "legitimate_multi_branch_workload",
+          "predictor_missing_future_work"
+        ],
+        "primary_root_cause": "B_predictor_underprediction_repeated_reasoning_needs_review"
+      },
+      {
+        "trace_id": "fd327ee1022517057f16bc6db31df4de",
+        "case_id": "v4-027",
+        "query_type": "cross_evidence",
+        "initial_route": "unknown_one_plan_plus_final",
+        "route_after_query_processor": null,
+        "final_execution_route": "product_search",
+        "route_revision_count": null,
+        "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+        "predicted_operations": {
+          "main.plan": 1,
+          "main.final": 1
+        },
+        "actual_named_operations": {
+          "main.final": 1,
+          "search.final": 1,
+          "search.plan": 3,
+          "main.plan": 3,
+          "query_processor.direct": 1
+        },
+        "predicted_operation_count": 2,
+        "actual_operation_count": 24,
+        "missing_operations": {
+          "search.final": 1,
+          "search.plan": 3,
+          "main.plan": 2,
+          "query_processor.direct": 1,
+          "unclassified_observed_resource_operation": 15
+        },
+        "unexpected_operations": {},
+        "predicted_request_tokens": 41697.0,
+        "actual_request_tokens": 152875.0,
+        "signed_error": -111178.0,
+        "absolute_error": 111178.0,
+        "underprediction_ratio": 0.7272477514309076,
+        "candidate_retrieval_count_proxy": 2,
+        "final_context_tokens": 20993,
+        "root_cause_tags": [
+          "product_or_mixed_flow_requires_trace_review",
+          "repeated_main_reasoning",
+          "many_non_model_resource_operations",
+          "legitimate_multi_branch_workload",
+          "predictor_missing_future_work"
+        ],
+        "primary_root_cause": "B_predictor_underprediction_repeated_reasoning_needs_review"
+      }
+    ]
+  },
+  "product_search_audit": {
+    "count": 5,
+    "actual_tokens_p50": 210363.0,
+    "actual_tokens_p95": 248765.0,
+    "rows": [
+      {
+        "trace_id": "4fde757b50a92c0357a70eec92c3e9e5",
+        "case_id": "v4-r012",
+        "query_type": "cross_evidence",
+        "initial_route": "unknown_one_plan_plus_final",
+        "route_after_query_processor": null,
+        "final_execution_route": "product_search",
+        "route_revision_count": null,
+        "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+        "predicted_operations": {
+          "main.plan": 1,
+          "main.final": 1
+        },
+        "actual_named_operations": {
+          "main.final": 1,
+          "main.plan": 5,
+          "search.final": 1,
+          "search.plan": 4,
+          "query_processor.direct": 2
+        },
+        "predicted_operation_count": 2,
+        "actual_operation_count": 27,
+        "missing_operations": {
+          "main.plan": 4,
+          "search.final": 1,
+          "search.plan": 4,
+          "query_processor.direct": 2,
+          "unclassified_observed_resource_operation": 14
+        },
+        "unexpected_operations": {},
+        "predicted_request_tokens": 41697.0,
+        "actual_request_tokens": 210363.0,
+        "signed_error": -168666.0,
+        "absolute_error": 168666.0,
+        "underprediction_ratio": 0.8017854850900586,
+        "candidate_retrieval_count_proxy": 3,
+        "final_context_tokens": 26512
+      },
+      {
+        "trace_id": "6eac91d2d5199863afae10b0104663a1",
+        "case_id": "v4-027",
+        "query_type": "cross_evidence",
+        "initial_route": "unknown_one_plan_plus_final",
+        "route_after_query_processor": null,
+        "final_execution_route": "product_search",
+        "route_revision_count": null,
+        "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+        "predicted_operations": {
+          "main.plan": 1,
+          "main.final": 1
+        },
+        "actual_named_operations": {
+          "main.final": 1,
+          "main.plan": 5,
+          "search.final": 2,
+          "search.plan": 7,
+          "query_processor.direct": 2
+        },
+        "predicted_operation_count": 2,
+        "actual_operation_count": 38,
+        "missing_operations": {
+          "main.plan": 4,
+          "search.final": 2,
+          "search.plan": 7,
+          "query_processor.direct": 2,
+          "unclassified_observed_resource_operation": 21
+        },
+        "unexpected_operations": {},
+        "predicted_request_tokens": 41697.0,
+        "actual_request_tokens": 248765.0,
+        "signed_error": -207068.0,
+        "absolute_error": 207068.0,
+        "underprediction_ratio": 0.8323839768456174,
+        "candidate_retrieval_count_proxy": 3,
+        "final_context_tokens": 28533
+      },
+      {
+        "trace_id": "c9ada9bff77bc27444ea4cd8b3ed7b28",
+        "case_id": "v4-028",
+        "query_type": "cross_evidence",
+        "initial_route": "unknown_one_plan_plus_final",
+        "route_after_query_processor": null,
+        "final_execution_route": "product_search",
+        "route_revision_count": null,
+        "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+        "predicted_operations": {
+          "main.plan": 1,
+          "main.final": 1
+        },
+        "actual_named_operations": {
+          "main.final": 1,
+          "main.plan": 5,
+          "search.final": 1,
+          "search.plan": 4,
+          "query_processor.direct": 3,
+          "query_processor.decompose": 1
+        },
+        "predicted_operation_count": 2,
+        "actual_operation_count": 29,
+        "missing_operations": {
+          "main.plan": 4,
+          "search.final": 1,
+          "search.plan": 4,
+          "query_processor.direct": 3,
+          "query_processor.decompose": 1,
+          "unclassified_observed_resource_operation": 14
+        },
+        "unexpected_operations": {},
+        "predicted_request_tokens": 41697.0,
+        "actual_request_tokens": 205228.0,
+        "signed_error": -163531.0,
+        "absolute_error": 163531.0,
+        "underprediction_ratio": 0.7968259691660008,
+        "candidate_retrieval_count_proxy": 6,
+        "final_context_tokens": 23019
+      },
+      {
+        "trace_id": "ee85ec4bafd5948347d6762158dc237e",
+        "case_id": "v4-038",
+        "query_type": "cross_evidence",
+        "initial_route": "unknown_one_plan_plus_final",
+        "route_after_query_processor": null,
+        "final_execution_route": "product_search",
+        "route_revision_count": null,
+        "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+        "predicted_operations": {
+          "main.plan": 1,
+          "main.final": 1
+        },
+        "actual_named_operations": {
+          "main.final": 1,
+          "main.plan": 6,
+          "search.final": 1,
+          "query_processor.decompose": 2,
+          "search.plan": 3
+        },
+        "predicted_operation_count": 2,
+        "actual_operation_count": 35,
+        "missing_operations": {
+          "main.plan": 5,
+          "search.final": 1,
+          "query_processor.decompose": 2,
+          "search.plan": 3,
+          "unclassified_observed_resource_operation": 22
+        },
+        "unexpected_operations": {},
+        "predicted_request_tokens": 41697.0,
+        "actual_request_tokens": 237965.0,
+        "signed_error": -196268.0,
+        "absolute_error": 196268.0,
+        "underprediction_ratio": 0.8247767528838275,
+        "candidate_retrieval_count_proxy": 7,
+        "final_context_tokens": 35604
+      },
+      {
+        "trace_id": "fd327ee1022517057f16bc6db31df4de",
+        "case_id": "v4-027",
+        "query_type": "cross_evidence",
+        "initial_route": "unknown_one_plan_plus_final",
+        "route_after_query_processor": null,
+        "final_execution_route": "product_search",
+        "route_revision_count": null,
+        "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+        "predicted_operations": {
+          "main.plan": 1,
+          "main.final": 1
+        },
+        "actual_named_operations": {
+          "main.final": 1,
+          "search.final": 1,
+          "search.plan": 3,
+          "main.plan": 3,
+          "query_processor.direct": 1
+        },
+        "predicted_operation_count": 2,
+        "actual_operation_count": 24,
+        "missing_operations": {
+          "search.final": 1,
+          "search.plan": 3,
+          "main.plan": 2,
+          "query_processor.direct": 1,
+          "unclassified_observed_resource_operation": 15
+        },
+        "unexpected_operations": {},
+        "predicted_request_tokens": 41697.0,
+        "actual_request_tokens": 152875.0,
+        "signed_error": -111178.0,
+        "absolute_error": 111178.0,
+        "underprediction_ratio": 0.7272477514309076,
+        "candidate_retrieval_count_proxy": 2,
+        "final_context_tokens": 20993
+      }
+    ]
+  },
+  "replay": {
+    "status": "BLOCKED_MISSING_CAUSAL_EVENTS",
+    "new_predictor_metrics": null,
+    "required_fields": [
+      "operation_timeline",
+      "plan_revision_history"
+    ],
+    "reason": "The legacy aggregate report has no event timestamps or revision snapshots; using final route/subquery count at revision zero would leak future state."
+  },
+  "execution_graph_rows": [
+    {
+      "trace_id": "0112e2979c2955451299018910af326a",
+      "case_id": "blind-006",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "query_processor.direct": 1,
+        "main.plan": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 3,
+      "missing_operations": {
+        "query_processor.direct": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 21147.0,
+      "signed_error": 20550.0,
+      "absolute_error": 20550.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 1,
+      "final_context_tokens": 11183
+    },
+    {
+      "trace_id": "018e6bbde30011531d87d69c9a9bcfbb",
+      "case_id": "v4-030",
+      "query_type": "cross_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "knowledge_decompose",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "query_processor.decompose": 2,
+        "main.plan": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 8,
+      "missing_operations": {
+        "query_processor.decompose": 2,
+        "unclassified_observed_resource_operation": 4
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 24984.0,
+      "signed_error": 16713.0,
+      "absolute_error": 16713.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 8,
+      "final_context_tokens": 12349
+    },
+    {
+      "trace_id": "027402fcebdaaed7c1dbd8526d1def29",
+      "case_id": "v4-r007",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "query_processor.rewrite": 1,
+        "main.plan": 2,
+        "query_processor.direct": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 4,
+      "missing_operations": {
+        "query_processor.rewrite": 1,
+        "main.plan": 1,
+        "query_processor.direct": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 33611.0,
+      "signed_error": 8086.0,
+      "absolute_error": 8086.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 3,
+      "final_context_tokens": 13083
+    },
+    {
+      "trace_id": "069f5ef6b03dbccfc2246048c072b776",
+      "case_id": "v4-029",
+      "query_type": "cross_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 3
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 5,
+      "missing_operations": {
+        "main.plan": 2,
+        "unclassified_observed_resource_operation": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 52068.0,
+      "signed_error": -10371.0,
+      "absolute_error": 10371.0,
+      "underprediction_ratio": 0.1991818391334409,
+      "candidate_retrieval_count_proxy": 2,
+      "final_context_tokens": 15308
+    },
+    {
+      "trace_id": "0825cc41efe9ef7bb8c76405f2e82210",
+      "case_id": "v4-055",
+      "query_type": "unanswerable",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 2,
+      "missing_operations": {},
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 15331.0,
+      "signed_error": 26366.0,
+      "absolute_error": 26366.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 0,
+      "final_context_tokens": 7412
+    },
+    {
+      "trace_id": "0a32821c2b3e925e1da7b2b103a98cab",
+      "case_id": "v4-r014",
+      "query_type": "implicit_constraint",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 3,
+      "missing_operations": {
+        "unclassified_observed_resource_operation": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 20727.0,
+      "signed_error": 20970.0,
+      "absolute_error": 20970.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 1,
+      "final_context_tokens": 11085
+    },
+    {
+      "trace_id": "0b32f203162d2af696b29eba7824c0be",
+      "case_id": "v4-r008",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 2,
+        "query_processor.direct": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 4,
+      "missing_operations": {
+        "main.plan": 1,
+        "query_processor.direct": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 31591.0,
+      "signed_error": 10106.0,
+      "absolute_error": 10106.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 1,
+      "final_context_tokens": 11488
+    },
+    {
+      "trace_id": "0c4e2fe371b8ec50a28e56e500ce9050",
+      "case_id": "v4-029",
+      "query_type": "cross_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 2,
+      "missing_operations": {},
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 20523.0,
+      "signed_error": 21174.0,
+      "absolute_error": 21174.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 2,
+      "final_context_tokens": 10747
+    },
+    {
+      "trace_id": "0d8b60aea488560a016d0b03467869e0",
+      "case_id": "blind-001",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 3,
+      "missing_operations": {
+        "unclassified_observed_resource_operation": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 19761.0,
+      "signed_error": 21936.0,
+      "absolute_error": 21936.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 1,
+      "final_context_tokens": 11227
+    },
+    {
+      "trace_id": "118f7f72ee5e23376a70a6c44aaaba61",
+      "case_id": "v4-041",
+      "query_type": "cross_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "knowledge_decompose",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "query_processor.decompose": 2,
+        "main.plan": 2
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 8,
+      "missing_operations": {
+        "query_processor.decompose": 2,
+        "main.plan": 1,
+        "unclassified_observed_resource_operation": 3
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 35891.0,
+      "signed_error": 5806.0,
+      "absolute_error": 5806.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 8,
+      "final_context_tokens": 12504
+    },
+    {
+      "trace_id": "12d1cfb498b38d470825b33fdc5debde",
+      "case_id": "human-mh-001",
+      "query_type": "implicit_constraint_multi_hop",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 2,
+        "query_processor.direct": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 5,
+      "missing_operations": {
+        "main.plan": 1,
+        "query_processor.direct": 1,
+        "unclassified_observed_resource_operation": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 35870.0,
+      "signed_error": 5827.0,
+      "absolute_error": 5827.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 1,
+      "final_context_tokens": 13921
+    },
+    {
+      "trace_id": "1563abaf4ea7ccd5a18112e34bac0c0c",
+      "case_id": "v4-045",
+      "query_type": "implicit_constraint",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 2,
+        "query_processor.direct": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 4,
+      "missing_operations": {
+        "main.plan": 1,
+        "query_processor.direct": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 36325.0,
+      "signed_error": 5372.0,
+      "absolute_error": 5372.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 2,
+      "final_context_tokens": 14151
+    },
+    {
+      "trace_id": "17e075340e150d1c4fea265066a71a92",
+      "case_id": "v4-044",
+      "query_type": "implicit_constraint",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "knowledge_decompose",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 3,
+        "query_processor.direct": 1,
+        "query_processor.decompose": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 7,
+      "missing_operations": {
+        "main.plan": 2,
+        "query_processor.direct": 1,
+        "query_processor.decompose": 1,
+        "unclassified_observed_resource_operation": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 61341.0,
+      "signed_error": -19644.0,
+      "absolute_error": 19644.0,
+      "underprediction_ratio": 0.3202425783733555,
+      "candidate_retrieval_count_proxy": 8,
+      "final_context_tokens": 18490
+    },
+    {
+      "trace_id": "18d657e10a2a620b49f5aae81a56535c",
+      "case_id": "blind-005",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "query_processor.direct": 1,
+        "main.plan": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 3,
+      "missing_operations": {
+        "query_processor.direct": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 21419.0,
+      "signed_error": 20278.0,
+      "absolute_error": 20278.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 1,
+      "final_context_tokens": 10856
+    },
+    {
+      "trace_id": "19091146850f5b084bdf6c624791b163",
+      "case_id": "blind-001",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "knowledge_decompose",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "query_processor.decompose": 1,
+        "main.plan": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 6,
+      "missing_operations": {
+        "query_processor.decompose": 1,
+        "unclassified_observed_resource_operation": 3
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 21134.0,
+      "signed_error": 20563.0,
+      "absolute_error": 20563.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 4,
+      "final_context_tokens": 10957
+    },
+    {
+      "trace_id": "19cadb2783969f52e3f21eab269cc384",
+      "case_id": "blind-021",
+      "query_type": "cross_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "knowledge_decompose",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "query_processor.decompose": 1,
+        "query_processor.direct": 1,
+        "main.plan": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 4,
+      "missing_operations": {
+        "query_processor.decompose": 1,
+        "query_processor.direct": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 21603.0,
+      "signed_error": 20094.0,
+      "absolute_error": 20094.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 4,
+      "final_context_tokens": 10365
+    },
+    {
+      "trace_id": "1b71c54860c6635f7ad2080122664956",
+      "case_id": "v4-024",
+      "query_type": "cross_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 3,
+        "query_processor.direct": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 7,
+      "missing_operations": {
+        "main.plan": 2,
+        "query_processor.direct": 1,
+        "unclassified_observed_resource_operation": 2
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 54405.0,
+      "signed_error": -12708.0,
+      "absolute_error": 12708.0,
+      "underprediction_ratio": 0.2335814722911497,
+      "candidate_retrieval_count_proxy": 3,
+      "final_context_tokens": 17218
+    },
+    {
+      "trace_id": "1f6739b4a37b293bb497fe0f2ff6c113",
+      "case_id": "v4-034",
+      "query_type": "cross_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 4,
+      "missing_operations": {
+        "unclassified_observed_resource_operation": 2
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 25312.0,
+      "signed_error": 16385.0,
+      "absolute_error": 16385.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 2,
+      "final_context_tokens": 14881
+    },
+    {
+      "trace_id": "20cf104aa6a43df4cd8bfdcd01315b75",
+      "case_id": "v4-048",
+      "query_type": "implicit_constraint",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "knowledge_decompose",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 2,
+        "query_processor.decompose": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 8,
+      "missing_operations": {
+        "main.plan": 1,
+        "query_processor.decompose": 1,
+        "unclassified_observed_resource_operation": 4
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 39414.0,
+      "signed_error": 2283.0,
+      "absolute_error": 2283.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 5,
+      "final_context_tokens": 15846
+    },
+    {
+      "trace_id": "22f4ed31c992b7c12b256574aaf7165b",
+      "case_id": "blind-028",
+      "query_type": "unanswerable",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 3,
+      "missing_operations": {
+        "unclassified_observed_resource_operation": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 18022.0,
+      "signed_error": 23675.0,
+      "absolute_error": 23675.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 0,
+      "final_context_tokens": 9524
+    },
+    {
+      "trace_id": "24ca3b0155dde9fab8fffe9642e0cc61",
+      "case_id": "v4-r016",
+      "query_type": "unanswerable",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "knowledge_decompose",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 2,
+        "query_processor.decompose": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 6,
+      "missing_operations": {
+        "main.plan": 1,
+        "query_processor.decompose": 1,
+        "unclassified_observed_resource_operation": 2
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 32149.0,
+      "signed_error": 9548.0,
+      "absolute_error": 9548.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 3,
+      "final_context_tokens": 11692
+    },
+    {
+      "trace_id": "257a8e8a4e7356fd59df2f50f1a6da3a",
+      "case_id": "v4-058",
+      "query_type": "unanswerable",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "query_processor.direct": 2,
+        "main.plan": 2
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 3,
+      "missing_operations": {
+        "query_processor.direct": 2,
+        "main.plan": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 29781.0,
+      "signed_error": 11916.0,
+      "absolute_error": 11916.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 3,
+      "final_context_tokens": 10647
+    },
+    {
+      "trace_id": "26112ed4938e899465f9ebc9d365cb7a",
+      "case_id": "v4-060",
+      "query_type": "policy_boundary",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 2,
+      "missing_operations": {},
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 15334.0,
+      "signed_error": 26363.0,
+      "absolute_error": 26363.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 0,
+      "final_context_tokens": 7450
+    },
+    {
+      "trace_id": "2643687211449a68106029cd4700b17b",
+      "case_id": "blind-029",
+      "query_type": "unanswerable",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "query_processor.direct": 2,
+        "main.plan": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 2,
+      "missing_operations": {
+        "query_processor.direct": 2
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 20459.0,
+      "signed_error": 21238.0,
+      "absolute_error": 21238.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 2,
+      "final_context_tokens": 10314
+    },
+    {
+      "trace_id": "2792597d7e2c167175e68fe089bb2b5e",
+      "case_id": "v4-060",
+      "query_type": "policy_boundary",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 2
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 3,
+      "missing_operations": {
+        "main.plan": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 27336.0,
+      "signed_error": 14361.0,
+      "absolute_error": 14361.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 1,
+      "final_context_tokens": 9796
+    },
+    {
+      "trace_id": "2976b63acf68c03880a25f73847ce29d",
+      "case_id": "v4-r009",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "query_processor.direct": 1,
+        "main.plan": 2
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 3,
+      "missing_operations": {
+        "query_processor.direct": 1,
+        "main.plan": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 32950.0,
+      "signed_error": 8747.0,
+      "absolute_error": 8747.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 3,
+      "final_context_tokens": 13087
+    },
+    {
+      "trace_id": "2b157a55f26c28b87a15838d3070223c",
+      "case_id": "v4-r002",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 2
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 5,
+      "missing_operations": {
+        "main.plan": 1,
+        "unclassified_observed_resource_operation": 2
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 33486.0,
+      "signed_error": 8211.0,
+      "absolute_error": 8211.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 1,
+      "final_context_tokens": 13397
+    },
+    {
+      "trace_id": "2c2a5ff72d1220a73660bea65dce2ddb",
+      "case_id": "v4-002",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "query_processor.direct": 1,
+        "main.plan": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 3,
+      "missing_operations": {
+        "query_processor.direct": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 20591.0,
+      "signed_error": 21106.0,
+      "absolute_error": 21106.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 1,
+      "final_context_tokens": 10994
+    },
+    {
+      "trace_id": "2dde66930d66f23f7597be3268051571",
+      "case_id": "blind-029",
+      "query_type": "unanswerable",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "knowledge_decompose",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "query_processor.decompose": 1,
+        "main.plan": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 4,
+      "missing_operations": {
+        "query_processor.decompose": 1,
+        "unclassified_observed_resource_operation": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 20522.0,
+      "signed_error": 21175.0,
+      "absolute_error": 21175.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 4,
+      "final_context_tokens": 10404
+    },
+    {
+      "trace_id": "2f4fc9abb08dd5ac6585ad542eb6b65c",
+      "case_id": "blind-010",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 2,
+        "query_processor.direct": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 4,
+      "missing_operations": {
+        "main.plan": 1,
+        "query_processor.direct": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 35845.0,
+      "signed_error": 5852.0,
+      "absolute_error": 5852.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 2,
+      "final_context_tokens": 13098
+    },
+    {
+      "trace_id": "2fa246f59d37a298b0c35aeda0301eb4",
+      "case_id": "v4-r007",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 3,
+        "query_processor.direct": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 5,
+      "missing_operations": {
+        "main.plan": 2,
+        "query_processor.direct": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 43622.0,
+      "signed_error": -1925.0,
+      "absolute_error": 1925.0,
+      "underprediction_ratio": 0.044129109165100176,
+      "candidate_retrieval_count_proxy": 1,
+      "final_context_tokens": 11343
+    },
+    {
+      "trace_id": "305a6059eeec74b4eb268f005155461a",
+      "case_id": "v4-r002",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "knowledge_decompose",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "query_processor.decompose": 1,
+        "main.plan": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 5,
+      "missing_operations": {
+        "query_processor.decompose": 1,
+        "unclassified_observed_resource_operation": 2
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 20787.0,
+      "signed_error": 20910.0,
+      "absolute_error": 20910.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 3,
+      "final_context_tokens": 11155
+    },
+    {
+      "trace_id": "319d093a214736edf57b152fbf16771e",
+      "case_id": "blind-008",
+      "query_type": "cross_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "knowledge_decompose",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 2,
+        "query_processor.decompose": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 6,
+      "missing_operations": {
+        "main.plan": 1,
+        "query_processor.decompose": 1,
+        "unclassified_observed_resource_operation": 2
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 33321.0,
+      "signed_error": 8376.0,
+      "absolute_error": 8376.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 3,
+      "final_context_tokens": 11839
+    },
+    {
+      "trace_id": "38880402eea7e42b39ca3025a918ee1e",
+      "case_id": "v4-057",
+      "query_type": "unanswerable",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 1,
+      "missing_operations": {},
+      "unexpected_operations": {
+        "main.plan": 1
+      },
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 7745.0,
+      "signed_error": 33952.0,
+      "absolute_error": 33952.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 0,
+      "final_context_tokens": 7062
+    },
+    {
+      "trace_id": "38c72afce0ae93a0e1e4e5dd072ded76",
+      "case_id": "blind-012",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "query_processor.rewrite": 1,
+        "main.plan": 3,
+        "query_processor.direct": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 6,
+      "missing_operations": {
+        "query_processor.rewrite": 1,
+        "main.plan": 2,
+        "query_processor.direct": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 54302.0,
+      "signed_error": -12605.0,
+      "absolute_error": 12605.0,
+      "underprediction_ratio": 0.23212773010202203,
+      "candidate_retrieval_count_proxy": 3,
+      "final_context_tokens": 15821
+    },
+    {
+      "trace_id": "4391d417aa2e286617416ff4359668c3",
+      "case_id": "v4-028",
+      "query_type": "cross_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "knowledge_decompose",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 2,
+        "query_processor.decompose": 1,
+        "query_processor.direct": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 9,
+      "missing_operations": {
+        "main.plan": 1,
+        "query_processor.decompose": 1,
+        "query_processor.direct": 1,
+        "unclassified_observed_resource_operation": 4
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 45470.0,
+      "signed_error": -3773.0,
+      "absolute_error": 3773.0,
+      "underprediction_ratio": 0.08297778755223224,
+      "candidate_retrieval_count_proxy": 4,
+      "final_context_tokens": 18056
+    },
+    {
+      "trace_id": "4469505c15934c23ae80d22a01a5375c",
+      "case_id": "v4-044",
+      "query_type": "implicit_constraint",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "knowledge_decompose",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 4,
+        "query_processor.direct": 3,
+        "query_processor.decompose": 2
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 11,
+      "missing_operations": {
+        "main.plan": 3,
+        "query_processor.direct": 3,
+        "query_processor.decompose": 2,
+        "unclassified_observed_resource_operation": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 91594.0,
+      "signed_error": -49897.0,
+      "absolute_error": 49897.0,
+      "underprediction_ratio": 0.544762757385855,
+      "candidate_retrieval_count_proxy": 9,
+      "final_context_tokens": 22471
+    },
+    {
+      "trace_id": "44bd9eacfdacf108a9f85190ea8e8f0a",
+      "case_id": "blind-030",
+      "query_type": "policy_boundary",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 1,
+      "missing_operations": {},
+      "unexpected_operations": {
+        "main.plan": 1
+      },
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 7755.0,
+      "signed_error": 33942.0,
+      "absolute_error": 33942.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 0,
+      "final_context_tokens": 7092
+    },
+    {
+      "trace_id": "4b528619b03dc2e67c8ebe4cee85cf1b",
+      "case_id": "v4-026",
+      "query_type": "cross_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 5
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 11,
+      "missing_operations": {
+        "main.plan": 4,
+        "unclassified_observed_resource_operation": 5
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 87223.0,
+      "signed_error": -45526.0,
+      "absolute_error": 45526.0,
+      "underprediction_ratio": 0.5219494858007636,
+      "candidate_retrieval_count_proxy": 2,
+      "final_context_tokens": 18631
+    },
+    {
+      "trace_id": "4d47ca3680e274d9667de8232fcd469d",
+      "case_id": "human-mh-001",
+      "query_type": "implicit_constraint_multi_hop",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "knowledge_decompose",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 2,
+        "query_processor.decompose": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 8,
+      "missing_operations": {
+        "main.plan": 1,
+        "query_processor.decompose": 1,
+        "unclassified_observed_resource_operation": 4
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 36030.0,
+      "signed_error": 5667.0,
+      "absolute_error": 5667.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 4,
+      "final_context_tokens": 13349
+    },
+    {
+      "trace_id": "4d9e1a3ae84cf96dbb12e44ed0843e2f",
+      "case_id": "v4-043",
+      "query_type": "implicit_constraint",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "knowledge_decompose",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "query_processor.decompose": 1,
+        "query_processor.direct": 1,
+        "main.plan": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 7,
+      "missing_operations": {
+        "query_processor.decompose": 1,
+        "query_processor.direct": 1,
+        "unclassified_observed_resource_operation": 3
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 26036.0,
+      "signed_error": 15661.0,
+      "absolute_error": 15661.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 5,
+      "final_context_tokens": 13098
+    },
+    {
+      "trace_id": "4e9fd09f28117cc74c39cf3777c8424a",
+      "case_id": "v4-035",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 2,
+        "query_processor.direct": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 4,
+      "missing_operations": {
+        "main.plan": 1,
+        "query_processor.direct": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 33485.0,
+      "signed_error": 8212.0,
+      "absolute_error": 8212.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 1,
+      "final_context_tokens": 11748
+    },
+    {
+      "trace_id": "4f947e69d6d59417192dc5329c9e2184",
+      "case_id": "human-mh-002",
+      "query_type": "implicit_constraint_multi_hop",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 4,
+      "missing_operations": {
+        "unclassified_observed_resource_operation": 2
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 23763.0,
+      "signed_error": 17934.0,
+      "absolute_error": 17934.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 1,
+      "final_context_tokens": 13753
+    },
+    {
+      "trace_id": "4fde757b50a92c0357a70eec92c3e9e5",
+      "case_id": "v4-r012",
+      "query_type": "cross_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "product_search",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 5,
+        "search.final": 1,
+        "search.plan": 4,
+        "query_processor.direct": 2
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 27,
+      "missing_operations": {
+        "main.plan": 4,
+        "search.final": 1,
+        "search.plan": 4,
+        "query_processor.direct": 2,
+        "unclassified_observed_resource_operation": 14
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 210363.0,
+      "signed_error": -168666.0,
+      "absolute_error": 168666.0,
+      "underprediction_ratio": 0.8017854850900586,
+      "candidate_retrieval_count_proxy": 3,
+      "final_context_tokens": 26512
+    },
+    {
+      "trace_id": "5217dfa362c39d645e58f7b9c81bc7fd",
+      "case_id": "v4-002",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 2,
+        "query_processor.direct": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 5,
+      "missing_operations": {
+        "main.plan": 1,
+        "query_processor.direct": 1,
+        "unclassified_observed_resource_operation": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 35147.0,
+      "signed_error": 6550.0,
+      "absolute_error": 6550.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 1,
+      "final_context_tokens": 13879
+    },
+    {
+      "trace_id": "53500889dc6663cbab3aefa1434381e3",
+      "case_id": "blind-018",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 3,
+      "missing_operations": {
+        "unclassified_observed_resource_operation": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 19457.0,
+      "signed_error": 22240.0,
+      "absolute_error": 22240.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 1,
+      "final_context_tokens": 10533
+    },
+    {
+      "trace_id": "53f4db6346aea7cc44b735aeb7b7385f",
+      "case_id": "v4-045",
+      "query_type": "implicit_constraint",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "query_processor.rewrite": 1,
+        "main.plan": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 3,
+      "missing_operations": {
+        "query_processor.rewrite": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 24201.0,
+      "signed_error": 17496.0,
+      "absolute_error": 17496.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 3,
+      "final_context_tokens": 13154
+    },
+    {
+      "trace_id": "57a13b36974beb4d246c47f5b39a9165",
+      "case_id": "v4-021",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "knowledge_decompose",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "query_processor.direct": 2,
+        "main.plan": 2,
+        "query_processor.decompose": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 6,
+      "missing_operations": {
+        "query_processor.direct": 2,
+        "main.plan": 1,
+        "query_processor.decompose": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 37132.0,
+      "signed_error": 4565.0,
+      "absolute_error": 4565.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 6,
+      "final_context_tokens": 13606
+    },
+    {
+      "trace_id": "5ae69b12a38c733a5b55815579a61a6d",
+      "case_id": "v4-051",
+      "query_type": "implicit_constraint",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "knowledge_decompose",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 2,
+        "query_processor.decompose": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 6,
+      "missing_operations": {
+        "main.plan": 1,
+        "query_processor.decompose": 1,
+        "unclassified_observed_resource_operation": 2
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 29960.0,
+      "signed_error": 11737.0,
+      "absolute_error": 11737.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 3,
+      "final_context_tokens": 10783
+    },
+    {
+      "trace_id": "5e6950c512eff97f921b0f03c5d01d44",
+      "case_id": "v4-051",
+      "query_type": "implicit_constraint",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 3
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 7,
+      "missing_operations": {
+        "main.plan": 2,
+        "unclassified_observed_resource_operation": 3
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 44403.0,
+      "signed_error": -2706.0,
+      "absolute_error": 2706.0,
+      "underprediction_ratio": 0.060941828254847646,
+      "candidate_retrieval_count_proxy": 1,
+      "final_context_tokens": 14497
+    },
+    {
+      "trace_id": "5e7eb11188c603a63848d8f424cf0663",
+      "case_id": "v4-043",
+      "query_type": "implicit_constraint",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "knowledge_decompose",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 4,
+        "query_processor.decompose": 2,
+        "query_processor.direct": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 13,
+      "missing_operations": {
+        "main.plan": 3,
+        "query_processor.decompose": 2,
+        "query_processor.direct": 1,
+        "unclassified_observed_resource_operation": 5
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 104199.0,
+      "signed_error": -62502.0,
+      "absolute_error": 62502.0,
+      "underprediction_ratio": 0.599833011833127,
+      "candidate_retrieval_count_proxy": 7,
+      "final_context_tokens": 25458
+    },
+    {
+      "trace_id": "60649184dae32e5e29237ae0ae1cbf10",
+      "case_id": "v4-020",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "query_processor.direct": 1,
+        "main.plan": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 2,
+      "missing_operations": {
+        "query_processor.direct": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 17638.0,
+      "signed_error": 24059.0,
+      "absolute_error": 24059.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 1,
+      "final_context_tokens": 8704
+    },
+    {
+      "trace_id": "6119d0c08ef974269a2e1d86b2961165",
+      "case_id": "v4-005",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "knowledge_decompose",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "query_processor.decompose": 1,
+        "main.plan": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 5,
+      "missing_operations": {
+        "query_processor.decompose": 1,
+        "unclassified_observed_resource_operation": 2
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 20499.0,
+      "signed_error": 21198.0,
+      "absolute_error": 21198.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 3,
+      "final_context_tokens": 10672
+    },
+    {
+      "trace_id": "61954a523ade6680f5f8985707e5731d",
+      "case_id": "blind-014",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 4
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 11,
+      "missing_operations": {
+        "main.plan": 3,
+        "unclassified_observed_resource_operation": 6
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 76824.0,
+      "signed_error": -35127.0,
+      "absolute_error": 35127.0,
+      "underprediction_ratio": 0.4572399250234302,
+      "candidate_retrieval_count_proxy": 1,
+      "final_context_tokens": 20074
+    },
+    {
+      "trace_id": "653da8dca57aeadb99abb4c6e5650a7f",
+      "case_id": "v4-047",
+      "query_type": "implicit_constraint",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 2
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 4,
+      "missing_operations": {
+        "main.plan": 1,
+        "unclassified_observed_resource_operation": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 36492.0,
+      "signed_error": 5205.0,
+      "absolute_error": 5205.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 3,
+      "final_context_tokens": 14042
+    },
+    {
+      "trace_id": "68933590d21d857c5b6818110c02c37d",
+      "case_id": "v4-r016",
+      "query_type": "unanswerable",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 3
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 6,
+      "missing_operations": {
+        "main.plan": 2,
+        "unclassified_observed_resource_operation": 2
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 47012.0,
+      "signed_error": -5315.0,
+      "absolute_error": 5315.0,
+      "underprediction_ratio": 0.11305624095975496,
+      "candidate_retrieval_count_proxy": 1,
+      "final_context_tokens": 14904
+    },
+    {
+      "trace_id": "68dc39af2c9efab076e7fcb663b6700b",
+      "case_id": "blind-013",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "knowledge_decompose",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 2,
+        "query_processor.decompose": 1,
+        "query_processor.direct": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 6,
+      "missing_operations": {
+        "main.plan": 1,
+        "query_processor.decompose": 1,
+        "query_processor.direct": 1,
+        "unclassified_observed_resource_operation": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 39778.0,
+      "signed_error": 1919.0,
+      "absolute_error": 1919.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 4,
+      "final_context_tokens": 15237
+    },
+    {
+      "trace_id": "693ae975298290ce7581cdeb2f8de4be",
+      "case_id": "blind-007",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 3,
+        "query_processor.direct": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 5,
+      "missing_operations": {
+        "main.plan": 2,
+        "query_processor.direct": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 45219.0,
+      "signed_error": -3522.0,
+      "absolute_error": 3522.0,
+      "underprediction_ratio": 0.07788761361374644,
+      "candidate_retrieval_count_proxy": 2,
+      "final_context_tokens": 13859
+    },
+    {
+      "trace_id": "6a3118edd5cc6f6057d1bfaf31694320",
+      "case_id": "v4-006",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "knowledge_decompose",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "query_processor.decompose": 1,
+        "main.plan": 2,
+        "query_processor.direct": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 6,
+      "missing_operations": {
+        "query_processor.decompose": 1,
+        "main.plan": 1,
+        "query_processor.direct": 1,
+        "unclassified_observed_resource_operation": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 39102.0,
+      "signed_error": 2595.0,
+      "absolute_error": 2595.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 4,
+      "final_context_tokens": 14526
+    },
+    {
+      "trace_id": "6a6cfcd8e60cbd083bfa2c7d70524e7d",
+      "case_id": "blind-007",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "query_processor.direct": 1,
+        "main.plan": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 2,
+      "missing_operations": {
+        "query_processor.direct": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 18520.0,
+      "signed_error": 23177.0,
+      "absolute_error": 23177.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 1,
+      "final_context_tokens": 8891
+    },
+    {
+      "trace_id": "6cfd322c519faa2c6554b44ad93ae601",
+      "case_id": "blind-019",
+      "query_type": "cross_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "knowledge_decompose",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 2,
+        "query_processor.decompose": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 7,
+      "missing_operations": {
+        "main.plan": 1,
+        "query_processor.decompose": 1,
+        "unclassified_observed_resource_operation": 3
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 38094.0,
+      "signed_error": 3603.0,
+      "absolute_error": 3603.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 4,
+      "final_context_tokens": 15176
+    },
+    {
+      "trace_id": "6d0e3f92cb52f94cf3a15864fea4536b",
+      "case_id": "v4-046",
+      "query_type": "implicit_constraint",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "knowledge_decompose",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 2,
+        "query_processor.decompose": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 8,
+      "missing_operations": {
+        "main.plan": 1,
+        "query_processor.decompose": 1,
+        "unclassified_observed_resource_operation": 4
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 37800.0,
+      "signed_error": 3897.0,
+      "absolute_error": 3897.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 4,
+      "final_context_tokens": 14590
+    },
+    {
+      "trace_id": "6e062dfeddc1276f2e26cac706c909a5",
+      "case_id": "blind-027",
+      "query_type": "unanswerable",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 2
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 3,
+      "missing_operations": {
+        "main.plan": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 22804.0,
+      "signed_error": 18893.0,
+      "absolute_error": 18893.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 0,
+      "final_context_tokens": 7615
+    },
+    {
+      "trace_id": "6eac91d2d5199863afae10b0104663a1",
+      "case_id": "v4-027",
+      "query_type": "cross_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "product_search",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 5,
+        "search.final": 2,
+        "search.plan": 7,
+        "query_processor.direct": 2
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 38,
+      "missing_operations": {
+        "main.plan": 4,
+        "search.final": 2,
+        "search.plan": 7,
+        "query_processor.direct": 2,
+        "unclassified_observed_resource_operation": 21
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 248765.0,
+      "signed_error": -207068.0,
+      "absolute_error": 207068.0,
+      "underprediction_ratio": 0.8323839768456174,
+      "candidate_retrieval_count_proxy": 3,
+      "final_context_tokens": 28533
+    },
+    {
+      "trace_id": "700bdb28105a36cd99667a3b9b00604a",
+      "case_id": "v4-040",
+      "query_type": "cross_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "knowledge_decompose",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 3,
+        "query_processor.decompose": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 10,
+      "missing_operations": {
+        "main.plan": 2,
+        "query_processor.decompose": 1,
+        "unclassified_observed_resource_operation": 5
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 57183.0,
+      "signed_error": -15486.0,
+      "absolute_error": 15486.0,
+      "underprediction_ratio": 0.270814752636273,
+      "candidate_retrieval_count_proxy": 5,
+      "final_context_tokens": 18989
+    },
+    {
+      "trace_id": "720b779f422e5925a5be26cc515d0c35",
+      "case_id": "v4-048",
+      "query_type": "implicit_constraint",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 2
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 5,
+      "missing_operations": {
+        "main.plan": 1,
+        "unclassified_observed_resource_operation": 2
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 36779.0,
+      "signed_error": 4918.0,
+      "absolute_error": 4918.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 2,
+      "final_context_tokens": 15768
+    },
+    {
+      "trace_id": "735afe0ab5f56cf710ebccb988fe5986",
+      "case_id": "blind-010",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "query_processor.direct": 1,
+        "main.plan": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 3,
+      "missing_operations": {
+        "query_processor.direct": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 21476.0,
+      "signed_error": 20221.0,
+      "absolute_error": 20221.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 1,
+      "final_context_tokens": 10994
+    },
+    {
+      "trace_id": "7401397d9b2fe9897661d54fbe3a600e",
+      "case_id": "blind-012",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "knowledge_decompose",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 2,
+        "query_processor.decompose": 1,
+        "query_processor.direct": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 8,
+      "missing_operations": {
+        "main.plan": 1,
+        "query_processor.decompose": 1,
+        "query_processor.direct": 1,
+        "unclassified_observed_resource_operation": 3
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 42273.0,
+      "signed_error": -576.0,
+      "absolute_error": 576.0,
+      "underprediction_ratio": 0.01362571854375133,
+      "candidate_retrieval_count_proxy": 5,
+      "final_context_tokens": 16407
+    },
+    {
+      "trace_id": "750abc097a801ce5d7a2718e0e169f89",
+      "case_id": "v4-r009",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "query_processor.direct": 3,
+        "main.plan": 2
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 3,
+      "missing_operations": {
+        "query_processor.direct": 3,
+        "main.plan": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 33865.0,
+      "signed_error": 7832.0,
+      "absolute_error": 7832.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 3,
+      "final_context_tokens": 11759
+    },
+    {
+      "trace_id": "755b25b2f588060a0610a9e568341dd7",
+      "case_id": "v4-006",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 2,
+        "query_processor.direct": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 4,
+      "missing_operations": {
+        "main.plan": 1,
+        "query_processor.direct": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 34454.0,
+      "signed_error": 7243.0,
+      "absolute_error": 7243.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 1,
+      "final_context_tokens": 12864
+    },
+    {
+      "trace_id": "764c9c357475f3ed0dd019e5b12ea341",
+      "case_id": "blind-005",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 2,
+        "query_processor.direct": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 4,
+      "missing_operations": {
+        "main.plan": 1,
+        "query_processor.direct": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 33740.0,
+      "signed_error": 7957.0,
+      "absolute_error": 7957.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 1,
+      "final_context_tokens": 12421
+    },
+    {
+      "trace_id": "76a42ab9d3af877ef7f39e53031ad7cf",
+      "case_id": "v4-035",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "query_processor.direct": 2,
+        "main.plan": 2
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 4,
+      "missing_operations": {
+        "query_processor.direct": 2,
+        "main.plan": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 34346.0,
+      "signed_error": 7351.0,
+      "absolute_error": 7351.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 2,
+      "final_context_tokens": 12322
+    },
+    {
+      "trace_id": "774bc50b0c7245dbbb968136d6b1ce5f",
+      "case_id": "v4-005",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "knowledge_decompose",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "query_processor.decompose": 1,
+        "main.plan": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 5,
+      "missing_operations": {
+        "query_processor.decompose": 1,
+        "unclassified_observed_resource_operation": 2
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 21451.0,
+      "signed_error": 20246.0,
+      "absolute_error": 20246.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 3,
+      "final_context_tokens": 10798
+    },
+    {
+      "trace_id": "7950e1ccf9b913afc4caa9cfcf011bd0",
+      "case_id": "v4-r011",
+      "query_type": "cross_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 2,
+        "query_processor.direct": 2
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 7,
+      "missing_operations": {
+        "main.plan": 1,
+        "query_processor.direct": 2,
+        "unclassified_observed_resource_operation": 2
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 44832.0,
+      "signed_error": -3135.0,
+      "absolute_error": 3135.0,
+      "underprediction_ratio": 0.06992773019271949,
+      "candidate_retrieval_count_proxy": 2,
+      "final_context_tokens": 17923
+    },
+    {
+      "trace_id": "7966e3a947657d4c8e17eb3259007c5a",
+      "case_id": "v4-020",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 2,
+      "missing_operations": {},
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 16676.0,
+      "signed_error": 25021.0,
+      "absolute_error": 25021.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 1,
+      "final_context_tokens": 8591
+    },
+    {
+      "trace_id": "7a7005460780a7f9b96d5f25d6d21650",
+      "case_id": "blind-016",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "query_processor.direct": 1,
+        "main.plan": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 3,
+      "missing_operations": {
+        "query_processor.direct": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 19893.0,
+      "signed_error": 21804.0,
+      "absolute_error": 21804.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 1,
+      "final_context_tokens": 10318
+    },
+    {
+      "trace_id": "7da7646fe92c7e2fd12c11f980a704d7",
+      "case_id": "blind-030",
+      "query_type": "policy_boundary",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "query_processor.direct": 1,
+        "main.plan": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 2,
+      "missing_operations": {
+        "query_processor.direct": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 19019.0,
+      "signed_error": 22678.0,
+      "absolute_error": 22678.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 1,
+      "final_context_tokens": 9126
+    },
+    {
+      "trace_id": "8622549e6cdd12745eb6e6dd95239a88",
+      "case_id": "blind-025",
+      "query_type": "cross_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 2,
+        "query_processor.direct": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 4,
+      "missing_operations": {
+        "main.plan": 1,
+        "query_processor.direct": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 37345.0,
+      "signed_error": 4352.0,
+      "absolute_error": 4352.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 2,
+      "final_context_tokens": 14519
+    },
+    {
+      "trace_id": "89799e813f60f58074a56b4d87f2f0d5",
+      "case_id": "v4-030",
+      "query_type": "cross_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "knowledge_decompose",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "query_processor.decompose": 1,
+        "query_processor.direct": 1,
+        "main.plan": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 4,
+      "missing_operations": {
+        "query_processor.decompose": 1,
+        "query_processor.direct": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 23049.0,
+      "signed_error": 18648.0,
+      "absolute_error": 18648.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 4,
+      "final_context_tokens": 10647
+    },
+    {
+      "trace_id": "8c62ea68a67b996f77354cfcde7fc6c1",
+      "case_id": "v4-054",
+      "query_type": "unanswerable",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 2
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 4,
+      "missing_operations": {
+        "main.plan": 1,
+        "unclassified_observed_resource_operation": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 25391.0,
+      "signed_error": 16306.0,
+      "absolute_error": 16306.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 0,
+      "final_context_tokens": 9418
+    },
+    {
+      "trace_id": "8d44c99dc64fe46272f029e724ca6721",
+      "case_id": "v4-r006",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "knowledge_decompose",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "query_processor.decompose": 1,
+        "main.plan": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 6,
+      "missing_operations": {
+        "query_processor.decompose": 1,
+        "unclassified_observed_resource_operation": 3
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 22954.0,
+      "signed_error": 18743.0,
+      "absolute_error": 18743.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 4,
+      "final_context_tokens": 11677
+    },
+    {
+      "trace_id": "8eba77455515382bf4aa60ccb225279b",
+      "case_id": "v4-r015",
+      "query_type": "unanswerable",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 3,
+        "query_processor.direct": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 6,
+      "missing_operations": {
+        "main.plan": 2,
+        "query_processor.direct": 1,
+        "unclassified_observed_resource_operation": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 44209.0,
+      "signed_error": -2512.0,
+      "absolute_error": 2512.0,
+      "underprediction_ratio": 0.05682100929674953,
+      "candidate_retrieval_count_proxy": 1,
+      "final_context_tokens": 15135
+    },
+    {
+      "trace_id": "8f590b1c9ba327136830b476543eecd6",
+      "case_id": "v4-r012",
+      "query_type": "cross_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "knowledge_decompose",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "query_processor.decompose": 2,
+        "main.plan": 2
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 10,
+      "missing_operations": {
+        "query_processor.decompose": 2,
+        "main.plan": 1,
+        "unclassified_observed_resource_operation": 5
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 41052.0,
+      "signed_error": 645.0,
+      "absolute_error": 645.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 8,
+      "final_context_tokens": 16221
+    },
+    {
+      "trace_id": "90bedd499cca83333888329a0dde1c4a",
+      "case_id": "v4-054",
+      "query_type": "unanswerable",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 3
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 5,
+      "missing_operations": {
+        "main.plan": 2,
+        "unclassified_observed_resource_operation": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 33363.0,
+      "signed_error": 8334.0,
+      "absolute_error": 8334.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 0,
+      "final_context_tokens": 9815
+    },
+    {
+      "trace_id": "90c1b013b7a24cf7467495fe05a52e5e",
+      "case_id": "v4-046",
+      "query_type": "implicit_constraint",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 2
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 5,
+      "missing_operations": {
+        "main.plan": 1,
+        "unclassified_observed_resource_operation": 2
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 36016.0,
+      "signed_error": 5681.0,
+      "absolute_error": 5681.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 1,
+      "final_context_tokens": 13908
+    },
+    {
+      "trace_id": "91a2df9dbb1f8079ad56272a497ee3a0",
+      "case_id": "v4-021",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "knowledge_decompose",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "query_processor.decompose": 1,
+        "main.plan": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 4,
+      "missing_operations": {
+        "query_processor.decompose": 1,
+        "unclassified_observed_resource_operation": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 18988.0,
+      "signed_error": 22709.0,
+      "absolute_error": 22709.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 3,
+      "final_context_tokens": 8649
+    },
+    {
+      "trace_id": "944c150fbe753f31b0e78c526dff918b",
+      "case_id": "blind-002",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 3,
+        "query_processor.direct": 2
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 6,
+      "missing_operations": {
+        "main.plan": 2,
+        "query_processor.direct": 2
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 50859.0,
+      "signed_error": -9162.0,
+      "absolute_error": 9162.0,
+      "underprediction_ratio": 0.18014510706069722,
+      "candidate_retrieval_count_proxy": 2,
+      "final_context_tokens": 15591
+    },
+    {
+      "trace_id": "9e4e52cad01c5974f491d77501aff136",
+      "case_id": "blind-025",
+      "query_type": "cross_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "knowledge_decompose",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 3,
+        "query_processor.decompose": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 10,
+      "missing_operations": {
+        "main.plan": 2,
+        "query_processor.decompose": 1,
+        "unclassified_observed_resource_operation": 5
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 58366.0,
+      "signed_error": -16669.0,
+      "absolute_error": 16669.0,
+      "underprediction_ratio": 0.2855943528766748,
+      "candidate_retrieval_count_proxy": 5,
+      "final_context_tokens": 18692
+    },
+    {
+      "trace_id": "9eb49c782f4838114d73145b71385560",
+      "case_id": "v4-057",
+      "query_type": "unanswerable",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 1,
+      "missing_operations": {},
+      "unexpected_operations": {
+        "main.plan": 1
+      },
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 7601.0,
+      "signed_error": 34096.0,
+      "absolute_error": 34096.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 0,
+      "final_context_tokens": 7058
+    },
+    {
+      "trace_id": "9fe967cdb90e17939818aaa65b9b2c5f",
+      "case_id": "v4-r010",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "query_processor.direct": 1,
+        "main.plan": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 3,
+      "missing_operations": {
+        "query_processor.direct": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 21273.0,
+      "signed_error": 20424.0,
+      "absolute_error": 20424.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 1,
+      "final_context_tokens": 10983
+    },
+    {
+      "trace_id": "a106fcbbe6d58b7a7d5a1b10fb98d256",
+      "case_id": "human-mh-002",
+      "query_type": "implicit_constraint_multi_hop",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "knowledge_decompose",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 2,
+        "query_processor.decompose": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 10,
+      "missing_operations": {
+        "main.plan": 1,
+        "query_processor.decompose": 1,
+        "unclassified_observed_resource_operation": 6
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 44061.0,
+      "signed_error": -2364.0,
+      "absolute_error": 2364.0,
+      "underprediction_ratio": 0.05365289031115953,
+      "candidate_retrieval_count_proxy": 4,
+      "final_context_tokens": 18625
+    },
+    {
+      "trace_id": "a1cdaf6262753785959478cbebfef042",
+      "case_id": "v4-r008",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 2,
+        "query_processor.direct": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 4,
+      "missing_operations": {
+        "main.plan": 1,
+        "query_processor.direct": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 30999.0,
+      "signed_error": 10698.0,
+      "absolute_error": 10698.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 1,
+      "final_context_tokens": 10997
+    },
+    {
+      "trace_id": "a46a42d2b72be7812890ef98ec85556e",
+      "case_id": "blind-013",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "query_processor.rewrite": 1,
+        "main.plan": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 2,
+      "missing_operations": {
+        "query_processor.rewrite": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 20186.0,
+      "signed_error": 21511.0,
+      "absolute_error": 21511.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 2,
+      "final_context_tokens": 9808
+    },
+    {
+      "trace_id": "a4e1fc6b0341619178f65d040926c17b",
+      "case_id": "v4-031",
+      "query_type": "cross_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "knowledge_decompose",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "query_processor.decompose": 2,
+        "main.plan": 2
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 12,
+      "missing_operations": {
+        "query_processor.decompose": 2,
+        "main.plan": 1,
+        "unclassified_observed_resource_operation": 7
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 47174.0,
+      "signed_error": -5477.0,
+      "absolute_error": 5477.0,
+      "underprediction_ratio": 0.11610209013439607,
+      "candidate_retrieval_count_proxy": 9,
+      "final_context_tokens": 19122
+    },
+    {
+      "trace_id": "a5a6333abecf7d0629e4bdcecbc062e6",
+      "case_id": "v4-r015",
+      "query_type": "unanswerable",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "query_processor.rewrite": 1,
+        "main.plan": 2
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 4,
+      "missing_operations": {
+        "query_processor.rewrite": 1,
+        "main.plan": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 28949.0,
+      "signed_error": 12748.0,
+      "absolute_error": 12748.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 2,
+      "final_context_tokens": 11337
+    },
+    {
+      "trace_id": "a8968f63d35369be79984801e308855c",
+      "case_id": "v4-041",
+      "query_type": "cross_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "knowledge_decompose",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "query_processor.decompose": 2,
+        "main.plan": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 8,
+      "missing_operations": {
+        "query_processor.decompose": 2,
+        "unclassified_observed_resource_operation": 4
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 23853.0,
+      "signed_error": 17844.0,
+      "absolute_error": 17844.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 8,
+      "final_context_tokens": 11787
+    },
+    {
+      "trace_id": "ab63ed9104598bb187e426f660bf5f2b",
+      "case_id": "v4-055",
+      "query_type": "unanswerable",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "knowledge_decompose",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "query_processor.decompose": 1,
+        "main.plan": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 5,
+      "missing_operations": {
+        "query_processor.decompose": 1,
+        "unclassified_observed_resource_operation": 2
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 18373.0,
+      "signed_error": 23324.0,
+      "absolute_error": 23324.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 4,
+      "final_context_tokens": 9069
+    },
+    {
+      "trace_id": "ae3170bc1a56174ced4ff65735324370",
+      "case_id": "v4-038",
+      "query_type": "cross_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "knowledge_decompose",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 2,
+        "query_processor.decompose": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 10,
+      "missing_operations": {
+        "main.plan": 1,
+        "query_processor.decompose": 1,
+        "unclassified_observed_resource_operation": 6
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 43683.0,
+      "signed_error": -1986.0,
+      "absolute_error": 1986.0,
+      "underprediction_ratio": 0.045463910445711145,
+      "candidate_retrieval_count_proxy": 4,
+      "final_context_tokens": 19514
+    },
+    {
+      "trace_id": "ae9e6a6b9c694bd6b0310301bb1e0820",
+      "case_id": "v4-022",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "query_processor.direct": 1,
+        "main.plan": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 2,
+      "missing_operations": {
+        "query_processor.direct": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 17208.0,
+      "signed_error": 24489.0,
+      "absolute_error": 24489.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 1,
+      "final_context_tokens": 8519
+    },
+    {
+      "trace_id": "af8f2252a609440760e8e484a7340995",
+      "case_id": "blind-008",
+      "query_type": "cross_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "query_processor.direct": 1,
+        "main.plan": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 2,
+      "missing_operations": {
+        "query_processor.direct": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 19567.0,
+      "signed_error": 22130.0,
+      "absolute_error": 22130.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 2,
+      "final_context_tokens": 10253
+    },
+    {
+      "trace_id": "af944c00b4bde42fe64d8deb5f89b3f3",
+      "case_id": "blind-018",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "knowledge_decompose",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "query_processor.direct": 1,
+        "main.plan": 2,
+        "query_processor.decompose": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 6,
+      "missing_operations": {
+        "query_processor.direct": 1,
+        "main.plan": 1,
+        "query_processor.decompose": 1,
+        "unclassified_observed_resource_operation": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 34088.0,
+      "signed_error": 7609.0,
+      "absolute_error": 7609.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 4,
+      "final_context_tokens": 12585
+    },
+    {
+      "trace_id": "aff749b74bc04800db34a42706de3b0e",
+      "case_id": "v4-r017",
+      "query_type": "unanswerable",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 3
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 6,
+      "missing_operations": {
+        "main.plan": 2,
+        "unclassified_observed_resource_operation": 2
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 39574.0,
+      "signed_error": 2123.0,
+      "absolute_error": 2123.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 0,
+      "final_context_tokens": 12644
+    },
+    {
+      "trace_id": "b0717c58a2838bf87dbdc740e2cf1bd3",
+      "case_id": "v4-r006",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "knowledge_decompose",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 2,
+        "query_processor.decompose": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 7,
+      "missing_operations": {
+        "main.plan": 1,
+        "query_processor.decompose": 1,
+        "unclassified_observed_resource_operation": 3
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 34588.0,
+      "signed_error": 7109.0,
+      "absolute_error": 7109.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 4,
+      "final_context_tokens": 12666
+    },
+    {
+      "trace_id": "b2665470369835f6715d7de8ec8be366",
+      "case_id": "blind-002",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 2,
+        "query_processor.direct": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 5,
+      "missing_operations": {
+        "main.plan": 1,
+        "query_processor.direct": 1,
+        "unclassified_observed_resource_operation": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 36301.0,
+      "signed_error": 5396.0,
+      "absolute_error": 5396.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 1,
+      "final_context_tokens": 14602
+    },
+    {
+      "trace_id": "b6aaa9cf55ca351956a487aa6ae91a9d",
+      "case_id": "v4-037",
+      "query_type": "cross_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 2,
+        "query_processor.direct": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 5,
+      "missing_operations": {
+        "main.plan": 1,
+        "query_processor.direct": 1,
+        "unclassified_observed_resource_operation": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 36467.0,
+      "signed_error": 5230.0,
+      "absolute_error": 5230.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 2,
+      "final_context_tokens": 14191
+    },
+    {
+      "trace_id": "b8fc05381a155ffd0f308495690e615e",
+      "case_id": "blind-016",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 3,
+      "missing_operations": {
+        "unclassified_observed_resource_operation": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 18976.0,
+      "signed_error": 22721.0,
+      "absolute_error": 22721.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 1,
+      "final_context_tokens": 10314
+    },
+    {
+      "trace_id": "bff50ec2dbdab65eb267b1d13b10b437",
+      "case_id": "v4-017",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 2
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 6,
+      "missing_operations": {
+        "main.plan": 1,
+        "unclassified_observed_resource_operation": 3
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 38163.0,
+      "signed_error": 3534.0,
+      "absolute_error": 3534.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 1,
+      "final_context_tokens": 16454
+    },
+    {
+      "trace_id": "c3c8a8579c50b3de11ae93712f5e06f1",
+      "case_id": "blind-027",
+      "query_type": "unanswerable",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 2,
+      "missing_operations": {},
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 15149.0,
+      "signed_error": 26548.0,
+      "absolute_error": 26548.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 0,
+      "final_context_tokens": 7475
+    },
+    {
+      "trace_id": "c72a3e730bc541a7630b251e60f4c635",
+      "case_id": "v4-r011",
+      "query_type": "cross_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 3,
+        "query_processor.direct": 2
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 10,
+      "missing_operations": {
+        "main.plan": 2,
+        "query_processor.direct": 2,
+        "unclassified_observed_resource_operation": 4
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 64081.0,
+      "signed_error": -22384.0,
+      "absolute_error": 22384.0,
+      "underprediction_ratio": 0.34930790717997534,
+      "candidate_retrieval_count_proxy": 2,
+      "final_context_tokens": 21109
+    },
+    {
+      "trace_id": "c790a655c0b8820fa16de0dfc3eac451",
+      "case_id": "v4-r010",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "query_processor.direct": 1,
+        "main.plan": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 3,
+      "missing_operations": {
+        "query_processor.direct": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 21640.0,
+      "signed_error": 20057.0,
+      "absolute_error": 20057.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 1,
+      "final_context_tokens": 11461
+    },
+    {
+      "trace_id": "c97ffd7e2e3e08b80f978d308b14208c",
+      "case_id": "v4-017",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 3,
+        "query_processor.direct": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 8,
+      "missing_operations": {
+        "main.plan": 2,
+        "query_processor.direct": 1,
+        "unclassified_observed_resource_operation": 3
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 61545.0,
+      "signed_error": -19848.0,
+      "absolute_error": 19848.0,
+      "underprediction_ratio": 0.3224957348281745,
+      "candidate_retrieval_count_proxy": 2,
+      "final_context_tokens": 21025
+    },
+    {
+      "trace_id": "c9ada9bff77bc27444ea4cd8b3ed7b28",
+      "case_id": "v4-028",
+      "query_type": "cross_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "product_search",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 5,
+        "search.final": 1,
+        "search.plan": 4,
+        "query_processor.direct": 3,
+        "query_processor.decompose": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 29,
+      "missing_operations": {
+        "main.plan": 4,
+        "search.final": 1,
+        "search.plan": 4,
+        "query_processor.direct": 3,
+        "query_processor.decompose": 1,
+        "unclassified_observed_resource_operation": 14
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 205228.0,
+      "signed_error": -163531.0,
+      "absolute_error": 163531.0,
+      "underprediction_ratio": 0.7968259691660008,
+      "candidate_retrieval_count_proxy": 6,
+      "final_context_tokens": 23019
+    },
+    {
+      "trace_id": "cd61eaa24780c069ba5642c4787c003c",
+      "case_id": "v4-047",
+      "query_type": "implicit_constraint",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "knowledge_decompose",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 3,
+        "query_processor.decompose": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 9,
+      "missing_operations": {
+        "main.plan": 2,
+        "query_processor.decompose": 1,
+        "unclassified_observed_resource_operation": 4
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 57991.0,
+      "signed_error": -16294.0,
+      "absolute_error": 16294.0,
+      "underprediction_ratio": 0.2809746339949302,
+      "candidate_retrieval_count_proxy": 6,
+      "final_context_tokens": 17968
+    },
+    {
+      "trace_id": "cdfc6c344aae4b3da0641236dfde7902",
+      "case_id": "blind-006",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "query_processor.direct": 1,
+        "main.plan": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 3,
+      "missing_operations": {
+        "query_processor.direct": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 20820.0,
+      "signed_error": 20877.0,
+      "absolute_error": 20877.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 1,
+      "final_context_tokens": 11160
+    },
+    {
+      "trace_id": "ce18b0b7b08a53920ccc2c33e77d07f3",
+      "case_id": "blind-014",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 3,
+        "query_processor.direct": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 7,
+      "missing_operations": {
+        "main.plan": 2,
+        "query_processor.direct": 1,
+        "unclassified_observed_resource_operation": 2
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 48726.0,
+      "signed_error": -7029.0,
+      "absolute_error": 7029.0,
+      "underprediction_ratio": 0.14425563354266716,
+      "candidate_retrieval_count_proxy": 1,
+      "final_context_tokens": 14784
+    },
+    {
+      "trace_id": "d04b73316cea2ab1f675fab3772a8b1e",
+      "case_id": "blind-028",
+      "query_type": "unanswerable",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 3,
+      "missing_operations": {
+        "unclassified_observed_resource_operation": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 18008.0,
+      "signed_error": 23689.0,
+      "absolute_error": 23689.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 0,
+      "final_context_tokens": 9526
+    },
+    {
+      "trace_id": "d1c2cca3954fbf944d25b355b1a643be",
+      "case_id": "blind-019",
+      "query_type": "cross_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "query_processor.direct": 1,
+        "main.plan": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 2,
+      "missing_operations": {
+        "query_processor.direct": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 20770.0,
+      "signed_error": 20927.0,
+      "absolute_error": 20927.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 2,
+      "final_context_tokens": 10664
+    },
+    {
+      "trace_id": "d56463d3ce937926e492c3035c4ea183",
+      "case_id": "blind-017",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "query_processor.direct": 2,
+        "main.plan": 2
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 5,
+      "missing_operations": {
+        "query_processor.direct": 2,
+        "main.plan": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 38676.0,
+      "signed_error": 3021.0,
+      "absolute_error": 3021.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 2,
+      "final_context_tokens": 15683
+    },
+    {
+      "trace_id": "d74e17e471142746636db1c658603fca",
+      "case_id": "v4-r017",
+      "query_type": "unanswerable",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 3
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 7,
+      "missing_operations": {
+        "main.plan": 2,
+        "unclassified_observed_resource_operation": 3
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 40442.0,
+      "signed_error": 1255.0,
+      "absolute_error": 1255.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 0,
+      "final_context_tokens": 14351
+    },
+    {
+      "trace_id": "e102b02477e9f485d35b56fefccff69b",
+      "case_id": "v4-034",
+      "query_type": "cross_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "knowledge_decompose",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 3,
+        "query_processor.decompose": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 8,
+      "missing_operations": {
+        "main.plan": 2,
+        "query_processor.decompose": 1,
+        "unclassified_observed_resource_operation": 3
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 66710.0,
+      "signed_error": -25013.0,
+      "absolute_error": 25013.0,
+      "underprediction_ratio": 0.3749512816669165,
+      "candidate_retrieval_count_proxy": 6,
+      "final_context_tokens": 19746
+    },
+    {
+      "trace_id": "e1300cf3699337eb71fae74e71e129e9",
+      "case_id": "v4-022",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "query_processor.direct": 1,
+        "main.plan": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 2,
+      "missing_operations": {
+        "query_processor.direct": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 17235.0,
+      "signed_error": 24462.0,
+      "absolute_error": 24462.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 1,
+      "final_context_tokens": 8530
+    },
+    {
+      "trace_id": "e13bef6c03dc78a0ba395b811cfd5466",
+      "case_id": "v4-040",
+      "query_type": "cross_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "knowledge_decompose",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 4,
+        "query_processor.decompose": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 13,
+      "missing_operations": {
+        "main.plan": 3,
+        "query_processor.decompose": 1,
+        "unclassified_observed_resource_operation": 7
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 67075.0,
+      "signed_error": -25378.0,
+      "absolute_error": 25378.0,
+      "underprediction_ratio": 0.3783525903838986,
+      "candidate_retrieval_count_proxy": 4,
+      "final_context_tokens": 17413
+    },
+    {
+      "trace_id": "e9527fd7e8c62cdf69cfe9d175ff3da0",
+      "case_id": "v4-026",
+      "query_type": "cross_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "knowledge_decompose",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 3,
+        "query_processor.decompose": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 11,
+      "missing_operations": {
+        "main.plan": 2,
+        "query_processor.decompose": 1,
+        "unclassified_observed_resource_operation": 6
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 65707.0,
+      "signed_error": -24010.0,
+      "absolute_error": 24010.0,
+      "underprediction_ratio": 0.36541007807387343,
+      "candidate_retrieval_count_proxy": 4,
+      "final_context_tokens": 20051
+    },
+    {
+      "trace_id": "eb19f038dbde6e1c2dd8a80d01557373",
+      "case_id": "v4-r014",
+      "query_type": "implicit_constraint",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "knowledge_decompose",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "query_processor.decompose": 1,
+        "main.plan": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 5,
+      "missing_operations": {
+        "query_processor.decompose": 1,
+        "unclassified_observed_resource_operation": 2
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 21724.0,
+      "signed_error": 19973.0,
+      "absolute_error": 19973.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 3,
+      "final_context_tokens": 10996
+    },
+    {
+      "trace_id": "eb781bf1591a3a251b3da4050df5e6ec",
+      "case_id": "v4-037",
+      "query_type": "cross_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 2,
+        "query_processor.direct": 1,
+        "query_processor.rewrite": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 7,
+      "missing_operations": {
+        "main.plan": 1,
+        "query_processor.direct": 1,
+        "query_processor.rewrite": 1,
+        "unclassified_observed_resource_operation": 2
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 47069.0,
+      "signed_error": -5372.0,
+      "absolute_error": 5372.0,
+      "underprediction_ratio": 0.11413031931844739,
+      "candidate_retrieval_count_proxy": 3,
+      "final_context_tokens": 19158
+    },
+    {
+      "trace_id": "ee85ec4bafd5948347d6762158dc237e",
+      "case_id": "v4-038",
+      "query_type": "cross_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "product_search",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 6,
+        "search.final": 1,
+        "query_processor.decompose": 2,
+        "search.plan": 3
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 35,
+      "missing_operations": {
+        "main.plan": 5,
+        "search.final": 1,
+        "query_processor.decompose": 2,
+        "search.plan": 3,
+        "unclassified_observed_resource_operation": 22
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 237965.0,
+      "signed_error": -196268.0,
+      "absolute_error": 196268.0,
+      "underprediction_ratio": 0.8247767528838275,
+      "candidate_retrieval_count_proxy": 7,
+      "final_context_tokens": 35604
+    },
+    {
+      "trace_id": "ef64cb46ab447f5ef1e09861d7e95775",
+      "case_id": "v4-049",
+      "query_type": "implicit_constraint",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 3,
+        "query_processor.direct": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 8,
+      "missing_operations": {
+        "main.plan": 2,
+        "query_processor.direct": 1,
+        "unclassified_observed_resource_operation": 3
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 61401.0,
+      "signed_error": -19704.0,
+      "absolute_error": 19704.0,
+      "underprediction_ratio": 0.32090682562173256,
+      "candidate_retrieval_count_proxy": 1,
+      "final_context_tokens": 17712
+    },
+    {
+      "trace_id": "f042d57b5fb66c21a5d6fa36b6034967",
+      "case_id": "blind-017",
+      "query_type": "single_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 2
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 4,
+      "missing_operations": {
+        "main.plan": 1,
+        "unclassified_observed_resource_operation": 1
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 30013.0,
+      "signed_error": 11684.0,
+      "absolute_error": 11684.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 1,
+      "final_context_tokens": 11661
+    },
+    {
+      "trace_id": "f23acbcb0862da404fc0bddd1a3d81c7",
+      "case_id": "v4-031",
+      "query_type": "cross_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "knowledge_decompose",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 2,
+        "query_processor.decompose": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 9,
+      "missing_operations": {
+        "main.plan": 1,
+        "query_processor.decompose": 1,
+        "unclassified_observed_resource_operation": 5
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 46939.0,
+      "signed_error": -5242.0,
+      "absolute_error": 5242.0,
+      "underprediction_ratio": 0.11167685719763949,
+      "candidate_retrieval_count_proxy": 4,
+      "final_context_tokens": 19781
+    },
+    {
+      "trace_id": "f4b69bdca4e59f82f672c50fee54be69",
+      "case_id": "v4-058",
+      "query_type": "unanswerable",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "knowledge_decompose",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "query_processor.decompose": 2,
+        "main.plan": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 6,
+      "missing_operations": {
+        "query_processor.decompose": 2,
+        "unclassified_observed_resource_operation": 2
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 22728.0,
+      "signed_error": 18969.0,
+      "absolute_error": 18969.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 6,
+      "final_context_tokens": 11694
+    },
+    {
+      "trace_id": "fa595a59cf52e158147ea5eb18a069ed",
+      "case_id": "blind-021",
+      "query_type": "cross_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "simple_direct",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 2,
+      "missing_operations": {},
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 19950.0,
+      "signed_error": 21747.0,
+      "absolute_error": 21747.0,
+      "underprediction_ratio": 0.0,
+      "candidate_retrieval_count_proxy": 2,
+      "final_context_tokens": 11103
+    },
+    {
+      "trace_id": "fd327ee1022517057f16bc6db31df4de",
+      "case_id": "v4-027",
+      "query_type": "cross_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "product_search",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "search.final": 1,
+        "search.plan": 3,
+        "main.plan": 3,
+        "query_processor.direct": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 24,
+      "missing_operations": {
+        "search.final": 1,
+        "search.plan": 3,
+        "main.plan": 2,
+        "query_processor.direct": 1,
+        "unclassified_observed_resource_operation": 15
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 152875.0,
+      "signed_error": -111178.0,
+      "absolute_error": 111178.0,
+      "underprediction_ratio": 0.7272477514309076,
+      "candidate_retrieval_count_proxy": 2,
+      "final_context_tokens": 20993
+    },
+    {
+      "trace_id": "fd7f9520adfe5b993786999354b9a0b0",
+      "case_id": "v4-024",
+      "query_type": "cross_evidence",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "knowledge_decompose",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "main.plan": 3,
+        "query_processor.decompose": 1,
+        "query_processor.direct": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 10,
+      "missing_operations": {
+        "main.plan": 2,
+        "query_processor.decompose": 1,
+        "query_processor.direct": 1,
+        "unclassified_observed_resource_operation": 4
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 57191.0,
+      "signed_error": -15494.0,
+      "absolute_error": 15494.0,
+      "underprediction_ratio": 0.27091675263590426,
+      "candidate_retrieval_count_proxy": 6,
+      "final_context_tokens": 17331
+    },
+    {
+      "trace_id": "ff9c7ea6b1ce3247b62e9e18a8c6f107",
+      "case_id": "v4-049",
+      "query_type": "implicit_constraint",
+      "initial_route": "unknown_one_plan_plus_final",
+      "route_after_query_processor": null,
+      "final_execution_route": "knowledge_decompose",
+      "route_revision_count": null,
+      "route_mismatch_reason": "initial_route_is_bootstrap_placeholder",
+      "predicted_operations": {
+        "main.plan": 1,
+        "main.final": 1
+      },
+      "actual_named_operations": {
+        "main.final": 1,
+        "query_processor.decompose": 1,
+        "main.plan": 2,
+        "query_processor.direct": 1
+      },
+      "predicted_operation_count": 2,
+      "actual_operation_count": 8,
+      "missing_operations": {
+        "query_processor.decompose": 1,
+        "main.plan": 1,
+        "query_processor.direct": 1,
+        "unclassified_observed_resource_operation": 3
+      },
+      "unexpected_operations": {},
+      "predicted_request_tokens": 41697.0,
+      "actual_request_tokens": 44658.0,
+      "signed_error": -2961.0,
+      "absolute_error": 2961.0,
+      "underprediction_ratio": 0.06630390971382508,
+      "candidate_retrieval_count_proxy": 4,
+      "final_context_tokens": 18104
+    }
+  ]
+}

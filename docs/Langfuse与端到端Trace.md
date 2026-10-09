@@ -22,7 +22,9 @@
 | `OTEL_EXPORTER_OTLP_TRACES_HEADERS` | Trace 专用认证头，优先于通用头；支持百分号编码 |
 | `OTEL_EXPORTER_OTLP_TRACES_TIMEOUT` | 导出超时秒数，默认 5；未设置时读取通用 `OTEL_EXPORTER_OTLP_TIMEOUT` |
 | `OTEL_SERVICE_NAME` | 进程服务名称；Compose 分别设置为 `globex-api` 和 `globex-worker` |
-| `TRACE_CONTENT_MODE` | 默认 `off`，只保留输入输出字符数；本地开发可设为 `development`，展示白名单只读工具的脱敏、截断后输入输出 |
+| `TRACE_CONTENT_MODE` | `off` 只保留长度；`development` 展示白名单只读链路；`development_full` 还向 Langfuse 上传脱敏、有界的模型输入输出，仅限隔离开发项目 |
+| `TRACE_CONTEXT_CAPTURE` | 默认 `off`；仅 `local_only` 会把每次实际送模前的完整请求写到本机，不进入 OTel/Langfuse |
+| `TRACE_CONTEXT_SESSION_ID` | 可选的完整 session id 过滤器；留空表示采集当前进程全部会话 |
 | `LANGFUSE_BASE_URL` | Langfuse 项目所在地域的基础地址，例如 `https://cloud.langfuse.com` |
 | `LANGFUSE_PUBLIC_KEY` / `LANGFUSE_SECRET_KEY` | 项目公钥和私钥；无显式 OTLP 端点时自动派生 Basic Auth、v4 header 和完整 Trace 端点 |
 
@@ -78,6 +80,20 @@ AgentScope 原生中间件会在内存中构造输入、输出、工具参数/�
 默认 `TRACE_CONTENT_MODE=off` 时删除：对话全文、system prompt、工具描述/定义、工具参数与结果全文、异常正文和 traceback、原始 buyer/session 标识、非白名单 resource/scope/link 属性。输入输出仅保留字符数和 `globex.content.redacted=true`。
 
 开发排障可显式设置 `TRACE_CONTENT_MODE=development`。该模式允许 `product_search_tool`、`category_insight_tool`、`conversation_fact_lookup` 三个只读工具保留标准 `gen_ai.tool.call.arguments/result` 字段，也允许下述知识 RAG 与 Agent 闭环白名单阶段保留 `langfuse.observation.input/output`，让 Langfuse 的 Input/Output 面板可以直接展示；模型消息、订单工具、偏好写工具及其他工具仍只导出长度。允许展示的内容还会递归屏蔽密钥、认证、buyer/session、地址、电话、邮箱等常见敏感字段和文本模式，并分别限制为 12,000/50,000 字符。交易子 Agent 的 demands 和回复即使在开发模式也主动显示为 `[REDACTED_WRITE_PATH]`。它用于本地开发和独立测试项目，不应作为生产默认值；自由文本脱敏不能替代正式的数据分级、最小化与访问控制。
+
+需要直接在 Langfuse 的每个 `chat ...` 节点检查送模上下文时，可进一步显式设置 `TRACE_CONTENT_MODE=development_full`。它继承 `development` 的 RAG/工具视图，并额外保留经过同一套字段和文本规则脱敏的 `gen_ai.input.messages` 与 `gen_ai.output.messages`；输入、输出分别限制为 1,500,000 和 300,000 字符，截断时设置 `globex.content.truncated=true`。此模式会把用户对话、System Prompt、历史工具结果等内容发送到配置的 Langfuse 项目，只能用于已确认权限与数据边界的隔离开发环境，上线前必须恢复为 `off`。
+
+### 本机完整模型上下文快照
+
+需要核对“这一轮究竟给模型看了什么”时，可临时设置 `TRACE_CONTEXT_CAPTURE=local_only`。采集点位于 AgentScope 的 `on_model_call` 最末端：在 Context 治理和预算中间件处理之后、模型客户端调用之前，因此保存的是本次实际请求中的完整 `messages`、`tools`、`tool_choice` 及其他调用参数。每次调用独立写入：
+
+```text
+.runlogs/context-capture/<session-sha256>/20261007T..._<agent>_<call-id>.json
+```
+
+JSON 同时包含调用时间、Agent/模型名、原始 session id，以及可用时的 request/task/trace/span 关联字段，便于同 Langfuse 时间线逐项对应。`TRACE_CONTEXT_SESSION_ID=<完整 session id>` 可只采一个会话；留空会采集进程中所有会话。
+
+这是**未脱敏、未截断的高敏感本机排障文件**，可能包含 system prompt、用户原文、历史消息、工具参数、工具结果和个人信息。它不创建 OTel span/event，不进入 Langfuse或业务数据库；`.runlogs/` 已被 Git 忽略。仍应限制机器账号和目录访问，排障结束后立即设回 `off` 并安全清理文件。模型客户端对象不会序列化，避免把 API key 随配置对象写入快照。
 
 ### 开发模式下的知识 RAG 调查视图
 

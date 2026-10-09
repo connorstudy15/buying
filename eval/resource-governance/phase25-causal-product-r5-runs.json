@@ -1,0 +1,41 @@
+{
+  "shadow_only": true,
+  "repetitions": 1,
+  "observation_count": 2,
+  "observations": [
+    {
+      "run_id": "phase25-causal-product-r5",
+      "case_id": "v4-027",
+      "query_type": "cross_evidence",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "cross_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 27416.847,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "44cccae6804e0e89ad28bf155c5cfb2b"
+    },
+    {
+      "run_id": "phase25-causal-product-r5",
+      "case_id": "v4-038",
+      "query_type": "cross_evidence",
+      "buckets": [
+        "Context-heavy request",
+        "Cross Evidence",
+        "DECOMPOSE",
+        "Multi-hop",
+        "cross_evidence"
+      ],
+      "repetition": 1,
+      "latency_ms": 68531.73,
+      "status": "success",
+      "error_type": null,
+      "trace_id": "92033b2f2f3b73564650480a2917bfc3"
+    }
+  ]
+}
