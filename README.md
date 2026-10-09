@@ -1,16 +1,16 @@
-# Globex · 从商品检索到交易确认的电商 Agent
+# EzBuying · 从商品检索到交易确认的电商 Agent
 
-一个基于 **AgentScope、AG-UI 和 React** 的全栈 Agent 实战项目，覆盖需求理解、商品检索、方案比较与交易确认。
+一个基于 **AgentScope、AG-UI 和 React** 的全栈电商 Agent 项目，覆盖需求理解、商品与知识检索、方案比较与交易确认。
 
-在完整选购流程中，探索 Agent 应用的关键工程问题：如何调用业务工具、记住用户偏好、管理长对话，以及在刷新、断线和人工审批之间保持状态一致。
+在完整选购流程中，探索 Agent 应用的关键工程问题：如何组合检索与重排、让多 Agent 协作、管理长对话，以及在刷新、断线和人工审批之间保持状态一致。通过可回放的 Trace、冻结评测集和请求级资源账本，持续验证回答质量、执行行为与资源开销。
 
-[快速开始](#快速开始) · [核心能力](#核心能力) · [工作原理](#工作原理) · [项目状态](#项目状态) · [开发与文档](#开发与文档)
+[快速开始](#快速开始) · [核心能力](#核心能力) · [近期工程优化](#近期工程优化) · [工作原理](#工作原理) · [项目状态](#项目状态) · [开发与文档](#开发与文档)
 
 > 当前使用版本化样例商品目录和本地订单账本，尚未接入真实电商供给、支付或物流。部分正式质量评测尚未通过，具体范围见[项目状态](#项目状态)。
 
 ## 一次选购，从描述需求开始
 
-你可以先告诉 Globex：
+你可以先告诉 EzBuying：
 
 > 预算 300 元以内，帮我找一个寄到中国的轻便背包。
 
@@ -37,12 +37,13 @@ Agent 根据需求调用检索与业务工具，页面随运行过程展示回�
 | 后端服务 | Python 3.11–3.13、FastAPI、Uvicorn | 业务 API、Agent 运行入口与流式响应 |
 | 前端应用 | React 18、TypeScript、Vite | 对话界面、商品卡、Skill 编辑、偏好管理与订单页面 |
 | 交互协议 | AG-UI、SSE | 传输文本、工具调用与状态事件，配合持久日志实现重连和重放 |
-| 模型接入 | OpenAI 兼容 API | 聊天模型、工具调用与流式生成；示例配置使用通义千问 |
-| 商品检索 | Embedding、Qdrant、HTTP Reranker | 商品向量召回与精排，支持降级到向量排序或关键词检索 |
-| 品类知识 | Markdown、AgentScope KnowledgeBase | 管理品类知识，为选购与比较提供参考 |
+| 模型接入 | OpenAI 兼容 API | 聊天、Embedding、Reranker 分开配置；支持直连 DeepSeek 与百炼服务组合 |
+| 商品检索 | BM25、Embedding、Qdrant、RRF、HTTP Reranker | 向量召回、可选 Hybrid 融合与精排，结合预算、价格与配送硬约束 |
+| 品类知识 | Markdown、AgentScope KnowledgeBase、QueryProcessor | 查询路由、子查询独立召回与重排、RRF、去重及信息需求覆盖保护 |
 | 持久化 | SQLite、本地文件 | 保存会话、运行事件、偏好、Skill、确认单、订单与库存 |
 | 缓存与队列 | Redis、Redis Streams | 缓存、共享限流，以及旧意图接口的异步任务消费 |
 | 可观测性 | OpenTelemetry、OTLP、Langfuse | 关联 API、Agent、模型和工具调用，记录运行追踪与评分 |
+| 资源治理 | UsageLedger、Reservation、FutureWorkPlan | 请求级用量结算、未来操作预测与 causal replay；目前仅 shadow 观察 |
 | 测试与评测 | 后端/前端回归测试、自定义评测脚本 | 验证业务行为，评估商品检索、知识检索、Agent 与上下文治理效果 |
 | 构建与部署 | uv、npm、Docker Compose、Nginx | 依赖管理、全栈部署、静态资源服务与 API 反向代理 |
 
@@ -86,11 +87,56 @@ Agent 根据需求调用检索与业务工具，页面随运行过程展示回�
 
 工程包含回归测试、检索评测、Agent 用例与运行证据。功能实现、测试通过和效果达标分别记录。
 
+## 近期工程优化
+
+### 商品检索与知识 RAG
+
+商品检索支持 **BM25 + Embedding → RRF → Reranker** 的可选 Hybrid 路径。稳定商品 ID 优先核对权威商品目录，避免用向量 Top-N 判断商品是否存在。硬约束过滤与到手价计算保留在业务代码中，不交给模型猜测。
+
+知识检索支持 `DIRECT / REWRITE / DECOMPOSE` 三种 QueryProcessor 路由；简单问题保留直接检索，多信息需求问题可以拆分检索。拆分路径已接入 **per-need rerank → RRF → 片段去重 → information-need coverage selector**，并保留领域定向补召回及各阶段 provenance。
+
+这里有两种不同的融合：商品 Hybrid 融合 BM25 与向量列表；知识 RAG 融合不同查询／信息需求的候选。两者不是同一个开关，也不应共享未经验证的效果结论。
+
+应用知识库与评测知识库使用独立 collection。双塔 Retriever 保留为独立实验，不覆盖正式向量库，也不替换现有候选链路。
+
+> 仓库示例中的 `HYBRID_RECALL_ENABLED` 与 `KNOWLEDGE_QUERY_TRANSFORM_ENABLED` 默认均为 `0`。代码具备能力不代表当前部署已启用；启用后的收益需要同版本、同数据、同候选深度的对照评测。
+
+### 从 Trace 看清 Agent 实际做了什么
+
+请求以 `commerce.turn` 组织业务生命周期，关联主／子 Agent、模型、工具、上下文治理和资源操作。知识工具下可以查看 QueryProcessor 路由、拆出的子查询、候选召回、per-need rerank、融合与最终选择。
+
+- `TRACE_CONTENT_MODE=off`：默认关闭业务内容采集，保留技术诊断与用量字段。
+- `development`：展示白名单工具和 RAG 调查信息。
+- `development_full`：额外将脱敏、有界的模型输入／输出发送到 Langfuse，便于核对每轮模型上下文。
+- `TRACE_CONTEXT_CAPTURE=local_only`：保存完整送模参数到被 Git 忽略的本机目录，不上传 Langfuse。
+
+完整上下文仍可能包含用户原文、偏好和业务证据；开发采集不等于生产隐私安全，上线前应恢复内容采集为 `off`。运行时快照还提供带字段完整性校验的标量传输，避免下载接口截断长 metadata 后被误当成完整评测数据。
+
+### Token Budget × Context Governance
+
+新增请求级 Resource Governor，将用量账本、调用预留、上下文压力与未来操作计划放在同一请求生命周期下观测：
+
+- Provider 返回的实际 usage 用于结算；QueryProcessor 等外部模型调用也进入请求总账。
+- 通过 `logical_call_id`、attempt、flow 和 plan revision 关联操作，区分 Main、Search 与 Trade。
+- FutureWorkPlan 随已发生的工具与模型事件更新，记录 revision history 和 operation timeline。
+- continuation 诊断预测下一完成操作和剩余规划轮数，校准／验证按 case 隔离，不用未来状态回填早期特征。
+- 未验证的证据充分性保留 `UNKNOWN`；检索命中不等于已覆盖需求，未知不等于零进展。
+
+**当前仅 shadow-only，不执行预算拒绝、自动降级、候选缩减或 mandatory operation 取消。** 80K 是观察用的 bootstrap cap，不是已验证可启用的线上熔断阈值。DeepSeek tokenizer 资产已固定版本和哈希，但 Golden Parity 尚未完成，`DEEPSEEK_V41_TOKENIZER_PRIMARY` 保持 `0`。
+
+### 评测驱动，而不是只展示成功案例
+
+保留现有商品 Recall / MRR / nDCG、lexical / semantic 分桶、hard negative 和标注自检，并按实际召回深度比较策略。知识评测进一步区分文档命中、证据命中、必要信息需求覆盖，以及召回、融合与 Top-K 截断阶段的损失。
+
+资源评测同步记录 token、耗时、operation-count error、低估幅度和 profile confidence。最近 targeted smoke 尝试 16 条，正常完成 11 条；余额不足后的 5 条被排除。相关本地回归 136 项通过，但小样本中仍有简单请求预测退化，**Phase 3 继续 NO_GO**。离线校准 profile 未自动加载到线上。
+
+详见[最新验证结果与限制](docs/ResourceGovernance-Continuation-Targeted-Results.md)。这不是完整 67×2 重验，也不代表检索质量门禁或 tokenizer parity 已通过。
+
 ## 快速开始
 
 **推荐先使用 AI 帮忙启动！！**
 
-在编程助手中打开 `globex-agent` 工程目录，可以使用以下提示：
+在编程助手中打开 EzBuying 工程目录，可以使用以下提示：
 
 > 帮我启动这个项目。先阅读 README 和现有配置，检查环境与端口，保留已有 .env 和数据。安装缺失依赖，启动前后端，检查健康接口并完成一次页面选购。缺少模型凭据时说明需要配置哪些字段，不要打印密钥。最后告诉我访问地址和停止服务的方法。
 
@@ -108,7 +154,7 @@ Agent 根据需求调用检索与业务工具，页面随运行过程展示回�
 
 聊天模型服务需要支持 OpenAI 兼容协议、工具调用和流式输出。向量检索还需要可用的 embedding 服务。
 
-以下命令均在包含 `pyproject.toml` 和 `frontend/` 的 `globex-agent` 工程根目录执行：
+以下命令均在包含 `pyproject.toml` 和 `frontend/` 的工程根目录执行，无需重命名本机已有目录：
 
 ```bash
 uv sync --frozen
@@ -125,6 +171,12 @@ if [ ! -f .env ]; then
 fi
 ```
 
+Windows PowerShell 对应命令：
+
+```powershell
+if (-not (Test-Path .env)) { Copy-Item .env.example .env }
+```
+
 编辑 `.env`，填写模型服务信息：
 
 ```dotenv
@@ -137,7 +189,9 @@ EMBEDDING_MODEL=text-embedding-v4
 
 以上为配置示例，模型名称应替换为当前账户实际可用的模型。
 
-Embedding 默认复用聊天模型的网关和密钥。需要独立服务时，配置 `EMBEDDING_BASE_URL`、`EMBEDDING_API_KEY` 和对应模型。
+Embedding 默认复用聊天模型的网关和密钥。**如果聊天模型直连 DeepSeek、Embedding 使用百炼，必须显式填写独立的 `EMBEDDING_BASE_URL` 和 `EMBEDDING_API_KEY`**，不能将 embedding 请求发往聊天服务。`EMBEDDING_DIM` 必须与实际向量输出及 Qdrant collection 一致；换模型或维度时使用匹配的新索引，不覆盖已有索引。
+
+精排另行填写 `RERANKER_BASE_URL`、`RERANKER_API_KEY`、`RERANKER_MODEL`；客户端同时支持通用 rerank 与百炼 text-rerank 协议。服务地址、模型权限和用量需要分别核验。
 
 > 模型与 embedding 调用可能产生费用。首次启动会加载商品目录并尝试建立向量索引，耗时取决于服务与网络。密钥只保存在本机或服务端，不要提交到仓库。
 
@@ -262,11 +316,18 @@ flowchart TD
 | 配置 | 用途 |
 | --- | --- |
 | `LLM_BASE_URL`、`LLM_API_KEY`、`LLM_MODEL` | 聊天模型服务 |
-| `EMBEDDING_BASE_URL`、`EMBEDDING_API_KEY`、`EMBEDDING_MODEL` | 向量模型服务 |
-| `RERANKER_BASE_URL`、`RERANKER_MODEL` | 可选精排服务；缺失会影响正式检索质量门禁 |
+| `EMBEDDING_BASE_URL`、`EMBEDDING_API_KEY`、`EMBEDDING_MODEL`、`EMBEDDING_DIM` | 独立向量服务及输出维度 |
+| `RERANKER_BASE_URL`、`RERANKER_API_KEY`、`RERANKER_MODEL` | 商品及知识 per-need 精排；是否应用需核对运行记录 |
+| `HYBRID_RECALL_ENABLED` | 商品 BM25 + 向量 + RRF 路径；默认关闭 |
+| `KNOWLEDGE_QUERY_TRANSFORM_ENABLED`、`QUERY_PROCESSOR_*` | 知识查询路由、改写与拆分；默认关闭 |
+| `KNOWLEDGE_COLLECTION_PRODUCTION`、`KNOWLEDGE_COLLECTION_EVAL` | 应用知识库／评测知识库隔离，禁止使用同一个 collection |
 | `QDRANT_URL` | 使用服务端 Qdrant；本地模式可不配置 |
 | `REDIS_URL`、`QUEUE_ENABLED` | Redis 与旧意图队列 |
 | `LANGFUSE_BASE_URL`、`LANGFUSE_PUBLIC_KEY`、`LANGFUSE_SECRET_KEY` | 可选运行追踪 |
+| `TRACE_CONTENT_MODE`、`TRACE_CONTEXT_CAPTURE` | 开发内容调查与本机完整上下文采集；默认关闭 |
+| `CONTEXT_STRATEGY`、`CONTEXT_PRUNING_TIMING` | 分层上下文治理与压力裁剪；示例使用 layered / pressure |
+| `RESOURCE_GOVERNOR_SHADOW_ENABLED` | 请求级资源诊断；当前保持 shadow-only |
+| `DEEPSEEK_V41_TOKENIZER_PRIMARY` | parity 与校准 Gate 通过前保持 `0` |
 | `DATA_DIR` | 本地持久数据目录 |
 | `IDENTITY_MODE` | 演示身份或签名身份校验 |
 | `API_PROXY_TARGET` | 前端开发服务代理的后端地址 |
@@ -291,7 +352,11 @@ flowchart TD
 | 持久运行与断线恢复 | 已实现 | [运行恢复说明](docs/AG-UI持久运行与断线恢复-2026-09-09.md) |
 | 上下文分层治理 | 二轮专项验收通过，范围见记录 | [专项验收证据](eval/verification/context-v2-20260910/README.md) |
 | 正式检索与 Agent 质量门禁 | 仍有未通过项 | [正式 release 记录](docs/正式release验证记录-2026-09-09.md) |
-| Hybrid 检索及策略收益 | 尚未证明收益 | 不作为效果承诺 |
+| 商品 Hybrid 与知识查询处理 | 已实现，按开关及服务配置启用 | 不将某次离线收益推广为全部线上场景收益 |
+| 知识 per-need 重排、融合与覆盖保护 | 已接入 | [实现与追踪说明](docs/Langfuse与端到端Trace.md)；最终质量仍需独立回归 |
+| 双塔 Retriever | 独立实验，不替换正式候选 | 保留 baseline collection 与数据隔离 |
+| 请求资源账本与 causal runtime 诊断 | Phase 2.5，shadow-only | [最新验证结果](docs/ResourceGovernance-Continuation-Targeted-Results.md)；Phase 3 NO_GO |
+| DeepSeek tokenizer PRIMARY | 未启用 | 官方资产固定；真实 API Golden Parity 与校准尚未完成 |
 | 真实支付、物流与完整账号系统 | 未接入 | 当前用于本地体验与工程实践 |
 
 验证结果应结合对应日期、代码版本、模型和数据集阅读。测试通过数量不替代业务质量评测；特定长对话实验的 token 变化不代表所有场景的成本收益。
@@ -317,7 +382,10 @@ tests/             后端回归测试
 eval/              评测用例与验收证据
 docs/              设计、使用与验证文档
 docker/            Compose 配置
+assets/tokenizers/ 固定版本、哈希与许可证的 tokenizer 资产
 ```
+
+资源治理实现在 `app/infrastructure/resource_governance/`，对应评测／回放脚本位于 `scripts/resource_governance/`，实验产物位于 `eval/resource-governance/`。
 
 ### 文档导航
 
@@ -331,6 +399,11 @@ docker/            Compose 配置
 | 如何处理交易确认和库存 | [交易确认与库存验证](docs/交易确认与库存验证-2026-09-09.md) |
 | 如何配置身份与会话隔离 | [会话与身份模式](docs/会话持久Fencing与身份模式.md) |
 | 如何观察 Agent 执行过程 | [Langfuse 与端到端 Trace](docs/Langfuse与端到端Trace.md) |
+| 知识查询如何改写、拆分和融合 | [Query Transformation V2](docs/知识检索Query-Transformation-V2.md)（早期设计，最新接线以代码和 Trace 为准） |
+| Token 与上下文如何联合观测 | [资源治理 Phase 0–2](docs/TokenBudget与ContextGovernance-Phase0-2.md)与[Phase 2.5](docs/TokenBudget与ContextGovernance-Phase2.5.md) |
+| 操作身份与预算口径如何对齐 | [Identity / Budget](docs/ResourceGovernance-Identity-Budget-Batch1.md) |
+| 如何判断执行进展与预测后续轮数 | [Runtime Progress](docs/ResourceGovernance-Runtime-Progress-Batch2.md)与[Continuation](docs/ResourceGovernance-Continuation-Batch3.md) |
+| 最近真实请求验证的结果与限制 | [Targeted smoke 结果](docs/ResourceGovernance-Continuation-Targeted-Results.md) |
 | 如何理解正式质量门禁 | [正式评测选集与证据清单](docs/正式评测选集与证据清单.md) |
 
 运行评测前，请先阅读对应文档，确认模型、数据集和外部服务前提。部分验证会调用模型并产生费用。
@@ -364,7 +437,9 @@ docker/            Compose 配置
 ## 后续方向
 
 - 完成正式检索与 Agent 质量门禁中的剩余问题。
-- 验证 Hybrid 检索、A/B 与不同策略的实际收益。
+- 继续通过冻结评测验证 Hybrid、QueryProcessor 与独立 Retriever 实验的实际收益。
+- 补齐资源校准的独立样本、简单请求退化分析和 DeepSeek Golden Tokenizer Parity。
+- 在检索质量、预测尾部误差与 mandatory / Main Final 安全 Gate 通过前，资源治理保持 shadow-only。
 - 补齐 worker 路径的远端追踪验收。
 - 探索完整账号体系与真实业务系统接入。
 
