@@ -122,8 +122,6 @@ Agent 根据需求调用检索与业务工具，页面随运行过程展示回�
 - continuation 诊断预测下一完成操作和剩余规划轮数，校准／验证按 case 隔离，不用未来状态回填早期特征。
 - 未验证的证据充分性保留 `UNKNOWN`；检索命中不等于已覆盖需求，未知不等于零进展。
 
-**当前仅 shadow-only，不执行预算拒绝、自动降级、候选缩减或 mandatory operation 取消。** 80K 是观察用的 bootstrap cap，不是已验证可启用的线上熔断阈值。DeepSeek tokenizer 资产已固定版本和哈希，但 Golden Parity 尚未完成，`DEEPSEEK_V41_TOKENIZER_PRIMARY` 保持 `0`。
-
 ### 评测驱动，而不是只展示成功案例
 
 保留现有商品 Recall / MRR / nDCG、lexical / semantic 分桶、hard negative 和标注自检，并按实际召回深度比较策略。知识评测进一步区分文档命中、证据命中、必要信息需求覆盖，以及召回、融合与 Top-K 截断阶段的损失。
@@ -354,7 +352,7 @@ flowchart TD
 | 正式检索与 Agent 质量门禁 | 仍有未通过项 | [正式 release 记录](docs/正式release验证记录-2026-09-09.md) |
 | 商品 Hybrid 与知识查询处理 | 已实现，按开关及服务配置启用 | 不将某次离线收益推广为全部线上场景收益 |
 | 知识 per-need 重排、融合与覆盖保护 | 已接入 | [实现与追踪说明](docs/Langfuse与端到端Trace.md)；最终质量仍需独立回归 |
-| 双塔 Retriever | 独立实验，不替换正式候选 | 保留 baseline collection 与数据隔离 |
+| 双塔 Retriever | 独立实验，不替换正式候选  | 保留 baseline collection 与数据隔离 |
 | 请求资源账本与 causal runtime 诊断 | Phase 2.5，shadow-only | [最新验证结果](docs/ResourceGovernance-Continuation-Targeted-Results.md)；Phase 3 NO_GO |
 | DeepSeek tokenizer PRIMARY | 未启用 | 官方资产固定；真实 API Golden Parity 与校准尚未完成 |
 | 真实支付、物流与完整账号系统 | 未接入 | 当前用于本地体验与工程实践 |
