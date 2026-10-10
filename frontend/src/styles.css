@@ -12,6 +12,19 @@
     "Avenir Next", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
     sans-serif;
 }
+.access-screen { min-height: 100dvh; display: grid; place-items: center; padding: 24px; }
+.access-card { width: min(100%, 460px); padding: 36px; background: var(--white); border: 1px solid var(--line); border-radius: 20px; }
+.access-eyebrow { color: var(--green); letter-spacing: .12em; font-size: 12px; }
+.access-card h1 { font: 32px/1.3 var(--serif); color: var(--green); }
+.access-card p { overflow-wrap: anywhere; }
+.access-card label { display: block; margin: 24px 0 8px; }
+.access-card input { width: 100%; padding: 12px; border: 1px solid var(--muted); border-radius: 8px; }
+.access-submit { width: 100%; margin-top: 16px; padding: 12px; border: 0; border-radius: 8px; background: var(--green); color: white; }
+.access-retry { margin-top: 16px; border: 0; background: transparent; color: var(--green); text-decoration: underline; }
+.access-error { color: #9c3426; }
+.access-note { color: var(--muted); font-size: 12px; margin-top: 24px; }
+.access-bar { position: sticky; top: 0; z-index: 60; display: flex; justify-content: flex-end; align-items: center; gap: 16px; padding: 8px 20px; background: var(--sage); border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+.access-bar button { background: transparent; border: 1px solid var(--green); color: var(--green); border-radius: 6px; padding: 4px 10px; flex-shrink: 0; }
 * {
   box-sizing: border-box;
 }

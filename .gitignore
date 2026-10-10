@@ -3,6 +3,11 @@
 __pycache__/
 *.pyc
 .env
+.env.*
+!.env.example
+beta-credentials/
+cloud.env.template
+.tmp-tests/
 .pytest_cache/
 # 本机运行日志、完整模型上下文快照和临时文件可能含敏感数据，禁止入库。
 .runlogs/

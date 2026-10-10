@@ -1,7 +1,8 @@
 """所有买家入口共用身份与会话归属检查；严格模式不接收 query 中的 token。"""
 from __future__ import annotations
 
-from fastapi import HTTPException, Request, WebSocket
+from fastapi import FastAPI, HTTPException, Request, WebSocket
+from fastapi.responses import JSONResponse
 
 from app.domain.session.ports.session_store import SessionNotFound, SessionOwnerMismatch, SessionStoreError
 from app.infrastructure.identity import IdentityError, IdentityPolicy, buyer_identity
@@ -24,6 +25,23 @@ def _token(request: Request | WebSocket) -> str:
         if len(tokens) == 1:
             return tokens[0]
     return ""
+
+
+def register_identity_routes(api: FastAPI) -> None:
+    @api.get("/commerce/auth")
+    async def access_status(request: Request):
+        policy = identity_policy(request)
+        headers = {"Cache-Control": "no-store"}
+        if policy.mode == "demo":
+            return JSONResponse({"mode": "demo", "authenticated": False}, headers=headers)
+        if not request.headers.get("authorization"):
+            return JSONResponse({"mode": "hmac", "authenticated": False}, headers=headers)
+        try:
+            buyer_id = policy.verify(_token(request))
+        except IdentityError as error:
+            raise HTTPException(status_code=401, detail="内测凭证无效或已过期",
+                                headers={**headers, "WWW-Authenticate": "Bearer"}) from error
+        return JSONResponse({"mode": "hmac", "authenticated": True, "buyer_id": buyer_id}, headers=headers)
 
 
 async def require_buyer(request: Request | WebSocket, claimed_buyer: str) -> str:

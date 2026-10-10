@@ -1,19 +1,20 @@
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { CommerceClient } from "../lib/commerceClient";
+import { useBuyerAccess } from "../components/AccessGate";
 
 export function useCommerceAgent() {
+  const access = useBuyerAccess();
   const [client] = useState(() => {
     let storage: Storage | undefined;
     try {
-      storage = window.localStorage;
+      storage = access ? window.sessionStorage : window.localStorage;
     } catch {
       /* 存储受限时使用内存。 */
     }
     const base = (import.meta.env.VITE_API_BASE ?? "").replace(/\/$/, "");
-    let accessToken = import.meta.env.VITE_API_TOKEN;
-    try { accessToken ||= storage?.getItem("globex.access-token"); } catch { /* 可使用构建配置。 */ }
+    const accessToken = access?.accessToken;
     return new CommerceClient({ url: `${base}/commerce/ag-ui/run`, storage,
-      buyerId: import.meta.env.VITE_BUYER_ID || "pao-coder", accessToken });
+      buyerId: access?.buyerId ?? import.meta.env.VITE_BUYER_ID ?? "pao-coder", accessToken });
   });
   const snapshot = useSyncExternalStore(client.subscribe, client.getSnapshot);
   useEffect(() => { void client.initialize(); return () => client.detach(); }, [client]);
