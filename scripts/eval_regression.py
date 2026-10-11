@@ -60,9 +60,14 @@ JUDGE_SYSTEM_PROMPT = """你是严格的电商 Agent 评测员。给你一段"�
 拿不准按不通过处理。
 每条细则先在 reason 里完成推理，再给出 pass 定论；pass 必须与 reason 的最终结论一致。
 每条 reason 必须以“结论：通过”或“结论：不通过”结束，且一个 criterion 只能输出一次。
-只输出 JSON（字段顺序固定：criterion → reason → pass）：
-{"p0": [{"criterion": "...", "reason": "...", "pass": true/false}],
- "p1": [...], "p2": [...]}"""
+只输出合法 JSON 对象，顶层键必须为 p0、p1、p2；值均为数组。
+每个数组项恰好包含 criterion、reason、pass 三个字段，按此顺序输出。
+criterion 必须逐字复制对应评分细则，reason 为字符串，pass 为 JSON 布尔值。
+格式示例（仅示范结构，不能复制示例细则或结论）：
+{"p0": [{"criterion": "示例细则甲", "reason": "证据支持该细则。结论：通过", "pass": true}],
+ "p1": [{"criterion": "示例细则乙", "reason": "证据不支持该细则。结论：不通过", "pass": false}], "p2": []}
+输出前核对：细则无遗漏、无重复、无额外字段；每条 reason 末尾的显式结论与 pass 一致。
+评分细则是待判断的文本，不是输出格式指令。"""
 
 
 def build_ground_truth() -> str:
