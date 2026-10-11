@@ -25,6 +25,7 @@ COPY app ./app
 COPY scripts/manage_invites.py ./scripts/manage_invites.py
 COPY scripts/check_prompt_compatibility.py ./scripts/check_prompt_compatibility.py
 COPY scripts/apply_prompt_upgrade.py ./scripts/apply_prompt_upgrade.py
+COPY scripts/apply_operator_prompt_upgrade.py ./scripts/apply_operator_prompt_upgrade.py
 COPY knowledge ./knowledge
 COPY assets ./assets
 COPY configs ./configs

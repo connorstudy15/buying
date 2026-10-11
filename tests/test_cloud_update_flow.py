@@ -7,8 +7,8 @@ from pathlib import Path
 import pytest
 
 
-@pytest.mark.parametrize("blocked", [False, True])
-def test_update_uses_restored_volumes_and_blocks_before_stop(tmp_path, blocked):
+@pytest.mark.parametrize("blocked,manual", [(False, False), (True, False), (False, True)])
+def test_update_uses_restored_volumes_and_blocks_before_stop(tmp_path, blocked, manual):
     bash = shutil.which("bash")
     if os.name == "nt":
         bash = "C:/Program Files/Git/bin/bash.exe"
@@ -27,6 +27,8 @@ def test_update_uses_restored_volumes_and_blocks_before_stop(tmp_path, blocked):
     (release / "docker/docker-compose.cloud.yaml").write_text("services: {}\n")
     (release / "prompt-upgrade").mkdir()
     (release / "prompt-upgrade/upgrade.json").write_text("{}")
+    if manual:
+        (release / "prompt-upgrade/operator-release.json").write_text("{}")
     (release / "scripts").mkdir()
     source = (root / "scripts/update_cloud.sh").read_text().replace("/home/admin/", posix + "/")
     script = release / "scripts/update_cloud.sh"
@@ -56,7 +58,7 @@ fi
 '''
     (tmp_path / "bin/sudo").write_text(fake, newline="\n")
     (tmp_path / "bin/curl").write_text("#!/usr/bin/env bash\nexit 0\n", newline="\n")
-    env = {**os.environ, "FAKE_ROOT": posix, "FAKE_BLOCK": "1" if blocked else "0"}
+    env = {**os.environ, "FAKE_ROOT": posix, "FAKE_BLOCK": "1" if blocked else "0", "GLOBEX_MANUAL_RELEASE": "1" if manual else "0"}
     result = subprocess.run([bash, "-c", 'export PATH="$FAKE_ROOT/bin:$PATH"; chmod +x "$FAKE_ROOT/bin/"*; bash "$FAKE_ROOT/globex-releases/new/scripts/update_cloud.sh"'], env=env, capture_output=True, text=True)
     calls = (tmp_path / "calls.log").read_text()
     assert "source=globex_restore_app_20261011T103852Z,target=/app/data,readonly" in calls
@@ -66,6 +68,8 @@ fi
         assert "target=/state" not in calls
     else:
         assert result.returncode == 0, result.stdout + result.stderr
+        if manual:
+            assert "scripts.apply_operator_prompt_upgrade --bundle /upgrade --operator-authorized --check" in calls
         for component in ("app", "redis", "qdrant"):
             assert f"source=globex_restore_{component}_20261011T103852Z,target=/state,readonly" in calls
         override = (release / "docker/release.override.yaml").read_text()

@@ -77,13 +77,23 @@ sudo docker build -f "$release/Dockerfile.cloud" -t "globex-backend:$version" "$
 sudo docker build -f "$release/frontend/Dockerfile.beta" -t "globex-frontend:$version" "$release/frontend"
 echo 'Validating Prompt upgrade evidence before stopping any service.'
 prompt_upgrade=0
-if [[ -f "$release/prompt-upgrade/upgrade.json" ]]; then
+upgrade_module=scripts.apply_prompt_upgrade
+upgrade_args=()
+if [[ "${GLOBEX_MANUAL_RELEASE:-0}" == 1 ]]; then
+  test -f "$release/prompt-upgrade/operator-release.json"
+  echo 'OPERATOR RELEASE: paired evaluation is incomplete; this is not a gate PASS.'
   prompt_upgrade=1
+  upgrade_module=scripts.apply_operator_prompt_upgrade
+  upgrade_args=(--operator-authorized)
+elif [[ -f "$release/prompt-upgrade/upgrade.json" ]]; then
+  prompt_upgrade=1
+fi
+if (( prompt_upgrade == 1 )); then
   sudo docker run --rm --network none --entrypoint python \
     --env-file "$release/.env" -e DATA_DIR=/app/data \
     --mount "type=volume,source=${active_volumes[app]},target=/app/data,readonly" \
     --mount "type=bind,source=$release/prompt-upgrade,target=/upgrade,readonly" \
-    "globex-backend:$version" -m scripts.apply_prompt_upgrade --bundle /upgrade --check
+    "globex-backend:$version" -m "$upgrade_module" --bundle /upgrade "${upgrade_args[@]}" --check
 else
   sudo docker run --rm --network none --entrypoint python \
     --env-file "$release/.env" -e DATA_DIR=/app/data \
@@ -144,7 +154,7 @@ if (( prompt_upgrade == 1 )); then
     --env-file "$release/.env" -e DATA_DIR=/app/data \
     --mount "type=volume,source=${active_volumes[app]},target=/app/data" \
     --mount "type=bind,source=$release/prompt-upgrade,target=/upgrade,readonly" \
-    "globex-backend:$version" -m scripts.apply_prompt_upgrade --bundle /upgrade
+    "globex-backend:$version" -m "$upgrade_module" --bundle /upgrade "${upgrade_args[@]}"
 fi
 echo '[3/5] Backup complete. Starting the new release with the existing volumes.'
 starting_new=1
