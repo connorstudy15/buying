@@ -13,7 +13,7 @@ from app.infrastructure.persistence.json_file_stores import JsonFileSessionStore
 from app.presentation.identity import register_identity_routes, require_buyer, require_session
 
 ORIGIN = "https://demo.example"
-PASSWORD = "correct-password-for-test"
+PASSWORD = "Testpass123"
 
 
 def app_for(tmp_path, clock=None):
@@ -185,3 +185,27 @@ def test_proxy_configs_preserve_browser_host():
     assert "proxy_set_header Host $http_host;" in (root / "frontend/nginx.conf").read_text()
     commerce_proxy = (root / "frontend/vite.config.ts").read_text().split('"/commerce":', 1)[1].split('"/health":', 1)[0]
     assert "changeOrigin: false" in commerce_proxy
+
+
+@pytest.mark.parametrize("password", ["abc123", "Abc123456789"])
+def test_registration_password_boundaries(tmp_path, password):
+    store = AccountAccessStore(tmp_path / "accounts.db")
+    _, account = store.register("alice", password, "Alice", ORIGIN)
+    assert store.login("alice", password, ORIGIN)[1].buyer_id == account.buyer_id
+
+
+@pytest.mark.parametrize("password", ["abc12", "Abc1234567890"])
+def test_registration_rejects_password_outside_boundaries(tmp_path, password):
+    with pytest.raises(ValueError, match="6–12"):
+        AccountAccessStore(tmp_path / "accounts.db").register("alice", password, "Alice", ORIGIN)
+
+
+def test_legacy_long_password_still_logs_in(tmp_path):
+    from app.infrastructure.account_access import _hash
+    store = AccountAccessStore(tmp_path / "accounts.db")
+    _, account = store.register("alice", PASSWORD, "Alice", ORIGIN)
+    legacy = "previous-long-password"
+    with sqlite3.connect(store.path) as db:
+        salt = db.execute("SELECT password_salt FROM accounts").fetchone()[0]
+        db.execute("UPDATE accounts SET password_hash=?", (_hash(legacy, salt),))
+    assert store.login("alice", legacy, ORIGIN)[1].buyer_id == account.buyer_id

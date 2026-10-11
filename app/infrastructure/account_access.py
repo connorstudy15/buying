@@ -43,8 +43,8 @@ def normalize_username(value: str) -> str:
 
 
 def validate_password(value: str) -> None:
-    if not 12 <= len(value) <= 128 or len(value.encode("utf-8")) > 512:
-        raise ValueError("密码需为 12–128 个字符")
+    if not 6 <= len(value) <= 12:
+        raise ValueError("密码需为 6–12 个字符")
 
 
 def _hash(password: str, salt: bytes) -> bytes:
@@ -128,7 +128,9 @@ class AccountAccessStore:
 
     def login(self, username: str, password: str, origin: str):
         username = normalize_username(username)
-        validate_password(password)
+        # 允许旧账号继续使用此前注册的较长密码。
+        if not 1 <= len(password) <= 128 or len(password.encode("utf-8")) > 512:
+            raise ValueError("密码格式不正确")
         origin = normalize_origin(origin)
         self.throttle("login", username)
         with self._db() as db:

@@ -3,7 +3,7 @@
 ## 范围
 
 - 用户名（3–32 位英文、数字、下划线、点、短横线，大小写不敏感）与密码注册；昵称最多 32 个字符。
-- 密码为 12–128 个字符，使用随机 16 字节盐和 PBKDF2-HMAC-SHA256（600,000 次），不存明文。
+- 新注册密码为 6–12 个字符（旧账号的长密码仍可登录），使用随机 16 字节盐和 PBKDF2-HMAC-SHA256（600,000 次），不存明文。
   参数参考 [OWASP Password Storage](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html)。
 - 注册完成自动登录；账号 Cookie 为 HttpOnly、SameSite=Lax，公网 HTTPS 使用 Secure 与 __Host- 前缀。
 - 登录有效期 7 天；退出立即撤销当前会话，其他设备保持登录。到期需重新登录。

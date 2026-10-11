@@ -192,13 +192,13 @@ export default function AccessGate({ children }: { children: ReactNode }) {
         <input id="account-name" value={displayName} onChange={event => setDisplayName(event.target.value)}
           autoComplete="nickname" maxLength={32} required disabled={busy} />
       </>}
-      <label htmlFor="account-password">密码{mode === "register" ? "（12–128 个字符）" : ""}</label>
+      <label htmlFor="account-password">密码{mode === "register" ? "（6–12 个字符）" : ""}</label>
       <input id="account-password" type="password" value={password} onChange={event => setPassword(event.target.value)}
-        autoComplete={mode === "register" ? "new-password" : "current-password"} minLength={12} maxLength={128} required disabled={busy} />
+        autoComplete={mode === "register" ? "new-password" : "current-password"} minLength={mode === "register" ? 6 : 1} maxLength={mode === "register" ? 12 : 128} required disabled={busy} />
       {mode === "register" && <>
         <label htmlFor="account-confirmation">确认密码</label>
         <input id="account-confirmation" type="password" value={confirmation} onChange={event => setConfirmation(event.target.value)}
-          autoComplete="new-password" minLength={12} maxLength={128} required disabled={busy} />
+          autoComplete="new-password" minLength={6} maxLength={12} required disabled={busy} />
         <p className="access-note">注册后开始独立的账号空间；当前访客的体验记录不会自动转入账号。暂不支持自助找回密码，请妥善保存。</p>
       </>}
       {error && <p role="alert" className="access-error">{error}</p>}
