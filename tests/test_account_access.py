@@ -168,3 +168,20 @@ def test_expired_account_cookie_can_return_to_invite_experience(tmp_path):
         _, token = api.state.invite_access.create(ORIGIN)
         assert client.post("/commerce/auth/invite", json={"invite": token}, headers={"Origin": ORIGIN}).status_code == 200
         assert client.get("/commerce/auth").json()["credential"] == "invite"
+
+
+def test_tunnel_origin_requires_proxy_to_preserve_port(tmp_path):
+    origin = "http://127.0.0.1:15173"
+    with TestClient(app_for(tmp_path), base_url=origin) as client:
+        body = {"username": "alice", "password": PASSWORD, "display_name": "小爱"}
+        assert client.post("/commerce/auth/register", json=body, headers={"Origin": origin, "Host": "127.0.0.1"}).status_code == 403
+        assert client.post("/commerce/auth/register", json=body, headers={"Origin": origin}).status_code == 200
+        assert client.get("/commerce/auth").json()["display_name"] == "小爱"
+
+
+def test_proxy_configs_preserve_browser_host():
+    from pathlib import Path
+    root = Path(__file__).resolve().parents[1]
+    assert "proxy_set_header Host $http_host;" in (root / "frontend/nginx.conf").read_text()
+    commerce_proxy = (root / "frontend/vite.config.ts").read_text().split('"/commerce":', 1)[1].split('"/health":', 1)[0]
+    assert "changeOrigin: false" in commerce_proxy
