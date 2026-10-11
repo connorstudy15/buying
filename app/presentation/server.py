@@ -118,9 +118,17 @@ def build_app() -> FastAPI:
                          lambda: container().ag_ui_runtime)
     from app.presentation.context_workspace import register_context_routes
     register_context_routes(api, lambda: container().context_service)
+    from app.presentation.model_workspace import register_model_routes
+    register_model_routes(api, container)
+    from app.presentation.automations import register_automation_routes
+    register_automation_routes(api, lambda: getattr(container(), 'automation_service', None))
     register_confirmation_routes(api, lambda: container().confirmations)
     register_buyer_workspace_routes(api, lambda: container().orchestrator)
     register_identity_routes(api)
+    from app.presentation.product_media import register_product_media_routes
+    register_product_media_routes(api)
+    from app.presentation.shopping_forms import register_shopping_form_routes
+    register_shopping_form_routes(api, lambda: container().orchestrator._sessions._main_factory.shopping_form_store)
     from app.presentation.favorites import register_favorite_routes
     from app.infrastructure.buyer_favorites import BuyerFavoriteStore
     register_favorite_routes(api, lambda: BuyerFavoriteStore(container().settings.data_dir / "buyer_favorites.db"))

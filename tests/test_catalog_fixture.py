@@ -16,8 +16,9 @@ def test_catalog_fixture_has_required_scale_and_coverage():
     products = build_seed_products()
     skus = [sku for product in products for sku in product.skus]
 
-    assert len(products) >= 500
-    assert 700 <= len(skus) <= 900
+    assert len(products) == 3700
+    assert Counter(p.source_platform for p in products) == {"amazon": 1050, "ebay": 950, "etsy": 1150, "walmart": 550}
+    assert len(skus) == 7105
     assert len({product.category for product in products}) >= 8
     assert sum(len(product.skus) >= 2 for product in products) / len(products) >= 0.35
     assert {sku.price.currency for sku in skus} >= {"CNY", "USD", "EUR", "JPY", "SGD"}
@@ -52,7 +53,7 @@ def test_catalog_fixture_has_evaluation_metadata_for_cross_platform_and_constrai
 def test_versioned_catalog_has_hard_negative_and_price_band_coverage():
     records = [
         json.loads(line)
-        for line in (Path(__file__).resolve().parents[1] / "data" / "catalog-v1.jsonl").read_text(encoding="utf-8").splitlines()
+        for line in (Path(__file__).resolve().parents[1] / "data" / "catalog-v2.jsonl").read_text(encoding="utf-8").splitlines()
         if line.strip()
     ]
 

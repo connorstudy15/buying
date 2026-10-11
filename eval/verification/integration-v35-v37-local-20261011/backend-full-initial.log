@@ -1,0 +1,166 @@
+........................................................................ [  3%]
+........................................................................ [  6%]
+........................................................................ [ 10%]
+........................................................................ [ 13%]
+........................................................................ [ 16%]
+........................................................................ [ 20%]
+........................................................................ [ 23%]
+........................................................................ [ 27%]
+.......................................F...........................F.... [ 30%]
+........................................................................ [ 33%]
+........................................................................ [ 37%]
+.............F.......................................................... [ 40%]
+........................................................................ [ 43%]
+........................................................................ [ 47%]
+........................................................................ [ 50%]
+....................sss................................................. [ 54%]
+........................................................................ [ 57%]
+........................................................................ [ 60%]
+.................................................................s...... [ 64%]
+..............................sssssssssssssssssssssssssssss............. [ 67%]
+........................................................................ [ 71%]
+....................F........F............FFF.FFF..........F............ [ 74%]
+..........................................................sssssssssss... [ 77%]
+........................................................................ [ 81%]
+........................................................................ [ 84%]
+........................................................................ [ 87%]
+........................................................................ [ 91%]
+........................................................................ [ 94%]
+........................................................................ [ 98%]
+........................................                                 [100%]
+================================== FAILURES ===================================
+______ test_synthetic_trace_is_durable_private_and_report_link_is_local _______
+tests\test_harness_evaluation.py:57: in test_synthetic_trace_is_durable_private_and_report_link_is_local
+    assert file.stat().st_mode & 0o777 == 0o600
+E   AssertionError: assert (33206 & 511) == 384
+E    +  where 33206 = os.stat_result(st_mode=33206, st_ino=281474977180374, st_dev=9719010725419858335, st_nlink=1, st_uid=0, st_gid=0, st_size=432, st_atime=1791670027, st_mtime=1791670027, st_ctime=1791670027).st_mode
+E    +    where os.stat_result(st_mode=33206, st_ino=281474977180374, st_dev=9719010725419858335, st_nlink=1, st_uid=0, st_gid=0, st_size=432, st_atime=1791670027, st_mtime=1791670027, st_ctime=1791670027) = stat()
+E    +      where stat = WindowsPath('D:/globex-agent-main/.tmp-tests/upstream-full-r6/test_synthetic_trace_is_durabl0/events.jsonl').stat
+______ test_cross_version_comparison_keeps_distinct_private_trace_files _______
+tests\test_harness_evaluation.py:246: in test_cross_version_comparison_keeps_distinct_private_trace_files
+    assert file.stat().st_mode & 0o777 == 0o600
+E   AssertionError: assert (33206 & 511) == 384
+E    +  where 33206 = os.stat_result(st_mode=33206, st_ino=281474977180436, st_dev=9719010725419858335, st_nlink=1, st_uid=0, st_gid=0, st_size=17, st_atime=1791670029, st_mtime=1791670029, st_ctime=1791670029).st_mode
+E    +    where os.stat_result(st_mode=33206, st_ino=281474977180436, st_dev=9719010725419858335, st_nlink=1, st_uid=0, st_gid=0, st_size=17, st_atime=1791670029, st_mtime=1791670029, st_ctime=1791670029) = stat()
+E    +      where stat = WindowsPath('D:/globex-agent-main/.tmp-tests/upstream-full-r6/test_cross_version_comparison_1/out/traces/current-same-name.jsonl').stat
+_____________ test_inspect_evidence_flags_wrong_declared_section ______________
+tests\test_knowledge_evidence.py:42: in test_inspect_evidence_flags_wrong_declared_section
+    assert issues == ["section_mismatch:正确章节"]
+E   AssertionError: assert ['source_missing'] == ['section_mismatch:正确章节']
+E     
+E     At index 0 diff: 'source_missing' != 'section_mismatch:正确章节'
+E     Use -v to get more diff
+_____ TestTwoStageRecall.test_embedding_recall_ranks_camping_light_first ______
+tests\test_retrieval.py:191: in test_embedding_recall_ranks_camping_light_first
+    assert result["hits"][0]["product_id"] == "P1008", "露营灯应排第一"
+E   AssertionError: 露营灯应排第一
+E   assert 'P1039' == 'P1008'
+E     
+E     - P1008
+E     + P1039
+------------------------------ Captured log call ------------------------------
+WARNING  app.application.usecases.catalog_search:catalog_search.py:206 rerank 不可用，按向量分排序：Reranker 未配置
+________ TestTwoStageRecall.test_tool_event_carries_hits_for_frontend _________
+tests\test_retrieval.py:299: in test_tool_event_carries_hits_for_frontend
+    assert hits and hits[0]["product_id"] == "P1008"
+E   AssertionError: assert ([{'product_id': 'P1039', 'title': 'SolarLamp 太阳能营地灯', 'brand': 'SolarLamp', 'category': '户外运动', ...}, {'product_id': '...gory': '户外运动', ...}, {'product_id': 'P2395', 'title': 'Atlas 户外保温杯 395', 'brand': 'Atlas-11', 'category': '户外运动', ...}] and 'P1039' == 'P1008'
+E     
+E     - P1008
+E     + P1039)
+------------------------------ Captured log call ------------------------------
+WARNING  app.application.usecases.catalog_search:catalog_search.py:206 rerank 不可用，按向量分排序：Reranker 未配置
+_ test_real_pipeline_stage_capture_is_opt_in_and_does_not_change_results[False-False-1] _
+tests\test_retrieval_stages.py:92: in test_real_pipeline_stage_capture_is_opt_in_and_does_not_change_results
+    assert set(trace['merged_candidates']) == set(trace['fused_candidates'])
+E   AssertionError: assert {'P1001', 'P1... 'P1006', ...} == {'P1001', 'P1... 'P1006', ...}
+E     
+E     Extra items in the left set:
+E     'P1009'
+E     'P1008'
+E     'P1012'
+E     Use -v to get more diff
+_ test_real_pipeline_stage_capture_is_opt_in_and_does_not_change_results[False-True-0] _
+tests\test_retrieval_stages.py:92: in test_real_pipeline_stage_capture_is_opt_in_and_does_not_change_results
+    assert set(trace['merged_candidates']) == set(trace['fused_candidates'])
+E   AssertionError: assert {'P1001', 'P1... 'P1006', ...} == {'P1001', 'P1... 'P1009', ...}
+E     
+E     Extra items in the left set:
+E     'P1004'
+E     'P1005'
+E     Use -v to get more diff
+------------------------------ Captured log call ------------------------------
+WARNING  app.application.usecases.catalog_search:catalog_search.py:309 Hybrid 向量侧不可用：RuntimeError
+WARNING  app.application.usecases.catalog_search:catalog_search.py:309 Hybrid 向量侧不可用：RuntimeError
+_ test_real_pipeline_stage_capture_is_opt_in_and_does_not_change_results[False-True-1] _
+tests\test_retrieval_stages.py:92: in test_real_pipeline_stage_capture_is_opt_in_and_does_not_change_results
+    assert set(trace['merged_candidates']) == set(trace['fused_candidates'])
+E   AssertionError: assert {'P1001', 'P1... 'P1006', ...} == {'P1001', 'P1... 'P1009', ...}
+E     
+E     Extra items in the left set:
+E     'P1004'
+E     'P1005'
+E     Use -v to get more diff
+------------------------------ Captured log call ------------------------------
+WARNING  app.application.usecases.catalog_search:catalog_search.py:309 Hybrid 向量侧不可用：RuntimeError
+WARNING  app.application.usecases.catalog_search:catalog_search.py:309 Hybrid 向量侧不可用：RuntimeError
+_ test_real_pipeline_stage_capture_is_opt_in_and_does_not_change_results[True-False-1] _
+tests\test_retrieval_stages.py:92: in test_real_pipeline_stage_capture_is_opt_in_and_does_not_change_results
+    assert set(trace['merged_candidates']) == set(trace['fused_candidates'])
+E   AssertionError: assert {'P1001', 'P1... 'P1006', ...} == {'P1001', 'P1... 'P1006', ...}
+E     
+E     Extra items in the left set:
+E     'P1009'
+E     'P1008'
+E     'P1012'
+E     Use -v to get more diff
+_ test_real_pipeline_stage_capture_is_opt_in_and_does_not_change_results[True-True-0] _
+tests\test_retrieval_stages.py:92: in test_real_pipeline_stage_capture_is_opt_in_and_does_not_change_results
+    assert set(trace['merged_candidates']) == set(trace['fused_candidates'])
+E   AssertionError: assert {'P1001', 'P1... 'P1006', ...} == {'P1001', 'P1... 'P1009', ...}
+E     
+E     Extra items in the left set:
+E     'P1004'
+E     'P1005'
+E     Use -v to get more diff
+------------------------------ Captured log call ------------------------------
+WARNING  app.application.usecases.catalog_search:catalog_search.py:309 Hybrid 向量侧不可用：RuntimeError
+WARNING  app.application.usecases.catalog_search:catalog_search.py:309 Hybrid 向量侧不可用：RuntimeError
+_ test_real_pipeline_stage_capture_is_opt_in_and_does_not_change_results[True-True-1] _
+tests\test_retrieval_stages.py:92: in test_real_pipeline_stage_capture_is_opt_in_and_does_not_change_results
+    assert set(trace['merged_candidates']) == set(trace['fused_candidates'])
+E   AssertionError: assert {'P1001', 'P1... 'P1006', ...} == {'P1001', 'P1... 'P1009', ...}
+E     
+E     Extra items in the left set:
+E     'P1004'
+E     'P1005'
+E     Use -v to get more diff
+------------------------------ Captured log call ------------------------------
+WARNING  app.application.usecases.catalog_search:catalog_search.py:309 Hybrid 向量侧不可用：RuntimeError
+WARNING  app.application.usecases.catalog_search:catalog_search.py:309 Hybrid 向量侧不可用：RuntimeError
+_____ test_compose_shares_context_and_independent_embedding_configuration _____
+tests\test_runtime_distribution.py:66: in test_compose_shares_context_and_independent_embedding_configuration
+    assert environment.get(key) == value, (service, key)
+E   AssertionError: ('app', 'CONTEXT_STRATEGY')
+E   assert None == '${CONTEXT_STRATEGY:-layered}'
+E    +  where None = <built-in method get of dict object at 0x00000278AB62CA00>('CONTEXT_STRATEGY')
+E    +    where <built-in method get of dict object at 0x00000278AB62CA00> = {'IDENTITY_MODE': '${IDENTITY_MODE:-demo}', 'SESSION_OWNER_BINDING': '${SESSION_OWNER_BINDING:-1}', 'IDENTITY_HMAC_SECRET': '${IDENTITY_HMAC_SECRET-}', 'PROMPT_PIN_VERSION': '${PROMPT_PIN_VERSION-}', ...}.get
+============================== warnings summary ===============================
+.venv\Lib\site-packages\fastapi\testclient.py:1
+  D:\globex-agent-main\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/test_harness_evaluation.py::test_synthetic_trace_is_durable_private_and_report_link_is_local
+FAILED tests/test_harness_evaluation.py::test_cross_version_comparison_keeps_distinct_private_trace_files
+FAILED tests/test_knowledge_evidence.py::test_inspect_evidence_flags_wrong_declared_section
+FAILED tests/test_retrieval.py::TestTwoStageRecall::test_embedding_recall_ranks_camping_light_first
+FAILED tests/test_retrieval.py::TestTwoStageRecall::test_tool_event_carries_hits_for_frontend
+FAILED tests/test_retrieval_stages.py::test_real_pipeline_stage_capture_is_opt_in_and_does_not_change_results[False-False-1]
+FAILED tests/test_retrieval_stages.py::test_real_pipeline_stage_capture_is_opt_in_and_does_not_change_results[False-True-0]
+FAILED tests/test_retrieval_stages.py::test_real_pipeline_stage_capture_is_opt_in_and_does_not_change_results[False-True-1]
+FAILED tests/test_retrieval_stages.py::test_real_pipeline_stage_capture_is_opt_in_and_does_not_change_results[True-False-1]
+FAILED tests/test_retrieval_stages.py::test_real_pipeline_stage_capture_is_opt_in_and_does_not_change_results[True-True-0]
+FAILED tests/test_retrieval_stages.py::test_real_pipeline_stage_capture_is_opt_in_and_does_not_change_results[True-True-1]
+FAILED tests/test_runtime_distribution.py::test_compose_shares_context_and_independent_embedding_configuration
+12 failed, 2072 passed, 44 skipped, 1 warning in 367.36s (0:06:07)

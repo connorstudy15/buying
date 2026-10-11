@@ -1,0 +1,3241 @@
+[
+  {
+    "case_id": "h1-dev-cost",
+    "split": "dev",
+    "mode": "snapshot",
+    "strategy": "current",
+    "repetition": 0,
+    "answer": "**第一批（历史观察，2026-09-01，寄送 CN、数量 1）——P28183 / SKU P28183-S1（石墨黑）**\n- 到手价：**222 元 CNY**（单价 189 + 运费 26 + 税 7）\n- 运费：**26 元 CNY**\n\n两点说明：\n1. 这是该批的历史值，且当时的报价条件是**寄中国 CN、数量 1**，与你现在的英国目的地不能混用（第23批寄英国时该商品到手价 237 元、运费 41 元，属实另一条件）。\n2. 当前权威工具只返回 P28183-S1 单价 **211 元 CNY**、库存 10（订单 ORD-EVAL 状态 CANCELLED），**未返回当前到手价与运费**，故当前到手价/运费为未知，需另行核验，不能拿历史值顶替。",
+    "checks": {
+      "facts": true,
+      "current_lookup": true,
+      "no_error": true
+    },
+    "passed": true,
+    "error": null,
+    "usage": [
+      {
+        "kind": "business",
+        "input_tokens": 10304,
+        "output_tokens": 1183,
+        "elapsed_ms": 5698.999700020067,
+        "request_context": {
+          "system_estimated_tokens": 1059,
+          "state_estimated_tokens": 0,
+          "product_estimated_tokens": 17669,
+          "history_estimated_tokens": 4597,
+          "tool_schema_estimated_tokens": 788,
+          "reason": "buyer_request",
+          "visible_evidence_answer": false,
+          "recovery_attempt": 0
+        },
+        "prompt_cache": {
+          "model": "deepseek-flash",
+          "response_model": "deepseek-flash",
+          "response_model_matches": true,
+          "response_model_conflict": false,
+          "protocol_status": "valid",
+          "cache_mode": "passthrough",
+          "cache_policy": "static",
+          "cache_marker_count": 0,
+          "cache_reason": "passthrough",
+          "cache_retry_without_markers": false,
+          "cache_read_tokens": 0,
+          "cache_write_tokens": null,
+          "cache_usage_invalid": false,
+          "reported_cost": null,
+          "prefix_comparison": "first_request",
+          "prefix_scope_known": true,
+          "prefix_system_hash": "9a4530b919ef7736bf5df843fdfa11fb24709f043714c5c9bac7bb3b283fd812",
+          "prefix_tools_hash": "2ec81ebb39c45a2968e561fdad45f065c6c262c1dd4985d2681a4dd24b64e236",
+          "prefix_message_count": 99,
+          "prefix_common_messages": null,
+          "prefix_common_message_bytes": null,
+          "prefix_first_changed_message": null,
+          "prefix_system_changed": null,
+          "prefix_tools_changed": null,
+          "prefix_parameters_changed": null
+        },
+        "model_execution": {
+          "identity": "deepseek-flash|https://api.deepseek.com",
+          "requested_model": "deepseek-flash",
+          "response_models": [
+            "deepseek-flash"
+          ],
+          "response_model_matches": true,
+          "profile_id": null,
+          "profile_revision": null
+        },
+        "ttft_ms": null
+      },
+      {
+        "kind": "business",
+        "input_tokens": 12116,
+        "output_tokens": 1141,
+        "elapsed_ms": 5087.152200052515,
+        "request_context": {
+          "system_estimated_tokens": 1059,
+          "state_estimated_tokens": 0,
+          "product_estimated_tokens": 20978,
+          "history_estimated_tokens": 4316,
+          "tool_schema_estimated_tokens": 788,
+          "reason": "lookup_followup",
+          "visible_evidence_answer": false,
+          "recovery_attempt": 0
+        },
+        "prompt_cache": {
+          "model": "deepseek-flash",
+          "response_model": "deepseek-flash",
+          "response_model_matches": true,
+          "response_model_conflict": false,
+          "protocol_status": "valid",
+          "cache_mode": "passthrough",
+          "cache_policy": "static",
+          "cache_marker_count": 0,
+          "cache_reason": "passthrough",
+          "cache_retry_without_markers": false,
+          "cache_read_tokens": 11392,
+          "cache_write_tokens": null,
+          "cache_usage_invalid": false,
+          "reported_cost": null,
+          "prefix_comparison": "append",
+          "prefix_scope_known": true,
+          "prefix_system_hash": "9a4530b919ef7736bf5df843fdfa11fb24709f043714c5c9bac7bb3b283fd812",
+          "prefix_tools_hash": "2ec81ebb39c45a2968e561fdad45f065c6c262c1dd4985d2681a4dd24b64e236",
+          "prefix_message_count": 102,
+          "prefix_common_messages": 99,
+          "prefix_common_message_bytes": 37104,
+          "prefix_first_changed_message": 99,
+          "prefix_system_changed": false,
+          "prefix_tools_changed": false,
+          "prefix_parameters_changed": false
+        },
+        "model_execution": {
+          "identity": "deepseek-flash|https://api.deepseek.com",
+          "requested_model": "deepseek-flash",
+          "response_models": [
+            "deepseek-flash"
+          ],
+          "response_model_matches": true,
+          "profile_id": null,
+          "profile_revision": null
+        },
+        "ttft_ms": null
+      }
+    ],
+    "input_tokens": 22420,
+    "output_tokens": 2324,
+    "model_calls": 2,
+    "lookup_calls": 1,
+    "lookup_events": [
+      {
+        "ref": "",
+        "batch": 1,
+        "position": 0,
+        "product_id": "P28183",
+        "sku_id": "",
+        "fields": "price",
+        "offset": 0,
+        "limit": 5,
+        "field_offset": 0
+      }
+    ],
+    "context_diagnostics": [
+      {
+        "type": "prune",
+        "before_tokens": 55128,
+        "after_tokens": 9621,
+        "high_watermark": 6000,
+        "next_high_watermark": 6000,
+        "low_watermark": 6000,
+        "archived_results": 21,
+        "protected_results": 2,
+        "below_target": false,
+        "trigger": "pressure"
+      },
+      {
+        "type": "lookup",
+        "batch": 1,
+        "position": 0,
+        "offset": 0,
+        "limit": 5,
+        "field_offset": 0,
+        "has_reference": false,
+        "has_query": false,
+        "has_product": true,
+        "has_sku": false,
+        "status": "success",
+        "error_code": null,
+        "returned_products": 1,
+        "effective_limit": 5,
+        "fields_normalized": false,
+        "limit_capped": false,
+        "effective_batch": 1,
+        "batch_inferred_from_user": false,
+        "records": 1,
+        "estimated_tokens": 562,
+        "has_more": false,
+        "elapsed_ms": 1.8744999542832375
+      },
+      {
+        "type": "prune",
+        "before_tokens": 7453,
+        "after_tokens": 7453,
+        "high_watermark": 6000,
+        "next_high_watermark": 6000,
+        "low_watermark": 6000,
+        "archived_results": 0,
+        "protected_results": 4,
+        "below_target": false,
+        "trigger": "pressure"
+      }
+    ],
+    "current_calls": 1,
+    "elapsed_ms": 13927,
+    "compactions": [],
+    "round_metrics": [
+      {
+        "elapsed_ms": 10883,
+        "compacted": false,
+        "model_calls": 2
+      }
+    ],
+    "compaction_metrics": [],
+    "final_context_estimated_tokens": 29544,
+    "last_compaction": {
+      "policy_version": "layered-v4",
+      "reason": "pressure",
+      "before_tokens": 13926,
+      "after_tokens": 13926,
+      "archived_results": 0,
+      "summary_changed": false,
+      "elapsed_ms": 5,
+      "status": "noop"
+    },
+    "final_product_observations": 15,
+    "final_product_duplicate_ratio": 0.33333333333333337,
+    "association_check": {
+      "applicable": false,
+      "status": "not_applicable"
+    },
+    "original_checks": {
+      "facts": true,
+      "current_lookup": true,
+      "no_error": true
+    },
+    "layer": "context",
+    "critical": true,
+    "title": "费用组成",
+    "evidence_trace": "traces/h1-dev-cost-current-0.jsonl"
+  },
+  {
+    "case_id": "h1-dev-cost",
+    "split": "dev",
+    "mode": "snapshot",
+    "strategy": "candidate",
+    "repetition": 0,
+    "answer": "第1批（寄中国、数量1）中 P28183 的历史观察值：\n\n- 商品：Wanderlite 折叠旅行双肩包 35L（P28183）\n- 到手价：**222 元**（CNY）\n- 运费：**26 元**（另有税费 7 元）\n- 对应 SKU 单价：P28183-S1 石墨黑 189 元、P28183-S2 雾霾蓝 206 元\n\n说明：以上取自第1批历史展示记录（观察时间 2026-09-01T10:01:00Z，条件为寄中国），**不是实时核验结果**。你目前的选购条件已改为寄英国、预算369元，需要我按当前条件重新核验这批/该商品的实时价格与库存吗？",
+    "checks": {
+      "facts": true,
+      "current_lookup": true,
+      "no_error": true
+    },
+    "passed": true,
+    "error": null,
+    "usage": [
+      {
+        "kind": "business",
+        "input_tokens": 10405,
+        "output_tokens": 298,
+        "elapsed_ms": 1736.312699969858,
+        "request_context": {
+          "system_estimated_tokens": 884,
+          "state_estimated_tokens": 483,
+          "product_estimated_tokens": 17669,
+          "history_estimated_tokens": 4597,
+          "tool_schema_estimated_tokens": 788,
+          "reason": "buyer_request",
+          "visible_evidence_answer": false,
+          "recovery_attempt": 0
+        },
+        "prompt_cache": {
+          "model": "deepseek-flash",
+          "response_model": "deepseek-flash",
+          "response_model_matches": true,
+          "response_model_conflict": false,
+          "protocol_status": "valid",
+          "cache_mode": "passthrough",
+          "cache_policy": "static",
+          "cache_marker_count": 0,
+          "cache_reason": "passthrough",
+          "cache_retry_without_markers": false,
+          "cache_read_tokens": 128,
+          "cache_write_tokens": null,
+          "cache_usage_invalid": false,
+          "reported_cost": null,
+          "prefix_comparison": "first_request",
+          "prefix_scope_known": true,
+          "prefix_system_hash": "92cc8b92e1deb779c79599e5899264b674ea9884e198ab56498f193eb210668c",
+          "prefix_tools_hash": "3e63096125bef70f4d9b978fcb85e7256a3d40202ce78b927915fa0edc67455d",
+          "prefix_message_count": 100,
+          "prefix_common_messages": null,
+          "prefix_common_message_bytes": null,
+          "prefix_first_changed_message": null,
+          "prefix_system_changed": null,
+          "prefix_tools_changed": null,
+          "prefix_parameters_changed": null
+        },
+        "model_execution": {
+          "identity": "deepseek-flash|https://api.deepseek.com",
+          "requested_model": "deepseek-flash",
+          "response_models": [
+            "deepseek-flash"
+          ],
+          "response_model_matches": true,
+          "profile_id": null,
+          "profile_revision": null
+        },
+        "ttft_ms": null
+      },
+      {
+        "kind": "business",
+        "input_tokens": 11255,
+        "output_tokens": 409,
+        "elapsed_ms": 2199.9663000460714,
+        "request_context": {
+          "system_estimated_tokens": 884,
+          "state_estimated_tokens": 483,
+          "product_estimated_tokens": 19241,
+          "history_estimated_tokens": 4316,
+          "tool_schema_estimated_tokens": 788,
+          "reason": "lookup_followup",
+          "visible_evidence_answer": false,
+          "recovery_attempt": 0
+        },
+        "prompt_cache": {
+          "model": "deepseek-flash",
+          "response_model": "deepseek-flash",
+          "response_model_matches": true,
+          "response_model_conflict": false,
+          "protocol_status": "valid",
+          "cache_mode": "passthrough",
+          "cache_policy": "static",
+          "cache_marker_count": 0,
+          "cache_reason": "passthrough",
+          "cache_retry_without_markers": false,
+          "cache_read_tokens": 10624,
+          "cache_write_tokens": null,
+          "cache_usage_invalid": false,
+          "reported_cost": null,
+          "prefix_comparison": "append",
+          "prefix_scope_known": true,
+          "prefix_system_hash": "92cc8b92e1deb779c79599e5899264b674ea9884e198ab56498f193eb210668c",
+          "prefix_tools_hash": "3e63096125bef70f4d9b978fcb85e7256a3d40202ce78b927915fa0edc67455d",
+          "prefix_message_count": 102,
+          "prefix_common_messages": 100,
+          "prefix_common_message_bytes": 37570,
+          "prefix_first_changed_message": 100,
+          "prefix_system_changed": false,
+          "prefix_tools_changed": false,
+          "prefix_parameters_changed": false
+        },
+        "model_execution": {
+          "identity": "deepseek-flash|https://api.deepseek.com",
+          "requested_model": "deepseek-flash",
+          "response_models": [
+            "deepseek-flash"
+          ],
+          "response_model_matches": true,
+          "profile_id": null,
+          "profile_revision": null
+        },
+        "ttft_ms": null
+      }
+    ],
+    "input_tokens": 21660,
+    "output_tokens": 707,
+    "model_calls": 2,
+    "lookup_calls": 1,
+    "lookup_events": [
+      {
+        "ref": "",
+        "batch": 1,
+        "position": 0,
+        "product_id": "P28183",
+        "sku_id": "",
+        "fields": "price",
+        "offset": 0,
+        "limit": 5,
+        "field_offset": 0
+      }
+    ],
+    "context_diagnostics": [
+      {
+        "type": "state",
+        "mode": "snapshot",
+        "emitted": true,
+        "estimated_tokens": 299
+      },
+      {
+        "type": "prune",
+        "before_tokens": 55128,
+        "after_tokens": 9621,
+        "high_watermark": 6000,
+        "next_high_watermark": 6000,
+        "low_watermark": 6000,
+        "archived_results": 21,
+        "protected_results": 2,
+        "below_target": false,
+        "trigger": "pressure"
+      },
+      {
+        "type": "lookup",
+        "batch": 1,
+        "position": 0,
+        "offset": 0,
+        "limit": 5,
+        "field_offset": 0,
+        "has_reference": false,
+        "has_query": false,
+        "has_product": true,
+        "has_sku": false,
+        "status": "success",
+        "error_code": null,
+        "returned_products": 1,
+        "effective_limit": 5,
+        "fields_normalized": false,
+        "limit_capped": false,
+        "effective_batch": 1,
+        "batch_inferred_from_user": false,
+        "records": 1,
+        "estimated_tokens": 563,
+        "has_more": false,
+        "elapsed_ms": 2.5321999564766884
+      },
+      {
+        "type": "prune",
+        "before_tokens": 7454,
+        "after_tokens": 7454,
+        "high_watermark": 6000,
+        "next_high_watermark": 6000,
+        "low_watermark": 6000,
+        "archived_results": 0,
+        "protected_results": 3,
+        "below_target": false,
+        "trigger": "pressure"
+      }
+    ],
+    "current_calls": 0,
+    "elapsed_ms": 5611,
+    "compactions": [],
+    "round_metrics": [
+      {
+        "elapsed_ms": 4257,
+        "compacted": false,
+        "model_calls": 2
+      }
+    ],
+    "compaction_metrics": [],
+    "final_context_estimated_tokens": 27176,
+    "last_compaction": {
+      "policy_version": "layered-v4",
+      "reason": "pressure",
+      "before_tokens": 12426,
+      "after_tokens": 12426,
+      "archived_results": 0,
+      "summary_changed": false,
+      "elapsed_ms": 10,
+      "status": "noop"
+    },
+    "final_product_observations": 15,
+    "final_product_duplicate_ratio": 0.33333333333333337,
+    "association_check": {
+      "applicable": false,
+      "status": "not_applicable"
+    },
+    "original_checks": {
+      "facts": true,
+      "current_lookup": true,
+      "no_error": true
+    },
+    "layer": "context",
+    "critical": true,
+    "title": "费用组成",
+    "evidence_trace": "traces/h1-dev-cost-candidate-0.jsonl"
+  },
+  {
+    "case_id": "agent-sku",
+    "layer": "agent",
+    "mode": "workflow",
+    "repetition": 0,
+    "checks": {},
+    "passed": false,
+    "error": "BadRequestError",
+    "usage": [
+      {
+        "kind": "business",
+        "input_tokens": 8422,
+        "output_tokens": 285,
+        "elapsed_ms": 1711.5531000308692,
+        "request_context": {
+          "system_estimated_tokens": 4440,
+          "state_estimated_tokens": 0,
+          "product_estimated_tokens": 0,
+          "history_estimated_tokens": 494,
+          "tool_schema_estimated_tokens": 8294,
+          "reason": "buyer_request",
+          "visible_evidence_answer": false
+        },
+        "prompt_cache": {
+          "model": "deepseek-flash",
+          "response_model": "deepseek-flash",
+          "response_model_matches": true,
+          "response_model_conflict": false,
+          "protocol_status": "valid",
+          "cache_mode": "passthrough",
+          "cache_policy": "static",
+          "cache_marker_count": 0,
+          "cache_reason": "passthrough",
+          "cache_retry_without_markers": false,
+          "cache_read_tokens": 128,
+          "cache_write_tokens": null,
+          "cache_usage_invalid": false,
+          "reported_cost": null,
+          "prefix_comparison": "first_request",
+          "prefix_scope_known": true,
+          "prefix_system_hash": "0fd3ec9d6fd4b1773cc772938c3b0812b782a0e58004a72c6e35b3ec29aed206",
+          "prefix_tools_hash": "ea23060df2ab1880d987de6394bbdf945cf4ea5ef6eeef5e823a594ef4e653f1",
+          "prefix_message_count": 3,
+          "prefix_common_messages": null,
+          "prefix_common_message_bytes": null,
+          "prefix_first_changed_message": null,
+          "prefix_system_changed": null,
+          "prefix_tools_changed": null,
+          "prefix_parameters_changed": null
+        },
+        "model_execution": {
+          "identity": "deepseek-flash|https://api.deepseek.com",
+          "requested_model": "deepseek-flash",
+          "response_models": [
+            "deepseek-flash"
+          ],
+          "response_model_matches": true,
+          "profile_id": null,
+          "profile_revision": null
+        },
+        "ttft_ms": null
+      },
+      {
+        "kind": "business",
+        "input_tokens": 9388,
+        "output_tokens": 418,
+        "elapsed_ms": 2655.8403000235558,
+        "request_context": {
+          "system_estimated_tokens": 4440,
+          "state_estimated_tokens": 0,
+          "product_estimated_tokens": 1676,
+          "history_estimated_tokens": 209,
+          "tool_schema_estimated_tokens": 8294,
+          "reason": "tool_followup",
+          "visible_evidence_answer": false
+        },
+        "prompt_cache": {
+          "model": "deepseek-flash",
+          "response_model": "deepseek-flash",
+          "response_model_matches": true,
+          "response_model_conflict": false,
+          "protocol_status": "valid",
+          "cache_mode": "passthrough",
+          "cache_policy": "static",
+          "cache_marker_count": 0,
+          "cache_reason": "passthrough",
+          "cache_retry_without_markers": false,
+          "cache_read_tokens": 8704,
+          "cache_write_tokens": null,
+          "cache_usage_invalid": false,
+          "reported_cost": null,
+          "prefix_comparison": "append",
+          "prefix_scope_known": true,
+          "prefix_system_hash": "0fd3ec9d6fd4b1773cc772938c3b0812b782a0e58004a72c6e35b3ec29aed206",
+          "prefix_tools_hash": "ea23060df2ab1880d987de6394bbdf945cf4ea5ef6eeef5e823a594ef4e653f1",
+          "prefix_message_count": 5,
+          "prefix_common_messages": 3,
+          "prefix_common_message_bytes": 11992,
+          "prefix_first_changed_message": 3,
+          "prefix_system_changed": false,
+          "prefix_tools_changed": false,
+          "prefix_parameters_changed": false
+        },
+        "model_execution": {
+          "identity": "deepseek-flash|https://api.deepseek.com",
+          "requested_model": "deepseek-flash",
+          "response_models": [
+            "deepseek-flash"
+          ],
+          "response_model_matches": true,
+          "profile_id": null,
+          "profile_revision": null
+        },
+        "ttft_ms": 1344.6565000340343
+      },
+      {
+        "kind": "business",
+        "input_tokens": null,
+        "output_tokens": null,
+        "elapsed_ms": 161.50350007228553,
+        "request_context": {
+          "system_estimated_tokens": 4494,
+          "state_estimated_tokens": 0,
+          "product_estimated_tokens": 2346,
+          "history_estimated_tokens": 465,
+          "tool_schema_estimated_tokens": 8294,
+          "reason": "buyer_request",
+          "visible_evidence_answer": false,
+          "recovery_attempt": 0
+        },
+        "prompt_cache": {
+          "model": "deepseek-flash",
+          "response_model": null,
+          "response_model_matches": null,
+          "response_model_conflict": false,
+          "protocol_status": "unknown",
+          "cache_mode": "passthrough",
+          "cache_policy": "static",
+          "cache_marker_count": 0,
+          "cache_reason": "passthrough",
+          "cache_retry_without_markers": false,
+          "cache_read_tokens": null,
+          "cache_write_tokens": null,
+          "cache_usage_invalid": false,
+          "reported_cost": null,
+          "prefix_comparison": "rewrite",
+          "prefix_scope_known": true,
+          "prefix_system_hash": "ce926fe819b2b22152baba50439138d1ee2644b482ce0695dea0d21034911bd8",
+          "prefix_tools_hash": "ea23060df2ab1880d987de6394bbdf945cf4ea5ef6eeef5e823a594ef4e653f1",
+          "prefix_message_count": 7,
+          "prefix_common_messages": 0,
+          "prefix_common_message_bytes": 0,
+          "prefix_first_changed_message": 0,
+          "prefix_system_changed": true,
+          "prefix_tools_changed": false,
+          "prefix_parameters_changed": true
+        },
+        "model_execution": {
+          "identity": "deepseek-flash|https://api.deepseek.com",
+          "requested_model": "deepseek-flash",
+          "response_models": [],
+          "response_model_matches": null,
+          "profile_id": null,
+          "profile_revision": null
+        },
+        "ttft_ms": null
+      }
+    ],
+    "round_metrics": [
+      {
+        "elapsed_ms": 4721.924100071192,
+        "compacted": false,
+        "model_calls": 2
+      },
+      {
+        "elapsed_ms": 171.1685999762267,
+        "compacted": false,
+        "model_calls": 1
+      }
+    ],
+    "compaction_metrics": [],
+    "elapsed_ms": 6276.444499962963,
+    "transcript": [
+      {
+        "user": "本次预算300元人民币，寄到中国，只读选购。请调用商品检索核对 P1003-S1 石墨黑的当前单价、库存与到手价。",
+        "assistant": "已按 P1003-S1（石墨黑）精确查询，当前报价如下（查询时间 2026-10-11 07:57 UTC，收货地 CN，币种 CNY）：\n\n**Wanderlite 折叠旅行双肩包 35L**（product_id: P1003）\n- 规格：P1003-S1 石墨黑\n- 当前单价：**129.00 CNY**\n- 当前库存：**80 件**\n- 到手价（寄至中国，单件）：**154.00 CNY**\n  - 商品小计 129.00 + 运费 25.00 + 关税 0.00（税率 9%，已适用免税额度）\n- 配送可达性：可寄送 CN / JP / SG\n- 评分：4.2 分（52 条评价，非实时评分）\n\n在你的 300 元预算内，单件到手价 154 元有较大余量。\n\n两点如实提示：\n1. 该商品卡快照中，宣传亮点写“仅 380g”，而结构化字段 weight_kg 为 0.33kg（330g），两者存在差异，建议以实际收货为准，我不替你把其中任一当成确定事实。\n2. 物流时效、支付等本系统不涉及，无法承诺。\n\n需要我按此规格准备下单确认单（仅准备确认卡，不直接下单），还是继续比价/看其他款？"
+      },
+      {
+        "user": "预算改为180元人民币，仍寄到中国。只比较刚才的 P1003-S1；请重新调用商品工具核对当前单价和库存。只用 JSON 回答 sku_id、unit_price_major、stock、budget_major、currency 五个字段，数字使用数值类型。不要下单。",
+        "assistant": ""
+      }
+    ],
+    "events": [
+      {
+        "type": "tool.invoke",
+        "payload": {
+          "tool": "product_search_tool",
+          "args": {
+            "normalized_query": "",
+            "category": null,
+            "ship_to": "CN",
+            "top_k": 5,
+            "price_max_major": null,
+            "target_currency": "CNY",
+            "excluded_material_tags": [],
+            "required_material_tags": [],
+            "information_need_id": "overall",
+            "product_id": "P1003",
+            "sku_id": "P1003-S1"
+          }
+        }
+      },
+      {
+        "type": "tool.result",
+        "payload": {
+          "tool": "product_search_tool",
+          "hit_count": 1,
+          "recall_strategy": "exact_id_lookup",
+          "total_candidates": 1,
+          "rerank_applied": false,
+          "hits": [
+            {
+              "product_id": "P1003",
+              "title": "Wanderlite 折叠旅行双肩包 35L",
+              "brand": "Wanderlite",
+              "category": "旅行装备",
+              "origin_country": "KR",
+              "price_major": 129.0,
+              "currency": "CNY",
+              "source_price_major": 129.0,
+              "source_currency": "CNY",
+              "highlights": [
+                "重量：仅 380g 超轻",
+                "收纳：可折叠成手掌大小"
+              ],
+              "skus": [
+                {
+                  "sku_id": "P1003-S1",
+                  "spec": "石墨黑",
+                  "price_major": 129.0,
+                  "currency": "CNY",
+                  "stock": 80
+                }
+              ],
+              "score": 1.0,
+              "source_platform": "etsy",
+              "canonical_product_id": "CAN-LEGACY-002",
+              "material_tags": [
+                "合成聚合物"
+              ],
+              "weight_kg": 0.33,
+              "description": "防泼水尼龙 超轻 可折叠收纳 大容量 35升 徒步 城市通勤 便宜实惠 高性价比",
+              "rating_summary": {
+                "average": 4.2,
+                "review_count": 52
+              },
+              "rating_is_live": false,
+              "ships_to": [
+                "CN",
+                "JP",
+                "SG"
+              ],
+              "dimensions_cm": {
+                "height": 6,
+                "length": 14,
+                "width": 10
+              },
+              "updated_at": "2026-08-01",
+              "default_sku_id": "P1003-S1",
+              "image_url": "/products/wanderlite.png",
+              "image_kind": "illustration",
+              "image_alt": "Wanderlite 折叠旅行双肩包 35L：AI 生成示意图，非商品实拍",
+              "landed_price": {
+                "ship_to": "CN",
+                "subtotal_major": 129.0,
+                "freight_major": 25.0,
+                "tariff_major": 0.0,
+                "tariff_rate": 0.09,
+                "de_minimis_applied": true,
+                "landed_total_major": 154.0,
+                "currency": "CNY"
+              }
+            }
+          ],
+          "result_ref": "ctx_29d4bbfa5e414d669d941ced0a271720",
+          "filtered_out": []
+        }
+      }
+    ],
+    "tool_trace": [
+      {
+        "tool": "product_search_tool",
+        "elapsed_ms": 26.632299995981157,
+        "state": "success"
+      }
+    ],
+    "context_diagnostics": [
+      {
+        "type": "fresh_product",
+        "reason": "explicit_current_recheck"
+      }
+    ],
+    "lookup_calls": 0,
+    "compactions": {
+      "policy_version": "layered-v4",
+      "reason": "pressure",
+      "before_tokens": 14384,
+      "after_tokens": 14384,
+      "archived_results": 0,
+      "summary_changed": false,
+      "elapsed_ms": 1,
+      "status": "noop"
+    },
+    "scope": "生产 MainAgentFactory 和真实本地交易工具；合成目录、隔离 SQLite；非浏览器/外部检索验收",
+    "strategy": "current",
+    "critical": true,
+    "title": "精确 SKU 核验与更新预算",
+    "evidence_trace": "traces/agent-sku-current-0.jsonl"
+  },
+  {
+    "case_id": "agent-sku",
+    "layer": "agent",
+    "mode": "workflow",
+    "repetition": 0,
+    "checks": {},
+    "passed": false,
+    "error": "BadRequestError",
+    "usage": [
+      {
+        "kind": "business",
+        "input_tokens": 8512,
+        "output_tokens": 379,
+        "elapsed_ms": 1984.219599980861,
+        "request_context": {
+          "system_estimated_tokens": 4260,
+          "state_estimated_tokens": 488,
+          "product_estimated_tokens": 0,
+          "history_estimated_tokens": 494,
+          "tool_schema_estimated_tokens": 8294,
+          "reason": "buyer_request",
+          "visible_evidence_answer": false
+        },
+        "prompt_cache": {
+          "model": "deepseek-flash",
+          "response_model": "deepseek-flash",
+          "response_model_matches": true,
+          "response_model_conflict": false,
+          "protocol_status": "valid",
+          "cache_mode": "passthrough",
+          "cache_policy": "static",
+          "cache_marker_count": 0,
+          "cache_reason": "passthrough",
+          "cache_retry_without_markers": false,
+          "cache_read_tokens": 2048,
+          "cache_write_tokens": null,
+          "cache_usage_invalid": false,
+          "reported_cost": null,
+          "prefix_comparison": "first_request",
+          "prefix_scope_known": true,
+          "prefix_system_hash": "05d812ed44afaf706808a9486597105b3d05503827cb82aaa1341173b02c0bdd",
+          "prefix_tools_hash": "544f3870f44f514e8521116f04a1a7ff9bec382dbb7f8742bc4ba4fcdd306ac7",
+          "prefix_message_count": 4,
+          "prefix_common_messages": null,
+          "prefix_common_message_bytes": null,
+          "prefix_first_changed_message": null,
+          "prefix_system_changed": null,
+          "prefix_tools_changed": null,
+          "prefix_parameters_changed": null
+        },
+        "model_execution": {
+          "identity": "deepseek-flash|https://api.deepseek.com",
+          "requested_model": "deepseek-flash",
+          "response_models": [
+            "deepseek-flash"
+          ],
+          "response_model_matches": true,
+          "profile_id": null,
+          "profile_revision": null
+        },
+        "ttft_ms": 1680.9449000284076
+      },
+      {
+        "kind": "business",
+        "input_tokens": 9571,
+        "output_tokens": 482,
+        "elapsed_ms": 2521.434099995531,
+        "request_context": {
+          "system_estimated_tokens": 4260,
+          "state_estimated_tokens": 488,
+          "product_estimated_tokens": 1851,
+          "history_estimated_tokens": 209,
+          "tool_schema_estimated_tokens": 8294,
+          "reason": "tool_followup",
+          "visible_evidence_answer": false
+        },
+        "prompt_cache": {
+          "model": "deepseek-flash",
+          "response_model": "deepseek-flash",
+          "response_model_matches": true,
+          "response_model_conflict": false,
+          "protocol_status": "valid",
+          "cache_mode": "passthrough",
+          "cache_policy": "static",
+          "cache_marker_count": 0,
+          "cache_reason": "passthrough",
+          "cache_retry_without_markers": false,
+          "cache_read_tokens": 8832,
+          "cache_write_tokens": null,
+          "cache_usage_invalid": false,
+          "reported_cost": null,
+          "prefix_comparison": "append",
+          "prefix_scope_known": true,
+          "prefix_system_hash": "05d812ed44afaf706808a9486597105b3d05503827cb82aaa1341173b02c0bdd",
+          "prefix_tools_hash": "544f3870f44f514e8521116f04a1a7ff9bec382dbb7f8742bc4ba4fcdd306ac7",
+          "prefix_message_count": 6,
+          "prefix_common_messages": 4,
+          "prefix_common_message_bytes": 12458,
+          "prefix_first_changed_message": 4,
+          "prefix_system_changed": false,
+          "prefix_tools_changed": false,
+          "prefix_parameters_changed": false
+        },
+        "model_execution": {
+          "identity": "deepseek-flash|https://api.deepseek.com",
+          "requested_model": "deepseek-flash",
+          "response_models": [
+            "deepseek-flash"
+          ],
+          "response_model_matches": true,
+          "profile_id": null,
+          "profile_revision": null
+        },
+        "ttft_ms": 1260.6744000222534
+      },
+      {
+        "kind": "business",
+        "input_tokens": null,
+        "output_tokens": null,
+        "elapsed_ms": 177.08099994342774,
+        "request_context": {
+          "system_estimated_tokens": 4260,
+          "state_estimated_tokens": 1030,
+          "product_estimated_tokens": 2613,
+          "history_estimated_tokens": 465,
+          "tool_schema_estimated_tokens": 8294,
+          "reason": "buyer_request",
+          "visible_evidence_answer": false,
+          "recovery_attempt": 0
+        },
+        "prompt_cache": {
+          "model": "deepseek-flash",
+          "response_model": null,
+          "response_model_matches": null,
+          "response_model_conflict": false,
+          "protocol_status": "unknown",
+          "cache_mode": "passthrough",
+          "cache_policy": "static",
+          "cache_marker_count": 0,
+          "cache_reason": "passthrough",
+          "cache_retry_without_markers": false,
+          "cache_read_tokens": null,
+          "cache_write_tokens": null,
+          "cache_usage_invalid": false,
+          "reported_cost": null,
+          "prefix_comparison": "append",
+          "prefix_scope_known": true,
+          "prefix_system_hash": "05d812ed44afaf706808a9486597105b3d05503827cb82aaa1341173b02c0bdd",
+          "prefix_tools_hash": "544f3870f44f514e8521116f04a1a7ff9bec382dbb7f8742bc4ba4fcdd306ac7",
+          "prefix_message_count": 9,
+          "prefix_common_messages": 6,
+          "prefix_common_message_bytes": 14952,
+          "prefix_first_changed_message": 6,
+          "prefix_system_changed": false,
+          "prefix_tools_changed": false,
+          "prefix_parameters_changed": true
+        },
+        "model_execution": {
+          "identity": "deepseek-flash|https://api.deepseek.com",
+          "requested_model": "deepseek-flash",
+          "response_models": [],
+          "response_model_matches": null,
+          "profile_id": null,
+          "profile_revision": null
+        },
+        "ttft_ms": null
+      }
+    ],
+    "round_metrics": [
+      {
+        "elapsed_ms": 5095.345599926077,
+        "compacted": false,
+        "model_calls": 2
+      },
+      {
+        "elapsed_ms": 188.49510001018643,
+        "compacted": false,
+        "model_calls": 1
+      }
+    ],
+    "compaction_metrics": [],
+    "elapsed_ms": 6604.548200033605,
+    "transcript": [
+      {
+        "user": "本次预算300元人民币，寄到中国，只读选购。请调用商品检索核对 P1003-S1 石墨黑的当前单价、库存与到手价。",
+        "assistant": "已按当前会话检索核对完成（精确 SKU 查询，返回时间 2026-10-11 07:57 UTC）：\n\n**P1003-S1 石墨黑 —— Wanderlite 折叠旅行双肩包 35L（P1003）**\n\n| 项目 | 数值 |\n|---|---|\n| 当前单价（小计） | ¥129.00（CNY） |\n| 库存 | 80 件 |\n| 运费 | ¥25.00 |\n| 关税 | ¥0.00（适用免税额度，税率标示 9%） |\n| **到手价（单件，寄中国）** | **¥154.00** |\n\n- 预算核对：单件到手 ¥154.00，在本次 ¥300 预算内，无 filtered_out（未被任何约束挡掉）。\n- 该 SKU 为 P1003 的默认规格，商品可达 CN（ships_to 含 CN/JP/SG）。\n- 提示一处快照数据差异：宣传亮点写「重量：仅 380g」，而结构化字段 weight_kg 为 0.33（即 330g），两者不一致，建议以实物说明为准，我不替您判定哪一个正确。\n- 图片为 AI 生成示意图，非实拍。\n\n本次为只读核对，未生成任何订单或确认卡。需要的话我可以再帮您比价或看其他颜色规格。"
+      },
+      {
+        "user": "预算改为180元人民币，仍寄到中国。只比较刚才的 P1003-S1；请重新调用商品工具核对当前单价和库存。只用 JSON 回答 sku_id、unit_price_major、stock、budget_major、currency 五个字段，数字使用数值类型。不要下单。",
+        "assistant": ""
+      }
+    ],
+    "events": [
+      {
+        "type": "tool.invoke",
+        "payload": {
+          "tool": "product_search_tool",
+          "args": {
+            "normalized_query": "",
+            "category": null,
+            "ship_to": "CN",
+            "top_k": 5,
+            "price_max_major": 300,
+            "target_currency": "CNY",
+            "excluded_material_tags": [],
+            "required_material_tags": [],
+            "information_need_id": "overall",
+            "product_id": null,
+            "sku_id": "P1003-S1"
+          }
+        }
+      },
+      {
+        "type": "tool.result",
+        "payload": {
+          "tool": "product_search_tool",
+          "hit_count": 1,
+          "recall_strategy": "exact_id_lookup",
+          "total_candidates": 1,
+          "rerank_applied": false,
+          "hits": [
+            {
+              "product_id": "P1003",
+              "title": "Wanderlite 折叠旅行双肩包 35L",
+              "brand": "Wanderlite",
+              "category": "旅行装备",
+              "origin_country": "KR",
+              "price_major": 129.0,
+              "currency": "CNY",
+              "source_price_major": 129.0,
+              "source_currency": "CNY",
+              "highlights": [
+                "重量：仅 380g 超轻",
+                "收纳：可折叠成手掌大小"
+              ],
+              "skus": [
+                {
+                  "sku_id": "P1003-S1",
+                  "spec": "石墨黑",
+                  "price_major": 129.0,
+                  "currency": "CNY",
+                  "stock": 80
+                }
+              ],
+              "score": 1.0,
+              "source_platform": "etsy",
+              "canonical_product_id": "CAN-LEGACY-002",
+              "material_tags": [
+                "合成聚合物"
+              ],
+              "weight_kg": 0.33,
+              "description": "防泼水尼龙 超轻 可折叠收纳 大容量 35升 徒步 城市通勤 便宜实惠 高性价比",
+              "rating_summary": {
+                "average": 4.2,
+                "review_count": 52
+              },
+              "rating_is_live": false,
+              "ships_to": [
+                "CN",
+                "JP",
+                "SG"
+              ],
+              "dimensions_cm": {
+                "height": 6,
+                "length": 14,
+                "width": 10
+              },
+              "updated_at": "2026-08-01",
+              "default_sku_id": "P1003-S1",
+              "image_url": "/products/wanderlite.png",
+              "image_kind": "illustration",
+              "image_alt": "Wanderlite 折叠旅行双肩包 35L：AI 生成示意图，非商品实拍",
+              "landed_price": {
+                "ship_to": "CN",
+                "subtotal_major": 129.0,
+                "freight_major": 25.0,
+                "tariff_major": 0.0,
+                "tariff_rate": 0.09,
+                "de_minimis_applied": true,
+                "landed_total_major": 154.0,
+                "currency": "CNY"
+              }
+            }
+          ],
+          "result_ref": "ctx_18b38e82aa544444b0a425e1c046930f",
+          "filtered_out": []
+        }
+      }
+    ],
+    "tool_trace": [
+      {
+        "tool": "product_search_tool",
+        "elapsed_ms": 43.10100001748651,
+        "state": "success"
+      }
+    ],
+    "context_diagnostics": [
+      {
+        "type": "state",
+        "mode": "snapshot",
+        "emitted": true,
+        "estimated_tokens": 311
+      },
+      {
+        "type": "state",
+        "mode": "snapshot",
+        "emitted": true,
+        "estimated_tokens": 364
+      },
+      {
+        "type": "fresh_product",
+        "reason": "explicit_current_recheck"
+      }
+    ],
+    "lookup_calls": 0,
+    "compactions": {
+      "policy_version": "layered-v4",
+      "reason": "pressure",
+      "before_tokens": 15062,
+      "after_tokens": 15062,
+      "archived_results": 0,
+      "summary_changed": false,
+      "elapsed_ms": 3,
+      "status": "noop"
+    },
+    "scope": "生产 MainAgentFactory 和真实本地交易工具；合成目录、隔离 SQLite；非浏览器/外部检索验收",
+    "strategy": "candidate",
+    "critical": true,
+    "title": "精确 SKU 核验与更新预算",
+    "evidence_trace": "traces/agent-sku-candidate-0.jsonl"
+  },
+  {
+    "case_id": "agent-approval",
+    "layer": "agent",
+    "mode": "workflow",
+    "repetition": 0,
+    "checks": {
+      "confirmation_prepared": true,
+      "no_order_before_approval": true,
+      "state_restored": true,
+      "denial_persisted": true,
+      "denial_no_new_confirmation": true,
+      "no_unapproved_order": true,
+      "inventory_unchanged": true
+    },
+    "passed": true,
+    "error": null,
+    "usage": [
+      {
+        "kind": "business",
+        "input_tokens": 8373,
+        "output_tokens": 119,
+        "elapsed_ms": 767.2157000051811,
+        "request_context": {
+          "system_estimated_tokens": 4385,
+          "state_estimated_tokens": 0,
+          "product_estimated_tokens": 0,
+          "history_estimated_tokens": 465,
+          "tool_schema_estimated_tokens": 8294,
+          "reason": "buyer_request",
+          "visible_evidence_answer": false
+        },
+        "prompt_cache": {
+          "model": "deepseek-flash",
+          "response_model": "deepseek-flash",
+          "response_model_matches": true,
+          "response_model_conflict": false,
+          "protocol_status": "valid",
+          "cache_mode": "passthrough",
+          "cache_policy": "static",
+          "cache_marker_count": 0,
+          "cache_reason": "passthrough",
+          "cache_retry_without_markers": false,
+          "cache_read_tokens": 2176,
+          "cache_write_tokens": null,
+          "cache_usage_invalid": false,
+          "reported_cost": null,
+          "prefix_comparison": "first_request",
+          "prefix_scope_known": true,
+          "prefix_system_hash": "a18ded1bdf3270d253d7bb706d407443e5ae0a4ee4a121f06bbfd82f4883d47b",
+          "prefix_tools_hash": "1953a7908ec84dea972e700ed2603c1471602dd005bad944a5cf033558a70f12",
+          "prefix_message_count": 3,
+          "prefix_common_messages": null,
+          "prefix_common_message_bytes": null,
+          "prefix_first_changed_message": null,
+          "prefix_system_changed": null,
+          "prefix_tools_changed": null,
+          "prefix_parameters_changed": null
+        },
+        "model_execution": {
+          "identity": "deepseek-flash|https://api.deepseek.com",
+          "requested_model": "deepseek-flash",
+          "response_models": [
+            "deepseek-flash"
+          ],
+          "response_model_matches": true,
+          "profile_id": null,
+          "profile_revision": null
+        },
+        "ttft_ms": null
+      },
+      {
+        "kind": "business",
+        "input_tokens": 9171,
+        "output_tokens": 505,
+        "elapsed_ms": 2930.8026999933645,
+        "request_context": {
+          "system_estimated_tokens": 4385,
+          "state_estimated_tokens": 0,
+          "product_estimated_tokens": 1435,
+          "history_estimated_tokens": 180,
+          "tool_schema_estimated_tokens": 8294,
+          "reason": "tool_followup",
+          "visible_evidence_answer": false
+        },
+        "prompt_cache": {
+          "model": "deepseek-flash",
+          "response_model": "deepseek-flash",
+          "response_model_matches": true,
+          "response_model_conflict": false,
+          "protocol_status": "valid",
+          "cache_mode": "passthrough",
+          "cache_policy": "static",
+          "cache_marker_count": 0,
+          "cache_reason": "passthrough",
+          "cache_retry_without_markers": false,
+          "cache_read_tokens": 8448,
+          "cache_write_tokens": null,
+          "cache_usage_invalid": false,
+          "reported_cost": null,
+          "prefix_comparison": "append",
+          "prefix_scope_known": true,
+          "prefix_system_hash": "a18ded1bdf3270d253d7bb706d407443e5ae0a4ee4a121f06bbfd82f4883d47b",
+          "prefix_tools_hash": "1953a7908ec84dea972e700ed2603c1471602dd005bad944a5cf033558a70f12",
+          "prefix_message_count": 5,
+          "prefix_common_messages": 3,
+          "prefix_common_message_bytes": 11769,
+          "prefix_first_changed_message": 3,
+          "prefix_system_changed": false,
+          "prefix_tools_changed": false,
+          "prefix_parameters_changed": false
+        },
+        "model_execution": {
+          "identity": "deepseek-flash|https://api.deepseek.com",
+          "requested_model": "deepseek-flash",
+          "response_models": [
+            "deepseek-flash"
+          ],
+          "response_model_matches": true,
+          "profile_id": null,
+          "profile_revision": null
+        },
+        "ttft_ms": 1575.2037999918684
+      },
+      {
+        "kind": "business",
+        "input_tokens": 9586,
+        "output_tokens": 172,
+        "elapsed_ms": 1313.2460999768227,
+        "request_context": {
+          "system_estimated_tokens": 4467,
+          "state_estimated_tokens": 0,
+          "product_estimated_tokens": 2228,
+          "history_estimated_tokens": 415,
+          "tool_schema_estimated_tokens": 8294,
+          "reason": "buyer_request",
+          "visible_evidence_answer": false
+        },
+        "prompt_cache": {
+          "model": "deepseek-flash",
+          "response_model": "deepseek-flash",
+          "response_model_matches": true,
+          "response_model_conflict": false,
+          "protocol_status": "valid",
+          "cache_mode": "passthrough",
+          "cache_policy": "static",
+          "cache_marker_count": 0,
+          "cache_reason": "passthrough",
+          "cache_retry_without_markers": false,
+          "cache_read_tokens": 2176,
+          "cache_write_tokens": null,
+          "cache_usage_invalid": false,
+          "reported_cost": null,
+          "prefix_comparison": "rewrite",
+          "prefix_scope_known": true,
+          "prefix_system_hash": "487cb1645a0c4badecce2115aa5d9f165b52ff621598f0f5b12559a6b3deac6e",
+          "prefix_tools_hash": "1953a7908ec84dea972e700ed2603c1471602dd005bad944a5cf033558a70f12",
+          "prefix_message_count": 7,
+          "prefix_common_messages": 0,
+          "prefix_common_message_bytes": 0,
+          "prefix_first_changed_message": 0,
+          "prefix_system_changed": true,
+          "prefix_tools_changed": false,
+          "prefix_parameters_changed": false
+        },
+        "model_execution": {
+          "identity": "deepseek-flash|https://api.deepseek.com",
+          "requested_model": "deepseek-flash",
+          "response_models": [
+            "deepseek-flash"
+          ],
+          "response_model_matches": true,
+          "profile_id": null,
+          "profile_revision": null
+        },
+        "ttft_ms": null
+      },
+      {
+        "kind": "business",
+        "input_tokens": 10160,
+        "output_tokens": 280,
+        "elapsed_ms": 1697.9266001144424,
+        "request_context": {
+          "system_estimated_tokens": 4467,
+          "state_estimated_tokens": 0,
+          "product_estimated_tokens": 2228,
+          "history_estimated_tokens": 1398,
+          "tool_schema_estimated_tokens": 8294,
+          "reason": "tool_followup",
+          "visible_evidence_answer": false
+        },
+        "prompt_cache": {
+          "model": "deepseek-flash",
+          "response_model": "deepseek-flash",
+          "response_model_matches": true,
+          "response_model_conflict": false,
+          "protocol_status": "valid",
+          "cache_mode": "passthrough",
+          "cache_policy": "static",
+          "cache_marker_count": 0,
+          "cache_reason": "passthrough",
+          "cache_retry_without_markers": false,
+          "cache_read_tokens": 9728,
+          "cache_write_tokens": null,
+          "cache_usage_invalid": false,
+          "reported_cost": null,
+          "prefix_comparison": "append",
+          "prefix_scope_known": true,
+          "prefix_system_hash": "487cb1645a0c4badecce2115aa5d9f165b52ff621598f0f5b12559a6b3deac6e",
+          "prefix_tools_hash": "1953a7908ec84dea972e700ed2603c1471602dd005bad944a5cf033558a70f12",
+          "prefix_message_count": 9,
+          "prefix_common_messages": 7,
+          "prefix_common_message_bytes": 15866,
+          "prefix_first_changed_message": 7,
+          "prefix_system_changed": false,
+          "prefix_tools_changed": false,
+          "prefix_parameters_changed": false
+        },
+        "model_execution": {
+          "identity": "deepseek-flash|https://api.deepseek.com",
+          "requested_model": "deepseek-flash",
+          "response_models": [
+            "deepseek-flash"
+          ],
+          "response_model_matches": true,
+          "profile_id": null,
+          "profile_revision": null
+        },
+        "ttft_ms": 542.5826000282541
+      },
+      {
+        "kind": "business",
+        "input_tokens": 10400,
+        "output_tokens": 57,
+        "elapsed_ms": 660.2147000376135,
+        "request_context": {
+          "system_estimated_tokens": 4418,
+          "state_estimated_tokens": 0,
+          "product_estimated_tokens": 2228,
+          "history_estimated_tokens": 2002,
+          "tool_schema_estimated_tokens": 8294,
+          "reason": "buyer_request",
+          "visible_evidence_answer": false
+        },
+        "prompt_cache": {
+          "model": "deepseek-flash",
+          "response_model": "deepseek-flash",
+          "response_model_matches": true,
+          "response_model_conflict": false,
+          "protocol_status": "valid",
+          "cache_mode": "passthrough",
+          "cache_policy": "static",
+          "cache_marker_count": 0,
+          "cache_reason": "passthrough",
+          "cache_retry_without_markers": false,
+          "cache_read_tokens": 2304,
+          "cache_write_tokens": null,
+          "cache_usage_invalid": false,
+          "reported_cost": null,
+          "prefix_comparison": "first_request",
+          "prefix_scope_known": true,
+          "prefix_system_hash": "49b11389bfff490f794980176ba3e4f46f53d3f1f09a711ae0afd61fed816f2f",
+          "prefix_tools_hash": "121597165906e4431c5018ae093425a973f5b0b8618b8a6d15891c3766d0fcf6",
+          "prefix_message_count": 11,
+          "prefix_common_messages": null,
+          "prefix_common_message_bytes": null,
+          "prefix_first_changed_message": null,
+          "prefix_system_changed": null,
+          "prefix_tools_changed": null,
+          "prefix_parameters_changed": null
+        },
+        "model_execution": {
+          "identity": "deepseek-flash|https://api.deepseek.com",
+          "requested_model": "deepseek-flash",
+          "response_models": [
+            "deepseek-flash"
+          ],
+          "response_model_matches": true,
+          "profile_id": null,
+          "profile_revision": null
+        },
+        "ttft_ms": 448.83450004272163
+      }
+    ],
+    "round_metrics": [
+      {
+        "elapsed_ms": 5254.11819992587,
+        "compacted": false,
+        "model_calls": 2
+      },
+      {
+        "elapsed_ms": 3747.670399956405,
+        "compacted": false,
+        "model_calls": 2
+      },
+      {
+        "elapsed_ms": 683.1412999890745,
+        "compacted": false,
+        "model_calls": 1
+      }
+    ],
+    "compaction_metrics": [],
+    "elapsed_ms": 11792.874799924903,
+    "transcript": [
+      {
+        "user": "先用商品工具核对 P1003-S1，寄到中国，数量1件。",
+        "assistant": "已用商品工具核对 **P1003-S1**（收货国 CN，数量 1 件），结果如下：\n\n**Wanderlite 折叠旅行双肩包 35L**（product_id: P1003）\n- 规格：P1003-S1 石墨黑｜库存 80 件\n- 品类：旅行装备｜原产地：KR｜来源平台：etsy\n- 商品单价：129.00 CNY\n- 到手价（1 件，寄 CN）：**154.00 CNY**\n  - 小计 129.00 + 运费 25.00 + 关税 0.00（关税税率 9%，适用免税额度 de_minimis，故实收关税为 0）\n- 配送可达：CN / JP / SG\n- 材质标签：合成聚合物｜评分 4.2（52 条，非实时）\n- 图注：AI 生成示意图，非商品实拍\n\n两点需要提示你：\n1. **快照数据存在差异**：宣传亮点标注\"仅 380g 超轻\"，而结构化重量字段为 0.33 kg（即 330g），两者不一致，我无法确认到底哪个为准，建议以页面/实物信息为准。\n2. 以上价格均为**单件报价**，不含多件优惠；到手价已含运费与关税，但不代表已下单或已付款。\n\n需要我基于这个规格准备下单确认单吗？（需你提供收货地址，并在页面确认卡上点击确认）"
+      },
+      {
+        "user": "请为 P1003-S1 准备1件订单确认卡，商品是P1003。合成收件人为评测买家，国家CN，省市上海，地址评测街1号，邮编200000，电话00000000000。只准备确认，尚未批准。",
+        "assistant": "订单确认卡已准备好，等你点击页面确认卡上的按钮才会生效。\n\n**订单意向确认单**（confirmation_id: 15e06e02b00c43bfbfcfebc1a05301e0）\n- 商品：Wanderlite 折叠旅行双肩包 35L（石墨黑）\n- 规格：P1003-S1｜数量：1 件\n- 单价：129.00 CNY｜**确认金额：129.00 CNY（仅含商品，不含运费与税费）**\n- 收货信息：评测买家 / CN 上海 上海 / 评测街1号 / 邮编 200000 / 电话 00000000000\n- 状态：pending（待确认），有效期至 2026-10-11 08:02 UTC\n\n说明几点：\n1. 我**没有**替你下单——需要你在页面上核对信息并点击确认按钮；对话里说\"同意/确认\"不算数。\n2. 确认金额只包含商品本身（129.00 CNY），按上文检索结果，寄到 CN 的到手价另含运费 25.00 CNY（关税 0），即 154.00 CNY，以实际结算页面为准。\n3. 确认卡有效期约 5 分钟，超时未确认需重新准备。"
+      },
+      {
+        "user": "我在页面拒绝了确认，不要重试下单，也不要创建新的确认卡。请简短确认。",
+        "assistant": "收到。我不再重试，也不会创建新的确认卡。那张确认单（confirmation_id: 15e06e02b00c43bfbfcfebc1a05301e0）保持未批准状态，不会下单。需要时再告诉我。"
+      }
+    ],
+    "events": [
+      {
+        "type": "tool.invoke",
+        "payload": {
+          "tool": "product_search_tool",
+          "args": {
+            "normalized_query": "",
+            "category": null,
+            "ship_to": "CN",
+            "top_k": 5,
+            "price_max_major": null,
+            "target_currency": "CNY",
+            "excluded_material_tags": [],
+            "required_material_tags": [],
+            "information_need_id": "overall",
+            "product_id": null,
+            "sku_id": "P1003-S1"
+          }
+        }
+      },
+      {
+        "type": "tool.result",
+        "payload": {
+          "tool": "product_search_tool",
+          "hit_count": 1,
+          "recall_strategy": "exact_id_lookup",
+          "total_candidates": 1,
+          "rerank_applied": false,
+          "hits": [
+            {
+              "product_id": "P1003",
+              "title": "Wanderlite 折叠旅行双肩包 35L",
+              "brand": "Wanderlite",
+              "category": "旅行装备",
+              "origin_country": "KR",
+              "price_major": 129.0,
+              "currency": "CNY",
+              "source_price_major": 129.0,
+              "source_currency": "CNY",
+              "highlights": [
+                "重量：仅 380g 超轻",
+                "收纳：可折叠成手掌大小"
+              ],
+              "skus": [
+                {
+                  "sku_id": "P1003-S1",
+                  "spec": "石墨黑",
+                  "price_major": 129.0,
+                  "currency": "CNY",
+                  "stock": 80
+                }
+              ],
+              "score": 1.0,
+              "source_platform": "etsy",
+              "canonical_product_id": "CAN-LEGACY-002",
+              "material_tags": [
+                "合成聚合物"
+              ],
+              "weight_kg": 0.33,
+              "description": "防泼水尼龙 超轻 可折叠收纳 大容量 35升 徒步 城市通勤 便宜实惠 高性价比",
+              "rating_summary": {
+                "average": 4.2,
+                "review_count": 52
+              },
+              "rating_is_live": false,
+              "ships_to": [
+                "CN",
+                "JP",
+                "SG"
+              ],
+              "dimensions_cm": {
+                "height": 6,
+                "length": 14,
+                "width": 10
+              },
+              "updated_at": "2026-08-01",
+              "default_sku_id": "P1003-S1",
+              "image_url": "/products/wanderlite.png",
+              "image_kind": "illustration",
+              "image_alt": "Wanderlite 折叠旅行双肩包 35L：AI 生成示意图，非商品实拍",
+              "landed_price": {
+                "ship_to": "CN",
+                "subtotal_major": 129.0,
+                "freight_major": 25.0,
+                "tariff_major": 0.0,
+                "tariff_rate": 0.09,
+                "de_minimis_applied": true,
+                "landed_total_major": 154.0,
+                "currency": "CNY"
+              }
+            }
+          ],
+          "result_ref": "ctx_358a3e78a7744002b44dc520c53394b4",
+          "filtered_out": []
+        }
+      },
+      {
+        "type": "tool.invoke",
+        "payload": {
+          "tool": "create_order_tool",
+          "args": {
+            "buyer_id": "harness-agent-approval-0",
+            "items": null
+          }
+        }
+      },
+      {
+        "type": "confirmation.required",
+        "payload": {
+          "confirmation": {
+            "confirmation_id": "15e06e02b00c43bfbfcfebc1a05301e0",
+            "operation_id": "operation-3cbb4f98e8fe40f0984c9aafca40237a",
+            "buyer_id": "harness-agent-approval-0",
+            "session_id": "session-agent-approval-0",
+            "action": "create",
+            "payload": {
+              "items": [
+                {
+                  "product_id": "P1003",
+                  "sku_id": "P1003-S1",
+                  "title": "Wanderlite 折叠旅行双肩包 35L（石墨黑）",
+                  "unit_price_minor": 12900,
+                  "currency": "CNY",
+                  "quantity": 1
+                }
+              ],
+              "shipping_address": {
+                "recipient_name": "评测买家",
+                "country": "CN",
+                "state": "上海",
+                "city": "上海",
+                "address_line": "评测街1号",
+                "postal_code": "200000",
+                "phone": "00000000000"
+              },
+              "currency": "CNY",
+              "total_amount_minor": 12900,
+              "amount_scope": "merchandise_only",
+              "order_kind": "purchase_intent"
+            },
+            "snapshot_hash": "8301a8faa90c9ace3e67ed0c955384df6b11704c354435c4552bd916500f4680",
+            "expires_at": "2026-10-11T08:02:29.347512+00:00",
+            "status": "pending",
+            "result": null,
+            "created_at": "2026-10-11T07:57:29.349839+00:00",
+            "resolved_at": null,
+            "expired": false
+          }
+        }
+      },
+      {
+        "type": "tool.result",
+        "payload": {
+          "tool": "create_order_tool",
+          "confirmation_required": true,
+          "confirmation": {
+            "confirmation_id": "15e06e02b00c43bfbfcfebc1a05301e0",
+            "operation_id": "operation-3cbb4f98e8fe40f0984c9aafca40237a",
+            "buyer_id": "harness-agent-approval-0",
+            "session_id": "session-agent-approval-0",
+            "action": "create",
+            "payload": {
+              "items": [
+                {
+                  "product_id": "P1003",
+                  "sku_id": "P1003-S1",
+                  "title": "Wanderlite 折叠旅行双肩包 35L（石墨黑）",
+                  "unit_price_minor": 12900,
+                  "currency": "CNY",
+                  "quantity": 1
+                }
+              ],
+              "shipping_address": {
+                "recipient_name": "评测买家",
+                "country": "CN",
+                "state": "上海",
+                "city": "上海",
+                "address_line": "评测街1号",
+                "postal_code": "200000",
+                "phone": "00000000000"
+              },
+              "currency": "CNY",
+              "total_amount_minor": 12900,
+              "amount_scope": "merchandise_only",
+              "order_kind": "purchase_intent"
+            },
+            "snapshot_hash": "8301a8faa90c9ace3e67ed0c955384df6b11704c354435c4552bd916500f4680",
+            "expires_at": "2026-10-11T08:02:29.347512+00:00",
+            "status": "pending",
+            "result": null,
+            "created_at": "2026-10-11T07:57:29.349839+00:00",
+            "resolved_at": null,
+            "expired": false
+          }
+        }
+      },
+      {
+        "type": "confirmation.resolved",
+        "payload": {
+          "confirmation": {
+            "confirmation_id": "15e06e02b00c43bfbfcfebc1a05301e0",
+            "operation_id": "operation-3cbb4f98e8fe40f0984c9aafca40237a",
+            "buyer_id": "harness-agent-approval-0",
+            "session_id": "session-agent-approval-0",
+            "action": "create",
+            "payload": {
+              "items": [
+                {
+                  "product_id": "P1003",
+                  "sku_id": "P1003-S1",
+                  "title": "Wanderlite 折叠旅行双肩包 35L（石墨黑）",
+                  "unit_price_minor": 12900,
+                  "currency": "CNY",
+                  "quantity": 1
+                }
+              ],
+              "shipping_address": {
+                "recipient_name": "评测买家",
+                "country": "CN",
+                "state": "上海",
+                "city": "上海",
+                "address_line": "评测街1号",
+                "postal_code": "200000",
+                "phone": "00000000000"
+              },
+              "currency": "CNY",
+              "total_amount_minor": 12900,
+              "amount_scope": "merchandise_only",
+              "order_kind": "purchase_intent"
+            },
+            "snapshot_hash": "8301a8faa90c9ace3e67ed0c955384df6b11704c354435c4552bd916500f4680",
+            "expires_at": "2026-10-11T08:02:29.347512+00:00",
+            "status": "rejected",
+            "result": null,
+            "created_at": "2026-10-11T07:57:29.349839+00:00",
+            "resolved_at": "2026-10-11T07:57:31.769221+00:00",
+            "expired": false
+          }
+        }
+      }
+    ],
+    "tool_trace": [
+      {
+        "tool": "product_search_tool",
+        "elapsed_ms": 43.98590000346303,
+        "state": "success"
+      },
+      {
+        "tool": "create_order_tool",
+        "elapsed_ms": 16.854199930094182,
+        "state": "success"
+      }
+    ],
+    "context_diagnostics": [],
+    "lookup_calls": 0,
+    "compactions": {
+      "policy_version": "layered-v4",
+      "reason": "pressure",
+      "before_tokens": 15060,
+      "after_tokens": 15060,
+      "archived_results": 0,
+      "summary_changed": false,
+      "elapsed_ms": 1,
+      "status": "noop"
+    },
+    "scope": "生产 MainAgentFactory 和真实本地交易工具；合成目录、隔离 SQLite；非浏览器/外部检索验收",
+    "strategy": "current",
+    "critical": true,
+    "title": "订单准备、拒绝和恢复",
+    "evidence_trace": "traces/agent-approval-current-0.jsonl"
+  },
+  {
+    "case_id": "agent-approval",
+    "layer": "agent",
+    "mode": "workflow",
+    "repetition": 0,
+    "checks": {
+      "confirmation_prepared": true,
+      "no_order_before_approval": true,
+      "state_restored": true,
+      "denial_persisted": true,
+      "denial_no_new_confirmation": true,
+      "no_unapproved_order": true,
+      "inventory_unchanged": true
+    },
+    "passed": true,
+    "error": null,
+    "usage": [
+      {
+        "kind": "business",
+        "input_tokens": 8472,
+        "output_tokens": 120,
+        "elapsed_ms": 1178.8482000119984,
+        "request_context": {
+          "system_estimated_tokens": 4260,
+          "state_estimated_tokens": 433,
+          "product_estimated_tokens": 0,
+          "history_estimated_tokens": 465,
+          "tool_schema_estimated_tokens": 8294,
+          "reason": "buyer_request",
+          "visible_evidence_answer": false
+        },
+        "prompt_cache": {
+          "model": "deepseek-flash",
+          "response_model": "deepseek-flash",
+          "response_model_matches": true,
+          "response_model_conflict": false,
+          "protocol_status": "valid",
+          "cache_mode": "passthrough",
+          "cache_policy": "static",
+          "cache_marker_count": 0,
+          "cache_reason": "passthrough",
+          "cache_retry_without_markers": false,
+          "cache_read_tokens": 7936,
+          "cache_write_tokens": null,
+          "cache_usage_invalid": false,
+          "reported_cost": null,
+          "prefix_comparison": "first_request",
+          "prefix_scope_known": true,
+          "prefix_system_hash": "a88fcfd27791f8d795b99e17d334731b3f8a888da8f2b83e47b4f7e0da0ad042",
+          "prefix_tools_hash": "6a16cf9f13e127e7ed1ea0e0db022ebd1b6ea32589a8334cfd00cc9547b4f02c",
+          "prefix_message_count": 4,
+          "prefix_common_messages": null,
+          "prefix_common_message_bytes": null,
+          "prefix_first_changed_message": null,
+          "prefix_system_changed": null,
+          "prefix_tools_changed": null,
+          "prefix_parameters_changed": null
+        },
+        "model_execution": {
+          "identity": "deepseek-flash|https://api.deepseek.com",
+          "requested_model": "deepseek-flash",
+          "response_models": [
+            "deepseek-flash"
+          ],
+          "response_model_matches": true,
+          "profile_id": null,
+          "profile_revision": null
+        },
+        "ttft_ms": null
+      },
+      {
+        "kind": "business",
+        "input_tokens": 9272,
+        "output_tokens": 429,
+        "elapsed_ms": 2519.158500013873,
+        "request_context": {
+          "system_estimated_tokens": 4260,
+          "state_estimated_tokens": 433,
+          "product_estimated_tokens": 1442,
+          "history_estimated_tokens": 180,
+          "tool_schema_estimated_tokens": 8294,
+          "reason": "tool_followup",
+          "visible_evidence_answer": false
+        },
+        "prompt_cache": {
+          "model": "deepseek-flash",
+          "response_model": "deepseek-flash",
+          "response_model_matches": true,
+          "response_model_conflict": false,
+          "protocol_status": "valid",
+          "cache_mode": "passthrough",
+          "cache_policy": "static",
+          "cache_marker_count": 0,
+          "cache_reason": "passthrough",
+          "cache_retry_without_markers": false,
+          "cache_read_tokens": 8576,
+          "cache_write_tokens": null,
+          "cache_usage_invalid": false,
+          "reported_cost": null,
+          "prefix_comparison": "append",
+          "prefix_scope_known": true,
+          "prefix_system_hash": "a88fcfd27791f8d795b99e17d334731b3f8a888da8f2b83e47b4f7e0da0ad042",
+          "prefix_tools_hash": "6a16cf9f13e127e7ed1ea0e0db022ebd1b6ea32589a8334cfd00cc9547b4f02c",
+          "prefix_message_count": 6,
+          "prefix_common_messages": 4,
+          "prefix_common_message_bytes": 12235,
+          "prefix_first_changed_message": 4,
+          "prefix_system_changed": false,
+          "prefix_tools_changed": false,
+          "prefix_parameters_changed": false
+        },
+        "model_execution": {
+          "identity": "deepseek-flash|https://api.deepseek.com",
+          "requested_model": "deepseek-flash",
+          "response_models": [
+            "deepseek-flash"
+          ],
+          "response_model_matches": true,
+          "profile_id": null,
+          "profile_revision": null
+        },
+        "ttft_ms": 1097.5348999490961
+      },
+      {
+        "kind": "business",
+        "input_tokens": 9919,
+        "output_tokens": 157,
+        "elapsed_ms": 1034.7135999472812,
+        "request_context": {
+          "system_estimated_tokens": 4260,
+          "state_estimated_tokens": 948,
+          "product_estimated_tokens": 2100,
+          "history_estimated_tokens": 415,
+          "tool_schema_estimated_tokens": 8294,
+          "reason": "buyer_request",
+          "visible_evidence_answer": false
+        },
+        "prompt_cache": {
+          "model": "deepseek-flash",
+          "response_model": "deepseek-flash",
+          "response_model_matches": true,
+          "response_model_conflict": false,
+          "protocol_status": "valid",
+          "cache_mode": "passthrough",
+          "cache_policy": "static",
+          "cache_marker_count": 0,
+          "cache_reason": "passthrough",
+          "cache_retry_without_markers": false,
+          "cache_read_tokens": 8448,
+          "cache_write_tokens": null,
+          "cache_usage_invalid": false,
+          "reported_cost": null,
+          "prefix_comparison": "append",
+          "prefix_scope_known": true,
+          "prefix_system_hash": "a88fcfd27791f8d795b99e17d334731b3f8a888da8f2b83e47b4f7e0da0ad042",
+          "prefix_tools_hash": "6a16cf9f13e127e7ed1ea0e0db022ebd1b6ea32589a8334cfd00cc9547b4f02c",
+          "prefix_message_count": 9,
+          "prefix_common_messages": 6,
+          "prefix_common_message_bytes": 14655,
+          "prefix_first_changed_message": 6,
+          "prefix_system_changed": false,
+          "prefix_tools_changed": false,
+          "prefix_parameters_changed": false
+        },
+        "model_execution": {
+          "identity": "deepseek-flash|https://api.deepseek.com",
+          "requested_model": "deepseek-flash",
+          "response_models": [
+            "deepseek-flash"
+          ],
+          "response_model_matches": true,
+          "profile_id": null,
+          "profile_revision": null
+        },
+        "ttft_ms": null
+      },
+      {
+        "kind": "business",
+        "input_tokens": 10474,
+        "output_tokens": 274,
+        "elapsed_ms": 1879.368899972178,
+        "request_context": {
+          "system_estimated_tokens": 4260,
+          "state_estimated_tokens": 948,
+          "product_estimated_tokens": 2100,
+          "history_estimated_tokens": 1366,
+          "tool_schema_estimated_tokens": 8294,
+          "reason": "tool_followup",
+          "visible_evidence_answer": false
+        },
+        "prompt_cache": {
+          "model": "deepseek-flash",
+          "response_model": "deepseek-flash",
+          "response_model_matches": true,
+          "response_model_conflict": false,
+          "protocol_status": "valid",
+          "cache_mode": "passthrough",
+          "cache_policy": "static",
+          "cache_marker_count": 0,
+          "cache_reason": "passthrough",
+          "cache_retry_without_markers": false,
+          "cache_read_tokens": 9984,
+          "cache_write_tokens": null,
+          "cache_usage_invalid": false,
+          "reported_cost": null,
+          "prefix_comparison": "append",
+          "prefix_scope_known": true,
+          "prefix_system_hash": "a88fcfd27791f8d795b99e17d334731b3f8a888da8f2b83e47b4f7e0da0ad042",
+          "prefix_tools_hash": "6a16cf9f13e127e7ed1ea0e0db022ebd1b6ea32589a8334cfd00cc9547b4f02c",
+          "prefix_message_count": 11,
+          "prefix_common_messages": 9,
+          "prefix_common_message_bytes": 17135,
+          "prefix_first_changed_message": 9,
+          "prefix_system_changed": false,
+          "prefix_tools_changed": false,
+          "prefix_parameters_changed": false
+        },
+        "model_execution": {
+          "identity": "deepseek-flash|https://api.deepseek.com",
+          "requested_model": "deepseek-flash",
+          "response_models": [
+            "deepseek-flash"
+          ],
+          "response_model_matches": true,
+          "profile_id": null,
+          "profile_revision": null
+        },
+        "ttft_ms": 773.0412000091746
+      },
+      {
+        "kind": "business",
+        "input_tokens": 11003,
+        "output_tokens": 48,
+        "elapsed_ms": 628.0904000159353,
+        "request_context": {
+          "system_estimated_tokens": 4260,
+          "state_estimated_tokens": 1414,
+          "product_estimated_tokens": 2100,
+          "history_estimated_tokens": 1970,
+          "tool_schema_estimated_tokens": 8294,
+          "reason": "buyer_request",
+          "visible_evidence_answer": false
+        },
+        "prompt_cache": {
+          "model": "deepseek-flash",
+          "response_model": "deepseek-flash",
+          "response_model_matches": true,
+          "response_model_conflict": false,
+          "protocol_status": "valid",
+          "cache_mode": "passthrough",
+          "cache_policy": "static",
+          "cache_marker_count": 0,
+          "cache_reason": "passthrough",
+          "cache_retry_without_markers": false,
+          "cache_read_tokens": 9856,
+          "cache_write_tokens": null,
+          "cache_usage_invalid": false,
+          "reported_cost": null,
+          "prefix_comparison": "first_request",
+          "prefix_scope_known": true,
+          "prefix_system_hash": "94ea26dd05afbdf013ef507ea31ef35cbaadf8a38759a053f1b44ca7ea91688f",
+          "prefix_tools_hash": "6270da09e330f3f4d6ea7d93e25764f347d7356ac0e98ee9d266d30534ea956a",
+          "prefix_message_count": 14,
+          "prefix_common_messages": null,
+          "prefix_common_message_bytes": null,
+          "prefix_first_changed_message": null,
+          "prefix_system_changed": null,
+          "prefix_tools_changed": null,
+          "prefix_parameters_changed": null
+        },
+        "model_execution": {
+          "identity": "deepseek-flash|https://api.deepseek.com",
+          "requested_model": "deepseek-flash",
+          "response_models": [
+            "deepseek-flash"
+          ],
+          "response_model_matches": true,
+          "profile_id": null,
+          "profile_revision": null
+        },
+        "ttft_ms": 464.7574000991881
+      }
+    ],
+    "round_metrics": [
+      {
+        "elapsed_ms": 4587.071200017817,
+        "compacted": false,
+        "model_calls": 2
+      },
+      {
+        "elapsed_ms": 3914.789200061932,
+        "compacted": false,
+        "model_calls": 2
+      },
+      {
+        "elapsed_ms": 651.1372000677511,
+        "compacted": false,
+        "model_calls": 1
+      }
+    ],
+    "compaction_metrics": [],
+    "elapsed_ms": 11207.603799994104,
+    "transcript": [
+      {
+        "user": "先用商品工具核对 P1003-S1，寄到中国，数量1件。",
+        "assistant": "已为你核对 **P1003-S1**（寄往中国 CN，数量 1 件），来自本次精确查询结果（查询时间 2026-10-11 07:57 UTC）：\n\n**Wanderlite 折叠旅行双肩包 35L** — 商品ID `P1003`，规格 `P1003-S1`（石墨黑）\n- 单价：129.00 CNY\n- 库存：80 件（有货）\n- 材质：合成聚合物；防泼水尼龙，可折叠收纳\n- 产地：KR（韩国）｜可送达：CN、JP、SG\n- 评分：4.2 分（52 条评价；该评分为非实时快照）\n\n**到手价（CN，1 件）**\n| 项目 | 金额 |\n|---|---|\n| 商品小计 | 129.00 CNY |\n| 运费 | 25.00 CNY |\n| 关税 | 0.00 CNY（适用低值免税额，税率 9%） |\n| **到手合计** | **154.00 CNY** |\n\n两点需要提醒你：\n1. 商品宣传亮点标注「仅 380g」，而结构化字段 `weight_kg` 为 0.33kg，两者存在快照数据差异，建议以实收为准，我不替你认定其中一个。\n2. 图片为 AI 生成示意图，非商品实拍。\n\n需要我按这个规格和数量准备下单意向确认单吗？（需要你提供收货地址：收件人、省/州、城市、详细地址、邮编、电话）"
+      },
+      {
+        "user": "请为 P1003-S1 准备1件订单确认卡，商品是P1003。合成收件人为评测买家，国家CN，省市上海，地址评测街1号，邮编200000，电话00000000000。只准备确认，尚未批准。",
+        "assistant": "订单意向确认卡已准备好（**尚未下单，等你确认**）：\n\n**订单意向内容**\n| 项目 | 内容 |\n|---|---|\n| 商品 | Wanderlite 折叠旅行双肩包 35L |\n| 商品ID / 规格 | `P1003` / `P1003-S1`（石墨黑） |\n| 数量 | 1 件 |\n| 单价 | 129.00 CNY |\n| 确认金额 | **129.00 CNY**（仅含商品，不含运费与税费） |\n| 收件人 | 评测买家 |\n| 收货地址 | 中国 CN，上海市，评测街1号，邮编 200000 |\n| 电话 | 00000000000 |\n\n请注意：\n- 该金额**只含商品**，不包含运费和关税（按此前核对，寄往中国 1 件的运费为 25.00 CNY、关税 0.00，到手合计 154.00 CNY，此部分未计入确认卡金额），也不代表已付款或已安排物流。\n- 确认卡状态为 `pending`，有效期至 2026-10-11 08:02:40 UTC。\n\n请在页面上核对确认卡内容并点击确认按钮，我这边无法替你确认；卡片过期后需要重新准备。"
+      },
+      {
+        "user": "我在页面拒绝了确认，不要重试下单，也不要创建新的确认卡。请简短确认。",
+        "assistant": "确认收到：你已在页面拒绝了该确认卡，我不会重试下单，也不会创建新的确认卡。此订单意向未生效，无任何订单被创建。"
+      }
+    ],
+    "events": [
+      {
+        "type": "tool.invoke",
+        "payload": {
+          "tool": "product_search_tool",
+          "args": {
+            "normalized_query": "",
+            "category": null,
+            "ship_to": "CN",
+            "top_k": 5,
+            "price_max_major": null,
+            "target_currency": "CNY",
+            "excluded_material_tags": [],
+            "required_material_tags": [],
+            "information_need_id": "overall",
+            "product_id": null,
+            "sku_id": "P1003-S1"
+          }
+        }
+      },
+      {
+        "type": "tool.result",
+        "payload": {
+          "tool": "product_search_tool",
+          "hit_count": 1,
+          "recall_strategy": "exact_id_lookup",
+          "total_candidates": 1,
+          "rerank_applied": false,
+          "hits": [
+            {
+              "product_id": "P1003",
+              "title": "Wanderlite 折叠旅行双肩包 35L",
+              "brand": "Wanderlite",
+              "category": "旅行装备",
+              "origin_country": "KR",
+              "price_major": 129.0,
+              "currency": "CNY",
+              "source_price_major": 129.0,
+              "source_currency": "CNY",
+              "highlights": [
+                "重量：仅 380g 超轻",
+                "收纳：可折叠成手掌大小"
+              ],
+              "skus": [
+                {
+                  "sku_id": "P1003-S1",
+                  "spec": "石墨黑",
+                  "price_major": 129.0,
+                  "currency": "CNY",
+                  "stock": 80
+                }
+              ],
+              "score": 1.0,
+              "source_platform": "etsy",
+              "canonical_product_id": "CAN-LEGACY-002",
+              "material_tags": [
+                "合成聚合物"
+              ],
+              "weight_kg": 0.33,
+              "description": "防泼水尼龙 超轻 可折叠收纳 大容量 35升 徒步 城市通勤 便宜实惠 高性价比",
+              "rating_summary": {
+                "average": 4.2,
+                "review_count": 52
+              },
+              "rating_is_live": false,
+              "ships_to": [
+                "CN",
+                "JP",
+                "SG"
+              ],
+              "dimensions_cm": {
+                "height": 6,
+                "length": 14,
+                "width": 10
+              },
+              "updated_at": "2026-08-01",
+              "default_sku_id": "P1003-S1",
+              "image_url": "/products/wanderlite.png",
+              "image_kind": "illustration",
+              "image_alt": "Wanderlite 折叠旅行双肩包 35L：AI 生成示意图，非商品实拍",
+              "landed_price": {
+                "ship_to": "CN",
+                "subtotal_major": 129.0,
+                "freight_major": 25.0,
+                "tariff_major": 0.0,
+                "tariff_rate": 0.09,
+                "de_minimis_applied": true,
+                "landed_total_major": 154.0,
+                "currency": "CNY"
+              }
+            }
+          ],
+          "result_ref": "ctx_56c9d15ce3284e4193016546d5fddc38",
+          "filtered_out": []
+        }
+      },
+      {
+        "type": "tool.invoke",
+        "payload": {
+          "tool": "create_order_tool",
+          "args": {
+            "buyer_id": "harness-agent-approval-0",
+            "items": null
+          }
+        }
+      },
+      {
+        "type": "confirmation.required",
+        "payload": {
+          "confirmation": {
+            "confirmation_id": "46127198432c44beb4ebb14127dfc24d",
+            "operation_id": "operation-549c88dd8bd24d6fadeac3028b236d3b",
+            "buyer_id": "harness-agent-approval-0",
+            "session_id": "session-agent-approval-0",
+            "action": "create",
+            "payload": {
+              "items": [
+                {
+                  "product_id": "P1003",
+                  "sku_id": "P1003-S1",
+                  "title": "Wanderlite 折叠旅行双肩包 35L（石墨黑）",
+                  "unit_price_minor": 12900,
+                  "currency": "CNY",
+                  "quantity": 1
+                }
+              ],
+              "shipping_address": {
+                "recipient_name": "评测买家",
+                "country": "CN",
+                "state": "上海",
+                "city": "上海",
+                "address_line": "评测街1号",
+                "postal_code": "200000",
+                "phone": "00000000000"
+              },
+              "currency": "CNY",
+              "total_amount_minor": 12900,
+              "amount_scope": "merchandise_only",
+              "order_kind": "purchase_intent"
+            },
+            "snapshot_hash": "6d062b25a24d44ee847daa600a9d081b6e87692336f63ba68c998c53e2247fd0",
+            "expires_at": "2026-10-11T08:02:40.169758+00:00",
+            "status": "pending",
+            "result": null,
+            "created_at": "2026-10-11T07:57:40.171664+00:00",
+            "resolved_at": null,
+            "expired": false
+          }
+        }
+      },
+      {
+        "type": "tool.result",
+        "payload": {
+          "tool": "create_order_tool",
+          "confirmation_required": true,
+          "confirmation": {
+            "confirmation_id": "46127198432c44beb4ebb14127dfc24d",
+            "operation_id": "operation-549c88dd8bd24d6fadeac3028b236d3b",
+            "buyer_id": "harness-agent-approval-0",
+            "session_id": "session-agent-approval-0",
+            "action": "create",
+            "payload": {
+              "items": [
+                {
+                  "product_id": "P1003",
+                  "sku_id": "P1003-S1",
+                  "title": "Wanderlite 折叠旅行双肩包 35L（石墨黑）",
+                  "unit_price_minor": 12900,
+                  "currency": "CNY",
+                  "quantity": 1
+                }
+              ],
+              "shipping_address": {
+                "recipient_name": "评测买家",
+                "country": "CN",
+                "state": "上海",
+                "city": "上海",
+                "address_line": "评测街1号",
+                "postal_code": "200000",
+                "phone": "00000000000"
+              },
+              "currency": "CNY",
+              "total_amount_minor": 12900,
+              "amount_scope": "merchandise_only",
+              "order_kind": "purchase_intent"
+            },
+            "snapshot_hash": "6d062b25a24d44ee847daa600a9d081b6e87692336f63ba68c998c53e2247fd0",
+            "expires_at": "2026-10-11T08:02:40.169758+00:00",
+            "status": "pending",
+            "result": null,
+            "created_at": "2026-10-11T07:57:40.171664+00:00",
+            "resolved_at": null,
+            "expired": false
+          }
+        }
+      },
+      {
+        "type": "confirmation.resolved",
+        "payload": {
+          "confirmation": {
+            "confirmation_id": "46127198432c44beb4ebb14127dfc24d",
+            "operation_id": "operation-549c88dd8bd24d6fadeac3028b236d3b",
+            "buyer_id": "harness-agent-approval-0",
+            "session_id": "session-agent-approval-0",
+            "action": "create",
+            "payload": {
+              "items": [
+                {
+                  "product_id": "P1003",
+                  "sku_id": "P1003-S1",
+                  "title": "Wanderlite 折叠旅行双肩包 35L（石墨黑）",
+                  "unit_price_minor": 12900,
+                  "currency": "CNY",
+                  "quantity": 1
+                }
+              ],
+              "shipping_address": {
+                "recipient_name": "评测买家",
+                "country": "CN",
+                "state": "上海",
+                "city": "上海",
+                "address_line": "评测街1号",
+                "postal_code": "200000",
+                "phone": "00000000000"
+              },
+              "currency": "CNY",
+              "total_amount_minor": 12900,
+              "amount_scope": "merchandise_only",
+              "order_kind": "purchase_intent"
+            },
+            "snapshot_hash": "6d062b25a24d44ee847daa600a9d081b6e87692336f63ba68c998c53e2247fd0",
+            "expires_at": "2026-10-11T08:02:40.169758+00:00",
+            "status": "rejected",
+            "result": null,
+            "created_at": "2026-10-11T07:57:40.171664+00:00",
+            "resolved_at": "2026-10-11T07:57:43.031349+00:00",
+            "expired": false
+          }
+        }
+      }
+    ],
+    "tool_trace": [
+      {
+        "tool": "product_search_tool",
+        "elapsed_ms": 31.392499920912087,
+        "state": "success"
+      },
+      {
+        "tool": "create_order_tool",
+        "elapsed_ms": 14.807500061579049,
+        "state": "success"
+      }
+    ],
+    "context_diagnostics": [
+      {
+        "type": "state",
+        "mode": "snapshot",
+        "emitted": true,
+        "estimated_tokens": 257
+      },
+      {
+        "type": "state",
+        "mode": "snapshot",
+        "emitted": true,
+        "estimated_tokens": 338
+      },
+      {
+        "type": "state",
+        "mode": "snapshot",
+        "emitted": true,
+        "estimated_tokens": 291
+      }
+    ],
+    "lookup_calls": 0,
+    "compactions": {
+      "policy_version": "layered-v4",
+      "reason": "pressure",
+      "before_tokens": 15648,
+      "after_tokens": 15648,
+      "archived_results": 0,
+      "summary_changed": false,
+      "elapsed_ms": 2,
+      "status": "noop"
+    },
+    "scope": "生产 MainAgentFactory 和真实本地交易工具；合成目录、隔离 SQLite；非浏览器/外部检索验收",
+    "strategy": "candidate",
+    "critical": true,
+    "title": "订单准备、拒绝和恢复",
+    "evidence_trace": "traces/agent-approval-candidate-0.jsonl"
+  },
+  {
+    "case_id": "h1-dev-sku",
+    "split": "dev",
+    "mode": "snapshot",
+    "strategy": "current",
+    "repetition": 0,
+    "answer": "第1批历史资料（observed_at 2026-09-01T10:01:00Z，非实时核验）中的黑色规格，共 3 个：\n\n| SKU | 规格 | 历史单价 | 原报价币种 |\n|---|---|---|---|\n| P28102-S2 | 黑色 / 20寸 | 899.0 | CNY |\n| P28103-S1 | 石墨黑 | 165 | CNY |\n| P28104-S1 | 曜石黑 | 219.0 | USD |\n\n说明：\n- P28103-S1 是你已选中的那款（Wanderlite 折叠旅行双肩包 35L）。\n- P28102-S2 属你此前明确淘汰的 P28102（太贵）；此处按“全部黑色规格”一并列出，不代表建议保留。\n- 以上均为历史观察值，不是当前实时价格或库存；如需当前价/库存，我可以重新核验。",
+    "checks": {
+      "facts": true,
+      "current_lookup": true,
+      "no_error": true,
+      "complete_black_sku_set": true,
+      "sku_price_currency_associations": true
+    },
+    "passed": true,
+    "error": null,
+    "usage": [
+      {
+        "kind": "business",
+        "input_tokens": 15212,
+        "output_tokens": 466,
+        "elapsed_ms": 2550.038200104609,
+        "request_context": {
+          "system_estimated_tokens": 1558,
+          "state_estimated_tokens": 0,
+          "product_estimated_tokens": 0,
+          "history_estimated_tokens": 28886,
+          "tool_schema_estimated_tokens": 1,
+          "reason": "buyer_request",
+          "visible_evidence_answer": true,
+          "recovery_attempt": 0
+        },
+        "prompt_cache": {
+          "model": "deepseek-flash",
+          "response_model": "deepseek-flash",
+          "response_model_matches": true,
+          "response_model_conflict": false,
+          "protocol_status": "valid",
+          "cache_mode": "passthrough",
+          "cache_policy": "static",
+          "cache_marker_count": 0,
+          "cache_reason": "passthrough",
+          "cache_retry_without_markers": false,
+          "cache_read_tokens": 128,
+          "cache_write_tokens": null,
+          "cache_usage_invalid": false,
+          "reported_cost": null,
+          "prefix_comparison": "first_request",
+          "prefix_scope_known": true,
+          "prefix_system_hash": "d91ffa3cfb5fd58ce31838a3e07eb1881b8bc9ddb024fb5fda604e227869c473",
+          "prefix_tools_hash": "8d5f8683850b277b90d2ad19cf970fbbadb72a14dba3d06767154afdce826e63",
+          "prefix_message_count": 54,
+          "prefix_common_messages": null,
+          "prefix_common_message_bytes": null,
+          "prefix_first_changed_message": null,
+          "prefix_system_changed": null,
+          "prefix_tools_changed": null,
+          "prefix_parameters_changed": null
+        },
+        "model_execution": {
+          "identity": "deepseek-flash|https://api.deepseek.com",
+          "requested_model": "deepseek-flash",
+          "response_models": [
+            "deepseek-flash"
+          ],
+          "response_model_matches": true,
+          "profile_id": null,
+          "profile_revision": null
+        },
+        "ttft_ms": null
+      }
+    ],
+    "input_tokens": 15212,
+    "output_tokens": 466,
+    "model_calls": 1,
+    "lookup_calls": 0,
+    "lookup_events": [],
+    "context_diagnostics": [
+      {
+        "type": "prune",
+        "before_tokens": 55128,
+        "after_tokens": 55128,
+        "high_watermark": 6000,
+        "next_high_watermark": 6000,
+        "low_watermark": 6000,
+        "archived_results": 0,
+        "protected_results": 2,
+        "below_target": false,
+        "trigger": "pressure"
+      },
+      {
+        "type": "visible_evidence",
+        "covered": true,
+        "batch": 1,
+        "product_count": 5,
+        "historical_lookup_required": false,
+        "prefix_preserved": false
+      }
+    ],
+    "current_calls": 0,
+    "elapsed_ms": 3929,
+    "compactions": [],
+    "round_metrics": [
+      {
+        "elapsed_ms": 2634,
+        "compacted": false,
+        "model_calls": 1
+      }
+    ],
+    "compaction_metrics": [],
+    "final_context_estimated_tokens": 75417,
+    "last_compaction": {
+      "policy_version": "layered-v4",
+      "reason": "pressure",
+      "before_tokens": 15080,
+      "after_tokens": 15080,
+      "archived_results": 0,
+      "summary_changed": false,
+      "elapsed_ms": 13,
+      "status": "noop"
+    },
+    "final_product_observations": 120,
+    "final_product_duplicate_ratio": 0.9166666666666666,
+    "association_check": {
+      "applicable": false,
+      "status": "not_applicable"
+    },
+    "original_checks": {
+      "facts": true,
+      "current_lookup": true,
+      "no_error": true
+    },
+    "layer": "context",
+    "critical": true,
+    "title": "不同SKU价格",
+    "evidence_trace": "traces/h1-dev-sku-current-0.jsonl"
+  },
+  {
+    "case_id": "h1-dev-sku",
+    "split": "dev",
+    "mode": "snapshot",
+    "strategy": "candidate",
+    "repetition": 0,
+    "answer": "第一批（P28101–P28105，历史观察时间 2026-09-01T10:01:00Z）中的黑色规格 SKU 如下：\n\n| SKU | 规格 | 历史单价 | 原报价币种 |\n|---|---|---|---|\n| P28104-S1（AeroHush 主动降噪蓝牙耳机 Pro） | 曜石黑 | 219.0 | USD |\n| P28103-S1（Wanderlite 折叠旅行双肩包 35L） | 石墨黑 | 165 | CNY |\n| P28102-S2（TrailOx 20寸登机行李箱 铝框款） | 黑色 / 20寸 | 899.0 | CNY |\n\n说明：\n- 以上为第一批的**历史**单价，并非当前实时价；如需当前价/库存请另行核验。\n- P28104-S1 的报价币种为 **USD**（该商品顶层展示币种与实际 SKU 币种不一致，此处按 SKU 自身币种列出）。\n- 未列出的 SKU 均非黑色（军绿色、沙漠黄、雾霾蓝、月光白、银色 / 20寸、标准版）。",
+    "checks": {
+      "facts": true,
+      "current_lookup": true,
+      "no_error": true,
+      "complete_black_sku_set": true,
+      "sku_price_currency_associations": true
+    },
+    "passed": true,
+    "error": null,
+    "usage": [
+      {
+        "kind": "business",
+        "input_tokens": 15480,
+        "output_tokens": 409,
+        "elapsed_ms": 2364.5862999837846,
+        "request_context": {
+          "system_estimated_tokens": 1175,
+          "state_estimated_tokens": 690,
+          "product_estimated_tokens": 22127,
+          "history_estimated_tokens": 7425,
+          "tool_schema_estimated_tokens": 788,
+          "reason": "buyer_request",
+          "visible_evidence_answer": true,
+          "recovery_attempt": 0
+        },
+        "prompt_cache": {
+          "model": "deepseek-flash",
+          "response_model": "deepseek-flash",
+          "response_model_matches": true,
+          "response_model_conflict": false,
+          "protocol_status": "valid",
+          "cache_mode": "passthrough",
+          "cache_policy": "static",
+          "cache_marker_count": 0,
+          "cache_reason": "passthrough",
+          "cache_retry_without_markers": false,
+          "cache_read_tokens": 256,
+          "cache_write_tokens": null,
+          "cache_usage_invalid": false,
+          "reported_cost": null,
+          "prefix_comparison": "first_request",
+          "prefix_scope_known": true,
+          "prefix_system_hash": "6d9c2e22a81bafeae4492a5f8e0b8bd96b1a3eb83c62252a8e7f5bab7a90fdaf",
+          "prefix_tools_hash": "e28328e9aedc0472729da15d930495a76250f27b5c813ac7cb01c41f367ded92",
+          "prefix_message_count": 103,
+          "prefix_common_messages": null,
+          "prefix_common_message_bytes": null,
+          "prefix_first_changed_message": null,
+          "prefix_system_changed": null,
+          "prefix_tools_changed": null,
+          "prefix_parameters_changed": null
+        },
+        "model_execution": {
+          "identity": "deepseek-flash|https://api.deepseek.com",
+          "requested_model": "deepseek-flash",
+          "response_models": [
+            "deepseek-flash"
+          ],
+          "response_model_matches": true,
+          "profile_id": null,
+          "profile_revision": null
+        },
+        "ttft_ms": null
+      }
+    ],
+    "input_tokens": 15480,
+    "output_tokens": 409,
+    "model_calls": 1,
+    "lookup_calls": 0,
+    "lookup_events": [],
+    "context_diagnostics": [
+      {
+        "type": "state",
+        "mode": "snapshot",
+        "emitted": true,
+        "estimated_tokens": 500
+      },
+      {
+        "type": "prune",
+        "before_tokens": 55128,
+        "after_tokens": 55128,
+        "high_watermark": 6000,
+        "next_high_watermark": 6000,
+        "low_watermark": 6000,
+        "archived_results": 0,
+        "protected_results": 2,
+        "below_target": false,
+        "trigger": "pressure"
+      },
+      {
+        "type": "visible_evidence",
+        "covered": true,
+        "batch": 1,
+        "product_count": 5,
+        "historical_lookup_required": false,
+        "prefix_preserved": true
+      }
+    ],
+    "current_calls": 0,
+    "elapsed_ms": 3844,
+    "compactions": [],
+    "round_metrics": [
+      {
+        "elapsed_ms": 2546,
+        "compacted": false,
+        "model_calls": 1
+      }
+    ],
+    "compaction_metrics": [],
+    "final_context_estimated_tokens": 76002,
+    "last_compaction": {
+      "policy_version": "layered-v4",
+      "reason": "pressure",
+      "before_tokens": 15236,
+      "after_tokens": 15236,
+      "archived_results": 0,
+      "summary_changed": false,
+      "elapsed_ms": 159,
+      "status": "noop"
+    },
+    "final_product_observations": 120,
+    "final_product_duplicate_ratio": 0.9166666666666666,
+    "association_check": {
+      "applicable": false,
+      "status": "not_applicable"
+    },
+    "original_checks": {
+      "facts": true,
+      "current_lookup": true,
+      "no_error": true
+    },
+    "layer": "context",
+    "critical": true,
+    "title": "不同SKU价格",
+    "evidence_trace": "traces/h1-dev-sku-candidate-0.jsonl"
+  },
+  {
+    "case_id": "h1-dev-budget",
+    "split": "dev",
+    "mode": "snapshot",
+    "strategy": "current",
+    "repetition": 0,
+    "answer": "366 CNY",
+    "checks": {
+      "facts": true,
+      "current_lookup": true,
+      "no_error": true
+    },
+    "passed": true,
+    "error": null,
+    "usage": [
+      {
+        "kind": "business",
+        "input_tokens": 10294,
+        "output_tokens": 3,
+        "elapsed_ms": 818.4019000036642,
+        "request_context": {
+          "system_estimated_tokens": 1057,
+          "state_estimated_tokens": 0,
+          "product_estimated_tokens": 17669,
+          "history_estimated_tokens": 4607,
+          "tool_schema_estimated_tokens": 788,
+          "reason": "buyer_request",
+          "visible_evidence_answer": false,
+          "recovery_attempt": 0
+        },
+        "prompt_cache": {
+          "model": "deepseek-flash",
+          "response_model": "deepseek-flash",
+          "response_model_matches": true,
+          "response_model_conflict": false,
+          "protocol_status": "valid",
+          "cache_mode": "passthrough",
+          "cache_policy": "static",
+          "cache_marker_count": 0,
+          "cache_reason": "passthrough",
+          "cache_retry_without_markers": false,
+          "cache_read_tokens": 128,
+          "cache_write_tokens": null,
+          "cache_usage_invalid": false,
+          "reported_cost": null,
+          "prefix_comparison": "first_request",
+          "prefix_scope_known": true,
+          "prefix_system_hash": "04ccae8e3cf1f0b55df6d21bf0a91dad36134747d2a4aecde8994e67ace1f6aa",
+          "prefix_tools_hash": "81678c2ade90c9257d49757a2358574a4cbc8495257f4f7abb93a1aff7c450bd",
+          "prefix_message_count": 99,
+          "prefix_common_messages": null,
+          "prefix_common_message_bytes": null,
+          "prefix_first_changed_message": null,
+          "prefix_system_changed": null,
+          "prefix_tools_changed": null,
+          "prefix_parameters_changed": null
+        },
+        "model_execution": {
+          "identity": "deepseek-flash|https://api.deepseek.com",
+          "requested_model": "deepseek-flash",
+          "response_models": [
+            "deepseek-flash"
+          ],
+          "response_model_matches": true,
+          "profile_id": null,
+          "profile_revision": null
+        },
+        "ttft_ms": null
+      }
+    ],
+    "input_tokens": 10294,
+    "output_tokens": 3,
+    "model_calls": 1,
+    "lookup_calls": 0,
+    "lookup_events": [],
+    "context_diagnostics": [
+      {
+        "type": "prune",
+        "before_tokens": 55128,
+        "after_tokens": 9621,
+        "high_watermark": 6000,
+        "next_high_watermark": 6000,
+        "low_watermark": 6000,
+        "archived_results": 21,
+        "protected_results": 2,
+        "below_target": false,
+        "trigger": "pressure"
+      }
+    ],
+    "current_calls": 0,
+    "elapsed_ms": 2310,
+    "compactions": [],
+    "round_metrics": [
+      {
+        "elapsed_ms": 872,
+        "compacted": false,
+        "model_calls": 1
+      }
+    ],
+    "compaction_metrics": [],
+    "final_context_estimated_tokens": 24830,
+    "last_compaction": {
+      "policy_version": "layered-v4",
+      "reason": "pressure",
+      "before_tokens": 14826,
+      "after_tokens": 10395,
+      "archived_results": 21,
+      "summary_changed": false,
+      "elapsed_ms": 37,
+      "status": "completed"
+    },
+    "final_product_observations": 15,
+    "final_product_duplicate_ratio": 0.33333333333333337,
+    "association_check": {
+      "applicable": false,
+      "status": "not_applicable"
+    },
+    "original_checks": {
+      "facts": true,
+      "current_lookup": true,
+      "no_error": true
+    },
+    "layer": "context",
+    "critical": true,
+    "title": "预算变更",
+    "evidence_trace": "traces/h1-dev-budget-current-0.jsonl"
+  },
+  {
+    "case_id": "h1-dev-budget",
+    "split": "dev",
+    "mode": "snapshot",
+    "strategy": "candidate",
+    "repetition": 0,
+    "answer": "366 CNY",
+    "checks": {
+      "facts": true,
+      "current_lookup": true,
+      "no_error": true
+    },
+    "passed": true,
+    "error": null,
+    "usage": [
+      {
+        "kind": "business",
+        "input_tokens": 10391,
+        "output_tokens": 3,
+        "elapsed_ms": 1029.7182999784127,
+        "request_context": {
+          "system_estimated_tokens": 884,
+          "state_estimated_tokens": 480,
+          "product_estimated_tokens": 17669,
+          "history_estimated_tokens": 4607,
+          "tool_schema_estimated_tokens": 788,
+          "reason": "buyer_request",
+          "visible_evidence_answer": false,
+          "recovery_attempt": 0
+        },
+        "prompt_cache": {
+          "model": "deepseek-flash",
+          "response_model": "deepseek-flash",
+          "response_model_matches": true,
+          "response_model_conflict": false,
+          "protocol_status": "valid",
+          "cache_mode": "passthrough",
+          "cache_policy": "static",
+          "cache_marker_count": 0,
+          "cache_reason": "passthrough",
+          "cache_retry_without_markers": false,
+          "cache_read_tokens": 1024,
+          "cache_write_tokens": null,
+          "cache_usage_invalid": false,
+          "reported_cost": null,
+          "prefix_comparison": "first_request",
+          "prefix_scope_known": true,
+          "prefix_system_hash": "9a538f3741381878cca518da4609ca9563a7807030e8127dacbb613393942725",
+          "prefix_tools_hash": "f313caad81fd8a3707ee135df091b1b161c5df78798831bfa97208c9130e2676",
+          "prefix_message_count": 100,
+          "prefix_common_messages": null,
+          "prefix_common_message_bytes": null,
+          "prefix_first_changed_message": null,
+          "prefix_system_changed": null,
+          "prefix_tools_changed": null,
+          "prefix_parameters_changed": null
+        },
+        "model_execution": {
+          "identity": "deepseek-flash|https://api.deepseek.com",
+          "requested_model": "deepseek-flash",
+          "response_models": [
+            "deepseek-flash"
+          ],
+          "response_model_matches": true,
+          "profile_id": null,
+          "profile_revision": null
+        },
+        "ttft_ms": null
+      }
+    ],
+    "input_tokens": 10391,
+    "output_tokens": 3,
+    "model_calls": 1,
+    "lookup_calls": 0,
+    "lookup_events": [],
+    "context_diagnostics": [
+      {
+        "type": "state",
+        "mode": "snapshot",
+        "emitted": true,
+        "estimated_tokens": 297
+      },
+      {
+        "type": "prune",
+        "before_tokens": 55128,
+        "after_tokens": 9621,
+        "high_watermark": 6000,
+        "next_high_watermark": 6000,
+        "low_watermark": 6000,
+        "archived_results": 21,
+        "protected_results": 2,
+        "below_target": false,
+        "trigger": "pressure"
+      }
+    ],
+    "current_calls": 0,
+    "elapsed_ms": 2437,
+    "compactions": [],
+    "round_metrics": [
+      {
+        "elapsed_ms": 1081,
+        "compacted": false,
+        "model_calls": 1
+      }
+    ],
+    "compaction_metrics": [],
+    "final_context_estimated_tokens": 25316,
+    "last_compaction": {
+      "policy_version": "layered-v4",
+      "reason": "pressure",
+      "before_tokens": 14982,
+      "after_tokens": 10551,
+      "archived_results": 21,
+      "summary_changed": false,
+      "elapsed_ms": 36,
+      "status": "completed"
+    },
+    "final_product_observations": 15,
+    "final_product_duplicate_ratio": 0.33333333333333337,
+    "association_check": {
+      "applicable": false,
+      "status": "not_applicable"
+    },
+    "original_checks": {
+      "facts": true,
+      "current_lookup": true,
+      "no_error": true
+    },
+    "layer": "context",
+    "critical": true,
+    "title": "预算变更",
+    "evidence_trace": "traces/h1-dev-budget-candidate-0.jsonl"
+  },
+  {
+    "case_id": "h1-dev-stock",
+    "split": "dev",
+    "mode": "snapshot",
+    "strategy": "current",
+    "repetition": 0,
+    "answer": "已用当前权威业务状态重新核验（非历史数据）：\n\n**P28173-S1（Wanderlite 折叠旅行双肩包 35L / 石墨黑）**\n- 当前库存：**3 件**\n- 当前单价：**183 CNY**\n- 关联订单：ORD-EVAL，状态 **CANCELLED（已取消）**\n\n对比历史观察（仅作参考，已过期）：此前记录库存 51 件、单价 209 CNY —— 与当前不一致，请以本次核验为准。\n\n另：长期偏好中\"排除塑料\"已删除，不再作为限制条件。\n\n未执行任何写入操作；是否需要对 P28173-S1 下单或有其他操作，请明确指示。",
+    "checks": {
+      "facts": true,
+      "current_lookup": true,
+      "no_error": true
+    },
+    "passed": true,
+    "error": null,
+    "usage": [
+      {
+        "kind": "business",
+        "input_tokens": 14063,
+        "output_tokens": 48,
+        "elapsed_ms": 771.4082000311464,
+        "request_context": {
+          "system_estimated_tokens": 1058,
+          "state_estimated_tokens": 0,
+          "product_estimated_tokens": 22127,
+          "history_estimated_tokens": 4602,
+          "tool_schema_estimated_tokens": 788,
+          "reason": "buyer_request",
+          "visible_evidence_answer": false,
+          "recovery_attempt": 0
+        },
+        "prompt_cache": {
+          "model": "deepseek-flash",
+          "response_model": "deepseek-flash",
+          "response_model_matches": true,
+          "response_model_conflict": false,
+          "protocol_status": "valid",
+          "cache_mode": "passthrough",
+          "cache_policy": "static",
+          "cache_marker_count": 0,
+          "cache_reason": "passthrough",
+          "cache_retry_without_markers": false,
+          "cache_read_tokens": 128,
+          "cache_write_tokens": null,
+          "cache_usage_invalid": false,
+          "reported_cost": null,
+          "prefix_comparison": "first_request",
+          "prefix_scope_known": true,
+          "prefix_system_hash": "ee100cb60796b4e5010c167dde76a59dbf020a6cdda04ec7bd328673e3cd0e50",
+          "prefix_tools_hash": "01e7e3d3a2d72f59cd2f453828737c846d26e85a4eec5c103434653a3c701784",
+          "prefix_message_count": 99,
+          "prefix_common_messages": null,
+          "prefix_common_message_bytes": null,
+          "prefix_first_changed_message": null,
+          "prefix_system_changed": null,
+          "prefix_tools_changed": null,
+          "prefix_parameters_changed": null
+        },
+        "model_execution": {
+          "identity": "deepseek-flash|https://api.deepseek.com",
+          "requested_model": "deepseek-flash",
+          "response_models": [
+            "deepseek-flash"
+          ],
+          "response_model_matches": true,
+          "profile_id": null,
+          "profile_revision": null
+        },
+        "ttft_ms": null
+      },
+      {
+        "kind": "business",
+        "input_tokens": 14204,
+        "output_tokens": 236,
+        "elapsed_ms": 1658.1609999993816,
+        "request_context": {
+          "system_estimated_tokens": 1058,
+          "state_estimated_tokens": 0,
+          "product_estimated_tokens": 22127,
+          "history_estimated_tokens": 5049,
+          "tool_schema_estimated_tokens": 788,
+          "reason": "tool_followup",
+          "visible_evidence_answer": false,
+          "recovery_attempt": 0
+        },
+        "prompt_cache": {
+          "model": "deepseek-flash",
+          "response_model": "deepseek-flash",
+          "response_model_matches": true,
+          "response_model_conflict": false,
+          "protocol_status": "valid",
+          "cache_mode": "passthrough",
+          "cache_policy": "static",
+          "cache_marker_count": 0,
+          "cache_reason": "passthrough",
+          "cache_retry_without_markers": false,
+          "cache_read_tokens": 13952,
+          "cache_write_tokens": null,
+          "cache_usage_invalid": false,
+          "reported_cost": null,
+          "prefix_comparison": "append",
+          "prefix_scope_known": true,
+          "prefix_system_hash": "ee100cb60796b4e5010c167dde76a59dbf020a6cdda04ec7bd328673e3cd0e50",
+          "prefix_tools_hash": "01e7e3d3a2d72f59cd2f453828737c846d26e85a4eec5c103434653a3c701784",
+          "prefix_message_count": 101,
+          "prefix_common_messages": 99,
+          "prefix_common_message_bytes": 50198,
+          "prefix_first_changed_message": 99,
+          "prefix_system_changed": false,
+          "prefix_tools_changed": false,
+          "prefix_parameters_changed": false
+        },
+        "model_execution": {
+          "identity": "deepseek-flash|https://api.deepseek.com",
+          "requested_model": "deepseek-flash",
+          "response_models": [
+            "deepseek-flash"
+          ],
+          "response_model_matches": true,
+          "profile_id": null,
+          "profile_revision": null
+        },
+        "ttft_ms": null
+      }
+    ],
+    "input_tokens": 28267,
+    "output_tokens": 284,
+    "model_calls": 2,
+    "lookup_calls": 0,
+    "lookup_events": [],
+    "context_diagnostics": [
+      {
+        "type": "prune",
+        "before_tokens": 55128,
+        "after_tokens": 55128,
+        "high_watermark": 6000,
+        "next_high_watermark": 6000,
+        "low_watermark": 6000,
+        "archived_results": 0,
+        "protected_results": 2,
+        "below_target": false,
+        "trigger": "pressure"
+      },
+      {
+        "type": "prune",
+        "before_tokens": 55128,
+        "after_tokens": 55128,
+        "high_watermark": 6000,
+        "next_high_watermark": 6000,
+        "low_watermark": 6000,
+        "archived_results": 0,
+        "protected_results": 3,
+        "below_target": false,
+        "trigger": "pressure"
+      }
+    ],
+    "current_calls": 1,
+    "elapsed_ms": 5046,
+    "compactions": [],
+    "round_metrics": [
+      {
+        "elapsed_ms": 3711,
+        "compacted": false,
+        "model_calls": 2
+      }
+    ],
+    "compaction_metrics": [],
+    "final_context_estimated_tokens": 75532,
+    "last_compaction": {
+      "policy_version": "layered-v4",
+      "reason": "pressure",
+      "before_tokens": 15602,
+      "after_tokens": 15602,
+      "archived_results": 0,
+      "summary_changed": false,
+      "elapsed_ms": 19,
+      "status": "noop"
+    },
+    "final_product_observations": 120,
+    "final_product_duplicate_ratio": 0.9166666666666666,
+    "association_check": {
+      "applicable": false,
+      "status": "not_applicable"
+    },
+    "original_checks": {
+      "facts": true,
+      "current_lookup": true,
+      "no_error": true
+    },
+    "layer": "context",
+    "critical": true,
+    "title": "当前库存",
+    "evidence_trace": "traces/h1-dev-stock-current-0.jsonl"
+  },
+  {
+    "case_id": "h1-dev-stock",
+    "split": "dev",
+    "mode": "snapshot",
+    "strategy": "candidate",
+    "repetition": 0,
+    "answer": "**P28173-S1 当前核验结果（权威业务状态，2026-10-11）**\n- 商品ID：P28173（Wanderlite 折叠旅行双肩包 35L）\n- SKU：P28173-S1（石墨黑）\n- 当前库存：**3 件**\n- 当前单价：**183 CNY**\n\n说明：这是刚核验的当前值；此前展示批次中的 51 件属历史展示记录，已不代表当前库存。库存仅 3 件，偏紧。另：P28173-S2（雾霾蓝）未在本次核验返回，当前库存未知。\n\n未执行任何下单或写入操作。",
+    "checks": {
+      "facts": true,
+      "current_lookup": true,
+      "no_error": true
+    },
+    "passed": true,
+    "error": null,
+    "usage": [
+      {
+        "kind": "business",
+        "input_tokens": 14177,
+        "output_tokens": 45,
+        "elapsed_ms": 900.9204000467435,
+        "request_context": {
+          "system_estimated_tokens": 884,
+          "state_estimated_tokens": 482,
+          "product_estimated_tokens": 22127,
+          "history_estimated_tokens": 4602,
+          "tool_schema_estimated_tokens": 788,
+          "reason": "buyer_request",
+          "visible_evidence_answer": false,
+          "recovery_attempt": 0
+        },
+        "prompt_cache": {
+          "model": "deepseek-flash",
+          "response_model": "deepseek-flash",
+          "response_model_matches": true,
+          "response_model_conflict": false,
+          "protocol_status": "valid",
+          "cache_mode": "passthrough",
+          "cache_policy": "static",
+          "cache_marker_count": 0,
+          "cache_reason": "passthrough",
+          "cache_retry_without_markers": false,
+          "cache_read_tokens": 1024,
+          "cache_write_tokens": null,
+          "cache_usage_invalid": false,
+          "reported_cost": null,
+          "prefix_comparison": "first_request",
+          "prefix_scope_known": true,
+          "prefix_system_hash": "3afae08bb2aaa2f99659d7eb77241065312293a2ac121cfa9440baa0c5e37200",
+          "prefix_tools_hash": "f26559028fb351daded4ee2a491fd478c32a2b2028325c73982aff86bf284466",
+          "prefix_message_count": 100,
+          "prefix_common_messages": null,
+          "prefix_common_message_bytes": null,
+          "prefix_first_changed_message": null,
+          "prefix_system_changed": null,
+          "prefix_tools_changed": null,
+          "prefix_parameters_changed": null
+        },
+        "model_execution": {
+          "identity": "deepseek-flash|https://api.deepseek.com",
+          "requested_model": "deepseek-flash",
+          "response_models": [
+            "deepseek-flash"
+          ],
+          "response_model_matches": true,
+          "profile_id": null,
+          "profile_revision": null
+        },
+        "ttft_ms": null
+      },
+      {
+        "kind": "business",
+        "input_tokens": 14315,
+        "output_tokens": 204,
+        "elapsed_ms": 1601.9084000727162,
+        "request_context": {
+          "system_estimated_tokens": 884,
+          "state_estimated_tokens": 482,
+          "product_estimated_tokens": 22127,
+          "history_estimated_tokens": 5044,
+          "tool_schema_estimated_tokens": 788,
+          "reason": "tool_followup",
+          "visible_evidence_answer": false,
+          "recovery_attempt": 0
+        },
+        "prompt_cache": {
+          "model": "deepseek-flash",
+          "response_model": "deepseek-flash",
+          "response_model_matches": true,
+          "response_model_conflict": false,
+          "protocol_status": "valid",
+          "cache_mode": "passthrough",
+          "cache_policy": "static",
+          "cache_marker_count": 0,
+          "cache_reason": "passthrough",
+          "cache_retry_without_markers": false,
+          "cache_read_tokens": 14080,
+          "cache_write_tokens": null,
+          "cache_usage_invalid": false,
+          "reported_cost": null,
+          "prefix_comparison": "append",
+          "prefix_scope_known": true,
+          "prefix_system_hash": "3afae08bb2aaa2f99659d7eb77241065312293a2ac121cfa9440baa0c5e37200",
+          "prefix_tools_hash": "f26559028fb351daded4ee2a491fd478c32a2b2028325c73982aff86bf284466",
+          "prefix_message_count": 102,
+          "prefix_common_messages": 100,
+          "prefix_common_message_bytes": 50664,
+          "prefix_first_changed_message": 100,
+          "prefix_system_changed": false,
+          "prefix_tools_changed": false,
+          "prefix_parameters_changed": false
+        },
+        "model_execution": {
+          "identity": "deepseek-flash|https://api.deepseek.com",
+          "requested_model": "deepseek-flash",
+          "response_models": [
+            "deepseek-flash"
+          ],
+          "response_model_matches": true,
+          "profile_id": null,
+          "profile_revision": null
+        },
+        "ttft_ms": null
+      }
+    ],
+    "input_tokens": 28492,
+    "output_tokens": 249,
+    "model_calls": 2,
+    "lookup_calls": 0,
+    "lookup_events": [],
+    "context_diagnostics": [
+      {
+        "type": "state",
+        "mode": "snapshot",
+        "emitted": true,
+        "estimated_tokens": 298
+      },
+      {
+        "type": "prune",
+        "before_tokens": 55128,
+        "after_tokens": 55128,
+        "high_watermark": 6000,
+        "next_high_watermark": 6000,
+        "low_watermark": 6000,
+        "archived_results": 0,
+        "protected_results": 2,
+        "below_target": false,
+        "trigger": "pressure"
+      },
+      {
+        "type": "prune",
+        "before_tokens": 55128,
+        "after_tokens": 55128,
+        "high_watermark": 6000,
+        "next_high_watermark": 6000,
+        "low_watermark": 6000,
+        "archived_results": 0,
+        "protected_results": 3,
+        "below_target": false,
+        "trigger": "pressure"
+      }
+    ],
+    "current_calls": 1,
+    "elapsed_ms": 5044,
+    "compactions": [],
+    "round_metrics": [
+      {
+        "elapsed_ms": 3652,
+        "compacted": false,
+        "model_calls": 2
+      }
+    ],
+    "compaction_metrics": [],
+    "final_context_estimated_tokens": 75948,
+    "last_compaction": {
+      "policy_version": "layered-v4",
+      "reason": "pressure",
+      "before_tokens": 15722,
+      "after_tokens": 15722,
+      "archived_results": 0,
+      "summary_changed": false,
+      "elapsed_ms": 16,
+      "status": "noop"
+    },
+    "final_product_observations": 120,
+    "final_product_duplicate_ratio": 0.9166666666666666,
+    "association_check": {
+      "applicable": false,
+      "status": "not_applicable"
+    },
+    "original_checks": {
+      "facts": true,
+      "current_lookup": true,
+      "no_error": true
+    },
+    "layer": "context",
+    "critical": true,
+    "title": "当前库存",
+    "evidence_trace": "traces/h1-dev-stock-candidate-0.jsonl"
+  }
+]

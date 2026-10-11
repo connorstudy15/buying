@@ -25,6 +25,7 @@ export function useCommerceAgent() {
   return {
     ...snapshot,
     submit: client.submit,
+    submitForm: client.submitForm,
     resolveToolApproval: client.resolveToolApproval,
     stop: client.stop,
     reset: client.reset,
@@ -34,6 +35,7 @@ export function useCommerceAgent() {
     resolveConfirmation: client.resolveConfirmation,
     refreshConfirmations: client.refreshConfirmations,
     refreshSkills: client.refreshSkills,
+    refreshHistory: client.refreshHistory,
     workspaceRequest: client.workspaceRequest,
     resume: client.resume,
   };

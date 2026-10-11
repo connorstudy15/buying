@@ -35,8 +35,8 @@ def test_matched_evidence_requires_source_and_exact_normalized_quote():
 
 
 def test_inspect_evidence_flags_wrong_declared_section(tmp_path: Path):
-    knowledge = tmp_path / "knowledge"
-    knowledge.mkdir()
+    knowledge = tmp_path / "eval" / "knowledge" / "corpus"
+    knowledge.mkdir(parents=True)
     (knowledge / "a.md").write_text("# 文档\n## 正确章节\n证据原文\n", encoding="utf-8")
     issues = inspect_evidence(tmp_path, {"source": "a.md", "section": "错误章节", "quote": "证据原文"})
     assert issues == ["section_mismatch:正确章节"]

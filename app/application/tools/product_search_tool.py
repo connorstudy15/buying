@@ -68,7 +68,7 @@ def build_product_search_tool(usecase: CatalogSearchUseCase, bus: TradeEventBus,
     search_session = ContextVar("product_search_session", default=None)
 
     async def product_search_tool(
-        normalized_query: str,
+        normalized_query: str = "",
         category: Optional[str] = None,
         ship_to: Optional[str] = None,
         top_k: int | str = 5,
@@ -77,14 +77,17 @@ def build_product_search_tool(usecase: CatalogSearchUseCase, bus: TradeEventBus,
         excluded_material_tags: list[str] | None = None,
         required_material_tags: list[str] | None = None,
         information_need_id: Optional[str] = None,
+        product_id: str | None = None,
+        sku_id: str | None = None,
     ) -> ToolChunk:
         """检索跨境商品库（embedding+rerank 二阶段召回），返回 Top-K 商品卡 JSON。
         传入 ship_to 时商品卡自动内联 landed_price 到手价明细（小计+运费+关税，统一折算 target_currency），
-        无需另行计算价格。
+        无需另行计算单件价格。已知商品或规格时直接传 product_id / sku_id，优先精确查询；
+        两者同时传入时必须属于同一商品，未找到不能用相似商品替换。报价按一件计算。
 
         Args:
             normalized_query (`str`):
-                标准化检索词，保留品类词与关键属性词（如"旅行三件套 抗造 轻便 无塑料"）。
+                标准化检索词，保留品类词与关键属性词；精确 ID 查询时可以省略。
             category (`str | None`):
                 品类槽位，可选，如"旅行装备"、"数码配件"。
             ship_to (`str | None`):
@@ -102,6 +105,10 @@ def build_product_search_tool(usecase: CatalogSearchUseCase, bus: TradeEventBus,
             information_need_id (`str | None`):
                 当前检索所服务的稳定信息需求 ID。多需求任务应传 need_price、need_capacity、
                 need_delivery 等稳定 ID；普通单一商品检索可省略。
+            product_id (`str | None`):
+                精确商品 ID，如 "P1003"；与 sku_id 同时提供时必须匹配。
+            sku_id (`str | None`):
+                精确规格 ID，如 "P1003-S1"；优先于 product_id 和查询文字，保持当前规格。
         """
         # 模型有时会把数字参数当字符串传（实测 qwen3-max 传 "300"），
         # schema 层放宽为接受数字字符串，这里统一强转后再进检索链路。
@@ -126,7 +133,8 @@ def build_product_search_tool(usecase: CatalogSearchUseCase, bus: TradeEventBus,
         excluded_material_tags = list(
             dict.fromkeys([*context_exclusions, *(excluded_material_tags or [])]),
         )
-        category = _normalize_category(category, normalized_query)
+        # ID 核验不能被查询文字中推测出的品类误过滤；显式品类约束仍保留。
+        category = _normalize_category(category, "" if product_id or sku_id else normalized_query)
         session_id = ShoppingContext.current_session_id()
         args = {
             "normalized_query": normalized_query,
@@ -138,6 +146,8 @@ def build_product_search_tool(usecase: CatalogSearchUseCase, bus: TradeEventBus,
             "excluded_material_tags": excluded_material_tags or [],
             "required_material_tags": required_material_tags or [],
             "information_need_id": information_need_id or "overall",
+            "product_id": product_id,
+            "sku_id": sku_id,
         }
         bus.publish(session_id, "tool.invoke", {"tool": "product_search_tool", "args": args})
         if ship_to and ship_to not in TariffSchedule(ExchangeRateTable()).supported_destinations():
@@ -190,6 +200,8 @@ def build_product_search_tool(usecase: CatalogSearchUseCase, bus: TradeEventBus,
                 target_currency=target_currency,
                 excluded_material_tags=excluded_material_tags or [],
                 required_material_tags=required_material_tags or [],
+                product_id=product_id,
+                sku_id=sku_id,
             )
             result = await usecase.execute(spec)
         except ValueError as err:

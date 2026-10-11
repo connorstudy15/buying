@@ -7,10 +7,12 @@ readme = "README.md"
 requires-python = ">=3.11,<3.14"
 dependencies = [
     "ag-ui-protocol==0.1.22",
-    "agentscope>=2,<3",
+    "agentscope==2.0.8",
     "aiosqlite>=0.22.1",
+    "cryptography>=46,<51",
     "fastapi>=0.115",
     "httpx>=0.28.1",
+    "jsonschema>=4,<5",
     "opentelemetry-api==1.44.0",
     "opentelemetry-sdk==1.44.0",
     "opentelemetry-exporter-otlp-proto-http==1.44.0",
@@ -25,6 +27,16 @@ dependencies = [
     "redis>=8.1.0",
     "sqlalchemy[asyncio]>=2.0",
     "uvicorn[standard]>=0.30",
+    "croniter>=6.2.4",
+]
+
+[project.optional-dependencies]
+tokenization = ["transformers>=4.50,<6"]
+retrieval = [
+    "fastembed==0.7.4",
+]
+optimization = [
+    "gepa==0.1.4",
 ]
 
 # 声明为独立 workspace root，避免 uv 向上探测课程仓库根部的 pyproject

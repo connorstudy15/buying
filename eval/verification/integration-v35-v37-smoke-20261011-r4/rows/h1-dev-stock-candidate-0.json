@@ -1,0 +1,199 @@
+{
+  "case_id": "h1-dev-stock",
+  "split": "dev",
+  "mode": "snapshot",
+  "strategy": "candidate",
+  "repetition": 0,
+  "answer": "**P28173-S1 当前核验结果（权威业务状态，2026-10-11）**\n- 商品ID：P28173（Wanderlite 折叠旅行双肩包 35L）\n- SKU：P28173-S1（石墨黑）\n- 当前库存：**3 件**\n- 当前单价：**183 CNY**\n\n说明：这是刚核验的当前值；此前展示批次中的 51 件属历史展示记录，已不代表当前库存。库存仅 3 件，偏紧。另：P28173-S2（雾霾蓝）未在本次核验返回，当前库存未知。\n\n未执行任何下单或写入操作。",
+  "checks": {
+    "facts": true,
+    "current_lookup": true,
+    "no_error": true
+  },
+  "passed": true,
+  "error": null,
+  "usage": [
+    {
+      "kind": "business",
+      "input_tokens": 14177,
+      "output_tokens": 45,
+      "elapsed_ms": 900.9204000467435,
+      "request_context": {
+        "system_estimated_tokens": 884,
+        "state_estimated_tokens": 482,
+        "product_estimated_tokens": 22127,
+        "history_estimated_tokens": 4602,
+        "tool_schema_estimated_tokens": 788,
+        "reason": "buyer_request",
+        "visible_evidence_answer": false,
+        "recovery_attempt": 0
+      },
+      "prompt_cache": {
+        "model": "deepseek-flash",
+        "response_model": "deepseek-flash",
+        "response_model_matches": true,
+        "response_model_conflict": false,
+        "protocol_status": "valid",
+        "cache_mode": "passthrough",
+        "cache_policy": "static",
+        "cache_marker_count": 0,
+        "cache_reason": "passthrough",
+        "cache_retry_without_markers": false,
+        "cache_read_tokens": 1024,
+        "cache_write_tokens": null,
+        "cache_usage_invalid": false,
+        "reported_cost": null,
+        "prefix_comparison": "first_request",
+        "prefix_scope_known": true,
+        "prefix_system_hash": "3afae08bb2aaa2f99659d7eb77241065312293a2ac121cfa9440baa0c5e37200",
+        "prefix_tools_hash": "f26559028fb351daded4ee2a491fd478c32a2b2028325c73982aff86bf284466",
+        "prefix_message_count": 100,
+        "prefix_common_messages": null,
+        "prefix_common_message_bytes": null,
+        "prefix_first_changed_message": null,
+        "prefix_system_changed": null,
+        "prefix_tools_changed": null,
+        "prefix_parameters_changed": null
+      },
+      "model_execution": {
+        "identity": "deepseek-flash|https://api.deepseek.com",
+        "requested_model": "deepseek-flash",
+        "response_models": [
+          "deepseek-flash"
+        ],
+        "response_model_matches": true,
+        "profile_id": null,
+        "profile_revision": null
+      },
+      "ttft_ms": null
+    },
+    {
+      "kind": "business",
+      "input_tokens": 14315,
+      "output_tokens": 204,
+      "elapsed_ms": 1601.9084000727162,
+      "request_context": {
+        "system_estimated_tokens": 884,
+        "state_estimated_tokens": 482,
+        "product_estimated_tokens": 22127,
+        "history_estimated_tokens": 5044,
+        "tool_schema_estimated_tokens": 788,
+        "reason": "tool_followup",
+        "visible_evidence_answer": false,
+        "recovery_attempt": 0
+      },
+      "prompt_cache": {
+        "model": "deepseek-flash",
+        "response_model": "deepseek-flash",
+        "response_model_matches": true,
+        "response_model_conflict": false,
+        "protocol_status": "valid",
+        "cache_mode": "passthrough",
+        "cache_policy": "static",
+        "cache_marker_count": 0,
+        "cache_reason": "passthrough",
+        "cache_retry_without_markers": false,
+        "cache_read_tokens": 14080,
+        "cache_write_tokens": null,
+        "cache_usage_invalid": false,
+        "reported_cost": null,
+        "prefix_comparison": "append",
+        "prefix_scope_known": true,
+        "prefix_system_hash": "3afae08bb2aaa2f99659d7eb77241065312293a2ac121cfa9440baa0c5e37200",
+        "prefix_tools_hash": "f26559028fb351daded4ee2a491fd478c32a2b2028325c73982aff86bf284466",
+        "prefix_message_count": 102,
+        "prefix_common_messages": 100,
+        "prefix_common_message_bytes": 50664,
+        "prefix_first_changed_message": 100,
+        "prefix_system_changed": false,
+        "prefix_tools_changed": false,
+        "prefix_parameters_changed": false
+      },
+      "model_execution": {
+        "identity": "deepseek-flash|https://api.deepseek.com",
+        "requested_model": "deepseek-flash",
+        "response_models": [
+          "deepseek-flash"
+        ],
+        "response_model_matches": true,
+        "profile_id": null,
+        "profile_revision": null
+      },
+      "ttft_ms": null
+    }
+  ],
+  "input_tokens": 28492,
+  "output_tokens": 249,
+  "model_calls": 2,
+  "lookup_calls": 0,
+  "lookup_events": [],
+  "context_diagnostics": [
+    {
+      "type": "state",
+      "mode": "snapshot",
+      "emitted": true,
+      "estimated_tokens": 298
+    },
+    {
+      "type": "prune",
+      "before_tokens": 55128,
+      "after_tokens": 55128,
+      "high_watermark": 6000,
+      "next_high_watermark": 6000,
+      "low_watermark": 6000,
+      "archived_results": 0,
+      "protected_results": 2,
+      "below_target": false,
+      "trigger": "pressure"
+    },
+    {
+      "type": "prune",
+      "before_tokens": 55128,
+      "after_tokens": 55128,
+      "high_watermark": 6000,
+      "next_high_watermark": 6000,
+      "low_watermark": 6000,
+      "archived_results": 0,
+      "protected_results": 3,
+      "below_target": false,
+      "trigger": "pressure"
+    }
+  ],
+  "current_calls": 1,
+  "elapsed_ms": 5044,
+  "compactions": [],
+  "round_metrics": [
+    {
+      "elapsed_ms": 3652,
+      "compacted": false,
+      "model_calls": 2
+    }
+  ],
+  "compaction_metrics": [],
+  "final_context_estimated_tokens": 75948,
+  "last_compaction": {
+    "policy_version": "layered-v4",
+    "reason": "pressure",
+    "before_tokens": 15722,
+    "after_tokens": 15722,
+    "archived_results": 0,
+    "summary_changed": false,
+    "elapsed_ms": 16,
+    "status": "noop"
+  },
+  "final_product_observations": 120,
+  "final_product_duplicate_ratio": 0.9166666666666666,
+  "association_check": {
+    "applicable": false,
+    "status": "not_applicable"
+  },
+  "original_checks": {
+    "facts": true,
+    "current_lookup": true,
+    "no_error": true
+  },
+  "layer": "context",
+  "critical": true,
+  "title": "当前库存",
+  "evidence_trace": "traces/h1-dev-stock-candidate-0.jsonl"
+}

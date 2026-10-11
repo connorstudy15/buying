@@ -26,6 +26,8 @@ eval/icecat/cache/
 eval/icecat/private/
 
 # 课程资料与本地工具目录：只保留在本地，不入工程仓库
+!data/catalog-v3.jsonl
+!data/catalog-v2.jsonl
 .baoyu-skills/
 .idea/
 .qoder/

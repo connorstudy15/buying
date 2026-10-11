@@ -79,6 +79,7 @@ from app.infrastructure.capability_registry import CapabilityRegistry
 from app.presentation.ag_ui_runtime import AGUIRuntime
 from app.infrastructure.runtime_version import app_source_fingerprint
 from app.infrastructure.vector.index_bootstrap import bootstrap_product_index
+from app.infrastructure.vector.embedding_identity import embedding_identity
 from app.infrastructure.vector.qdrant_product_index import QdrantProductIndex
 
 logger = logging.getLogger(__name__)
@@ -122,6 +123,10 @@ class Container:
     identity_policy: Any = None
     prompt_registry: Any = None
     context_service: Any = None
+    model_registry: Any = None
+    model_service: Any = None
+    automation_service: Any = None
+    automation_task: Any = None
 
     async def startup(self) -> None:
         """建表 / 建向量库 / 建知识库。任一失败只告警，对应能力降级但服务可用。"""
@@ -129,6 +134,11 @@ class Container:
             await self.context_service.startup()
         if self.ag_ui_runtime is not None:
             await self.ag_ui_runtime.startup()
+            from app.infrastructure.automation_store import AutomationStore
+            from app.application.automation import AutomationService
+            store = AutomationStore(self.ag_ui_runtime.journal.path)
+            await store.initialize()
+            self.automation_service = AutomationService(store, self.ag_ui_runtime, self.model_registry, self.session_store)
         if self.db_engine is not None and (self.trade_store is None or self.db_engine is not self.trade_db_engine):
             try:
                 await bootstrap_schema(self.db_engine)
@@ -145,14 +155,25 @@ class Container:
                 logger.warning("队列消费者组创建失败：%s", err)
         await bootstrap_product_index(self.product_repo, self.embedder, self.vector_index)
         await bootstrap_category_knowledge(self.knowledge_base, corpus_role="production")
+        mode = self.settings.automation_worker_mode
+        if mode not in {"embedded", "external", "off"}:
+            raise ValueError("AUTOMATION_WORKER_MODE 只支持 embedded、external、off")
+        if mode == "embedded" and self.automation_service is not None:
+            from app.application.automation import AutomationWorker
+            self.automation_task = asyncio.create_task(AutomationWorker(self.automation_service).run(), name="automation-worker")
 
     async def shutdown(self) -> None:
+        if self.automation_task is not None:
+            self.automation_task.cancel()
+            await asyncio.gather(self.automation_task, return_exceptions=True)
         if self.context_service is not None:
             await self.context_service.shutdown()
         if self.ag_ui_runtime is not None:
             await self.ag_ui_runtime.shutdown()
         if isinstance(self.session_store, JsonFileSessionStore):
             await self.session_store.close()
+        for session in list(getattr(self.orchestrator._sessions, "_agents", {})):
+            await self.orchestrator._sessions.invalidate(session)
         await self.vector_index.close()
         await self.cache.close()
         if self.trade_db_engine is not None and self.trade_db_engine is not self.db_engine:
@@ -176,12 +197,11 @@ async def build_container() -> Container:
     product_repo = InMemoryProductRepository()
     bus = TradeEventBus()
     vector_index = QdrantProductIndex(settings)
-    reranker = HttpReranker(settings) if settings.reranker_base_url else None
 
     cache = RedisCache(settings.redis_url)
     raw_embedder = OpenAIEmbeddingClient(settings)
     embedder = (
-        CachedEmbeddingClient(raw_embedder, cache, settings.embedding_model)
+        CachedEmbeddingClient(raw_embedder, cache, embedding_identity(settings))
         if cache.enabled
         else raw_embedder
     )
@@ -256,6 +276,22 @@ async def build_container() -> Container:
             min_interval_seconds=settings.llm_min_interval_seconds,
         )
     )
+    throttle_groups = {'current-gateway': throttle}
+    def throttle_for(group):
+        if group not in throttle_groups:
+            throttle_groups[group] = (RedisGatewayThrottle(cache.client,
+                max_concurrency=settings.llm_max_concurrency,
+                min_interval_seconds=settings.llm_min_interval_seconds,
+                namespace='model-quota:' + group) if cache.enabled else GatewayThrottle(
+                max_concurrency=settings.llm_max_concurrency,
+                min_interval_seconds=settings.llm_min_interval_seconds))
+        return throttle_groups[group]
+
+    from app.infrastructure.model_registry import ModelRegistry
+    model_registry = ModelRegistry(settings) if hasattr(session_store, 'model_binding') else None
+    if model_registry is not None:
+        await model_registry.initialize()
+
     # 护栏判定器同样全进程唯一：按会话累积状态，需跨 Agent 实例与轮次共享
     sequencing_tracker = SequencingTracker()
     loop_detector = LoopDetector(repeat_threshold=settings.loop_repeat_threshold)
@@ -263,40 +299,63 @@ async def build_container() -> Container:
     # 必须是显式开启的选择；关时注入 None，主链路零开销
     drift_detector = DriftDetector() if settings.drift_detect_enabled else None
 
+    from app.infrastructure.rerank.factory import create_reranker
+    reranker = create_reranker(settings, throttle=throttle, bus=bus)
+
     # ---- Application ----
     catalog_search = CatalogSearchUseCase(
         product_repo, embedder=embedder, vector_index=vector_index, reranker=reranker,
         hybrid_enabled=settings.hybrid_recall_enabled,
+        hybrid_lexical_weight=settings.hybrid_lexical_weight,
+        hybrid_vector_weight=settings.hybrid_vector_weight,
+        recall_candidates=settings.recall_candidates,
     )
     place_order = PlaceOrderUseCase(confirmations)
     query_order = QueryOrderUseCase(trade_store)
     cancel_order = CancelOrderUseCase(confirmations)
 
     search_factory = SearchAgentFactory(
-        settings, catalog_search, bus, knowledge_base, circuit_registry, throttle,
+        settings, catalog_search, bus, knowledge_base, circuit_registry, throttle, throttle_factory=throttle_for,
         knowledge_reranker=reranker,
     )
     trade_factory = TradeAgentFactory(
-        settings, place_order, query_order, cancel_order, bus, circuit_registry, throttle,
+        settings, place_order, query_order, cancel_order, bus, circuit_registry, throttle, throttle_factory=throttle_for,
     )
     # 规范化事实与向量同库提交；默认长期记忆走语义检索。
     from app.infrastructure.semantic_memory import SemanticPreferenceStore, PreferenceDistiller
     from app.infrastructure.llm import create_chat_model
+    async def distillation_model(buyer_id):
+        from app.infrastructure.context import ShoppingContext, ShoppingContextSnapshot
+        current = ShoppingContext.current()
+        if current is not None and current.model_runtime is not None:
+            return create_chat_model(settings, stream=False, throttle=throttle, bus=bus, throttle_factory=throttle_for)
+        token = ShoppingContext.set(ShoppingContextSnapshot('preference-editor', buyer_id, 'zh-CN', 'CNY'))
+        try:
+            if model_registry is not None:
+                snapshot = await model_registry.resolve_default(buyer_id=buyer_id)
+                ShoppingContext.set_model(snapshot, model_registry.runtime(snapshot))
+            return create_chat_model(settings, stream=False, throttle=throttle, bus=bus, throttle_factory=throttle_for)
+        finally:
+            ShoppingContext.reset(token)
+
     preference_store = SemanticPreferenceStore(
         settings.data_dir / "buyer_memory.db", preference_store,
-        PreferenceDistiller(create_chat_model(settings, stream=False, throttle=throttle, bus=bus)),
+        PreferenceDistiller(model_factory=distillation_model),
         embedder, settings.embedding_model + ":" + str(settings.embedding_dim),
     )
     preference_selector = preference_store
+    from app.infrastructure.shopping_forms import ShoppingFormStore
     main_factory = MainAgentFactory(
         settings, search_factory, trade_factory, bus, preference_store, circuit_registry, throttle,
+        throttle_factory=throttle_for,
         sequencing=sequencing_tracker,
         loop_detector=loop_detector,
         preference_selector=preference_selector,
         capability_registry=CapabilityRegistry(settings.data_dir / "capabilities.db"),
         buyer_skill_store=BuyerSkillStore(settings.data_dir / "buyer_skills.db"),
+        shopping_form_store=ShoppingFormStore(settings.data_dir / "shopping_forms.db"),
     )
-    sessions = SessionRegistry(main_factory, session_store, enforce_owner=settings.session_owner_binding, prompt_registry=prompt_registry)
+    sessions = SessionRegistry(main_factory, session_store, enforce_owner=settings.session_owner_binding, prompt_registry=prompt_registry, model_registry=model_registry)
     orchestrator = MainAgentOrchestrator(
         sessions, bus, preference_store, conversation_store, semantic_cache,
         output_guard_enabled=settings.output_guard_enabled,
@@ -315,8 +374,11 @@ async def build_container() -> Container:
     )
 
     from app.application.agents.context_service import ContextService
+    from app.application.agents.model_selection import ModelSelectionService
     return Container(
         settings=settings,
+        model_registry=model_registry,
+        model_service=ModelSelectionService(model_registry, sessions, orchestrator, session_store) if model_registry else None,
         bus=bus,
         orchestrator=orchestrator,
         context_service=ContextService(orchestrator, session_store, search_factory.evidence_store, confirmations, settings),
@@ -335,7 +397,9 @@ async def build_container() -> Container:
         trade_store=trade_store,
         trade_db_engine=trade_db_engine,
         runtime={"app_source_sha256": source_fingerprint},
-        ag_ui_runtime=AGUIRuntime(AGUIJournal(settings.data_dir / "ag_ui_runs.db"), orchestrator, confirmations),
+        ag_ui_runtime=AGUIRuntime(AGUIJournal(settings.data_dir / "ag_ui_runs.db",
+            learning_enabled=settings.learning_capture_enabled,
+            learning_versions={"source_sha256": source_fingerprint, "model": settings.llm_model}), orchestrator, confirmations),
         session_store=session_store,
         identity_policy=identity_policy,
         prompt_registry=prompt_registry,

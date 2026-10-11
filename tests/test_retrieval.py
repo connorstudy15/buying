@@ -5,6 +5,7 @@ embedding 用确定性桩实现（关键词特征轴 + 余弦），向量索引�
 全程不依赖外部服务与 LLM。
 """
 import json
+from pathlib import Path
 
 import pytest
 
@@ -20,7 +21,7 @@ from app.infrastructure.vector.index_bootstrap import bootstrap_product_index
 from app.infrastructure.vector.qdrant_product_index import QdrantProductIndex
 
 # 特征轴词表：文本命中即该维置 1，余弦相似度即可反映关键词重合度
-_FEATURE_TERMS = ("露营灯", "登山杖", "毛巾", "睡袋", "行李箱", "耳机", "充电器", "三件套", "背包", "茶具")
+_FEATURE_TERMS = ("露营灯", "登山杖", "毛巾", "睡袋", "行李箱", "耳机", "充电器", "三件套", "背包", "茶具", "抗造", "太阳能")
 
 
 class AxisEmbeddingClient(EmbeddingClient):
@@ -65,8 +66,13 @@ def _settings(tmp_path) -> Settings:
 
 @pytest.fixture()
 async def indexed(tmp_path):
-    """已建库的（repo, embedder, index）三元组。"""
-    repo = InMemoryProductRepository()
+    """固定 v1 测例目录验证链路；二元桩无法区分同类商品，不能随全站扩容漂移。
+
+    v2 千件目录的真实排序与过滤由 test_retrieval_v2 和独立模型评测覆盖。
+    """
+    from app.infrastructure.persistence.seed_products import _product_from_record
+    source = Path(__file__).resolve().parents[1] / "data/catalog-v1.jsonl"
+    repo = InMemoryProductRepository([_product_from_record(json.loads(l)) for l in source.read_text().splitlines()])
     embedder = AxisEmbeddingClient()
     index = QdrantProductIndex(_settings(tmp_path))
     ok = await bootstrap_product_index(repo, embedder, index)
@@ -282,7 +288,8 @@ class TestTwoStageRecall:
             ),
         )
         try:
-            response = await tool(normalized_query="露营灯", ship_to="US", target_currency="USD")
+            # 用可区分的特征指定目标；二元桩的同分顺序不是 Qdrant 的排序合同。
+            response = await tool(normalized_query="露营灯 抗造", ship_to="US", target_currency="USD")
         finally:
             ShoppingContext.reset(token)
 

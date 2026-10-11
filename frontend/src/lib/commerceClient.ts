@@ -15,6 +15,7 @@ import type {
 } from "../types";
 import { readConfirmations, mergeConfirmations } from "./confirmations";
 import { recoveringFetch } from "./recoveringFetch";
+import { readActivities, replaceRunActivities, upsertActivities } from "./activities";
 import { isSelectedSkill, readPublishedSkills, readSkillUsages } from "./skills";
 
 const STORAGE_KEY = "globex.agui.sessions.v1";
@@ -227,17 +228,24 @@ function readMessages(value: unknown): ChatMessage[] {
         typeof item.id === "string" &&
         typeof item.content === "string" &&
         (item.role === "user" || item.role === "assistant"),
-    )
-    .slice(-100);
+    );
+}
+
+// 仅保留工作窗口之前的原文；窗口内由 SDK 快照整体替换，不能把流式草稿再合并回来。
+function historyPrefix(history: ChatMessage[], window: ChatMessage[]): ChatMessage[] {
+  const first = window[0]?.id;
+  const index = history.findIndex(message => message.id === first);
+  return index > 0 ? history.slice(0, index) : [];
 }
 
 function displayMessages(
   messages: ReadonlyArray<Readonly<Message>>,
+  runForMessage: (id: string) => string | undefined = () => undefined,
 ): ChatMessage[] {
   return messages.flatMap((message) => {
     if (message.role !== "user" && message.role !== "assistant") return [];
     const content = typeof message.content === "string" ? message.content : "";
-    return content ? [{ id: message.id, role: message.role, content }] : [];
+    return content ? [{ id: message.id, role: message.role, content, ...(runForMessage(message.id) ? {runId: runForMessage(message.id)} : {}) }] : [];
   });
 }
 
@@ -246,7 +254,9 @@ function emptySnapshot(sessionId = newId()): CommerceSnapshot {
     sessionId,
     messages: [],
     products: [],
+    productHistory: [],
     events: [],
+    activities: [],
     status: "idle",
     step: "随时开始新的选购",
     error: null,
@@ -297,8 +307,10 @@ export class CommerceClient {
   private mutationId: string | undefined;
   private confirmationRevision = 0;
   private serverHistory: SessionSummary[] = [];
+  private directoryRevision = 0;
   private historyRevision = 0;
   private skillsRevision = 0;
+  private activityRevision = 0;
   private restoreLatestSession = true;
 
   constructor(private options: ClientOptions) {
@@ -442,16 +454,31 @@ export class CommerceClient {
     await this.executeRun(runId, messages, false, selectedSkill);
   };
 
+  submitForm = async (query: string, runId: string): Promise<void> => {
+    if (this.active || this.snapshot.toolApprovals?.length || this.snapshot.recoverableRunId) {
+      this.update({error:"请先完成或停止当前运行及待处理确认。"});return;
+    }
+    if (!query.trim() || !/^form-run-[a-f0-9]{32}$/.test(runId)) return;
+    ++this.historyRevision;this.restoreLatestSession=false;
+    // 使用服务端保存的运行 ID 和稳定消息 ID，刷新后继续不会创建重复运行。
+    const messages:ChatMessage[]=[...this.snapshot.messages.filter(m=>m.runId!==runId&&m.id!==runId+":user"),
+      {id:runId+":user",role:"user",content:query,runId}];
+    await this.executeRun(runId,messages);
+  };
+
   private async executeRun(runId: string, messages: ChatMessage[], resume = false, selectedSkill?: SelectedSkill, approval?: { id: string; approved: boolean }, allowVersionRestart = true): Promise<void> {
     const priorSessionId=this.snapshot.sessionId;
+    const activityRevision = ++this.activityRevision;
     let destination=this.snapshot.products.find(p=>p.landed_price?.ship_to)?.landed_price?.ship_to;
     let restartVersion=false;
     const journaled = /\/ag-ui\/run\/?$/.test(this.options.url);
     const baseFetch = this.options.fetch ?? globalThis.fetch;
+    const workingMessages = messages.slice(-100);
+    const archivedMessages = historyPrefix(messages.length >= this.snapshot.messages.length ? messages : this.snapshot.messages, workingMessages);
     const agent = new HttpAgent({
       url: this.options.url,
       threadId: this.snapshot.sessionId,
-      initialMessages: messages.map(({ id, role, content }) => ({
+      initialMessages: workingMessages.map(({ id, role, content }) => ({
         id,
         role,
         content,
@@ -467,12 +494,15 @@ export class CommerceClient {
         },
       }) : baseFetch,
     });
+    const knownRuns = new Map(messages.map(message => [message.id, message.runId]));
+    const initialIds = new Set(workingMessages.map(message => message.id));
+    const runForMessage = (id: string) => knownRuns.get(id) ?? (initialIds.has(id) ? undefined : runId);
     const active = { agent, runId };
     this.active = active;
     const current = () => this.active === active;
     let terminal = false;
     this.update({
-      messages,
+      messages: [...archivedMessages, ...workingMessages],
       products: [],
       skillUsages: [],
       events: [],
@@ -493,7 +523,7 @@ export class CommerceClient {
     };
     const subscriber: AgentSubscriber = {
       onMessagesChanged: ({ messages: next }) => {
-        if (current()) this.update({ messages: displayMessages(next) });
+        if (current()) this.update({ messages: [...archivedMessages, ...displayMessages(next, runForMessage)] });
       },
       onStateChanged: ({ state }) => {
         if (!current() || !isRecord(state)) return;
@@ -506,8 +536,10 @@ export class CommerceClient {
           .find((step) => step.status === "running");
         const latest = ongoing ?? progress[progress.length - 1];
         this.update({
+          ...(Array.isArray(state.activities) ? { activities: replaceRunActivities(this.snapshot.activities ?? [], readActivities(state.activities, runId), runId) } : {}),
           toolApprovals: readApprovals(state.toolApprovals),
           products: readProducts(state.products),
+          shoppingForm: state.shoppingForm ?? null,
       skillUsages: readSkillUsages(state.skillUsages),
           searchCompleted: state.searchCompleted === true,
           confirmations: mergeConfirmations(
@@ -518,6 +550,11 @@ export class CommerceClient {
         });
       },
       onEvent: ({ event }) => {
+        if (current() && event.type === "CUSTOM" && event.name === "activity.upsert") {
+          const activities = readActivities([event.value], runId);
+          if (activities.length) this.update({activities: upsertActivities(this.snapshot.activities ?? [], activities)});
+          return;
+        }
         if (
           !current() ||
           ["TEXT_MESSAGE_CONTENT", "TOOL_CALL_ARGS"].includes(event.type)
@@ -584,6 +621,9 @@ export class CommerceClient {
         this.save();
       }
     }
+    if ((approval || resume) && terminal && journaled) {
+      await this.refreshSessionActivities(priorSessionId, activityRevision);
+    }
     if (restartVersion && this.snapshot.sessionId===priorSessionId && !this.active) {
       const latest=[...messages].reverse().find(m=>m.role==="user");
       if (latest) {
@@ -600,6 +640,19 @@ export class CommerceClient {
     return this.options.accessToken ? { Authorization: `Bearer ${this.options.accessToken}` } : {};
   }
 
+  private async refreshSessionActivities(sessionId: string, revision: number) {
+    // 审批资源的终态由服务端跨轮核对，不能把点击批准当成工具已成功。
+    if (sessionId !== this.snapshot.sessionId || this.active) return;
+    const historyRevision = this.historyRevision;
+    try {
+      const data = await this.journalRequest(`/sessions/${encodeURIComponent(sessionId)}`);
+      if (revision === this.activityRevision && historyRevision === this.historyRevision && sessionId === this.snapshot.sessionId && !this.active &&
+          isRecord(data.run) && data.run.threadId === sessionId && Array.isArray(data.activities)) {
+        this.update({activities: readActivities(data.activities)});
+      }
+    } catch { /* 保留已有步骤；稍后重开会话会重新读取权威记录。 */ }
+  }
+
   private async journalRequest(path: string, method = "GET"): Promise<Record<string, unknown>> {
     const base = this.options.url.replace(/\/run\/?$/, "");
     const separator = path.includes("?") ? "&" : "?";
@@ -614,16 +667,37 @@ export class CommerceClient {
     return data;
   }
 
-  initialize = async (): Promise<void> => {
+  refreshHistory = (): Promise<void> => this.initialize(false);
+
+  initialize = async (restoreSession = true): Promise<void> => {
     if (!/\/ag-ui\/run\/?$/.test(this.options.url)) return;
-    const revision = ++this.historyRevision;
+    const revision = ++this.directoryRevision;
+    const historyRevision = this.historyRevision;
     try {
-      const data = await this.journalRequest("/sessions");
-      if (revision !== this.historyRevision) return;
+      const [data, formData, originData] = await Promise.all([
+        this.journalRequest("/sessions"),
+        this.workspaceRequest("/shopping-forms").catch(()=>null),
+        this.workspaceRequest("/automations/session-origins").catch(()=>null),
+      ]);
+      if (revision !== this.directoryRevision) return;
+      // 来源来自持久执行关联；短暂读取失败时保留已知标记，不猜会话 ID 或标题。
+      const automated = new Set(Array.isArray(originData?.session_ids)
+        ? originData.session_ids.filter((id): id is string => typeof id === "string")
+        : this.serverHistory.filter(item => item.origin === "automation").map(item => item.id));
       this.serverHistory = Array.isArray(data.sessions) ? data.sessions.filter(isRecord).flatMap((item) =>
         typeof item.id === "string" && typeof item.title === "string" && typeof item.updatedAt === "number"
-          ? [{ id: item.id, title: item.title, updatedAt: item.updatedAt, source: "server" as const }] : []) : [];
+          ? [{ id: item.id, title: item.title, updatedAt: item.updatedAt, source: "server" as const, ...(automated.has(item.id) ? { origin: "automation" as const } : {}) }] : []) : [];
       this.update({ history: this.history(), historyError: null });
+      if (!restoreSession || historyRevision !== this.historyRevision) return;
+      const form = isRecord(formData?.form) ? formData.form : null;
+      const latestHistoryTime = Math.max(0,...this.serverHistory.map(item=>item.updatedAt));
+      const restoreForm = form && typeof form.session_id==="string" && typeof form.created_at==="number"
+        && (form.session_id===this.snapshot.sessionId || (this.restoreLatestSession && !this.serverHistory.some(item=>item.id===this.snapshot.sessionId) && form.created_at>latestHistoryTime));
+      if (restoreForm && !this.active) {
+        this.restoreLatestSession=false;
+        this.update({sessionId:form.session_id as string,shoppingForm:form});
+        this.saveActiveSession();
+      }
       const chosen = this.serverHistory.find((item) => item.id === this.snapshot.sessionId)
         ?? (this.restoreLatestSession
           ? [...this.serverHistory].sort((a, b) => b.updatedAt - a.updatedAt)[0] : undefined);
@@ -634,16 +708,19 @@ export class CommerceClient {
         await this.loadSession(chosen.id);
       }
     } catch {
-      if (revision === this.historyRevision) this.update({ historyError: "服务端历史暂不可用，当前显示本机缓存。" });
+      if (revision === this.directoryRevision) this.update({ historyError: "服务端历史暂不可用，当前显示本机缓存。" });
     }
   };
 
   private applyServerRun(run: Record<string, unknown>) {
     const state = isRecord(run.state) ? run.state : {};
     const running = run.status === "running";
+    const messages = readMessages(run.messages);
     this.update({
+      ...(typeof run.runId === "string" ? { activities: replaceRunActivities(this.snapshot.activities ?? [], readActivities(state.activities, run.runId), run.runId) } : {}),
       toolApprovals: readApprovals(state.toolApprovals),
-      messages: readMessages(run.messages), products: readProducts(state.products),
+      messages: [...historyPrefix(this.snapshot.messages, messages), ...messages], products: readProducts(state.products),
+      shoppingForm: state.shoppingForm ?? null,
       skillUsages: readSkillUsages(state.skillUsages),
       searchCompleted: state.searchCompleted === true,
       confirmations: mergeConfirmations(this.snapshot.confirmations, this.ownedConfirmations(state.confirmations)),
@@ -659,8 +736,20 @@ export class CommerceClient {
     try {
       const data = await this.journalRequest(`/sessions/${encodeURIComponent(id)}`);
       if (revision !== this.historyRevision || id !== this.snapshot.sessionId || this.active) return;
-      if (!isRecord(data.run)) throw new Error("服务端缺少运行记录");
+      if (!isRecord(data.run) || data.run.threadId !== id) throw new Error("服务端运行记录与当前会话不一致");
       this.applyServerRun(data.run);
+      this.update({
+        ...(Array.isArray(data.messages) ? {messages: readMessages(data.messages)} : {}),
+        ...(Array.isArray(data.activities) ? {activities: readActivities(data.activities)} : {}),
+        productHistory: Array.isArray(data.productHistory) ? data.productHistory.filter(isRecord).flatMap(item =>
+          typeof item.runId === "string" && typeof item.updatedAt === "number"
+            ? [{runId: item.runId, updatedAt: item.updatedAt, products: readProducts(item.products)}] : []) : [],
+        events: Array.isArray(data.events) ? data.events.filter(isRecord).flatMap(item =>
+          typeof item.id === "string" && typeof item.type === "string"
+            ? [{id: item.id, type: item.type, label: EVENT_LABELS[item.type] ?? item.type,
+                timestamp: typeof item.timestamp === "number" ? item.timestamp : null}] : []) : [],
+        historyError: null,
+      });
       this.save();
       if (data.run.status === "running") await this.resume();
     } catch {
@@ -688,7 +777,10 @@ export class CommerceClient {
       if (run.status === "running" && isRecord(run.input)) {
         // 新 SDK 实例从本轮日志起点重放，保持 START/工具流协议状态完整，不重复执行模型。
         await this.executeRun(runId, readMessages(run.input.messages), true);
-      } else this.save();
+      } else {
+        this.save();
+        await this.refreshSessionActivities(sessionId, this.activityRevision);
+      }
     } catch (error) {
       if (sessionId === this.snapshot.sessionId) this.update({ status: "error", error: `暂时无法恢复本轮：${connectionError(error)}`,
         ...(String(error).includes("404") ? { recoverableRunId: null } : {}) });
@@ -738,7 +830,7 @@ export class CommerceClient {
     const separator = path.includes("?") ? "&" : "?";
     const response = await (this.options.fetch ?? globalThis.fetch)(`${base}${path}${separator}buyer_id=${encodeURIComponent(this.buyerId)}`, {
       method, headers: { ...this.authHeaders(), ...(body ? { "Content-Type": "application/json" } : {}) },
-      body: body ? JSON.stringify(path === "/context/compact" ? {...body,buyer_id:this.buyerId} : body) : undefined,
+      body: body ? JSON.stringify((path === "/context/compact" || path.startsWith("/models/") || path.startsWith("/model-connections") || /^\/sessions\/[^/]+\/model$/.test(path) || /^\/(automations|automation-runs)(\/|$)/.test(path)) ? {...body,buyer_id:this.buyerId} : body) : undefined,
     });
     const data: unknown = await response.json().catch(() => { throw new Error("服务暂时不可用，请稍后重试。输入已保留。"); });
     if (!response.ok) {
@@ -927,13 +1019,14 @@ export class CommerceClient {
   setSession = (id: string) => {
     this.restoreLatestSession = false;
     if (id === this.snapshot.sessionId) {
-      if (!this.active && this.serverHistory.some((entry) => entry.id === id)) void this.loadSession(id);
+      if (!this.active && /\/ag-ui\/run\/?$/.test(this.options.url)) void this.loadSession(id);
       return;
     }
     const session = this.sessions.find((entry) => entry.id === id);
     const remote = this.serverHistory.some((entry) => entry.id === id);
     if (!session && !remote) return;
     this.detach();
+    ++this.historyRevision;
     this.save();
     this.update({
       ...emptySnapshot(id),
@@ -945,7 +1038,7 @@ export class CommerceClient {
       step: "已恢复本机选购记录",
     });
     this.saveActiveSession();
-    if (remote) void this.loadSession(id);
+    if (/\/ag-ui\/run\/?$/.test(this.options.url)) void this.loadSession(id);
   };
 }
 

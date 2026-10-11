@@ -1,0 +1,143 @@
+{
+  "case_id": "h1-dev-sku",
+  "split": "dev",
+  "mode": "snapshot",
+  "strategy": "candidate",
+  "repetition": 0,
+  "answer": "第一批（P28101–P28105，历史观察时间 2026-09-01T10:01:00Z）中的黑色规格 SKU 如下：\n\n| SKU | 规格 | 历史单价 | 原报价币种 |\n|---|---|---|---|\n| P28104-S1（AeroHush 主动降噪蓝牙耳机 Pro） | 曜石黑 | 219.0 | USD |\n| P28103-S1（Wanderlite 折叠旅行双肩包 35L） | 石墨黑 | 165 | CNY |\n| P28102-S2（TrailOx 20寸登机行李箱 铝框款） | 黑色 / 20寸 | 899.0 | CNY |\n\n说明：\n- 以上为第一批的**历史**单价，并非当前实时价；如需当前价/库存请另行核验。\n- P28104-S1 的报价币种为 **USD**（该商品顶层展示币种与实际 SKU 币种不一致，此处按 SKU 自身币种列出）。\n- 未列出的 SKU 均非黑色（军绿色、沙漠黄、雾霾蓝、月光白、银色 / 20寸、标准版）。",
+  "checks": {
+    "facts": true,
+    "current_lookup": true,
+    "no_error": true,
+    "complete_black_sku_set": true,
+    "sku_price_currency_associations": true
+  },
+  "passed": true,
+  "error": null,
+  "usage": [
+    {
+      "kind": "business",
+      "input_tokens": 15480,
+      "output_tokens": 409,
+      "elapsed_ms": 2364.5862999837846,
+      "request_context": {
+        "system_estimated_tokens": 1175,
+        "state_estimated_tokens": 690,
+        "product_estimated_tokens": 22127,
+        "history_estimated_tokens": 7425,
+        "tool_schema_estimated_tokens": 788,
+        "reason": "buyer_request",
+        "visible_evidence_answer": true,
+        "recovery_attempt": 0
+      },
+      "prompt_cache": {
+        "model": "deepseek-flash",
+        "response_model": "deepseek-flash",
+        "response_model_matches": true,
+        "response_model_conflict": false,
+        "protocol_status": "valid",
+        "cache_mode": "passthrough",
+        "cache_policy": "static",
+        "cache_marker_count": 0,
+        "cache_reason": "passthrough",
+        "cache_retry_without_markers": false,
+        "cache_read_tokens": 256,
+        "cache_write_tokens": null,
+        "cache_usage_invalid": false,
+        "reported_cost": null,
+        "prefix_comparison": "first_request",
+        "prefix_scope_known": true,
+        "prefix_system_hash": "6d9c2e22a81bafeae4492a5f8e0b8bd96b1a3eb83c62252a8e7f5bab7a90fdaf",
+        "prefix_tools_hash": "e28328e9aedc0472729da15d930495a76250f27b5c813ac7cb01c41f367ded92",
+        "prefix_message_count": 103,
+        "prefix_common_messages": null,
+        "prefix_common_message_bytes": null,
+        "prefix_first_changed_message": null,
+        "prefix_system_changed": null,
+        "prefix_tools_changed": null,
+        "prefix_parameters_changed": null
+      },
+      "model_execution": {
+        "identity": "deepseek-flash|https://api.deepseek.com",
+        "requested_model": "deepseek-flash",
+        "response_models": [
+          "deepseek-flash"
+        ],
+        "response_model_matches": true,
+        "profile_id": null,
+        "profile_revision": null
+      },
+      "ttft_ms": null
+    }
+  ],
+  "input_tokens": 15480,
+  "output_tokens": 409,
+  "model_calls": 1,
+  "lookup_calls": 0,
+  "lookup_events": [],
+  "context_diagnostics": [
+    {
+      "type": "state",
+      "mode": "snapshot",
+      "emitted": true,
+      "estimated_tokens": 500
+    },
+    {
+      "type": "prune",
+      "before_tokens": 55128,
+      "after_tokens": 55128,
+      "high_watermark": 6000,
+      "next_high_watermark": 6000,
+      "low_watermark": 6000,
+      "archived_results": 0,
+      "protected_results": 2,
+      "below_target": false,
+      "trigger": "pressure"
+    },
+    {
+      "type": "visible_evidence",
+      "covered": true,
+      "batch": 1,
+      "product_count": 5,
+      "historical_lookup_required": false,
+      "prefix_preserved": true
+    }
+  ],
+  "current_calls": 0,
+  "elapsed_ms": 3844,
+  "compactions": [],
+  "round_metrics": [
+    {
+      "elapsed_ms": 2546,
+      "compacted": false,
+      "model_calls": 1
+    }
+  ],
+  "compaction_metrics": [],
+  "final_context_estimated_tokens": 76002,
+  "last_compaction": {
+    "policy_version": "layered-v4",
+    "reason": "pressure",
+    "before_tokens": 15236,
+    "after_tokens": 15236,
+    "archived_results": 0,
+    "summary_changed": false,
+    "elapsed_ms": 159,
+    "status": "noop"
+  },
+  "final_product_observations": 120,
+  "final_product_duplicate_ratio": 0.9166666666666666,
+  "association_check": {
+    "applicable": false,
+    "status": "not_applicable"
+  },
+  "original_checks": {
+    "facts": true,
+    "current_lookup": true,
+    "no_error": true
+  },
+  "layer": "context",
+  "critical": true,
+  "title": "不同SKU价格",
+  "evidence_trace": "traces/h1-dev-sku-candidate-0.jsonl"
+}

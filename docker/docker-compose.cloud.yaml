@@ -1,7 +1,7 @@
 x-runtime: &runtime
   env_file:
     - ../.env
-  environment:
+  environment: &runtime-environment
     DATA_DIR: /app/data
     DATABASE_URL: sqlite+aiosqlite:////app/data/globex.db
     REDIS_URL: redis://redis:6379/0
@@ -46,6 +46,9 @@ services:
     <<: *runtime
     image: globex-backend:beta
     command: ["python", "-m", "app.worker"]
+    environment:
+      <<: *runtime-environment
+      AUTOMATION_WORKER_MODE: "off"
   frontend:
     image: globex-frontend:beta
     build:

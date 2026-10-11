@@ -1,0 +1,45 @@
+........................................................................ [  8%]
+........................................................................ [ 17%]
+........................................................................ [ 25%]
+........................................................................ [ 34%]
+..................................................................F..... [ 42%]
+........................................................................ [ 51%]
+........................................................................ [ 59%]
+........................................................................ [ 68%]
+........................................................................ [ 76%]
+........................................................................ [ 85%]
+........................................................................ [ 93%]
+.......................................................                  [100%]
+================================== FAILURES ===================================
+_ test_missing_credentials_allow_contracts_but_block_model_with_report[smoke] _
+
+tmp_path = WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-101/test_missing_credentials_allow1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000266B8663690>
+profile = 'smoke'
+capsys = <_pytest.capture.CaptureFixture object at 0x00000266B86AE210>
+
+    @pytest.mark.parametrize('profile', ['contracts', 'smoke'])
+    async def test_missing_credentials_allow_contracts_but_block_model_with_report(tmp_path, monkeypatch, profile, capsys):
+        from unittest.mock import AsyncMock
+        from scripts.eval.harness import runner
+        monkeypatch.setenv('LLM_API_KEY', '')
+        monkeypatch.setenv('LLM_BASE_URL', '')
+        monkeypatch.setenv('DATA_DIR', str(tmp_path/'data'))
+        contracts = AsyncMock(return_value={'passed':True, 'passed_count':1})
+        model = AsyncMock(side_effect=AssertionError('缺少密钥不能请求模型'))
+        monkeypatch.setattr(runner, 'contract_checks', contracts)
+        monkeypatch.setattr(runner, 'execute_case', model)
+        out = tmp_path/profile
+        await runner.run_profile(profile, out)
+        saved = json.loads((out/'manifest.json').read_text())
+        contracts.assert_awaited_once()
+        model.assert_not_awaited()
+>       assert saved['source_stable'] is True
+E       assert False is True
+
+tests\test_harness_evaluation.py:306: AssertionError
+---------------------------- Captured stdout call -----------------------------
+未执行真实模型评测，缺少配置：LLM_API_KEY, LLM_BASE_URL。GitHub Actions 请配置对应的 HARNESS_LLM_API_KEY / HARNESS_LLM_BASE_URL secrets。
+=========================== short test summary info ===========================
+FAILED tests/test_harness_evaluation.py::test_missing_credentials_allow_contracts_but_block_model_with_report[smoke]
+1 failed, 846 passed in 34625.78s (9:37:05)
