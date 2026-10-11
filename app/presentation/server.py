@@ -76,6 +76,12 @@ def build_app() -> FastAPI:
         c = await build_container()
         state["c"] = c
         application.state.identity_policy = getattr(c, "identity_policy", None)
+        from app.infrastructure.invite_access import InviteAccessStore
+        data_dir = getattr(getattr(c, "settings", None), "data_dir", None)
+        application.state.invite_access = (
+            InviteAccessStore(data_dir / "invite_access.db")
+            if data_dir is not None and getattr(getattr(c, "identity_policy", None), "mode", "demo") == "hmac" else None
+        )
         application.state.session_store = getattr(c, "session_store", None)
         application.state.session_owner_binding = getattr(getattr(c, "settings", None), "session_owner_binding", True)
         application.state.metrics_reader_buyers = getattr(getattr(c, "settings", None), "metrics_reader_buyers", ())

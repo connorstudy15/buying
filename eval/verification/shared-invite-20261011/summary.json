@@ -1,0 +1,18 @@
+{
+  "frontend": {
+    "tests_passed": 248,
+    "files_passed": 19,
+    "production_build": "passed"
+  },
+  "backend_route_regression": {
+    "passed": 121
+  },
+  "backend_final_cookie_and_identity_regression": {
+    "passed": 56,
+    "overlaps_route_regression": true
+  },
+  "five_concurrent_logins": "independent synthetic browser identities; not model throughput benchmark",
+  "external_model_calls": false,
+  "cloud_deployed": false,
+  "public_invite_issued": false
+}

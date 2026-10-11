@@ -14,7 +14,9 @@ export function useCommerceAgent() {
     const base = (import.meta.env.VITE_API_BASE ?? "").replace(/\/$/, "");
     const accessToken = access?.accessToken;
     return new CommerceClient({ url: `${base}/commerce/ag-ui/run`, storage,
-      buyerId: access?.buyerId ?? import.meta.env.VITE_BUYER_ID ?? "pao-coder", accessToken });
+      buyerId: access?.buyerId ?? import.meta.env.VITE_BUYER_ID ?? "pao-coder", accessToken,
+      fetch: access?.credential === "invite"
+        ? (input, init) => globalThis.fetch(input, { ...init, credentials: "include" }) : undefined });
   });
   const snapshot = useSyncExternalStore(client.subscribe, client.getSnapshot);
   useEffect(() => { void client.initialize(); return () => client.detach(); }, [client]);

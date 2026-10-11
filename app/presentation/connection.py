@@ -13,6 +13,7 @@ from app.infrastructure.eventbus import TradeEventBus
 from app.presentation.identity import require_buyer, require_session
 
 logger = logging.getLogger(__name__)
+AUTH_RECHECK_SECONDS = 30
 
 
 class ConnectionManager:
@@ -51,15 +52,24 @@ class ConnectionManager:
         delivery = None
         try:
             while True:
-                delivery = asyncio.create_task(queue.get())
-                done, _ = await asyncio.wait({disconnect, delivery}, return_when=asyncio.FIRST_COMPLETED)
+                if delivery is None:
+                    delivery = asyncio.create_task(queue.get())
+                done, _ = await asyncio.wait({disconnect, delivery}, return_when=asyncio.FIRST_COMPLETED,
+                                             timeout=AUTH_RECHECK_SECONDS)
                 if disconnect in done:
                     return
+                # Cookie 登录可撤销；连接空闲时也重新核验，不只在握手时检查。
+                await require_buyer(websocket, buyer_id)
+                if delivery not in done:
+                    continue
                 payload = asdict(delivery.result())
+                delivery = None
                 payload.pop("shopping_session_id", None)
                 await websocket.send_json(payload)
         except (WebSocketDisconnect, asyncio.CancelledError):
             pass
+        except HTTPException as error:
+            await websocket.close(code=4403 if error.status_code == 403 else 4401, reason="体验登录已失效")
         finally:
             self._bus.unsubscribe(session_id, queue)
             pending = [task for task in (delivery, disconnect) if task is not None]

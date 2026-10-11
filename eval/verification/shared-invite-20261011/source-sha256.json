@@ -1,0 +1,14 @@
+{
+  "app/infrastructure/invite_access.py": "6121295a286f469ff867162e08187f6bf8e883641846bb69bc9d01fd601124d9",
+  "app/presentation/identity.py": "1bda42cd1c0ea46911dfc2e192093a5e1d590db6f569a26f585a639e088196c7",
+  "app/presentation/server.py": "2457a94d5d881c67e0a4dbe42b06684ad88291ed7b9da9080523b49dc7080b43",
+  "app/presentation/connection.py": "24fa5c2ce49b5e7515d4c62196b42675378cfd8cdb3bc0a218756c0b2337c43f",
+  "scripts/manage_invites.py": "029675cd3ceb727a43a26c0ef9dc803a9294dca8d2c6319e1f0def9a20055487",
+  "frontend/src/components/AccessGate.tsx": "eccf0bd0f6a89afd73f52935b952a819d805ceba6e243aa170e403ad72dada01",
+  "frontend/src/hooks/useCommerceAgent.ts": "a27459a47a39f6159d9ed4889ada75624268854f69eb7ceb3b533caa524e910e",
+  "tests/test_invite_access.py": "4f841ceec1aa1cf44afe529ac1f12c8ccbf44312702af5883e3c7385de997efe",
+  "tests/test_upstream_integration.py": "5aea79bbb79579e3c2025fffb1bff51f181dd77ad0ca932498399cc5e68cad1e",
+  "frontend/tests/accessGate.test.tsx": "c567d514ba1e9b04b645b9300309abc24131e86ca5e67918bfadb38838a05776",
+  "Dockerfile": "deb68a968800bb858d328688778371969db984b1f531aaf27a49dcd2ab3d9b16",
+  "Dockerfile.cloud": "af9377d603114405358c4b04d533d6798ebe9c9239cfc4f5d55cb10e58c1c526"
+}

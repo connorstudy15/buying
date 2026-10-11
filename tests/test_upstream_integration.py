@@ -34,7 +34,7 @@ async def test_integrated_features_start_with_signed_identity_and_isolated_stora
     api = server.build_app()
     async with api.router.lifespan_context(api):
         assert container.automation_task is not None
-        async with httpx.AsyncClient(transport=httpx.ASGITransport(app=api), base_url="http://test") as client:
+        async with httpx.AsyncClient(transport=httpx.ASGITransport(app=api), base_url="https://test.example") as client:
             assert (await client.get("/commerce/auth")).json() == {"mode": "hmac", "authenticated": False}
             headers = {"Authorization": "Bearer " + container.identity_policy.issue("owner")}
             assert (await client.get("/commerce/auth", headers=headers)).json()["buyer_id"] == "owner"
@@ -44,4 +44,15 @@ async def test_integrated_features_start_with_signed_identity_and_isolated_stora
                 result = await client.get(path, params=params, headers=headers)
                 assert result.status_code == 200, result.text
                 assert (await client.get(path, params={**params, "buyer_id": "other"}, headers=headers)).status_code == 403
+            invite_id, token = api.state.invite_access.create("https://test.example")
+            response = await client.post("/commerce/auth/invite", json={"invite": token}, headers={"Origin": "https://test.example"})
+            assert response.status_code == 200
+            guest = response.json()["buyer_id"]
+            for path in ("/commerce/models", "/commerce/automations", "/commerce/ag-ui/sessions"):
+                result = await client.get(path, params={"buyer_id": guest, "session_id": "guest-session"})
+                assert result.status_code == 200, result.text
+            assert (await client.post("/commerce/model-connections/validate", json={"buyer_id": guest},
+                                      headers={"Origin": "https://test.example"})).status_code == 403
+            api.state.invite_access.revoke(invite_id)
+            assert (await client.get("/commerce/ag-ui/sessions", params={"buyer_id": guest})).status_code == 401
     assert container.automation_task.done()
