@@ -1,0 +1,235 @@
+{
+  "case_id": "h1-dev-cost",
+  "split": "dev",
+  "mode": "snapshot",
+  "strategy": "candidate",
+  "repetition": 0,
+  "answer": "第1批（寄中国、数量1）中 P28183 的历史观察值：\n\n- 商品：Wanderlite 折叠旅行双肩包 35L（P28183）\n- 到手价：**222 元**（CNY）\n- 运费：**26 元**（另有税费 7 元）\n- 对应 SKU 单价：P28183-S1 石墨黑 189 元、P28183-S2 雾霾蓝 206 元\n\n说明：以上取自第1批历史展示记录（观察时间 2026-09-01T10:01:00Z，条件为寄中国），**不是实时核验结果**。你目前的选购条件已改为寄英国、预算369元，需要我按当前条件重新核验这批/该商品的实时价格与库存吗？",
+  "checks": {
+    "facts": true,
+    "current_lookup": true,
+    "no_error": true
+  },
+  "passed": true,
+  "error": null,
+  "usage": [
+    {
+      "kind": "business",
+      "input_tokens": 10405,
+      "output_tokens": 298,
+      "elapsed_ms": 1736.312699969858,
+      "request_context": {
+        "system_estimated_tokens": 884,
+        "state_estimated_tokens": 483,
+        "product_estimated_tokens": 17669,
+        "history_estimated_tokens": 4597,
+        "tool_schema_estimated_tokens": 788,
+        "reason": "buyer_request",
+        "visible_evidence_answer": false,
+        "recovery_attempt": 0
+      },
+      "prompt_cache": {
+        "model": "deepseek-flash",
+        "response_model": "deepseek-flash",
+        "response_model_matches": true,
+        "response_model_conflict": false,
+        "protocol_status": "valid",
+        "cache_mode": "passthrough",
+        "cache_policy": "static",
+        "cache_marker_count": 0,
+        "cache_reason": "passthrough",
+        "cache_retry_without_markers": false,
+        "cache_read_tokens": 128,
+        "cache_write_tokens": null,
+        "cache_usage_invalid": false,
+        "reported_cost": null,
+        "prefix_comparison": "first_request",
+        "prefix_scope_known": true,
+        "prefix_system_hash": "92cc8b92e1deb779c79599e5899264b674ea9884e198ab56498f193eb210668c",
+        "prefix_tools_hash": "3e63096125bef70f4d9b978fcb85e7256a3d40202ce78b927915fa0edc67455d",
+        "prefix_message_count": 100,
+        "prefix_common_messages": null,
+        "prefix_common_message_bytes": null,
+        "prefix_first_changed_message": null,
+        "prefix_system_changed": null,
+        "prefix_tools_changed": null,
+        "prefix_parameters_changed": null
+      },
+      "model_execution": {
+        "identity": "deepseek-flash|https://api.deepseek.com",
+        "requested_model": "deepseek-flash",
+        "response_models": [
+          "deepseek-flash"
+        ],
+        "response_model_matches": true,
+        "profile_id": null,
+        "profile_revision": null
+      },
+      "ttft_ms": null
+    },
+    {
+      "kind": "business",
+      "input_tokens": 11255,
+      "output_tokens": 409,
+      "elapsed_ms": 2199.9663000460714,
+      "request_context": {
+        "system_estimated_tokens": 884,
+        "state_estimated_tokens": 483,
+        "product_estimated_tokens": 19241,
+        "history_estimated_tokens": 4316,
+        "tool_schema_estimated_tokens": 788,
+        "reason": "lookup_followup",
+        "visible_evidence_answer": false,
+        "recovery_attempt": 0
+      },
+      "prompt_cache": {
+        "model": "deepseek-flash",
+        "response_model": "deepseek-flash",
+        "response_model_matches": true,
+        "response_model_conflict": false,
+        "protocol_status": "valid",
+        "cache_mode": "passthrough",
+        "cache_policy": "static",
+        "cache_marker_count": 0,
+        "cache_reason": "passthrough",
+        "cache_retry_without_markers": false,
+        "cache_read_tokens": 10624,
+        "cache_write_tokens": null,
+        "cache_usage_invalid": false,
+        "reported_cost": null,
+        "prefix_comparison": "append",
+        "prefix_scope_known": true,
+        "prefix_system_hash": "92cc8b92e1deb779c79599e5899264b674ea9884e198ab56498f193eb210668c",
+        "prefix_tools_hash": "3e63096125bef70f4d9b978fcb85e7256a3d40202ce78b927915fa0edc67455d",
+        "prefix_message_count": 102,
+        "prefix_common_messages": 100,
+        "prefix_common_message_bytes": 37570,
+        "prefix_first_changed_message": 100,
+        "prefix_system_changed": false,
+        "prefix_tools_changed": false,
+        "prefix_parameters_changed": false
+      },
+      "model_execution": {
+        "identity": "deepseek-flash|https://api.deepseek.com",
+        "requested_model": "deepseek-flash",
+        "response_models": [
+          "deepseek-flash"
+        ],
+        "response_model_matches": true,
+        "profile_id": null,
+        "profile_revision": null
+      },
+      "ttft_ms": null
+    }
+  ],
+  "input_tokens": 21660,
+  "output_tokens": 707,
+  "model_calls": 2,
+  "lookup_calls": 1,
+  "lookup_events": [
+    {
+      "ref": "",
+      "batch": 1,
+      "position": 0,
+      "product_id": "P28183",
+      "sku_id": "",
+      "fields": "price",
+      "offset": 0,
+      "limit": 5,
+      "field_offset": 0
+    }
+  ],
+  "context_diagnostics": [
+    {
+      "type": "state",
+      "mode": "snapshot",
+      "emitted": true,
+      "estimated_tokens": 299
+    },
+    {
+      "type": "prune",
+      "before_tokens": 55128,
+      "after_tokens": 9621,
+      "high_watermark": 6000,
+      "next_high_watermark": 6000,
+      "low_watermark": 6000,
+      "archived_results": 21,
+      "protected_results": 2,
+      "below_target": false,
+      "trigger": "pressure"
+    },
+    {
+      "type": "lookup",
+      "batch": 1,
+      "position": 0,
+      "offset": 0,
+      "limit": 5,
+      "field_offset": 0,
+      "has_reference": false,
+      "has_query": false,
+      "has_product": true,
+      "has_sku": false,
+      "status": "success",
+      "error_code": null,
+      "returned_products": 1,
+      "effective_limit": 5,
+      "fields_normalized": false,
+      "limit_capped": false,
+      "effective_batch": 1,
+      "batch_inferred_from_user": false,
+      "records": 1,
+      "estimated_tokens": 563,
+      "has_more": false,
+      "elapsed_ms": 2.5321999564766884
+    },
+    {
+      "type": "prune",
+      "before_tokens": 7454,
+      "after_tokens": 7454,
+      "high_watermark": 6000,
+      "next_high_watermark": 6000,
+      "low_watermark": 6000,
+      "archived_results": 0,
+      "protected_results": 3,
+      "below_target": false,
+      "trigger": "pressure"
+    }
+  ],
+  "current_calls": 0,
+  "elapsed_ms": 5611,
+  "compactions": [],
+  "round_metrics": [
+    {
+      "elapsed_ms": 4257,
+      "compacted": false,
+      "model_calls": 2
+    }
+  ],
+  "compaction_metrics": [],
+  "final_context_estimated_tokens": 27176,
+  "last_compaction": {
+    "policy_version": "layered-v4",
+    "reason": "pressure",
+    "before_tokens": 12426,
+    "after_tokens": 12426,
+    "archived_results": 0,
+    "summary_changed": false,
+    "elapsed_ms": 10,
+    "status": "noop"
+  },
+  "final_product_observations": 15,
+  "final_product_duplicate_ratio": 0.33333333333333337,
+  "association_check": {
+    "applicable": false,
+    "status": "not_applicable"
+  },
+  "original_checks": {
+    "facts": true,
+    "current_lookup": true,
+    "no_error": true
+  },
+  "layer": "context",
+  "critical": true,
+  "title": "费用组成",
+  "evidence_trace": "traces/h1-dev-cost-candidate-0.jsonl"
+}

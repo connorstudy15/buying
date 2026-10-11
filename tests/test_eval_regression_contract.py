@@ -120,6 +120,27 @@ def test_judge_ground_truth_includes_product_attributes_exposed_by_search_cards(
     assert "配送国家" in ground_truth
 
 
+def test_judge_focused_facts_keep_exact_attributes_skus_and_unknown_ids():
+    from scripts.eval_regression import focus_ground_truth
+    facts = build_ground_truth()
+    focused = focus_ground_truth(facts, '商品 P2170，P2170-S2；工具候选 P2242；未知 P999999')
+    assert '| P2170 | Atlas 家居收纳盒 170 |' in focused
+    assert '| 2.5 |' in focused
+    assert 'P2170-S1' in focused and 'P2170-S2' in focused
+    assert '| P2242 |' in focused
+    assert '| P1001 |' not in focused
+    assert '商品库不存在的商品 ID：P999999' in focused
+    assert '系统汇率表' in focused
+    assert len(focused) < len(facts) / 100
+
+
+def test_judge_focused_facts_support_title_without_id():
+    from scripts.eval_regression import focus_ground_truth
+    focused = focus_ground_truth(build_ground_truth(), '推荐 PackMate 压缩收纳袋 6件套')
+    assert '| P1014 |' in focused
+    assert '| P2170 |' not in focused
+
+
 def test_judge_receives_authoritative_tool_result_facts_for_derived_prices():
     evidence = build_tool_fact_evidence([
         {"type": "tool.invoke", "payload": {"tool": "product_search_tool"}},

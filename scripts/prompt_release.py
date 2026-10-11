@@ -17,6 +17,9 @@ def main():
     commands.add_parser("status")
     importing = commands.add_parser("import")
     importing.add_argument("--yaml", type=Path, required=True)
+    upgrade = commands.add_parser("prepare-upgrade")
+    upgrade.add_argument("--yaml", type=Path, required=True)
+    upgrade.add_argument("--source-version", required=True)
     publishing = commands.add_parser("publish")
     for name in ("baseline", "candidate", "experiment"):
         publishing.add_argument("--" + name, required=True)
@@ -34,6 +37,8 @@ def main():
     try:
         if args.command == "import":
             result = registry._public_version(registry.import_version(args.yaml))
+        elif args.command == "prepare-upgrade":
+            result = registry.prepare_upgrade(args.yaml, expected_source_version=args.source_version)
         elif args.command == "status":
             result = registry.describe()
         elif args.command == "publish":

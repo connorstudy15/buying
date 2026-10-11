@@ -33,6 +33,7 @@ export default function ProductComparison({
                   <span className="compare-price">
                     {money(p.price_major, p.currency)}
                   </span>
+                  {p.price_kind === "demo" && <small>演示价</small>}
                 </td>
               ))}
             </tr>

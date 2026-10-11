@@ -92,11 +92,29 @@ async def secured(confirmation_env, monkeypatch):
     api = server.build_app()
     async with api.router.lifespan_context(api):
         async with httpx.AsyncClient(transport=httpx.ASGITransport(app=api), base_url="http://local") as client:
-            yield SimpleNamespace(client=client, store=store, container=container, env=env)
+            yield SimpleNamespace(client=client, store=store, container=container, env=env, app=api)
 
 
 def intent(buyer="buyer-1", session="session-1"):
     return {"buyer_id": buyer, "shopping_session_id": session, "raw_query": "只读商品搜索"}
+
+
+async def test_browser_login_uses_verified_subject_and_never_returns_token(secured):
+    response = await secured.client.get("/commerce/auth")
+    assert response.json() == {"mode": "hmac", "authenticated": False}
+    assert response.headers["cache-control"] == "no-store"
+    response = await secured.client.get("/commerce/auth?buyer_id=forged", headers=auth("buyer-2"))
+    assert response.json() == {"mode": "hmac", "authenticated": True, "buyer_id": "buyer-2"}
+    assert POLICY.secret not in response.text and "Bearer" not in response.text
+    response = await secured.client.get("/commerce/auth", headers={"Authorization": "Bearer bad"})
+    assert response.status_code == 401
+    assert response.headers["cache-control"] == "no-store"
+
+
+async def test_browser_login_demo_status_is_explicit(secured):
+    secured.app.state.identity_policy = IdentityPolicy()
+    response = await secured.client.get("/commerce/auth")
+    assert response.json() == {"mode": "demo", "authenticated": False}
 
 
 async def test_intent_binding_survives_instances_and_requires_matching_authenticated_owner(secured):

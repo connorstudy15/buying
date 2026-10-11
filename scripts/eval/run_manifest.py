@@ -120,9 +120,11 @@ def build_manifest(*, runner: str, dataset: Path, selection: dict, parameters: d
     prompts = _fingerprint(list((root / "app/application/prompts").glob("*.yml")), root)
     if judge_prompt is not None:
         prompts["judge_system_sha256"] = hashlib.sha256(judge_prompt.encode()).hexdigest()
-    catalog_source = catalog.resolve() if catalog is not None else root / "catalog/catalog-v1.jsonl"
-    if catalog is None and not catalog_source.is_file():
-        catalog_source = root / "data/catalog-v1.jsonl"
+    if catalog is not None:
+        catalog_source = catalog.resolve()
+    else:
+        from app.infrastructure.persistence.seed_products import _CATALOG_FIXTURE
+        catalog_source = Path(os.getenv("PRODUCT_CATALOG_PATH") or _CATALOG_FIXTURE).resolve()
     evaluation_corpus = root / "eval/knowledge/corpus"
     data_paths = [dataset.resolve(), catalog_source, *evaluation_corpus.glob("*.md"), evaluation_corpus / "manifest.jsonl"]
     if baseline:

@@ -146,10 +146,9 @@ async def build_usecase(
 
     reranker = None
     if strategy in {"embedding_rerank", "hybrid_rerank"}:
-        if settings.reranker_base_url:
-            reranker = HttpReranker(settings)
-        else:
-            print("  [warn] 未配置 RERANKER_BASE_URL，embedding_rerank 档实际等价于 embedding_only")
+        reranker = create_reranker(settings)
+        if reranker is None:
+            print("  [warn] 精排未配置，实际按召回排序")
     return (
         CatalogSearchUseCase(
             repo, embedder=embedder, vector_index=vector_index, reranker=reranker,

@@ -80,6 +80,10 @@ class ProductCard:
     image_url: str | None = None
     image_kind: str = "placeholder"
     image_alt: str = "暂无商品图片"
+    source_language: str = ""
+    source_locale: str = ""
+    data_provenance: str = ""
+    price_kind: str = ""
 
     def to_dict(self) -> dict:
         card = {
@@ -112,6 +116,12 @@ class ProductCard:
         }
         if self.landed_price is not None:
             card["landed_price"] = self.landed_price
+        if self.source_language:
+            card.update(source_language=self.source_language, source_locale=self.source_locale)
+        if self.data_provenance:
+            card["data_provenance"] = self.data_provenance
+        if self.price_kind:
+            card["price_kind"] = self.price_kind
         return card
 
 
@@ -138,15 +148,22 @@ class CatalogSearchUseCase:
         include_retrieval_evidence: bool = False,
         recall_top_n: int = _DEFAULT_RECALL_TOP_N,
         rrf_k: int = 60,
-        rrf_weights: tuple[float, float] = (1.0, 1.0),
+        rrf_weights: tuple[float, float] | None = None,
+        hybrid_lexical_weight: float = 1.0,
+        hybrid_vector_weight: float = 1.0,
+        recall_candidates: int = 32,
+        capture_retrieval_stages: bool = False,
     ) -> None:
-        if recall_top_n <= 0:
+        if type(recall_top_n) is not int or recall_top_n <= 0:
             raise ValueError("recall_top_n 必须为正整数")
-        if rrf_k < 0:
-            raise ValueError("rrf_k 不能为负数")
-        if len(rrf_weights) != 2 or any(weight < 0 for weight in rrf_weights) or not any(rrf_weights):
-            raise ValueError("rrf_weights 必须是两个非负值且至少一个大于 0")
+        # 仅评测主动开启；记录混合检索的实际阶段，不改变排序或向模型增加字段。
+        self._capture_retrieval_stages = capture_retrieval_stages
         self._hybrid_enabled = hybrid_enabled
+        self._fusion_weights = (hybrid_lexical_weight, hybrid_vector_weight)
+        reciprocal_rank_fusion([], [], weights=self._fusion_weights)
+        if type(recall_candidates) is not int or not 8 <= recall_candidates <= 256:
+            raise ValueError("recall_candidates 须为 8 到 256 的整数")
+        self._recall_candidates = recall_candidates
         self._product_repo = product_repo
         self._embedder = embedder
         self._vector_index = vector_index
@@ -156,13 +173,42 @@ class CatalogSearchUseCase:
         self._include_retrieval_evidence = include_retrieval_evidence
         self._recall_top_n = recall_top_n
         self._rrf_k = rrf_k
-        self._rrf_weights = rrf_weights
+        self._rrf_weights = rrf_weights or self._fusion_weights
+        self._fusion_weights = self._rrf_weights
+        reciprocal_rank_fusion([], [], weights=self._rrf_weights, k=self._rrf_k)
+
+    async def resolve_exact_title(self, query: str, *, original_query: str = "") -> str | None:
+        """A full, unique catalogue title is an entity key; partial titles are not."""
+        normalized = " ".join(query.split()).casefold()
+        if not normalized:
+            return None
+        if not hasattr(self, "_exact_title_ids"):
+            titles: dict[str, list[str]] = {}
+            for product in await self._product_repo.list_all():
+                titles.setdefault(" ".join(product.title.split()).casefold(), []).append(product.product_id)
+            self._exact_title_ids = titles
+        matches = self._exact_title_ids.get(normalized, [])
+        if not matches and original_query:
+            original = " ".join(original_query.split()).casefold()
+            # Restore a dropped numeric model suffix only from the current human
+            # query, never from another session or an inferred ID transformation.
+            for title, product_ids in self._exact_title_ids.items():
+                stem, separator, suffix = title.rpartition(" ")
+                if (separator and stem == normalized and suffix.isdecimal()
+                        and re.search(r"(?<![a-z0-9])" + re.escape(title) + r"(?![a-z0-9])", original)):
+                    matches.extend(product_ids)
+        return matches[0] if len(matches) == 1 else None
 
     async def execute(self, spec: ProductSearchSpec) -> dict:
         # 稳定实体 ID 直接核对权威目录，不能用向量 top-N 判断商品是否存在。
-        identifiers = list(dict.fromkeys(re.findall(r"(?<![A-Za-z0-9])P\d{4,}(?:-S\d+)?(?![A-Za-z0-9-])", spec.normalized_query.upper())))
+        # 结构化标识优先；旧查询文字中的 ID 仍兼容，显式 ID 未命中不能退回模糊检索。
+        exact_id = spec.sku_id or spec.product_id
+        identifiers = [exact_id] if exact_id else list(dict.fromkeys(re.findall(r"(?<![A-Za-z0-9])P\d{4,}(?:-S\d+)?(?![A-Za-z0-9-])", spec.normalized_query.upper())))
         if identifiers:
             return await self._execute_exact_ids(spec, identifiers)
+        title_id = await self.resolve_exact_title(spec.normalized_query)
+        if title_id:
+            return await self._execute_exact_ids(spec, [title_id])
         if self._hybrid_enabled:
             return await self._execute_hybrid(spec)
         scored: list[tuple[float, Product]] = []
@@ -173,7 +219,7 @@ class CatalogSearchUseCase:
 
         if self._embedder is not None and self._vector_index is not None:
             try:
-                scored = await self._vector_recall(spec)
+                scored = await self._vector_recall(spec, adaptive=not self._include_retrieval_evidence)
                 candidate_product_ids = [product.product_id for _, product in scored]
                 recall_strategy = "embedding_only"
             except Exception as err:  # noqa: BLE001 —— 召回基建异常必须降级而非失败
@@ -268,14 +314,27 @@ class CatalogSearchUseCase:
         return result
 
     async def _execute_hybrid(self, spec: ProductSearchSpec) -> dict:
+        # 两路共享同一份权威目录快照；过滤资格不依赖向量库的陈旧价格或库存。
+        products = await self._product_repo.list_all()
+        permitted = [p.product_id for p in products if self._reject_reason(p, spec) is None]
+        diagnostics = {"filter_mode": "adaptive_post_filter", "eligible_products": len(permitted),
+                       "lexical_weight": self._fusion_weights[0], "vector_weight": self._fusion_weights[1],
+                       "candidate_limit": max(self._recall_candidates, spec.top_k * 4)}
         async def lexical():
-            products = await self._product_repo.list_all()
             return bm25_rank(spec.normalized_query, products)
         async def vector():
             if self._embedder is None or self._vector_index is None:
                 return None
             try:
-                return await self._vector_recall(spec, adaptive=True)
+                embedding = await self._embedder.embed(spec.normalized_query)
+                filtered_search = getattr(self._vector_index, "search_filtered", None)
+                if filtered_search is not None:
+                    hits = await filtered_search(embedding, top_n=diagnostics["candidate_limit"], product_ids=permitted)
+                    if hits is not None:
+                        diagnostics["filter_mode"] = "authoritative_ids"
+                        by_id = {p.product_id: p for p in products}
+                        return [(h.score, by_id[h.product_id]) for h in hits if h.product_id in by_id]
+                return await self._vector_recall(spec, adaptive=True, embedding=embedding)
             except Exception as err:
                 logger.warning("Hybrid 向量侧不可用：%s", type(err).__name__)
                 return None
@@ -291,25 +350,36 @@ class CatalogSearchUseCase:
                 elif len(rejected) < _FILTERED_OUT_LIMIT:
                     rejected.append(self._to_rejected(product, spec, reason))
             return result
-        lexical_hits = eligible(lexical_hits)[:self._recall_top_n]
-        vector_eligible = eligible(vector_hits or [])[:self._recall_top_n]
-        # 进入精排前严格截断到候选预算 N，避免配置 N=24 却实际重排 40+ 文档。
-        scored = reciprocal_rank_fusion(
-            lexical_hits,
-            vector_eligible,
-            k=self._rrf_k,
-            weights=self._rrf_weights,
-        )[:self._recall_top_n]
-        candidate_product_ids = [product.product_id for _, product in scored]
+        lexical_hits = eligible(lexical_hits)[:diagnostics["candidate_limit"]]
+        vector_eligible = eligible(vector_hits or [])
+        # 单路故障时保留健康侧，不让零权重把降级结果清空。
+        weights = self._fusion_weights if vector_hits is not None else (1.0, 0.0)
+        scored = reciprocal_rank_fusion(lexical_hits, vector_eligible, weights=weights, k=self._rrf_k)
+        # 本地离线评测显式固定 N；常规链路保留新版完整融合池，阶段采集不改排序。
+        if self._include_retrieval_evidence:
+            scored = scored[:self._recall_top_n]
+        candidate_product_ids = [p.product_id for _, p in scored]
+        stages = None
+        if self._capture_retrieval_stages:
+            stages = {
+                "lexical_candidates": [p.product_id for _, p in lexical_hits],
+                "vector_candidates": [p.product_id for _, p in vector_eligible],
+                # 零权重的路不参与融合；向量故障时以实际降级权重为准。
+                "merged_candidates": list(dict.fromkeys(
+                    p.product_id for ranking, weight in zip((lexical_hits, vector_eligible), weights)
+                    if weight > 0 for _, p in ranking)),
+                "fused_candidates": [p.product_id for _, p in scored],
+            }
         strategy = "hybrid_only" if vector_hits is not None else "bm25"
         rerank_applied = False
         rerank_usage: dict[str, int] = {}
-        if scored and vector_hits is not None and self._reranker is not None:
+        if scored and self._reranker is not None:
             try:
                 scored, rerank_usage = await self._rerank(spec, scored)
-                strategy, rerank_applied = "hybrid_rerank", True
+                strategy, rerank_applied = ("hybrid_rerank" if vector_hits is not None else "bm25_rerank"), True
             except Exception as err:
-                logger.warning("Hybrid 重排不可用：%s", type(err).__name__)
+                diagnostics["reranker_error"] = getattr(err, "code", type(err).__name__)
+                logger.warning("Hybrid 重排不可用：%s", diagnostics["reranker_error"])
         deduped, seen = [], set()
         for score, product in scored:
             key = product.canonical_product_id or product.product_id
@@ -333,6 +403,10 @@ class CatalogSearchUseCase:
                 "rrf_k": self._rrf_k,
                 "rrf_weights": list(self._rrf_weights),
             }
+        if stages is not None:
+            stages["ranked_candidates"] = [p.product_id for _, p in deduped]
+            result["retrieval_stages"] = stages
+        result["retrieval_diagnostics"] = diagnostics
         return result
 
     def _reject_reason(self, product: Product, spec: ProductSearchSpec, primary=None) -> Optional[str]:
@@ -372,13 +446,13 @@ class CatalogSearchUseCase:
 
     # ---- 一阶段：向量召回 ----
 
-    async def _vector_recall(self, spec: ProductSearchSpec, adaptive: bool = False) -> list[tuple[float, Product]]:
-        with resource_operation(
-            "embedding.product_query", component="catalog_search",
-            context_scope=ContextScope.PRODUCT,
-        ):
-            embedding = await self._embedder.embed(spec.normalized_query)
-        top_n = max(32, self._recall_top_n, spec.top_k * 4) if adaptive else self._recall_top_n
+    async def _vector_recall(self, spec: ProductSearchSpec, adaptive: bool = False, embedding=None) -> list[tuple[float, Product]]:
+        shared_embedding = embedding is not None
+        if embedding is None:
+            with resource_operation("embedding.product_query", component="catalog_search", context_scope=ContextScope.PRODUCT):
+                embedding = await self._embedder.embed(spec.normalized_query)
+        # 普通双阶段保持原有候选预算；过滤不足才扩召回，混合检索使用共享池。
+        top_n = max(self._recall_candidates, spec.top_k*4) if adaptive and shared_embedding else self._recall_top_n
         while True:
             vector_hits = await self._vector_index.search(embedding, top_n=top_n)
             products = await self._product_repo.find_by_ids([hit.product_id for hit in vector_hits])
@@ -478,6 +552,14 @@ class CatalogSearchUseCase:
                     "price_major": sku.price.to_major_units(),
                     "currency": sku.price.currency,
                     "stock": sku.stock,
+                    "target_price": {
+                        "price_major": self._tariff.rates.convert(sku.price, spec.target_currency).to_major_units(),
+                        "currency": spec.target_currency,
+                        "amount_scope": "merchandise_only",
+                    },
+                    **({"landed_price": self._tariff.quote(subtotal=sku.price, category=product.category,
+                        ship_to=spec.ship_to, quantity=1, target_currency=spec.target_currency).to_dict()}
+                       if spec.ship_to and spec.ship_to in self._tariff.supported_destinations() else {}),
                 }
                 for sku in product.skus
             ],
@@ -492,8 +574,12 @@ class CatalogSearchUseCase:
             ships_to=list(product.ships_to),
             dimensions_cm=dict(product.dimensions_cm),
             updated_at=product.updated_at,
+            source_language=product.source_language,
+            source_locale=product.source_locale,
+            data_provenance=product.data_provenance,
+            price_kind=product.price_kind,
             default_sku_id=primary.sku_id,
-            image_url=media.image_url,
-            image_kind=media.image_kind,
-            image_alt=media.image_alt,
+            image_url=product.image_url or media.image_url,
+            image_kind="catalog_photo" if product.image_url else media.image_kind,
+            image_alt=product.title + "：ABO 来源商品图片" if product.image_url else media.image_alt,
         )

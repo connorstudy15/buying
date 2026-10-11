@@ -21,7 +21,7 @@ export default defineConfig({
     proxy: {
       "/commerce": {
         target: process.env.API_PROXY_TARGET ?? "http://127.0.0.1:8000",
-        changeOrigin: true,
+        changeOrigin: false,
         ws: true,
       },
       "/health": {

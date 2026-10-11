@@ -80,6 +80,88 @@ def test_bootstrap_never_auto_publishes_yaml_edits_and_versions_are_immutable(en
         changed.describe()
 
 
+async def test_tool_upgrade_stages_pair_without_reassigning_sessions_then_requires_release(env):
+    old_assignment = await env.registry.assign("old-session", "buyer")
+    new_registry = PromptRegistry(env.path, {"schema": 2, "source_files": {"tools.py": "updated"}})
+    stage = new_registry.prepare_upgrade(env.candidate_path, expected_source_version=env.baseline)
+    assert stage["published"] is False
+    assert env.registry.describe()["effective_version"]["version_id"] == env.baseline
+    assert (await env.registry.assign("old-session", "buyer")) == old_assignment
+    assert stage["baseline"]["version_id"] != env.baseline
+    before = env.registry._existing_assignment("old-session", "buyer")
+    env.registry, env.baseline, env.candidate = new_registry, stage["baseline"]["version_id"], stage["candidate"]["version_id"]
+    missing = env.tmp / "missing.json"
+    with pytest.raises(FileNotFoundError):
+        new_registry.publish(baseline=env.baseline, candidate=env.candidate, candidate_bps=10000,
+            experiment="upgrade", baseline_manifest=missing, candidate_manifest=missing)
+    baseline_report, candidate_report = reports(env)
+    with pytest.raises(PromptRegistryError, match="当前部署已变化"):
+        new_registry.publish(baseline=env.baseline, candidate=env.candidate, candidate_bps=10000,
+            experiment="upgrade", baseline_manifest=baseline_report, candidate_manifest=candidate_report, expected_deployment="stale")
+    new_registry.publish(baseline=env.baseline, candidate=env.candidate, candidate_bps=10000,
+        experiment="upgrade", baseline_manifest=baseline_report, candidate_manifest=candidate_report,
+        expected_deployment=stage["source_deployment"])
+    assert (await new_registry.assign("new-session", "buyer"))["version_id"] == env.candidate
+    with pytest.raises(PromptRegistryError, match="工具契约"):
+        await new_registry.assign("old-session", "buyer")
+    with sqlite3.connect(env.path) as connection:
+        assert connection.execute("SELECT version_id FROM prompt_assignments WHERE session_id='old-session'").fetchone()[0] == before["version_id"]
+
+
+def test_tool_contract_is_portable_but_real_source_edits_change_version(tmp_path):
+    from app.infrastructure.prompt_registry import toolset_contract
+    directory = tmp_path / "app/application/tools"
+    directory.mkdir(parents=True)
+    path = directory / "sample.py"
+    path.write_bytes(b"print(1)\n")
+    before = toolset_contract(tmp_path)
+    path.write_bytes(b"print(1)\r\n")
+    assert toolset_contract(tmp_path) == before
+    assert list(before["source_files"]) == ["app/application/tools/sample.py"]
+    path.write_bytes(b"print(2)\n")
+    assert toolset_contract(tmp_path) != before
+
+
+@pytest.mark.parametrize("tamper", [None, "code", "candidate", "source", "evidence"])
+def test_upgrade_bundle_checks_before_writes_and_applies_idempotently(env, monkeypatch, tamper):
+    from scripts import apply_prompt_upgrade as upgrade
+    monkeypatch.setattr(upgrade, "app_source_fingerprint", lambda: "c" * 64)
+    source = env.baseline
+    upgraded = PromptRegistry(env.path, {"schema": 2, "tools": {"new_tool": True}})
+    stage = upgraded.prepare_upgrade(env.candidate_path, expected_source_version=source)
+    env.registry = upgraded
+    env.baseline, env.candidate = stage["baseline"]["version_id"], stage["candidate"]["version_id"]
+    reports(env)  # Synthetic gate fixtures only; never production release evidence.
+    (env.tmp / "candidate.yml").write_bytes(env.candidate_path.read_bytes())
+    spec = {"source_version": source, "baseline": env.baseline, "candidate": env.candidate}
+    if tamper == "source":
+        spec["source_version"] = "p-stale"
+    if tamper == "candidate":
+        (env.tmp / "candidate.yml").write_bytes(env.baseline_path.read_bytes())
+    if tamper in ("code", "evidence"):
+        path = env.tmp / "candidate.manifest.json"
+        manifest = json.loads(path.read_text())
+        if tamper == "code":
+            manifest["service_runtime"].update(local_app_source_sha256="d" * 64, server_app_source_sha256="d" * 64)
+        else:
+            manifest["execution"]["gate"] = "BLOCKED"
+        path.write_text(json.dumps(manifest))
+    (env.tmp / "upgrade.json").write_text(json.dumps(spec))
+    before = env.path.read_bytes()
+    if tamper:
+        with pytest.raises(PromptRegistryError):
+            upgrade.apply_upgrade(env.path, upgraded.contract, env.tmp, check=True)
+        assert env.path.read_bytes() == before
+        return
+    assert upgrade.apply_upgrade(env.path, upgraded.contract, env.tmp, check=True)["status"] == "validated_read_only"
+    assert env.path.read_bytes() == before
+    result = upgrade.apply_upgrade(env.path, upgraded.contract, env.tmp)
+    assert result["status"] == "published"
+    assert upgraded.describe()["effective_version"]["version_id"] == env.candidate
+    again = upgrade.apply_upgrade(env.path, upgraded.contract, env.tmp)
+    assert again == {"status": "already_applied", "deployment_id": result["deployment_id"]}
+
+
 async def test_assignments_are_atomic_persistent_and_stable_per_buyer(env):
     publish(env)
     instances = [PromptRegistry(env.path, env.contract) for _ in range(2)]

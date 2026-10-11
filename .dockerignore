@@ -4,6 +4,12 @@
 !.env.example
 .git
 .venv
+.venv-eval
+.tmp
+.tmp-tests
+.runlogs
+beta-credentials
+cloud.env.template
 **/__pycache__
 **/*.pyc
 .pytest_cache
@@ -11,4 +17,7 @@ frontend/node_modules
 frontend/dist
 data/*
 !data/catalog-v1.jsonl
+!data/catalog-v2.jsonl
+!data/catalog-v3.jsonl
+!data/catalog-abo-demo.jsonl
 eval/verification

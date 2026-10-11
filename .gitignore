@@ -3,6 +3,11 @@
 __pycache__/
 *.pyc
 .env
+.env.*
+!.env.example
+beta-credentials/
+cloud.env.template
+.tmp-tests/
 .pytest_cache/
 # 本机运行日志、完整模型上下文快照和临时文件可能含敏感数据，禁止入库。
 .runlogs/
@@ -21,6 +26,10 @@ eval/icecat/cache/
 eval/icecat/private/
 
 # 课程资料与本地工具目录：只保留在本地，不入工程仓库
+!data/catalog-v3.jsonl
+!data/catalog-abo-demo.jsonl
+!data/catalog-abo-demo.report.json
+!data/catalog-v2.jsonl
 .baoyu-skills/
 .idea/
 .qoder/
@@ -50,3 +59,7 @@ node_modules/
 /commitlint.config.js
 /requirements.txt
 /repo-auth-service/
+
+# Local model request evidence: retain locally, publish only sanitized summaries.
+/eval/verification/integration-v35-v37-smoke-20261011-r5/
+/eval/verification/integration-v35-v37-smoke-20261011-r6/

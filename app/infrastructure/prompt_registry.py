@@ -40,8 +40,8 @@ def toolset_contract(root: Path, *, web_search_enabled: bool = False) -> dict:
     # Skill/策略白名单放入这个目录后自动参与契约，未安装时不会宣称有能力。
     capability_paths = [*sorted((root / "app/application/skills").rglob("*.py")),
                         *sorted((root / "app/application/strategies").rglob("*.py"))]
-    files = {str(path.relative_to(root)): sha256(path.read_bytes()) for path in [*paths, *capability_paths] if path.is_file()}
-    return {"schema": 1, "web_search_enabled": web_search_enabled, "source_files": files}
+    files = {path.relative_to(root).as_posix(): sha256(path.read_bytes().replace(b"\r\n", b"\n")) for path in [*paths, *capability_paths] if path.is_file()}
+    return {"schema": 2, "source_format": "posix-paths-lf-v1", "web_search_enabled": web_search_enabled, "source_files": files}
 
 
 def read_prompt(path: Path) -> tuple[dict, str]:
@@ -112,12 +112,34 @@ class PromptRegistry:
 
     def import_version(self, path: Path) -> dict:
         document, yaml_hash = read_prompt(path)
+        with self._transaction() as db:
+            return self._import_document(db, document, yaml_hash)
+
+    def _import_document(self, db, document: dict, yaml_hash: str) -> dict:
         payload = canonical({"prompts": document, "toolset": self.contract})
         version_id = "p-" + sha256(payload)
+        db.execute("INSERT OR IGNORE INTO prompt_versions VALUES (?,?,?,?,?)", (
+            version_id, payload, yaml_hash, self.contract_hash, datetime.now(timezone.utc).isoformat()))
+        return self._version(db, version_id)
+
+    def prepare_upgrade(self, path: Path, *, expected_source_version: str) -> dict:
+        """Import paired versions for a tool upgrade without changing deployment or sessions."""
+        document, yaml_hash = read_prompt(path)
         with self._transaction() as db:
-            db.execute("INSERT OR IGNORE INTO prompt_versions VALUES (?,?,?,?,?)", (
-                version_id, payload, yaml_hash, self.contract_hash, datetime.now(timezone.utc).isoformat()))
-            return self._version(db, version_id)
+            current = db.execute("SELECT * FROM prompt_deployments ORDER BY sequence DESC LIMIT 1").fetchone()
+            if current is None:
+                raise PromptRegistryError("工具升级需要已有部署，不能伪装首次初始化")
+            if current["candidate"] and 0 < current["candidate_bps"] < 10000:
+                raise PromptRegistryError("请先结束现有灰度实验，再准备工具升级")
+            source_id = current["candidate"] if current["candidate"] and current["candidate_bps"] == 10000 else current["baseline"]
+            if source_id != expected_source_version:
+                raise PromptRegistryError("当前 Prompt 版本与升级来源不一致，拒绝过期升级")
+            source = self._version(db, source_id, check_contract=False)
+            baseline = self._import_document(db, source["document"], source["yaml_sha256"])
+            candidate = self._import_document(db, document, yaml_hash)
+            return {"source_version": source_id, "source_deployment": current["deployment_id"],
+                "baseline": self._public_version(baseline), "candidate": self._public_version(candidate),
+                "published": False, "existing_assignments_changed": False}
 
     @staticmethod
     def _public_version(version: dict) -> dict:
@@ -155,6 +177,32 @@ class PromptRegistry:
     async def assign(self, session_id: str, buyer_id: str) -> dict:
         return await asyncio.to_thread(self._assign, session_id, buyer_id)
 
+    async def existing_assignment(self, session_id: str, buyer_id: str) -> dict | None:
+        """只读已有分配，供上下文展示使用；不创建库、版本或会话分组。"""
+        return await asyncio.to_thread(self._existing_assignment, session_id, buyer_id)
+
+    def _existing_assignment(self, session_id: str, buyer_id: str) -> dict | None:
+        if not session_id or not buyer_id:
+            raise PromptRegistryError("读取版本分组需要明确会话和买家")
+        if not self.path.is_file():
+            return None
+        connection = sqlite3.connect(self.path.resolve().as_uri() + "?mode=ro", uri=True, timeout=30)
+        connection.row_factory = sqlite3.Row
+        try:
+            connection.execute("PRAGMA query_only=ON")
+            connection.execute("BEGIN")
+            assigned = connection.execute("SELECT * FROM prompt_assignments WHERE session_id=?", (session_id,)).fetchone()
+            if assigned is None:
+                return None
+            if assigned["buyer_id"] != buyer_id:
+                raise PromptRegistryError("会话版本分组属于其他买家")
+            version = self._version(connection, assigned["version_id"])
+            if self.pinned_version and self.pinned_version != version["version_id"]:
+                raise PromptRegistryError("评测固定版本与旧会话分组不一致，请使用新的隔离会话")
+            return {**dict(assigned), **version}
+        finally:
+            connection.close()
+
     def _assign(self, session_id, buyer_id):
         if not session_id or not buyer_id:
             raise PromptRegistryError("版本分组需要明确会话和买家")
@@ -181,7 +229,7 @@ class PromptRegistry:
             return {**dict(assigned), **version}
 
     def publish(self, *, baseline: str, candidate: str, candidate_bps: int, experiment: str,
-                baseline_manifest: Path, candidate_manifest: Path) -> dict:
+                baseline_manifest: Path, candidate_manifest: Path, expected_deployment: str | None = None) -> dict:
         from app.infrastructure.prompt_release import compare_release_manifests
         if type(candidate_bps) is not int or not 0 <= candidate_bps <= 10000 or not experiment.strip():
             raise PromptRegistryError("候选流量需为 0..10000 基点且 experiment 不为空")
@@ -193,11 +241,14 @@ class PromptRegistry:
                 if evidence[label]["toolset_sha256"] != version["toolset_sha256"]:
                     raise PromptRegistryError("评测报告工具契约未对应注册表中的实际版本")
             current = db.execute("SELECT * FROM prompt_deployments ORDER BY sequence DESC LIMIT 1").fetchone()
+            if expected_deployment is not None and (current is None or current["deployment_id"] != expected_deployment):
+                raise PromptRegistryError("当前部署已变化，请重新准备并审核升级")
             compatible_baseline = current is not None and baseline in {current["baseline"], current["candidate"]}
             if current is not None and not compatible_baseline:
                 # 工具升级后允许以“正文完全相同、重新绑定新工具”的版本作成对基线。
                 # 新基线和候选仍须在当前工具契约下分别跑完整 release，不能沿用旧报告。
-                current_text = self._version(db, current["baseline"], check_contract=False)["document"]
+                effective = current["candidate"] if current["candidate"] and current["candidate_bps"] == 10000 else current["baseline"]
+                current_text = self._version(db, effective, check_contract=False)["document"]
                 compatible_baseline = self._version(db, baseline)["document"] == current_text
             if not compatible_baseline:
                 raise PromptRegistryError("基线不是当前部署的版本，拒绝过期发布")

@@ -1,0 +1,46 @@
+..F..................................................................... [ 37%]
+........................................................FF.....F........ [ 74%]
+..................................................                       [100%]
+================================== FAILURES ===================================
+________________ test_secret_encryption_ownership_and_restart _________________
+tests\test_model_registry.py:85: in test_secret_encryption_ownership_and_restart
+    assert os.stat(settings.data_dir / ".secrets/model_registry.key").st_mode & 0o777 == 0o600
+E   AssertionError: assert (33206 & 511) == 384
+E    +  where 33206 = os.stat_result(st_mode=33206, st_ino=281474977178249, st_dev=9719010725419858335, st_nlink=1, st_uid=0, st_gid=0, st_size=44, st_atime=1791669745, st_mtime=1791669745, st_ctime=1791669745).st_mode
+E    +    where os.stat_result(st_mode=33206, st_ino=281474977178249, st_dev=9719010725419858335, st_nlink=1, st_uid=0, st_gid=0, st_size=44, st_atime=1791669745, st_mtime=1791669745, st_ctime=1791669745) = <built-in function stat>((WindowsPath('D:/globex-agent-main/.tmp-tests/upstream-feature-focused-r3/test_secret_encryption_ownersh0') / '.secrets/model_registry.key'))
+E    +      where <built-in function stat> = os.stat
+E    +      and   WindowsPath('D:/globex-agent-main/.tmp-tests/upstream-feature-focused-r3/test_secret_encryption_ownersh0') = namespace(data_dir=WindowsPath('D:/globex-agent-main/.tmp-tests/upstream-feature-focused-r3/test_secret_encryption_own...llm_fallback_model='test-fallback', llm_fallback_context_size=32000, model_master_key='', model_allowed_local_hosts=()).data_dir
+_________________ test_http_200_service_error_is_not_success __________________
+tests\test_reranker_client.py:220: in test_http_200_service_error_is_not_success
+    with pytest.raises(RuntimeError, match="模型未注册"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: Regex pattern did not match.
+E     Expected regex: '模型未注册'
+E     Actual message: 'reranker 服务错误，请核对模型和配置'
+_____ test_identical_documents_are_scored_once_but_all_positions_restored _____
+tests\test_reranker_client.py:249: in test_identical_documents_are_scored_once_but_all_positions_restored
+    scores = await HttpReranker(load_settings()).rerank(
+app\infrastructure\rerank\http_reranker.py:58: in rerank
+    scores, usage = await self.rerank_with_metadata(query, documents)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app\infrastructure\rerank\http_reranker.py:155: in rerank_with_metadata
+    scores = validate_scores(results, len(documents))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app\infrastructure\rerank\http_reranker.py:172: in validate_scores
+    raise ValueError("精排结果数量不匹配")
+E   ValueError: 精排结果数量不匹配
+_____________ test_default_vector_path_refills_after_hard_filters _____________
+tests\test_hybrid_retrieval.py:71: in test_default_vector_path_refills_after_hard_filters
+    assert [h["product_id"] for h in result["hits"]] == [selected.product_id]
+E   AssertionError: assert [] == ['P1032']
+E     
+E     Right contains one more item: 'P1032'
+E     Use -v to get more diff
+------------------------------ Captured log call ------------------------------
+WARNING  app.application.usecases.catalog_search:catalog_search.py:206 rerank 不可用，按向量分排序：Reranker 未配置
+=========================== short test summary info ===========================
+FAILED tests/test_model_registry.py::test_secret_encryption_ownership_and_restart
+FAILED tests/test_reranker_client.py::test_http_200_service_error_is_not_success
+FAILED tests/test_reranker_client.py::test_identical_documents_are_scored_once_but_all_positions_restored
+FAILED tests/test_hybrid_retrieval.py::test_default_vector_path_refills_after_hard_filters
+4 failed, 190 passed in 29.05s

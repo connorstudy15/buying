@@ -55,7 +55,8 @@ export interface ProductCard {
   updated_at?: string;
   default_sku_id?: string;
   image_url?: string | null;
-  image_kind?: "illustration" | "placeholder";
+  image_kind?: "illustration" | "placeholder" | "catalog_photo";
+  price_kind?: "demo";
   image_alt?: string;
   source_platform?: string;
   source_price_major?: number;
@@ -76,8 +77,27 @@ export interface DiagnosticEvent {
   id: string;
   type: string;
   label: string;
-  timestamp: number;
+  timestamp: number | null;
   detail?: string;
+}
+
+/** 服务端投影的可展示执行过程，原始工具参数不进入界面状态。 */
+export interface ExecutionActivity {
+  id: string;
+  runId: string;
+  kind: "tool" | "thinking";
+  toolCallId?: string;
+  toolName?: string;
+  label: string;
+  status: "preparing" | "running" | "waiting" | "completed" | "error" | "cancelled" | "interrupted" | "approved";
+  sequence: number;
+  startedAt: number | null;
+  finishedAt: number | null;
+  inputSummary?: string;
+  resultSummary?: string;
+  content?: string;
+  truncated?: boolean;
+  source?: string;
 }
 
 export interface SessionSummary {
@@ -85,11 +105,15 @@ export interface SessionSummary {
   title: string;
   updatedAt: number;
   source?: "server" | "local";
+  origin?: "automation";
 }
 
 export interface ToolApproval { id: string; tool: string; label: string; arguments: string | Record<string, unknown> }
 
 export interface CommerceSnapshot {
+  activities?: ExecutionActivity[];
+  productHistory?: {runId: string; updatedAt: number; products: ProductCard[]}[];
+  shoppingForm?: unknown;
   toolApprovals?: ToolApproval[];
   skills: PublishedSkill[];
   skillsStatus: "loading" | "ready" | "error";

@@ -1,0 +1,13 @@
+{"case_id": "h1-dev-cost", "strategy": "current", "repetition": 0, "passed": true, "error": null}
+{"case_id": "h1-dev-cost", "strategy": "candidate", "repetition": 0, "passed": true, "error": null}
+{"case_id": "agent-sku", "strategy": "current", "repetition": 0, "passed": true, "error": null}
+{"case_id": "agent-sku", "strategy": "candidate", "repetition": 0, "passed": true, "error": null}
+{"case_id": "agent-approval", "strategy": "current", "repetition": 0, "passed": true, "error": null}
+{"case_id": "agent-approval", "strategy": "candidate", "repetition": 0, "passed": true, "error": null}
+{"case_id": "h1-dev-sku", "strategy": "current", "repetition": 0, "passed": true, "error": null}
+{"case_id": "h1-dev-sku", "strategy": "candidate", "repetition": 0, "passed": true, "error": null}
+{"case_id": "h1-dev-budget", "strategy": "current", "repetition": 0, "passed": true, "error": null}
+{"case_id": "h1-dev-budget", "strategy": "candidate", "repetition": 0, "passed": true, "error": null}
+{"case_id": "h1-dev-stock", "strategy": "current", "repetition": 0, "passed": true, "error": null}
+{"case_id": "h1-dev-stock", "strategy": "candidate", "repetition": 0, "passed": true, "error": null}
+HTML: D:\globex-agent-main\eval\verification\integration-v35-v37-smoke-20261011-r6\report.html

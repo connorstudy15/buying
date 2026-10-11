@@ -1,0 +1,23 @@
+{
+  "profile": "smoke",
+  "source_stable": true,
+  "source_sha256": "f02bf698cf64e18950b96e174540d5ebd1bb2e98226cfda26e9fa214509be6ae",
+  "contracts_passed": 857,
+  "matrix_complete": true,
+  "failure_count": 0,
+  "strategies": {
+    "current": {
+      "runs": 6,
+      "passed": 6
+    },
+    "candidate": {
+      "runs": 6,
+      "passed": 6
+    }
+  },
+  "verify_passed": true,
+  "cost_benefit_status": {
+    "candidate": "BLOCKED"
+  },
+  "raw_evidence": "Retained locally; full model payloads not included in this summary."
+}

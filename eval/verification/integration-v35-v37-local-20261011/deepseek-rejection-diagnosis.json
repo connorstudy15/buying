@@ -1,0 +1,11 @@
+{
+  "provider": "DeepSeek official Chat Completions",
+  "http_status": 400,
+  "error_type": "invalid_request_error",
+  "safe_message": "Thinking mode does not support this tool_choice",
+  "authorization": "User explicitly allowed all synthetic test requests needed for this repair on 2026-10-11",
+  "fix": "Disable thinking for required/named tool calls and for current-turn assistant tool records without reasoning_content, only at exact api.deepseek.com host; reset to configured mode on next user turn; preserve tool choice and messages.",
+  "official_reference": "https://api-docs.deepseek.com/api/create-chat-completion/",
+  "followup_http_status": 400,
+  "followup_safe_message": "The reasoning_content in the thinking mode must be passed back to the API."
+}

@@ -1,0 +1,66 @@
+x-runtime: &runtime
+  env_file:
+    - ../.env
+  environment: &runtime-environment
+    DATA_DIR: /app/data
+    DATABASE_URL: sqlite+aiosqlite:////app/data/globex.db
+    REDIS_URL: redis://redis:6379/0
+    QDRANT_URL: http://qdrant:6333
+    QUEUE_ENABLED: "1"
+    CORS_ORIGINS: http://localhost:5173,http://127.0.0.1:5173
+  volumes:
+    - app-data:/app/data
+  depends_on:
+    redis:
+      condition: service_healthy
+    qdrant:
+      condition: service_started
+  restart: unless-stopped
+
+services:
+  redis:
+    image: redis:7-alpine
+    pull_policy: never
+    command: ["redis-server", "--appendonly", "yes", "--appendfsync", "always"]
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+  qdrant:
+    image: qdrant/qdrant:v1.19.0
+    pull_policy: never
+    volumes:
+      - qdrant-data:/qdrant/storage
+    restart: unless-stopped
+  app:
+    <<: *runtime
+    image: globex-backend:beta
+    build:
+      context: ..
+      dockerfile: Dockerfile.cloud
+  worker:
+    <<: *runtime
+    image: globex-backend:beta
+    command: ["python", "-m", "app.worker"]
+    environment:
+      <<: *runtime-environment
+      AUTOMATION_WORKER_MODE: "off"
+  frontend:
+    image: globex-frontend:beta
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile.beta
+    ports:
+      - "127.0.0.1:5173:80"
+    depends_on:
+      - app
+    restart: unless-stopped
+
+volumes:
+  redis-data:
+  qdrant-data:
+  app-data:
