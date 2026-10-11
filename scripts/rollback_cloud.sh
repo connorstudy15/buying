@@ -31,7 +31,14 @@ for component in app redis qdrant; do
     'import sys,tarfile; t=tarfile.open("/backup/globex_"+sys.argv[1]+"-data.tar.gz"); t.extractall("/restore",filter="data"); t.close()' "$component"
   printf '  %s-data:\n    name: %s\n' "$component" "$volume" >> "$override"
 done
-old=(sudo docker compose -p globex -f "$backup/docker/docker-compose.cloud.yaml" -f "$override")
+old=(sudo docker compose -p globex -f "$backup/docker/docker-compose.cloud.yaml")
+if [[ -f "$backup/compose-overrides.txt" ]]; then
+  while IFS= read -r name; do
+    [[ "$name" =~ ^active-[0-9]+\.yaml$ ]] || exit 1
+    old+=(-f "$backup/docker/$name")
+  done < "$backup/compose-overrides.txt"
+fi
+old+=(-f "$override")
 "${old[@]}" config --quiet
 "${old[@]}" stop
 "${old[@]}" up -d --no-build --pull never

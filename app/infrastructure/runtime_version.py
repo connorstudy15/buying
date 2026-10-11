@@ -14,6 +14,6 @@ def app_source_fingerprint() -> str:
         if path.is_file() and path.suffix in {".py", ".yml", ".yaml"}:
             digest.update(path.relative_to(root).as_posix().encode())
             digest.update(b"\0")
-            digest.update(path.read_bytes())
+            digest.update(path.read_bytes().replace(b"\r\n", b"\n"))
             digest.update(b"\0")
     return digest.hexdigest()

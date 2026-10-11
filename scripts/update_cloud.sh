@@ -15,14 +15,30 @@ new_config="$release/docker/docker-compose.cloud.yaml"
 version=$(cat "$release/RELEASE_COMMIT")
 [[ "$version" =~ ^[0-9a-f]{40}$ ]] || { echo 'Invalid release commit'; exit 1; }
 [[ "$release" != "$live" ]] || { echo 'Extract into a separate release directory'; exit 1; }
-test -f "$old_config"
-test -f "$live/.env"
 sudo -v
-old=(sudo docker compose -p globex -f "$old_config")
+# Compose records every active config, including the rollback volume override.
+config_list=$(sudo docker inspect --format '{{index .Config.Labels "com.docker.compose.project.config_files"}}' globex-app-1)
+IFS=',' read -r -a active_configs <<< "$config_list"
+(( ${#active_configs[@]} > 0 )) || { echo 'Cannot discover active Compose configuration'; exit 1; }
+old=(sudo docker compose -p globex)
+for config in "${active_configs[@]}"; do
+  config=$(realpath -- "$config")
+  case "$config" in /home/admin/globex/*|/home/admin/globex-releases/*|/home/admin/globex-backups/*) ;; *) echo 'Unexpected active config path'; exit 1 ;; esac
+  test -f "$config"
+  old+=(-f "$config")
+done
+old_config=${active_configs[0]}
+active_env="$(dirname -- "$(dirname -- "$old_config")")/.env"
+test -f "$active_env"
 "${old[@]}" config --quiet
-current_app_volume=$(sudo docker inspect --format '{{range .Mounts}}{{if eq .Destination "/app/data"}}{{.Name}}{{end}}{{end}}' globex-app-1)
-[[ "$current_app_volume" == globex_app-data ]] || { echo 'Active data volume differs from the original deployment. Resolve the active Compose configuration before updating; no services were stopped.'; exit 1; }
-for volume in globex_app-data globex_redis-data globex_qdrant-data; do
+declare -A active_volumes
+for component in app redis qdrant; do
+  target=/app/data
+  [[ "$component" != redis ]] || target=/data
+  [[ "$component" != qdrant ]] || target=/qdrant/storage
+  volume=$(sudo docker inspect --format "{{range .Mounts}}{{if eq .Destination \"$target\"}}{{if eq .Type \"volume\"}}{{.Name}}{{end}}{{end}}{{end}}" "globex-$component-1")
+  [[ "$volume" =~ ^[a-zA-Z0-9][a-zA-Z0-9_.-]*$ ]] || { echo "Missing named volume for $component"; exit 1; }
+  active_volumes[$component]=$volume
   sudo docker volume inspect "$volume" >/dev/null
 done
 stamp=$(date -u +%Y%m%dT%H%M%SZ)
@@ -35,7 +51,7 @@ frontend_id=$(sudo docker inspect --format '{{.Image}}' globex-frontend-1)
 sudo docker tag "$app_id" "globex-backend:rollback-$stamp"
 sudo docker tag "$worker_id" "globex-worker:rollback-$stamp"
 sudo docker tag "$frontend_id" "globex-frontend:rollback-$stamp"
-cp "$live/.env" "$release/.env"
+cp "$active_env" "$release/.env"
 chmod 600 "$release/.env"
 cat > "$release/docker/release.override.yaml" <<EOF
 services:
@@ -48,19 +64,39 @@ $catalog_env
   frontend:
     image: globex-frontend:$version
 EOF
+printf '\nvolumes:\n' >> "$release/docker/release.override.yaml"
+for component in app redis qdrant; do
+  printf '  %s-data:\n    name: %s\n    external: true\n' "$component" "${active_volumes[$component]}" >> "$release/docker/release.override.yaml"
+done
 new=(sudo docker compose -p globex -f "$new_config" -f "$release/docker/release.override.yaml")
 "${new[@]}" config --quiet
 echo '[1/5] Building versioned images; current service remains running.'
 sudo docker build -f "$release/Dockerfile.cloud" -t "globex-backend:$version" "$release"
 sudo docker build -f "$release/frontend/Dockerfile.beta" -t "globex-frontend:$version" "$release/frontend"
-echo 'Checking active Prompt compatibility before stopping any service.'
-sudo docker run --rm --network none --entrypoint python \
-  --env-file "$release/.env" -e DATA_DIR=/app/data \
-  --mount 'type=volume,source=globex_app-data,target=/app/data,readonly' \
-  "globex-backend:$version" -m scripts.check_prompt_compatibility
+echo 'Validating Prompt upgrade evidence before stopping any service.'
+prompt_upgrade=0
+if [[ -f "$release/prompt-upgrade/upgrade.json" ]]; then
+  prompt_upgrade=1
+  sudo docker run --rm --network none --entrypoint python \
+    --env-file "$release/.env" -e DATA_DIR=/app/data \
+    --mount "type=volume,source=${active_volumes[app]},target=/app/data,readonly" \
+    --mount "type=bind,source=$release/prompt-upgrade,target=/upgrade,readonly" \
+    "globex-backend:$version" -m scripts.apply_prompt_upgrade --bundle /upgrade --check
+else
+  sudo docker run --rm --network none --entrypoint python \
+    --env-file "$release/.env" -e DATA_DIR=/app/data \
+    --mount "type=volume,source=${active_volumes[app]},target=/app/data,readonly" \
+    "globex-backend:$version" -m scripts.check_prompt_compatibility
+fi
 mkdir -p "$backup/docker"
 cp "$old_config" "$backup/docker/docker-compose.cloud.yaml"
-cp "$live/.env" "$backup/.env"
+: > "$backup/compose-overrides.txt"
+for (( index=1; index<${#active_configs[@]}; index++ )); do
+  name="active-$index.yaml"
+  cp "${active_configs[$index]}" "$backup/docker/$name"
+  printf '%s\n' "$name" >> "$backup/compose-overrides.txt"
+done
+cp "$active_env" "$backup/.env"
 cat > "$backup/rollback.override.yaml" <<EOF
 services:
   app:
@@ -91,13 +127,23 @@ trap on_exit EXIT
 echo '[2/5] Stopping services for a consistent backup of all three volumes.'
 stopped=1
 "${old[@]}" stop
-for volume in globex_app-data globex_redis-data globex_qdrant-data; do
+for component in app redis qdrant; do
+  volume=${active_volumes[$component]}
   sudo docker run --rm --network none --entrypoint python \
     --mount "type=volume,source=$volume,target=/state,readonly" \
     --mount "type=bind,source=$backup,target=/backup" \
-    "$app_id" -c 'import os,sys,tarfile,shutil; p="/backup/"+sys.argv[1]+".tar.gz"; t=tarfile.open(p,"w:gz"); t.add("/state",arcname="."); t.close(); t=tarfile.open(p); sink=open(os.devnull,"wb"); [shutil.copyfileobj(t.extractfile(m),sink,1024*1024) for m in t if m.isfile()]; sink.close(); t.close(); os.chmod(p,0o600)' "$volume"
+    "$app_id" -c 'import os,sys,tarfile,shutil; p="/backup/"+sys.argv[1]+".tar.gz"; t=tarfile.open(p,"w:gz"); t.add("/state",arcname="."); t.close(); t=tarfile.open(p); sink=open(os.devnull,"wb"); [shutil.copyfileobj(t.extractfile(m),sink,1024*1024) for m in t if m.isfile()]; sink.close(); t.close(); os.chmod(p,0o600)' "globex_${component}-data"
 done
 sudo sha256sum "$backup"/*.tar.gz > "$backup/SHA256SUMS"
+if (( prompt_upgrade == 1 )); then
+  # No old process may write while the approved deployment is appended.
+  starting_new=1
+  sudo docker run --rm --network none --entrypoint python \
+    --env-file "$release/.env" -e DATA_DIR=/app/data \
+    --mount "type=volume,source=${active_volumes[app]},target=/app/data" \
+    --mount "type=bind,source=$release/prompt-upgrade,target=/upgrade,readonly" \
+    "globex-backend:$version" -m scripts.apply_prompt_upgrade --bundle /upgrade
+fi
 echo '[3/5] Backup complete. Starting the new release with the existing volumes.'
 starting_new=1
 "${new[@]}" up -d --no-build --pull never
