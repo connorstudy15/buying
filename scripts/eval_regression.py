@@ -20,6 +20,7 @@ import argparse
 import asyncio
 import json
 import os
+import re
 import sys
 import uuid
 from datetime import datetime
@@ -36,6 +37,7 @@ from scripts.eval.evidence import evaluate_trace_assertions  # noqa: E402
 from scripts.eval.metrics_evidence import collect_case_metrics, release_metrics
 from time import perf_counter
 from scripts.eval.http_actions import BuyerAPIClient, capture_confirmations, execute_confirmation_action, validate_http_actions  # noqa: E402
+from scripts.eval.memory_actions import agui_turn, execute_memory_action, validate_memory_actions
 from scripts.eval.run_manifest import (  # noqa: E402
     SPLITS, build_manifest, finish_manifest, manifest_report, public_endpoint, select_cases, write_manifest,
 )
@@ -122,6 +124,34 @@ def build_tool_fact_evidence(events: list[dict]) -> str:
     return json.dumps(results, ensure_ascii=False, sort_keys=True)
 
 
+def focus_ground_truth(ground_truth: str, evidence: str) -> str:
+    """Keep complete rows for referenced products, including unknown-ID evidence.
+
+    A million-character catalogue distracts the Judge from the actual records.
+    This only narrows context; no rubric or tool-result facts are removed.
+    """
+    referenced = set(re.findall(r"\bP\d+\b", evidence))
+    rows = ground_truth.splitlines()
+    known = set()
+    for line in rows:
+        match = re.match(r"\| (P\d+) \|", line)
+        if match:
+            known.add(match[1])
+            columns = line.split("|")
+            # Also ground replies which cite a title without displaying its ID.
+            if len(columns) > 3 and columns[2].strip() and columns[2].strip() in evidence:
+                referenced.add(match[1])
+    focused = []
+    for line in rows:
+        match = re.match(r"\| (P\d+) \|", line)
+        if match is None or match[1] in referenced:
+            focused.append(line)
+    missing = sorted(referenced - known)
+    if missing:
+        focused.append("本轮引用但商品库不存在的商品 ID：" + ", ".join(missing))
+    return "\n".join(focused)
+
+
 async def call_judge(
     client: httpx.AsyncClient,
     transcript: str,
@@ -131,6 +161,7 @@ async def call_judge(
     tool_fact_evidence: str = "[]",
 ) -> dict:
     prior_block = f"## 会话前置事实\n{prior_context}\n\n" if prior_context else ""
+    ground_truth = focus_ground_truth(ground_truth, transcript + "\n" + tool_fact_evidence + "\n" + prior_context)
     payload = {
         # judge 可独立指定模型：主模型切新版/被限流时，评分基准不跟着飘
         "model": os.environ.get("EVAL_JUDGE_MODEL") or os.environ.get("LLM_MODEL", "qwen-plus"),
@@ -354,6 +385,7 @@ class CaseExecutionError(RuntimeError):
 
 async def run_case(client: httpx.AsyncClient, case: dict, ground_truth: str) -> dict:
     actions = validate_http_actions(case)
+    validate_memory_actions(case)
     session_id = f"eval-{case['id']}-{uuid.uuid4().hex[:6]}"
     buyer_id = f"{case.get('buyer_id') or 'eval-buyer-' + case['id']}-{_RUN_NAMESPACE}"
     token = None
@@ -370,6 +402,7 @@ async def run_case(client: httpx.AsyncClient, case: dict, ground_truth: str) -> 
 
 
 async def _run_case_with_events(client, judge_client, case, ground_truth, session_id, buyer_id, transcript_lines, collector, actions):
+    memory_actions = validate_memory_actions(case)
     inspect_confirmations = bool(actions) or any(assertion.get("kind") == "no_orders_before_http_confirmation"
                                                 for assertions in (case.get("deterministic") or {}).values() for assertion in assertions)
     last_order_id = None
@@ -380,20 +413,27 @@ async def _run_case_with_events(client, judge_client, case, ground_truth, sessio
                 if last_order_id is None:
                     raise ValueError("后续查询需要已真实确认的订单号，不能由模型猜测")
                 query = query.replace("{{confirmed_order_id}}", last_order_id)
-            response = await client.post(
-                f"{BASE_URL}/commerce/intents",
-                json={
-                    "shopping_session_id": session_id,
-                    "buyer_id": buyer_id,
-                    "locale": "zh-CN",
-                    "currency": "CNY",
-                    "raw_query": query,
-                },
-                timeout=600,
-            )
-            response.raise_for_status()
-            final_text = response.json()["final_text"]
+            if memory_actions:
+                final_text, memory_state = await agui_turn(client, BASE_URL, buyer_id, session_id, query)
+            else:
+                response = await client.post(
+                    f"{BASE_URL}/commerce/intents",
+                    json={
+                        "shopping_session_id": session_id,
+                        "buyer_id": buyer_id,
+                        "locale": "zh-CN",
+                        "currency": "CNY",
+                        "raw_query": query,
+                    },
+                    timeout=600,
+                )
+                response.raise_for_status()
+                final_text = response.json()["final_text"]
             transcript_lines.append(f"[买家] {query}\n[Agent] {final_text}")
+            for action in memory_actions:
+                if action["after_turn"] == turn_index:
+                    resumed = await execute_memory_action(client, BASE_URL, buyer_id, session_id, action, memory_state, collector.events)
+                    transcript_lines.append(f"[评测模拟用户页面点击] 记忆变更 approved={action['approved']}\n[Agent] {resumed}")
             # 将真实事件按对话轮次切开，才能程序证明“确认前”没有调用下单工具。
             await asyncio.sleep(0.05)
             collector.events.append({"type": "eval.turn.complete", "payload": {"turn_index": turn_index}})
@@ -412,7 +452,7 @@ async def _run_case_with_events(client, judge_client, case, ground_truth, sessio
                     transcript_lines.append(f"[评测模拟用户页面点击] action={action['action']}，approved={action['approved']}；服务端决议={resolved['confirmation']['status']}，意向单状态={(resolved.get('order') or {}).get('status', '未创建')}。")
                     confirmations = await capture_confirmations(client, BASE_URL, buyer_id, session_id, collector.events, turn_index)
 
-    case_metrics = collect_case_metrics(collector.events, expected_turns=len(case["queries"]), elapsed_ms=(perf_counter() - case_started) * 1000)
+    case_metrics = collect_case_metrics(collector.events, expected_turns=len(case["queries"]) + len(memory_actions), elapsed_ms=(perf_counter() - case_started) * 1000)
     transcript = "\n\n".join(transcript_lines)
     judge_rubric = build_judge_rubric(case["rubric"], case.get("deterministic"))
     if any(judge_rubric[level] for level in ("p0", "p1", "p2")):

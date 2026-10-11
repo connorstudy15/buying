@@ -84,6 +84,7 @@ def build_category_insight_tool(
                     "retrieval_mode": "keyword_fallback",
                     "degraded_reason": str(err),
                     "policy_fact_statuses": [insight["policy_fact_status"] for insight in fallback],
+                    "insights": fallback,
                 })
                 return ToolChunk(
                     content=[TextBlock(type="text", text=json.dumps({
@@ -142,6 +143,7 @@ def build_category_insight_tool(
             {
                 "tool": "category_insight_tool", "hit_count": len(insights), "abstained": False,
                 "policy_fact_statuses": [insight["policy_fact_status"] for insight in insights],
+                "insights": insights,
                 "retrieval_mode": outcome.trace.mode,
                 "query_variant_count": len(outcome.trace.variants) or 1,
                 "candidate_count": len(outcome.trace.candidates),
