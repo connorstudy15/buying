@@ -65,3 +65,46 @@ def correct_price_currencies(text: str, result: dict | None) -> tuple[str, int]:
         end = stop
     parts.append(text[end:])
     return "".join(parts), count
+
+
+def correct_landed_price_comparisons(text: str, result: dict | None) -> tuple[str, int]:
+    """Correct a scoped batch extremum only when every comparable quote is known."""
+    cards = (result or {}).get("hits", [])
+    if len(cards) < 2:
+        return text, 0
+    quotes = {}
+    for card in cards:
+        quote = card.get("landed_price") or {}
+        try:
+            amount = Decimal(str(quote["landed_total_major"]))
+            currency, destination = quote["currency"], quote["ship_to"]
+        except (KeyError, InvalidOperation):
+            return text, 0
+        if not amount.is_finite() or not currency or not destination:
+            return text, 0
+        quotes[card["product_id"]] = (amount, currency, destination)
+    if len(quotes) != len(cards) or len({value[1:] for value in quotes.values()}) != 1:
+        return text, 0
+    counts = {str(len(cards)), {2: "两", 3: "三", 4: "四", 5: "五", 6: "六", 7: "七", 8: "八", 9: "九", 10: "十"}.get(len(cards), "")}
+    claims = re.compile(r"(?P<count>[一二两三四五六七八九十\d]+)款中到手价最(?P<kind>低|高)")
+    identifiers = list(_PRODUCT.finditer(text))
+    parts, end, corrections = [], 0, 0
+    for index, identifier in enumerate(identifiers):
+        stop = identifiers[index + 1].start() if index + 1 < len(identifiers) else len(text)
+        parts.append(text[end:identifier.end()])
+        segment = text[identifier.end():stop]
+        current = quotes.get(identifier.group().split("-S")[0])
+        def replace(match):
+            nonlocal corrections
+            if current is None or match["count"] not in counts:
+                return match.group()
+            extreme = (min if match["kind"] == "低" else max)(value[0] for value in quotes.values())
+            winners = [product for product, value in quotes.items() if value[0] == extreme]
+            if current[0] == extreme or len(winners) != 1:
+                return match.group()
+            corrections += 1
+            return f"到手价 {current[1]}{current[0]:.2f}（本轮最{match['kind']}为 {winners[0]}：{current[1]}{extreme:.2f}）"
+        parts.append(claims.sub(replace, segment))
+        end = stop
+    parts.append(text[end:])
+    return "".join(parts), corrections
