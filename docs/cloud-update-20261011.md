@@ -5,17 +5,23 @@
 
 ## 执行
 
-把 `globex-update-20261011.tar.gz` 上传至 `/home/admin/`，然后在服务器终端执行：
+把本次生成的 `globex-update-abo-20261011.tar.gz` 上传至 `/home/admin/`，然后在服务器终端执行。
+本次使用独立的 `20261011-repair` 目录，避免覆盖之前失败的更新目录：
 
 ```bash
-mkdir -p /home/admin/globex-releases/20261011
-tar -xzf /home/admin/globex-update-20261011.tar.gz -C /home/admin/globex-releases/20261011
-bash /home/admin/globex-releases/20261011/scripts/update_cloud.sh
+mkdir -p /home/admin/globex-releases/20261011-repair
+tar -xzf /home/admin/globex-update-abo-20261011.tar.gz -C /home/admin/globex-releases/20261011-repair
+bash /home/admin/globex-releases/20261011-repair/scripts/update_cloud.sh
 ```
 
 - `mkdir -p`：创建目录；已存在也不会报错。
 - `tar -xzf`：解开 gzip 压缩的 tar 包；`-C` 指定解压位置。
 - `bash`：运行脚本。脚本需要 sudo，可能提示输入服务器账号密码。
+
+已使用 root 登录时不需要另外提供 admin 密码；密码不要发到聊天中。
+默认保留现有商品库。包中还附带 720 件、24 品类的 ABO 演示商品集，
+每类 30 件，价格和库存为演示设定；通过 `GLOBEX_CATALOG=abo bash ...` 显式启用。
+首次建立商品索引可能需要数分钟，脚本最多等待 20 分钟并定期显示进度。
 
 脚本从当前容器发现全部活动 Compose 配置和三份实际命名卷（包括回滚恢复卷），复制活动部署的 `.env`，构建带提交号的
 新镜像；构建后先执行只读 Prompt 预检查，通过后才短暂停服，对 SQLite/Redis/Qdrant 所在完整数据卷做备份并
@@ -55,7 +61,7 @@ sudo docker compose -p globex -f "$release/docker/docker-compose.cloud.yaml" -f 
 确需恢复时，将下面的 `备份时间` 替换为脚本打印的真实目录名：
 
 ```bash
-bash /home/admin/globex-releases/20261011/scripts/rollback_cloud.sh /home/admin/globex-backups/备份时间
+bash /home/admin/globex-releases/20261011-repair/scripts/rollback_cloud.sh /home/admin/globex-backups/备份时间
 ```
 
 脚本核验备份校验和，将三份备份恢复至新的命名卷，再切换旧镜像。
