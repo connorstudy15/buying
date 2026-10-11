@@ -20,6 +20,8 @@ test -f "$live/.env"
 sudo -v
 old=(sudo docker compose -p globex -f "$old_config")
 "${old[@]}" config --quiet
+current_app_volume=$(sudo docker inspect --format '{{range .Mounts}}{{if eq .Destination "/app/data"}}{{.Name}}{{end}}{{end}}' globex-app-1)
+[[ "$current_app_volume" == globex_app-data ]] || { echo 'Active data volume differs from the original deployment. Resolve the active Compose configuration before updating; no services were stopped.'; exit 1; }
 for volume in globex_app-data globex_redis-data globex_qdrant-data; do
   sudo docker volume inspect "$volume" >/dev/null
 done
@@ -51,6 +53,11 @@ new=(sudo docker compose -p globex -f "$new_config" -f "$release/docker/release.
 echo '[1/5] Building versioned images; current service remains running.'
 sudo docker build -f "$release/Dockerfile.cloud" -t "globex-backend:$version" "$release"
 sudo docker build -f "$release/frontend/Dockerfile.beta" -t "globex-frontend:$version" "$release/frontend"
+echo 'Checking active Prompt compatibility before stopping any service.'
+sudo docker run --rm --network none --entrypoint python \
+  --env-file "$release/.env" -e DATA_DIR=/app/data \
+  --mount 'type=volume,source=globex_app-data,target=/app/data,readonly' \
+  "globex-backend:$version" -m scripts.check_prompt_compatibility
 mkdir -p "$backup/docker"
 cp "$old_config" "$backup/docker/docker-compose.cloud.yaml"
 cp "$live/.env" "$backup/.env"
