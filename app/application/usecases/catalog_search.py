@@ -177,6 +177,19 @@ class CatalogSearchUseCase:
         self._fusion_weights = self._rrf_weights
         reciprocal_rank_fusion([], [], weights=self._rrf_weights, k=self._rrf_k)
 
+    async def resolve_exact_title(self, query: str) -> str | None:
+        """A full, unique catalogue title is an entity key; partial titles are not."""
+        normalized = " ".join(query.split()).casefold()
+        if not normalized:
+            return None
+        if not hasattr(self, "_exact_title_ids"):
+            titles: dict[str, list[str]] = {}
+            for product in await self._product_repo.list_all():
+                titles.setdefault(" ".join(product.title.split()).casefold(), []).append(product.product_id)
+            self._exact_title_ids = titles
+        matches = self._exact_title_ids.get(normalized, [])
+        return matches[0] if len(matches) == 1 else None
+
     async def execute(self, spec: ProductSearchSpec) -> dict:
         # 稳定实体 ID 直接核对权威目录，不能用向量 top-N 判断商品是否存在。
         # 结构化标识优先；旧查询文字中的 ID 仍兼容，显式 ID 未命中不能退回模糊检索。
@@ -184,6 +197,9 @@ class CatalogSearchUseCase:
         identifiers = [exact_id] if exact_id else list(dict.fromkeys(re.findall(r"(?<![A-Za-z0-9])P\d{4,}(?:-S\d+)?(?![A-Za-z0-9-])", spec.normalized_query.upper())))
         if identifiers:
             return await self._execute_exact_ids(spec, identifiers)
+        title_id = await self.resolve_exact_title(spec.normalized_query)
+        if title_id:
+            return await self._execute_exact_ids(spec, [title_id])
         if self._hybrid_enabled:
             return await self._execute_hybrid(spec)
         scored: list[tuple[float, Product]] = []

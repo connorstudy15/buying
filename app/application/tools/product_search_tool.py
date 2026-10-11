@@ -193,6 +193,14 @@ def build_product_search_tool(usecase: CatalogSearchUseCase, bus: TradeEventBus,
         started = time.perf_counter()
         product_span.__enter__()
         try:
+            # A numeric title suffix is never itself a product ID. Resolve only
+            # when the complete supplied title uniquely exists in the catalogue.
+            if (product_id and product_id.isdecimal() and normalized_query.split()
+                    and normalized_query.split()[-1] == product_id
+                    and callable(getattr(usecase, "resolve_exact_title", None))):
+                resolved = await usecase.resolve_exact_title(normalized_query)
+                if resolved:
+                    product_id = resolved
             spec = ProductSearchSpec(
                 normalized_query=normalized_query,
                 category=category,
