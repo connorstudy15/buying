@@ -29,6 +29,7 @@ class ShoppingContextSnapshot:
     prompt_document_json: str = field(default="", repr=False)
     model_snapshot: dict | None = None
     model_runtime: dict | None = field(default=None, repr=False)
+    raw_query: str = field(default="", repr=False)
 
 
 _current_snapshot: ContextVar[Optional[ShoppingContextSnapshot]] = ContextVar(

@@ -130,6 +130,9 @@ def build_product_search_tool(usecase: CatalogSearchUseCase, bus: TradeEventBus,
                     state=ToolResultState.ERROR,
                 )
         snapshot_ctx = ShoppingContext.current()
+        if (not product_id and not sku_id and snapshot_ctx and snapshot_ctx.raw_query
+                and callable(getattr(usecase, "resolve_exact_title", None))):
+            product_id = await usecase.resolve_exact_title(normalized_query, original_query=snapshot_ctx.raw_query)
         context_exclusions = list(snapshot_ctx.excluded_material_tags) if snapshot_ctx else []
         excluded_material_tags = list(
             dict.fromkeys([*context_exclusions, *(excluded_material_tags or [])]),

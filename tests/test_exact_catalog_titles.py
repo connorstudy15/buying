@@ -6,6 +6,7 @@ from app.application.tools.product_search_tool import build_product_search_tool
 from app.domain.catalog.product_search_spec import ProductSearchSpec
 from app.infrastructure.persistence.in_memory_repositories import InMemoryProductRepository
 from app.infrastructure.eventbus import TradeEventBus
+from app.infrastructure.context import ShoppingContext, ShoppingContextSnapshot
 
 
 async def test_full_title_resolves_authoritative_entity_without_fuzzy_recall():
@@ -43,3 +44,21 @@ async def test_numeric_identifier_requires_matching_verified_full_title():
     for query in ("263", "Atlas 宠物出行包", "Atlas 宠物出行包 287"):
         rejected = await tool(product_id="263", normalized_query=query)
         assert "[error]" in rejected.content[0].text
+
+
+async def test_dropped_model_suffix_is_restored_only_from_current_human_query():
+    usecase = CatalogSearchUseCase(InMemoryProductRepository())
+    assert await usecase.resolve_exact_title("Atlas 宠物出行包", original_query="比较 Atlas 宠物出行包 263 和 Atlas 桌面收纳架 286") == "P2263"
+    assert await usecase.resolve_exact_title("Atlas 宠物出行包", original_query="比较 Atlas 宠物出行包 263 和 Atlas 宠物出行包 287") is None
+    assert await usecase.resolve_exact_title("Atlas 宠物出行包", original_query="Atlas 宠物出行包 2630") is None
+    # No context from a previous call may remain in the title cache.
+    assert await usecase.resolve_exact_title("Atlas 宠物出行包") is None
+    tool = build_product_search_tool(usecase, TradeEventBus())
+    token = ShoppingContext.set(ShoppingContextSnapshot("title-test", "synthetic", "zh-CN", "CNY", raw_query="比较 Atlas 宠物出行包 263 和 Atlas 桌面收纳架 286"))
+    try:
+        response = await tool(normalized_query="Atlas 宠物出行包", ship_to="EU")
+        result = json.loads(response.content[0].text)
+        assert result["recall_strategy"] == "exact_id_lookup"
+        assert result["hits"][0]["product_id"] == "P2263"
+    finally:
+        ShoppingContext.reset(token)

@@ -177,7 +177,7 @@ class CatalogSearchUseCase:
         self._fusion_weights = self._rrf_weights
         reciprocal_rank_fusion([], [], weights=self._rrf_weights, k=self._rrf_k)
 
-    async def resolve_exact_title(self, query: str) -> str | None:
+    async def resolve_exact_title(self, query: str, *, original_query: str = "") -> str | None:
         """A full, unique catalogue title is an entity key; partial titles are not."""
         normalized = " ".join(query.split()).casefold()
         if not normalized:
@@ -188,6 +188,15 @@ class CatalogSearchUseCase:
                 titles.setdefault(" ".join(product.title.split()).casefold(), []).append(product.product_id)
             self._exact_title_ids = titles
         matches = self._exact_title_ids.get(normalized, [])
+        if not matches and original_query:
+            original = " ".join(original_query.split()).casefold()
+            # Restore a dropped numeric model suffix only from the current human
+            # query, never from another session or an inferred ID transformation.
+            for title, product_ids in self._exact_title_ids.items():
+                stem, separator, suffix = title.rpartition(" ")
+                if (separator and stem == normalized and suffix.isdecimal()
+                        and re.search(r"(?<![a-z0-9])" + re.escape(title) + r"(?![a-z0-9])", original)):
+                    matches.extend(product_ids)
         return matches[0] if len(matches) == 1 else None
 
     async def execute(self, spec: ProductSearchSpec) -> dict:
