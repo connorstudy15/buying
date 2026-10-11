@@ -67,6 +67,7 @@ from app.infrastructure.context import ShoppingContext, ShoppingContextSnapshot
 from app.infrastructure.eventbus import TradeEventBus, observe_run_events
 from app.infrastructure.budget import init_budget, remember_verified_result, get_budget, rule_fallback_text
 from app.infrastructure.security.output_guard import audit_output
+from app.infrastructure.security.price_currency_guard import correct_price_currencies
 from app.infrastructure.transient import is_transient_error
 from app.infrastructure.capability_registry import CapabilityVersionChanged
 from app.infrastructure.prompt_registry import PromptContractChanged
@@ -491,6 +492,10 @@ class MainAgentOrchestrator:
 
             with observe_run_events(collect_candidates):
                 final_text = await self._reply_with_retry(session_id, agent, inputs)
+            if candidate_projection.has_result:
+                final_text, corrections = correct_price_currencies(final_text, candidate_projection.result)
+                if corrections:
+                    self._bus.publish(session_id, "product.price_currency.corrected", {"count": corrections})
             final_text = self._guard_final_text(session_id, final_text)
             await self._check_drift(session_id)
 
