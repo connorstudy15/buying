@@ -5,6 +5,8 @@ umask 077
 release=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)
 live=/home/admin/globex
 catalog=${GLOBEX_CATALOG:-default}
+ready_timeout=${GLOBEX_READY_TIMEOUT_SECONDS:-1200}
+[[ "$ready_timeout" =~ ^[0-9]+$ ]] && (( ready_timeout >= 2 && ready_timeout <= 3600 )) || { echo 'Readiness timeout must be 2..3600 seconds'; exit 1; }
 [[ "$catalog" == default || "$catalog" == abo ]] || { echo 'GLOBEX_CATALOG must be default or abo'; exit 1; }
 catalog_env=''
 if [[ "$catalog" == abo ]]; then
@@ -147,13 +149,17 @@ fi
 echo '[3/5] Backup complete. Starting the new release with the existing volumes.'
 starting_new=1
 "${new[@]}" up -d --no-build --pull never
-echo '[4/5] Waiting for frontend and backend readiness (up to 180 seconds).'
+echo "[4/5] Waiting for frontend and backend readiness (up to $ready_timeout seconds; initial indexing can take several minutes)."
 ready=0
-for attempt in $(seq 1 90); do
+for attempt in $(seq 1 "$((ready_timeout / 2))"); do
   if curl --fail --silent --max-time 3 http://127.0.0.1:5173/health >/dev/null && \
      curl --fail --silent --max-time 3 http://127.0.0.1:5173/commerce/auth >/dev/null; then
     ready=1
     break
+  fi
+  if (( attempt % 30 == 0 )); then
+    echo 'Still waiting for startup. Recent application output:'
+    "${new[@]}" logs --tail=3 app worker
   fi
   sleep 2
 done
