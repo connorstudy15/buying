@@ -169,7 +169,8 @@ export function readProducts(value: unknown): ProductCard[] {
     }
     if (item.image_url === null || typeof item.image_url === "string")
       card.image_url = item.image_url;
-    if (item.image_kind === "illustration" || item.image_kind === "placeholder")
+    if (item.price_kind === "demo") card.price_kind = "demo";
+    if (item.image_kind === "illustration" || item.image_kind === "placeholder" || item.image_kind === "catalog_photo")
       card.image_kind = item.image_kind;
     if (typeof item.rating_is_live === "boolean")
       card.rating_is_live = item.rating_is_live;

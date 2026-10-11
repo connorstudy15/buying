@@ -60,6 +60,8 @@ def _product(hit):
             or not isinstance(currency, str) or not re.fullmatch(r"[A-Z]{3}", currency)):
         return None
     card = {"product_id": identifier, "title": title, "price_major": price, "currency": currency}
+    if hit.get("price_kind") == "demo":
+        card["price_kind"] = "demo"
     # 分页查询可能显式选择另一个 SKU，此时顶层价格属于 sku_id 指定的规格。
     selected = _identifier(hit.get("sku_id")) or _identifier(hit.get("default_sku_id"))
     if selected:
@@ -74,7 +76,7 @@ def _product(hit):
     image = _image_url(hit.get("image_url"))
     if image:
         card["image_url"] = image
-        if hit.get("image_kind") in ("illustration", "placeholder"):
+        if hit.get("image_kind") in ("illustration", "placeholder", "catalog_photo"):
             card["image_kind"] = hit["image_kind"]
     return card
 

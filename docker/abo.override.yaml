@@ -1,0 +1,10 @@
+# Use with the cloud Compose file. Independent collection preserves previous vectors.
+services:
+  app:
+    environment:
+      PRODUCT_CATALOG_PATH: /app/catalog/catalog-abo-demo.jsonl
+      QDRANT_COLLECTION: globex_products_abo_demo_v1
+  worker:
+    environment:
+      PRODUCT_CATALOG_PATH: /app/catalog/catalog-abo-demo.jsonl
+      QDRANT_COLLECTION: globex_products_abo_demo_v1

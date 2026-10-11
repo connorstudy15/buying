@@ -54,13 +54,14 @@ export default function ProductDetail({
                   sku?.currency ?? product.currency,
                 )}
               </strong>
-              <span className="detail-price-kind">当前规格商品价</span>
+              <span className="detail-price-kind">{product.price_kind === "demo" ? "当前规格演示价" : "当前规格商品价"}</span>
             </div>
           </div>
         </div>
         <p className="detail-description">
           {product.description || product.highlights.join("；")}
         </p>
+        {product.price_kind === "demo" && <p className="detail-quote-note">ABO 开放商品资料经分类整理；价格、库存、配送为模拟规则，并非实时销售报价。商品名称和描述保留来源语言。</p>}
         {product.skus.length > 0 && (
           <fieldset className="sku-picker">
             <legend>选择规格</legend>

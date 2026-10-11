@@ -55,7 +55,8 @@ export interface ProductCard {
   updated_at?: string;
   default_sku_id?: string;
   image_url?: string | null;
-  image_kind?: "illustration" | "placeholder";
+  image_kind?: "illustration" | "placeholder" | "catalog_photo";
+  price_kind?: "demo";
   image_alt?: string;
   source_platform?: string;
   source_price_major?: number;

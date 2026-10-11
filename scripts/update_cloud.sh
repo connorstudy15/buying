@@ -4,6 +4,12 @@ set -Eeuo pipefail
 umask 077
 release=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)
 live=/home/admin/globex
+catalog=${GLOBEX_CATALOG:-default}
+[[ "$catalog" == default || "$catalog" == abo ]] || { echo 'GLOBEX_CATALOG must be default or abo'; exit 1; }
+catalog_env=''
+if [[ "$catalog" == abo ]]; then
+  catalog_env=$'    environment:\n      PRODUCT_CATALOG_PATH: /app/catalog/catalog-abo-demo.jsonl\n      QDRANT_COLLECTION: globex_products_abo_demo_v1'
+fi
 old_config="$live/docker/docker-compose.cloud.yaml"
 new_config="$release/docker/docker-compose.cloud.yaml"
 version=$(cat "$release/RELEASE_COMMIT")
@@ -33,8 +39,10 @@ cat > "$release/docker/release.override.yaml" <<EOF
 services:
   app:
     image: globex-backend:$version
+$catalog_env
   worker:
     image: globex-backend:$version
+$catalog_env
   frontend:
     image: globex-frontend:$version
 EOF

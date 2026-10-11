@@ -142,7 +142,7 @@ def build_task_dispatch_tool(
             record_exception=False,
             set_status_on_exception=False,
         ) as handoff_span:
-            demand_ids = sorted(set(re.findall(r"\bP\d{4}(?:-S\d+)?\b", demands)))
+            demand_ids = sorted(set(re.findall(r"\bP\d{4,}(?:-S\d+)?\b", demands)))
             handoff_span.set_attribute(
                 "langfuse.observation.input",
                 json.dumps({
@@ -167,7 +167,7 @@ def build_task_dispatch_tool(
                 handoff_span.set_status(Status(StatusCode.ERROR))
                 raise
             output = reply.get_text_content() or ""
-            mentioned_ids = set(re.findall(r"\bP\d{4}(?:-S\d+)?\b", output))
+            mentioned_ids = set(re.findall(r"\bP\d{4,}(?:-S\d+)?\b", output))
             unknown = mentioned_ids - verified_ids
             # 下单专家可能只核对主任务传入的 SKU；这些标识仍须经过其真实业务工具核验。
             decision = {"agent": subagent_type, "status": "unverified" if unknown else "completed",

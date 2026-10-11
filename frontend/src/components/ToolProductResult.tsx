@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { money, ProductImage } from "./ProductCards";
 
 export type LoadToolProducts = (runId: string, toolCallId: string) => Promise<unknown>;
-type MiniProduct = { product_id: string; title: string; price_major: number; currency: string; spec?: string; default_sku_id?: string };
+type MiniProduct = { product_id: string; title: string; price_major: number; currency: string; spec?: string; default_sku_id?: string; price_kind?: "demo" };
 type Result = { products: MiniProduct[]; status: string; totalCount: number | null; truncated: boolean };
 
 function readResult(value: unknown, runId: string, toolCallId: string): Result {
@@ -13,6 +13,7 @@ function readResult(value: unknown, runId: string, toolCallId: string): Result {
       typeof item.price_major !== "number" || !Number.isFinite(item.price_major) || item.price_major < 0 || !/^[A-Z]{3}$/.test(item.currency)) return [];
     return [{ product_id: item.product_id, title: item.title.slice(0, 240), price_major: item.price_major, currency: item.currency,
       spec: typeof item.spec === "string" ? item.spec.slice(0, 120) : undefined,
+      price_kind: item.price_kind === "demo" ? "demo" : undefined,
       default_sku_id: typeof item.default_sku_id === "string" ? item.default_sku_id : undefined }];
   }).slice(0, 50);
   return { products, status: String(data.status), totalCount: typeof data.totalCount === "number" ? data.totalCount : null, truncated: data.truncated === true };
@@ -43,7 +44,7 @@ export default function ToolProductResult({ runId, toolCallId, load }: { runId: 
     <div className="tool-products-grid">{visible.map((product, index) => <article className="tool-product-mini" key={`${product.product_id}:${product.default_sku_id ?? index}`}>
       <span className="tool-product-symbol tool-product-icon"><ProductImage product={product} /></span>
       <div><strong title={product.title}>{product.title}</strong><span>{product.product_id}{product.spec ? ` · ${product.spec}` : ""}</span></div>
-      <b>{money(product.price_major, product.currency)}</b>
+      <b>{money(product.price_major, product.currency)}{product.price_kind === "demo" && <small> · 演示价</small>}</b>
     </article>)}</div>
     <div className="tool-products-footer"><span>当时商品价 · 图片仅示意 · 交易前需重新核验</span>
       {result.products.length > 6 && <button onClick={() => setShowAll(value => !value)}>{showAll ? "收起" : `查看全部 ${result.products.length} 件`}</button>}

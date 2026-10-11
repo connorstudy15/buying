@@ -122,7 +122,7 @@ function ProductCards({
                 <div className="price">
                   {money(product.price_major, product.currency)}
                 </div>
-                <span className="price-kind">商品价</span>
+                <span className="price-kind">{product.price_kind === "demo" ? "演示价" : "商品价"}</span>
               </div>
               {landed &&
               !landed.unavailable_reason &&

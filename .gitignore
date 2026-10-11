@@ -27,6 +27,8 @@ eval/icecat/private/
 
 # 课程资料与本地工具目录：只保留在本地，不入工程仓库
 !data/catalog-v3.jsonl
+!data/catalog-abo-demo.jsonl
+!data/catalog-abo-demo.report.json
 !data/catalog-v2.jsonl
 .baoyu-skills/
 .idea/

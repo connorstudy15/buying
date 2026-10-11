@@ -83,6 +83,7 @@ class ProductCard:
     source_language: str = ""
     source_locale: str = ""
     data_provenance: str = ""
+    price_kind: str = ""
 
     def to_dict(self) -> dict:
         card = {
@@ -119,6 +120,8 @@ class ProductCard:
             card.update(source_language=self.source_language, source_locale=self.source_locale)
         if self.data_provenance:
             card["data_provenance"] = self.data_provenance
+        if self.price_kind:
+            card["price_kind"] = self.price_kind
         return card
 
 
@@ -541,8 +544,9 @@ class CatalogSearchUseCase:
             source_language=product.source_language,
             source_locale=product.source_locale,
             data_provenance=product.data_provenance,
+            price_kind=product.price_kind,
             default_sku_id=primary.sku_id,
-            image_url=media.image_url,
-            image_kind=media.image_kind,
-            image_alt=media.image_alt,
+            image_url=product.image_url or media.image_url,
+            image_kind="catalog_photo" if product.image_url else media.image_kind,
+            image_alt=product.title + "：ABO 来源商品图片" if product.image_url else media.image_alt,
         )

@@ -16,7 +16,7 @@ export default function ProductHistory({batches = []}: {batches: CommerceSnapsho
         </div>
         <div className="product-body">
           <h4>{index + 1}. {product.title}</h4>
-          <p>当时商品价：{money(product.price_major, product.currency)}</p>
+          <p>{product.price_kind === "demo" ? "当时演示价" : "当时商品价"}：{money(product.price_major, product.currency)}</p>
           {product.landed_price && <p>当时报价：{product.landed_price.unavailable_reason || money(product.landed_price.landed_total_major, product.landed_price.currency)} · 配送至 {product.landed_price.ship_to}</p>}
           <ul>{product.skus.map(sku => <li key={sku.sku_id}>{sku.spec} · {money(sku.price_major, sku.currency)} · 当时库存 {sku.stock} · {sku.sku_id}</li>)}</ul>
         </div>

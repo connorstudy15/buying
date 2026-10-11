@@ -19,6 +19,7 @@
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 
 from app.domain.catalog.money import Money
@@ -428,12 +429,14 @@ def _product_from_record(record: dict) -> Product:
         localized_category=record.get("localized_category", ""),
         localized_material=record.get("localized_material", ""),
         data_provenance=record.get("data_provenance", ""),
+        price_kind=record.get("price_kind", ""),
+        image_url=record.get("image_url", ""),
     )
 
 
 def build_seed_products(catalog_path: Path | str | None = None) -> list[Product]:
     """加载版本化评测商品集；缺失时明确失败，避免悄悄退回过小的旧种子。"""
-    source = Path(catalog_path) if catalog_path is not None else _CATALOG_FIXTURE
+    source = Path(catalog_path or os.getenv("PRODUCT_CATALOG_PATH") or _CATALOG_FIXTURE)
     if not source.exists():
         raise RuntimeError(f"商品评测数据集不存在：{source}")
     records = [

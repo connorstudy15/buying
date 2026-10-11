@@ -44,6 +44,8 @@ class Product:
     localized_category: str = ""
     localized_material: str = ""
     data_provenance: str = ""
+    price_kind: str = ""
+    image_url: str = ""
 
     def __post_init__(self) -> None:
         if not self.product_id:

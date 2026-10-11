@@ -6,6 +6,15 @@ import { CatalogMediaProvider, parseMediaManifest, ProductImageCaption } from '.
 import { ProductImage } from '../src/components/ProductCards';
 
 const manifest = {kind:'illustration',assets:{bag:{url:'/products/catalog-atlas-a-v1.png',cell:0,columns:4,rows:4}},products:{P10000:'bag'},skus:{'P10000-S1':'P10000'}};
+it('开放目录图片显示来源和许可证',async()=>{
+ (globalThis as any).IS_REACT_ACT_ENVIRONMENT=true;
+ const host=document.createElement('div');const root=createRoot(host);
+ try {
+  await act(async()=>root.render(<ProductImageCaption product={{title:'来源商品',image_kind:'catalog_photo',image_url:'https://amazon-berkeley-objects.s3.amazonaws.com/images/small/01/test.jpg'}}/>));
+  expect(host.textContent).toContain('Amazon.com');
+  expect(host.querySelector('a[href="https://creativecommons.org/licenses/by/4.0/"]')).not.toBeNull();
+ } finally { await act(async()=>root.unmount()); }
+});
 it('拒绝外链、越界裁切和未知商品，不能按相似标题猜图',()=>{
  expect(parseMediaManifest({...manifest,assets:{bag:{url:'https://example.com/test.png'}}}).products).toEqual({});
  expect(parseMediaManifest({...manifest,assets:{bag:{...manifest.assets.bag,cell:16}}}).products).toEqual({});

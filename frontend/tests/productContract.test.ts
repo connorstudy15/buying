@@ -49,6 +49,11 @@ const card = {
 };
 
 describe("商品展示契约边界", () => {
+  it("保留演示价格标记和来源图片类型", () => {
+    const [result] = readProducts([{ ...card, price_kind: "demo", image_kind: "catalog_photo" }]);
+    expect(result.price_kind).toBe("demo");
+    expect(result.image_kind).toBe("catalog_photo");
+  });
   it("目录 DTO 原样保留，评分不升级为实时，清洗不修改来源对象", () => {
     const input = structuredClone(card);
     const [result] = readProducts([input]);

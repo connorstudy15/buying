@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 
 type Asset = { url: string; cell?: number; columns?: number; rows?: number };
 type Manifest = { assets: Record<string, Asset>; products: Record<string, string>; skus: Record<string, string> };
-export type MediaProduct = { product_id?: string; sku_id?: string; title: string; category?: string; image_url?: string | null; image_kind?: "illustration" | "placeholder"; image_alt?: string };
+export type MediaProduct = { product_id?: string; sku_id?: string; title: string; category?: string; image_url?: string | null; image_kind?: "illustration" | "placeholder" | "catalog_photo"; image_alt?: string };
 const empty: Manifest = { assets: {}, products: {}, skus: {} };
 const MediaContext = createContext(empty);
 
@@ -49,5 +49,6 @@ export function useProductMedia(product: MediaProduct) {
 }
 export function ProductImageCaption({ product }: { product: MediaProduct }) {
   const media = useProductMedia(product);
+  if (media.kind === "catalog_photo") return <>图片：Amazon.com · <a href="https://amazon-berkeley-objects.s3.amazonaws.com/index.html" target="_blank" rel="noreferrer">ABO</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">CC BY 4.0</a></>;
   return <>{media.kind === "illustration" ? "商品示意图 · 非实物照片" : media.url ? "商品图片" : "商品图片待补充"}</>;
 }

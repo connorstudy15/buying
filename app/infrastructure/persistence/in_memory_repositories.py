@@ -7,19 +7,25 @@ OrderRepository 提供自增单号（GBX-XXXX 前缀，便于日志排查）。
 from __future__ import annotations
 
 import itertools
+import os
 from typing import Awaitable, Callable, Optional
 
 from app.domain.catalog.ports.product_repository import ProductRepository
 from app.domain.catalog.product import Product
 from app.domain.order.order import Order
 from app.domain.order.ports.order_repository import OrderRepository
-from app.infrastructure.persistence.seed_products import build_seed_products
+from app.infrastructure.persistence.seed_products import build_seed_products, _CATALOG_FIXTURE
 
 
 class InMemoryProductRepository(ProductRepository):
     def __init__(self, products: Optional[list[Product]] = None) -> None:
         seed = products if products is not None else build_seed_products()
         self._products: dict[str, Product] = {p.product_id: p for p in seed}
+        # Keep direct lookups for historical orders without returning old items in search.
+        self._legacy_products = (
+            {p.product_id: p for p in build_seed_products(_CATALOG_FIXTURE)}
+            if products is None and os.getenv("PRODUCT_CATALOG_PATH") else {}
+        )
         self._inventory_reader: Callable[[list[str]], Awaitable[dict[str, int]]] | None = None
 
     def bind_inventory(self, reader: Callable[[list[str]], Awaitable[dict[str, int]]]) -> None:
@@ -34,7 +40,8 @@ class InMemoryProductRepository(ProductRepository):
         return products
 
     async def find_by_id(self, product_id: str) -> Optional[Product]:
-        products = await self._refresh_inventory([self._products[product_id]] if product_id in self._products else [])
+        product = self._products.get(product_id) or self._legacy_products.get(product_id)
+        products = await self._refresh_inventory([product] if product is not None else [])
         return products[0] if products else None
 
     async def find_by_ids(self, product_ids: list[str]) -> list[Product]:

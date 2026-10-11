@@ -19,4 +19,5 @@ data/*
 !data/catalog-v1.jsonl
 !data/catalog-v2.jsonl
 !data/catalog-v3.jsonl
+!data/catalog-abo-demo.jsonl
 eval/verification
