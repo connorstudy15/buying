@@ -158,7 +158,12 @@ if (( prompt_upgrade == 1 )); then
 fi
 echo '[3/5] Backup complete. Starting the new release with the existing volumes.'
 starting_new=1
-"${new[@]}" up -d --no-build --pull never
+if [[ "$catalog" == abo ]]; then
+  # 新目录先由 app 建索引，完成后才启动 worker，避免两个进程同时推理相同商品。
+  "${new[@]}" up -d --no-build --pull never redis qdrant app frontend
+else
+  "${new[@]}" up -d --no-build --pull never
+fi
 echo "[4/5] Waiting for frontend and backend readiness (up to $ready_timeout seconds; initial indexing can take several minutes)."
 ready=0
 for attempt in $(seq 1 "$((ready_timeout / 2))"); do
@@ -177,6 +182,10 @@ done
 if (( ready == 0 )); then
   echo 'Readiness check timed out. Inspect logs before proceeding.'
   exit 1
+fi
+if [[ "$catalog" == abo ]]; then
+  "${new[@]}" exec -T app python -c 'import json,urllib.request; d=json.load(urllib.request.urlopen("http://qdrant:6333/collections/globex_products_abo_demo_v1",timeout=15)); n=d["result"]["points_count"]; print("ABO indexed products:",n); assert n == 720, "ABO index incomplete; inspect app logs before starting worker"'
+  "${new[@]}" up -d --no-build --pull never worker
 fi
 printf '%s\n' "$release" > /home/admin/globex-active-release.txt
 echo '[5/5] Server responds. Browser acceptance checks are still required.'

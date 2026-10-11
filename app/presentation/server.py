@@ -82,6 +82,12 @@ def build_app() -> FastAPI:
             InviteAccessStore(data_dir / "invite_access.db")
             if data_dir is not None and getattr(getattr(c, "identity_policy", None), "mode", "demo") == "hmac" else None
         )
+        from app.infrastructure.account_access import AccountAccessStore
+        application.state.account_access = (
+            AccountAccessStore(data_dir / "accounts.db")
+            if data_dir is not None and getattr(getattr(c, "identity_policy", None), "mode", "demo") == "hmac" else None
+        )
+        application.state.account_origins = getattr(getattr(c, "settings", None), "cors_origins", ())
         application.state.session_store = getattr(c, "session_store", None)
         application.state.session_owner_binding = getattr(getattr(c, "settings", None), "session_owner_binding", True)
         application.state.metrics_reader_buyers = getattr(getattr(c, "settings", None), "metrics_reader_buyers", ())

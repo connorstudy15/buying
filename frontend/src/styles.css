@@ -22,6 +22,11 @@
 .access-submit { width: 100%; margin-top: 16px; padding: 12px; border: 0; border-radius: 8px; background: var(--green); color: white; }
 .access-retry { margin-top: 16px; border: 0; background: transparent; color: var(--green); text-decoration: underline; }
 .access-error { color: #9c3426; }
+.access-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+.access-tabs button { padding: 8px 12px; border: 1px solid var(--line); border-radius: 8px; background: transparent; color: var(--green); cursor: pointer; }
+.access-tabs button[aria-pressed="true"] { background: var(--sage); border-color: var(--green); }
+.access-tabs button:disabled { cursor: wait; opacity: .6; }
+.access-card input:focus-visible, .access-card button:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; }
 .access-note { color: var(--muted); font-size: 12px; margin-top: 24px; }
 .access-bar { position: sticky; top: 0; z-index: 60; display: flex; justify-content: flex-end; align-items: center; gap: 16px; padding: 8px 20px; background: var(--sage); border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
 .access-bar button { background: transparent; border: 1px solid var(--green); color: var(--green); border-radius: 6px; padding: 4px 10px; flex-shrink: 0; }

@@ -145,7 +145,7 @@ export default function ContextWorkspace({state}:{state:ReturnType<typeof useCon
     {!!view?.working?.selected?.length&&<p>关注商品：{view.working.selected.join('、')}</p>}
     {!!view?.working?.comparisons?.length&&<p>比较商品：{view.working.comparisons.join('、')}</p>}
     {!view?.working?.goal&&<p>尚未整理本次需求。你可以继续补充，完整对话会保留。</p>}
-    <small>价格与库存以重新查询为准；需要修改需求，直接告诉 Globex。</small>
+    <small>价格与库存以重新查询为准；需要修改需求，直接告诉 Ezbuying。</small>
    </details>}
   </div>}
  </div>;

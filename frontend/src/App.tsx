@@ -6,6 +6,7 @@ import ShoppingForm from "./components/ShoppingForm";
 import { ToolApprovalCards } from "./components/ToolApprovalCards";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useCommerceAgent } from "./hooks/useCommerceAgent";
+import { useBuyerAccess } from "./components/AccessGate";
 import { readProducts } from "./lib/commerceClient";
 import type { ProductCard, PublishedSkill } from "./types";
 import Icon from "./components/Icon";
@@ -41,6 +42,8 @@ function readView(): View {
   return "shopping";
 }
 export default function App() {
+  const access = useBuyerAccess();
+  const profileName: string = access?.credential === "invite" ? "体验访客" : access?.displayName || access?.buyerId || import.meta.env.VITE_BUYER_ID || "本地体验";
   const agent = useCommerceAgent();
   const [shoppingForm,setShoppingForm]=useState<unknown>(null);
   const formGeneration=useRef(0);
@@ -361,11 +364,11 @@ export default function App() {
         <button
           className="brand"
           onClick={() => switchView("shopping")}
-          aria-label="Globex 环球好物首页"
+          aria-label="Ezbuying 环球好物首页"
         >
           <Icon name="globe" className="brand-mark" />
           <span>
-            <span className="brand-name">Globex</span>
+            <span className="brand-name">Ezbuying</span>
             <span className="brand-subtitle">YOUR SHOPPING COMPANION</span>
           </span>
         </button>
@@ -410,9 +413,9 @@ export default function App() {
         <div className="sidebar-bottom">
           <div className="sidebar-note"><span className="sidebar-note-icon"><Icon name="spark" /></span><div><strong>让选择，轻一点。</strong><p>找好物，也找到自己的偏好。</p></div></div>
           <div className="profile">
-            <span className="avatar">泡</span>
+            <span className="avatar" aria-hidden="true">{Array.from(profileName)[0]?.toUpperCase()}</span>
             <span>
-              <span className="profile-name">{import.meta.env.VITE_BUYER_ID || "pao-coder"}</span>
+              <span className="profile-name">{profileName}</span>
               <span className="profile-caption">每一次选择，都有新发现</span>
             </span>
             <Icon name="leaf" />
@@ -426,7 +429,7 @@ export default function App() {
               <button className="mobile-menu-toggle icon-button" aria-label="打开导航" aria-expanded={mobileNavOpen} aria-controls="workspace-navigation" onClick={() => setMobileNavOpen(!mobileNavOpen)}>
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16" /></svg>
               </button>
-              <div><div className="breadcrumb"><span>Globex</span><span>／</span><span>环球好物</span></div>
+              <div><div className="breadcrumb"><span>Ezbuying</span><span>／</span><span>环球好物</span></div>
               <h1>{view === "shopping" ? agent.history.find(item => item.id === agent.sessionId)?.title ?? "新的选购" : navItems.find((item) => item.id === (view === "favorites" ? "orders" : view))?.label}</h1></div>
             </div>
             <div className="topbar-actions">
@@ -673,7 +676,7 @@ export default function App() {
               <ShoppingPlans {...planProps} compact />
             </div>}
             <label htmlFor="query" className="sr-only">
-              告诉 Globex 你想寻找的好物
+              告诉 Ezbuying 你想寻找的好物
             </label>
             <button type="button" className="composer-plan-toggle"
               disabled={busy||!!agent.toolApprovals?.length||!!agent.recoverableRunId||agent.confirmations.some(c=>c.status==="pending"&&!c.expired)}
@@ -717,7 +720,7 @@ export default function App() {
             </div>
           </form>
           <footer className="preview-footer">
-            <span>Globex 环球好物</span>
+            <span>Ezbuying 环球好物</span>
             <span>·</span>
             <span>好物跨越距离，选择回到你心里</span>
           </footer>

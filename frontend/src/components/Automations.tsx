@@ -314,7 +314,7 @@ export default function Automations({
             <Icon name="clock" />
             按你的节奏，继续选购
           </div>
-          <h2>把例行选购，交给 Globex。</h2>
+          <h2>把例行选购，交给 Ezbuying。</h2>
           <p>
             设置一次计划，集中查看每次结果。你决定何时开始，也保留每一次确认。
           </p>

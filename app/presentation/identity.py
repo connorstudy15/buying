@@ -9,6 +9,7 @@ from starlette.concurrency import run_in_threadpool
 from app.domain.session.ports.session_store import SessionNotFound, SessionOwnerMismatch, SessionStoreError
 from app.infrastructure.identity import IdentityError, IdentityPolicy, buyer_identity
 from app.infrastructure.invite_access import COOKIE_NAME, LOCAL_COOKIE_NAME, InviteOriginError
+from app.infrastructure.account_access import ACCOUNT_COOKIE, LOCAL_ACCOUNT_COOKIE
 
 
 def identity_policy(request: Request | WebSocket) -> IdentityPolicy:
@@ -41,12 +42,29 @@ def _cookie(request: Request | WebSocket) -> str:
     return request.cookies.get(COOKIE_NAME, "") or request.cookies.get(LOCAL_COOKIE_NAME, "")
 
 
+def account_session(request: Request | WebSocket):
+    cookie = request.cookies.get(ACCOUNT_COOKIE, "") or request.cookies.get(LOCAL_ACCOUNT_COOKIE, "")
+    if not cookie:
+        return None
+    store = getattr(request.app.state, "account_access", None)
+    if store is None:
+        raise IdentityError("账号登录不可用")
+    session = store.resolve(cookie)
+    if session.origin.startswith("https://") and not request.cookies.get(ACCOUNT_COOKIE):
+        raise IdentityError("账号登录已失效")
+    _check_cookie_origin(request, session.origin)
+    return session
+
+
 def verified_buyer(request: Request | WebSocket) -> str:
     """显式 Bearer/WS 凭证优先；无显式凭证时验证服务端浏览器登录。"""
     token = _token(request)
     if (request.headers.get("authorization") or token
             or "globex-auth." in request.headers.get("sec-websocket-protocol", "")):
         return identity_policy(request).verify(token)
+    account = account_session(request)
+    if account is not None:
+        return account.buyer_id
     store = getattr(request.app.state, "invite_access", None)
     if store is None:
         raise IdentityError("身份凭证无效或已过期")
@@ -59,13 +77,17 @@ def verified_buyer(request: Request | WebSocket) -> str:
 
 
 def register_identity_routes(api: FastAPI) -> None:
+    from app.presentation.accounts import register_account_routes
+    register_account_routes(api)
     @api.get("/commerce/auth")
     async def access_status(request: Request):
         policy = identity_policy(request)
         headers = {"Cache-Control": "no-store"}
         if policy.mode == "demo":
             return JSONResponse({"mode": "demo", "authenticated": False}, headers=headers)
-        if not request.headers.get("authorization") and not _cookie(request):
+        if not request.headers.get("authorization") and not _cookie(request) and not any(
+            request.cookies.get(name) for name in (ACCOUNT_COOKIE, LOCAL_ACCOUNT_COOKIE)
+        ):
             return JSONResponse({"mode": "hmac", "authenticated": False}, headers=headers)
         try:
             buyer_id = verified_buyer(request)
@@ -74,11 +96,24 @@ def register_identity_routes(api: FastAPI) -> None:
                                 headers={**headers, "WWW-Authenticate": "Bearer"}) from error
         data = {"mode": "hmac", "authenticated": True, "buyer_id": buyer_id}
         if not request.headers.get("authorization"):
-            data["credential"] = "invite"
+            account = account_session(request)
+            data["credential"] = "account" if account else "invite"
+            data["display_name"] = account.display_name if account else "体验访客"
+            if account:
+                data["username"] = account.username
         return JSONResponse(data, headers=headers)
 
     @api.post("/commerce/auth/invite")
     async def accept_invite(request: Request):
+        try:
+            account = account_session(request)
+        except IdentityError:
+            account = None
+        if account:
+            return JSONResponse({"mode": "hmac", "authenticated": True,
+                "buyer_id": account.buyer_id, "credential": "account",
+                "display_name": account.display_name, "username": account.username},
+                headers={"Cache-Control": "no-store"})
         store = getattr(request.app.state, "invite_access", None)
         if identity_policy(request).mode != "hmac" or store is None:
             raise HTTPException(status_code=404, detail="邀请入口未启用")
@@ -109,10 +144,24 @@ def register_identity_routes(api: FastAPI) -> None:
         secure = session.origin.startswith("https://")
         response.set_cookie(COOKIE_NAME if secure else LOCAL_COOKIE_NAME, cookie, httponly=True, secure=secure,
                             samesite="lax", path="/", max_age=max(1, session.expires_at - int(store.clock())))
+        # 过期账号 Cookie 不得遮住新兑换的访客身份。
+        if request.cookies.get(ACCOUNT_COOKIE):
+            response.delete_cookie(ACCOUNT_COOKIE, path="/", secure=True, httponly=True, samesite="lax")
+        if request.cookies.get(LOCAL_ACCOUNT_COOKIE):
+            response.delete_cookie(LOCAL_ACCOUNT_COOKIE, path="/", httponly=True, samesite="lax")
         return response
 
     @api.post("/commerce/auth/logout")
     def logout(request: Request):
+        account_store = getattr(request.app.state, "account_access", None)
+        account_cookie = request.cookies.get(ACCOUNT_COOKIE, "") or request.cookies.get(LOCAL_ACCOUNT_COOKIE, "")
+        if account_store is not None and account_cookie:
+            try:
+                account = account_store.resolve(account_cookie)
+                _check_cookie_origin(request, account.origin)
+            except IdentityError:
+                pass
+            account_store.logout(account_cookie)
         store = getattr(request.app.state, "invite_access", None)
         cookie = _cookie(request)
         if store is not None and cookie:
@@ -125,6 +174,8 @@ def register_identity_routes(api: FastAPI) -> None:
         response = JSONResponse({"authenticated": False}, headers={"Cache-Control": "no-store"})
         response.delete_cookie(COOKIE_NAME, path="/", secure=True, httponly=True, samesite="lax")
         response.delete_cookie(LOCAL_COOKIE_NAME, path="/", httponly=True, samesite="lax")
+        response.delete_cookie(ACCOUNT_COOKIE, path="/", secure=True, httponly=True, samesite="lax")
+        response.delete_cookie(LOCAL_ACCOUNT_COOKIE, path="/", httponly=True, samesite="lax")
         return response
 
 

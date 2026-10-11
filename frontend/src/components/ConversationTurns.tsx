@@ -27,7 +27,7 @@ export default function ConversationTurns({ messages, activities, activeRunId, r
         {(turn.runId || assistants.length > 0) && <div className="assistant-row">
           <div className="assistant-mark"><Icon name="globe" /></div>
           <div className="assistant-response">
-            <div className="assistant-label">Globex <span>选购助手</span></div>
+            <div className="assistant-label">Ezbuying <span>选购助手</span></div>
             {turn.runId && <ExecutionTrace activities={activities} runId={turn.runId} running={live} compact loadToolProducts={loadToolProducts} />}
             {assistants.map((message, index) => <div className={`assistant-text ${live && index === assistants.length - 1 ? "typing" : ""}`} key={message.id}>
               <Markdown content={message.content} streaming={live && index === assistants.length - 1} />

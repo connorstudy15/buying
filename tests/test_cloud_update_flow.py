@@ -7,8 +7,8 @@ from pathlib import Path
 import pytest
 
 
-@pytest.mark.parametrize("blocked,manual", [(False, False), (True, False), (False, True)])
-def test_update_uses_restored_volumes_and_blocks_before_stop(tmp_path, blocked, manual):
+@pytest.mark.parametrize("blocked,manual,catalog", [(False, False, "default"), (True, False, "default"), (False, True, "default"), (False, False, "abo")])
+def test_update_uses_restored_volumes_and_blocks_before_stop(tmp_path, blocked, manual, catalog):
     bash = shutil.which("bash")
     if os.name == "nt":
         bash = "C:/Program Files/Git/bin/bash.exe"
@@ -58,7 +58,7 @@ fi
 '''
     (tmp_path / "bin/sudo").write_text(fake, newline="\n")
     (tmp_path / "bin/curl").write_text("#!/usr/bin/env bash\nexit 0\n", newline="\n")
-    env = {**os.environ, "FAKE_ROOT": posix, "FAKE_BLOCK": "1" if blocked else "0", "GLOBEX_MANUAL_RELEASE": "1" if manual else "0"}
+    env = {**os.environ, "FAKE_ROOT": posix, "FAKE_BLOCK": "1" if blocked else "0", "GLOBEX_MANUAL_RELEASE": "1" if manual else "0", "GLOBEX_CATALOG": catalog}
     result = subprocess.run([bash, "-c", 'export PATH="$FAKE_ROOT/bin:$PATH"; chmod +x "$FAKE_ROOT/bin/"*; bash "$FAKE_ROOT/globex-releases/new/scripts/update_cloud.sh"'], env=env, capture_output=True, text=True)
     calls = (tmp_path / "calls.log").read_text()
     assert "source=globex_restore_app_20261011T103852Z,target=/app/data,readonly" in calls
@@ -74,6 +74,13 @@ fi
             assert f"source=globex_restore_{component}_20261011T103852Z,target=/state,readonly" in calls
         override = (release / "docker/release.override.yaml").read_text()
         assert "name: globex_restore_app_20261011T103852Z" in override
+        if catalog == "abo":
+            assert "PRODUCT_CATALOG_PATH: /app/catalog/catalog-abo-demo.jsonl" in override
+            assert "QDRANT_COLLECTION: globex_products_abo_demo_v1" in override
+            app_start = calls.index("up -d --no-build --pull never redis qdrant app frontend")
+            index_check = calls.index("ABO indexed products:")
+            worker_start = calls.index("up -d --no-build --pull never worker")
+            assert app_start < index_check < worker_start
         backups = [p for p in (tmp_path / "globex-backups").iterdir() if p.name != "prior"]
         assert len(backups) == 1
         assert (backups[0] / "compose-overrides.txt").read_text().strip() == "active-1.yaml"
