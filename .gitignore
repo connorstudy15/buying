@@ -57,3 +57,7 @@ node_modules/
 /commitlint.config.js
 /requirements.txt
 /repo-auth-service/
+
+# Local model request evidence: retain locally, publish only sanitized summaries.
+/eval/verification/integration-v35-v37-smoke-20261011-r5/
+/eval/verification/integration-v35-v37-smoke-20261011-r6/

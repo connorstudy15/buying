@@ -96,3 +96,69 @@ async def test_required_product_recheck_cannot_be_replaced_by_plain_answer(tmp_p
         assert model.stream is True
     finally:
         await model.client.close()
+
+
+@pytest.mark.parametrize('host,choice,expected', [
+    ('api.deepseek.com', 'lookup', {'type': 'disabled'}),
+    ('api.deepseek.com', 'required', {'type': 'disabled'}),
+    ('api.deepseek.com', 'auto', {'type': 'enabled'}),
+    ('api.deepseek.com', 'none', {'type': 'enabled'}),
+    ('api.deepseek.com.example.invalid', 'lookup', {'type': 'enabled'}),
+    ('gateway.invalid', 'lookup', {'type': 'enabled'}),
+])
+async def test_deepseek_forced_tool_request_disables_thinking_without_relaxing_contract(
+    tmp_path, host, choice, expected,
+):
+    requests = []
+    def handler(request):
+        requests.append(json.loads(request.content))
+        return httpx.Response(200, json=completion() if choice == 'none' else called('lookup'))
+    model = await client_model(tmp_path, handler)
+    model.client.base_url = f'https://{host}/v1'
+    model.extra_body = {'thinking': {'type': 'enabled'}, 'fixture_extension': 'preserved'}
+    try:
+        await model(messages(), tools=TOOLS, tool_choice=ToolChoice(mode=choice))
+        assert len(requests) == 1
+        request = requests[0]
+        assert request['thinking'] == expected
+        assert request['fixture_extension'] == 'preserved'
+        assert request['tool_choice'] == (
+            {'type': 'function', 'function': {'name': 'lookup'}} if choice == 'lookup' else choice
+        )
+        assert model.extra_body['thinking'] == {'type': 'enabled'}
+    finally:
+        await model.client.close()
+
+
+@pytest.mark.parametrize('host,new_turn,reasoning,disabled', [
+    ('api.deepseek.com', False, None, True),
+    ('api.deepseek.com', True, None, False),
+    ('api.deepseek.com', False, 'fixture reasoning', False),
+    ('gateway.invalid', False, None, False),
+])
+async def test_deepseek_tool_followup_keeps_compatible_mode_until_next_user_turn(
+    tmp_path, host, new_turn, reasoning, disabled,
+):
+    requests = []
+    def handler(request):
+        requests.append(json.loads(request.content))
+        return httpx.Response(200, json=completion())
+    model = await client_model(tmp_path, handler)
+    model.client.base_url = f'https://{host}/v1'
+    assistant = called('lookup')['choices'][0]['message']
+    if reasoning is not None:
+        assistant['reasoning_content'] = reasoning
+    history = [{'role': 'user', 'content': 'Check a product'}, assistant,
+               {'role': 'tool', 'tool_call_id': '0', 'content': 'synthetic result'}]
+    if new_turn:
+        history.append({'role': 'user', 'content': 'A new question'})
+    try:
+        await model.client.chat.completions.create(
+            model='fixture', messages=history, tools=TOOLS, tool_choice='auto',
+            extra_body={'thinking': {'type': 'enabled'}},
+        )
+        assert requests[0]['thinking'] == {'type': 'disabled' if disabled else 'enabled'}
+        assert requests[0]['tool_choice'] == 'auto'
+        assert requests[0]['messages'] == history
+    finally:
+        await model.client.close()

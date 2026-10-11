@@ -187,9 +187,31 @@ class StreamClosingOpenAIChatModel(OpenAIChatModel):
         # 业务只记指纹；隔离评测可显式安装本地原文证据 sink，不改变供应商参数。
         create = self.client.chat.completions.create
         async def observed_create(*args, **request):
+            # DeepSeek 官方 Chat Completions 的思考模式拒绝 required/指定工具。
+            # 在最终请求边界仅为强制工具请求关闭思考，保留工具合同和普通对话配置。
+            # 不按模型名称猜测第三方网关的协议，也不在 400 后放宽工具选择。
+            choice = request.get('tool_choice')
+            turn_messages = []
+            for message in request.get('messages', []):
+                if message.get('role') == 'user':
+                    turn_messages = []
+                else:
+                    turn_messages.append(message)
+            # 无思考模式产生的工具调用没有 reasoning_content，不能在该工具往返中
+            # 切回 DeepSeek 思考模式。只看最后一条用户消息之后的工具记录，避免影响下一轮。
+            missing_tool_reasoning = any(
+                message.get('role') == 'assistant' and message.get('tool_calls')
+                and not message.get('reasoning_content') for message in turn_messages
+            )
+            if self.client.base_url.host == 'api.deepseek.com' and (
+                choice == 'required' or isinstance(choice, dict) and choice.get('type') == 'function'
+                or missing_tool_reasoning
+            ):
+                request['extra_body'] = {**(request.get('extra_body') or {}),
+                                         'thinking': {'type': 'disabled'}}
             from app.infrastructure.context_usage import record_evaluation_evidence
             record_evaluation_evidence('model_request', {key: request[key] for key in
-                ('model', 'messages', 'tools', 'tool_choice', 'response_format', 'temperature', 'max_tokens', 'max_completion_tokens', 'stream', 'stream_options')
+                ('model', 'messages', 'tools', 'tool_choice', 'response_format', 'temperature', 'max_tokens', 'max_completion_tokens', 'stream', 'stream_options', 'extra_body')
                 if key in request and isinstance(request[key], (dict, list, str, int, float, bool))})
             attempt = cache_attempt.get()
             if attempt is not None:
