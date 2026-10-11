@@ -82,6 +82,7 @@ def build_product_search_tool(usecase: CatalogSearchUseCase, bus: TradeEventBus,
     ) -> ToolChunk:
         """检索跨境商品库（embedding+rerank 二阶段召回），返回 Top-K 商品卡 JSON。
         传入 ship_to 时商品卡自动内联 landed_price 到手价明细（小计+运费+关税，统一折算 target_currency），
+        每个 SKU 的 target_price 和 landed_price 分别提供该规格的换算商品价和到手价，直接引用，不自行换算。
         无需另行计算单件价格。已知商品或规格时直接传 product_id / sku_id，优先精确查询；
         两者同时传入时必须属于同一商品，未找到不能用相似商品替换。报价按一件计算。
 
@@ -150,8 +151,9 @@ def build_product_search_tool(usecase: CatalogSearchUseCase, bus: TradeEventBus,
             "sku_id": sku_id,
         }
         bus.publish(session_id, "tool.invoke", {"tool": "product_search_tool", "args": args})
-        if ship_to and ship_to not in TariffSchedule(ExchangeRateTable()).supported_destinations():
-            error = f"暂不支持的目的国：{ship_to}"
+        supported_destinations = TariffSchedule(ExchangeRateTable()).supported_destinations()
+        if ship_to and ship_to not in supported_destinations:
+            error = f"暂不支持的目的国：{ship_to}；系统报价支持 {supported_destinations}。这不代表所有商品都可寄送，具体商品配送范围仍需核验。"
             bus.publish(session_id, "tool.result", {"tool": "product_search_tool", "error": error})
             return ToolChunk(
                 content=[TextBlock(type="text", text=f"[error] {error}")],

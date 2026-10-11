@@ -82,6 +82,24 @@ async def indexed(tmp_path):
 
 
 class TestTwoStageRecall:
+    async def test_unsupported_destination_reports_system_quote_scope_without_promising_product_delivery(self):
+        from app.application.tools.product_search_tool import build_product_search_tool
+        from app.infrastructure.context import ShoppingContext, ShoppingContextSnapshot
+        from app.infrastructure.eventbus import TradeEventBus
+        bus = TradeEventBus()
+        events = bus.subscribe("unsupported-country")
+        tool = build_product_search_tool(CatalogSearchUseCase(InMemoryProductRepository([])), bus)
+        token = ShoppingContext.set(ShoppingContextSnapshot("unsupported-country", "buyer", "zh-CN", "CNY"))
+        try:
+            response = await tool(normalized_query="旅行包", ship_to="BR")
+        finally:
+            ShoppingContext.reset(token)
+        events.get_nowait()
+        error = events.get_nowait().payload["error"]
+        assert "暂不支持的目的国：BR" in error and "'CN'" in error and "'US'" in error
+        assert "不代表所有商品都可寄送" in error
+        assert error in response.content[0].text
+
     async def test_product_card_displays_target_currency_and_preserves_source_price(self):
         """预算筛选与卡片展示必须使用同一目标币种口径。"""
         repo = InMemoryProductRepository(
@@ -104,6 +122,21 @@ class TestTwoStageRecall:
         assert hit["source_currency"] == "USD"
         assert hit["source_price_major"] == pytest.approx(10.0)
         assert hit["skus"][0]["currency"] == "USD"
+        assert hit["skus"][0]["target_price"] == {"price_major": 71.0, "currency": "CNY", "amount_scope": "merchandise_only"}
+
+    async def test_each_foreign_currency_sku_has_its_own_target_and_landed_quote(self):
+        product = Product(product_id="P1001", title="多规格灯", brand="A", category="户外运动", origin_country="US",
+            description="露营灯", ships_to=["CN"], skus=[
+                Sku("P1001-S1", "标准", Money.from_major_units(10, "USD"), 8),
+                Sku("P1001-S2", "升级", Money.from_major_units(4312.5, "JPY"), 5)])
+        result = await CatalogSearchUseCase(InMemoryProductRepository([product])).execute(
+            ProductSearchSpec(product_id="P1001", ship_to="CN", target_currency="CNY"))
+        first, second = result["hits"][0]["skus"]
+        assert first["target_price"]["price_major"] == 71.0
+        assert second["price_major"] == 4312.5 and second["currency"] == "JPY"
+        assert second["target_price"]["price_major"] == 207.0
+        assert second["landed_price"]["subtotal_major"] == 207.0
+        assert first["landed_price"]["landed_total_major"] != second["landed_price"]["landed_total_major"]
 
     async def test_out_of_stock_product_is_filtered_and_explained(self):
         repo = InMemoryProductRepository(

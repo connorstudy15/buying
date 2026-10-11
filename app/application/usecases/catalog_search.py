@@ -527,6 +527,14 @@ class CatalogSearchUseCase:
                     "price_major": sku.price.to_major_units(),
                     "currency": sku.price.currency,
                     "stock": sku.stock,
+                    "target_price": {
+                        "price_major": self._tariff.rates.convert(sku.price, spec.target_currency).to_major_units(),
+                        "currency": spec.target_currency,
+                        "amount_scope": "merchandise_only",
+                    },
+                    **({"landed_price": self._tariff.quote(subtotal=sku.price, category=product.category,
+                        ship_to=spec.ship_to, quantity=1, target_currency=spec.target_currency).to_dict()}
+                       if spec.ship_to and spec.ship_to in self._tariff.supported_destinations() else {}),
                 }
                 for sku in product.skus
             ],
