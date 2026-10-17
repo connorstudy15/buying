@@ -61,7 +61,7 @@ def test_unexecuted_models_are_not_reported_as_success(tmp_path):
     assert summary["executed_cases"] == 0 and summary["unexecuted_selected_cases"] == 600
     assert summary["model_metrics"] is None and not summary["benefit_confirmed"]
     render(tmp_path, SUITE, summary, [])
-    text = (tmp_path/"report.html").read_text()
+    text = (tmp_path/"report.html").read_text(encoding="utf-8")
     assert "未执行" in text and "NOT_CONNECTED" not in text
     assert text.count('<details data-group=') == 600
 

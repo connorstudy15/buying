@@ -12,7 +12,9 @@
 """
 from __future__ import annotations
 from dataclasses import replace
+import logging
 from app.infrastructure.context_governance import ContextAwareAgent
+from app.infrastructure.context import ShoppingContext
 
 from agentscope.agent import Agent, ReActConfig
 from agentscope.rag import KnowledgeBase
@@ -40,6 +42,9 @@ from app.application.retrieval.query_processor import QueryProcessor
 from app.application.harness.assertions import SequencingTracker
 from app.application.harness.loop_detector import LoopDetector
 from app.infrastructure.harness_middleware import HarnessToolMiddleware
+
+
+logger = logging.getLogger(__name__)
 
 
 class SearchAgentFactory:
@@ -96,14 +101,30 @@ class SearchAgentFactory:
         web_search_tool 按"有 TAVILY_API_KEY 才注册"设计，未配置时 Agent 看不到它。
         """
         prompts = load_prompts()
+        query_processor_config = prompts.get("query_processor")
+        query_processor_prompt = (
+            query_processor_config.get("system_prompt")
+            if isinstance(query_processor_config, dict)
+            else None
+        )
+        if not isinstance(query_processor_prompt, str) or not query_processor_prompt.strip():
+            query_processor_prompt = None
+        if self._query_processor_model is not None and not query_processor_prompt:
+            # Older prompt deployments may predate the query planner. Keep the
+            # shopping flow usable by falling back to legacy knowledge search;
+            # do not silently borrow text from another immutable prompt version.
+            logger.warning(
+                "当前 Prompt 版本缺少 query_processor，知识检索回退 legacy：prompt=%s",
+                getattr(ShoppingContext.current(), "prompt_version", ""),
+            )
         query_processor = (
             QueryProcessor(
                 self._query_processor_model,
-                prompts["query_processor"]["system_prompt"],
+                query_processor_prompt,
                 max_subqueries=self._settings.query_processor_max_subqueries,
                 disable_thinking=self._settings.query_processor_disable_thinking,
             )
-            if self._query_processor_model is not None else None
+            if self._query_processor_model is not None and query_processor_prompt else None
         )
         tools = [
             FunctionTool(

@@ -49,8 +49,14 @@ def read_prompt(path: Path) -> tuple[dict, str]:
     if len(raw) > 1024 * 1024:
         raise PromptRegistryError("Prompt 文件超过 1 MiB")
     try:
-        document = yaml.safe_load(raw)
-    except yaml.YAMLError as error:
+        # Prompt files are normally UTF-8. Windows operators may still create
+        # them with the system Chinese editor, which writes GB18030 bytes.
+        try:
+            text = raw.decode("utf-8-sig")
+        except UnicodeDecodeError:
+            text = raw.decode("gb18030")
+        document = yaml.safe_load(text)
+    except (UnicodeDecodeError, yaml.YAMLError) as error:
         raise PromptRegistryError("Prompt YAML 无法解析") from error
     try:
         roles = [document["main_agent"], document["sub_agents"]["search"], document["sub_agents"]["trade"]]

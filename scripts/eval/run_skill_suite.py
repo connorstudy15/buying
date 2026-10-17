@@ -75,7 +75,7 @@ def render(folder, suite, summary, rows):
         +"<h2>失败样本</h2><pre>"+esc(json.dumps(failures, ensure_ascii=False, indent=2))+"</pre>"
         +"<h2>指标与边界</h2><pre>"+esc(json.dumps(summary["model_metrics"], ensure_ascii=False, indent=2))+"</pre>"
         +"<p>"+"<br>".join(esc(x) for x in suite["limits"])+"</p><h2>全部600条用例</h2><input id='filter' placeholder='搜索场景、国家、币种、断言或关键词'><section id='cases'>"
-        +"".join(cards)+"</section><script>document.querySelector('#filter').addEventListener('input',e=>{const q=e.target.value.toLowerCase();document.querySelectorAll('details').forEach(d=>d.hidden=!d.textContent.toLowerCase().includes(q));});</script></html>")
+        +"".join(cards)+"</section><script>document.querySelector('#filter').addEventListener('input',e=>{const q=e.target.value.toLowerCase();document.querySelectorAll('details').forEach(d=>d.hidden=!d.textContent.toLowerCase().includes(q));});</script></html>", encoding="utf-8")
 
 
 async def run(args):

@@ -17,7 +17,9 @@ SEARCH_FIELDS = {"ship_to", "target_currency", "price_max_major", "excluded_mate
 
 
 def load_suite(path=DEFAULT_SUITE):
-    suite = json.loads(Path(path).read_text())
+    # The frozen suite contains Chinese text; keep evaluation deterministic on
+    # Windows hosts whose locale defaults to GBK rather than UTF-8.
+    suite = json.loads(Path(path).read_text(encoding="utf-8"))
     validate_suite(suite)
     return suite
 

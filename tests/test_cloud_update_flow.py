@@ -30,9 +30,9 @@ def test_update_uses_restored_volumes_and_blocks_before_stop(tmp_path, blocked, 
     if manual:
         (release / "prompt-upgrade/operator-release.json").write_text("{}")
     (release / "scripts").mkdir()
-    source = (root / "scripts/update_cloud.sh").read_text().replace("/home/admin/", posix + "/")
+    source = (root / "scripts/update_cloud.sh").read_text(encoding="utf-8").replace("/home/admin/", posix + "/")
     script = release / "scripts/update_cloud.sh"
-    script.write_text(source, newline="\n")
+    script.write_text(source, encoding="utf-8", newline="\n")
     fake = r'''#!/usr/bin/env bash
 printf '%s\n' "$*" >> "$FAKE_ROOT/calls.log"
 [[ "$1" != -v ]] || exit 0
@@ -59,7 +59,7 @@ fi
     (tmp_path / "bin/sudo").write_text(fake, newline="\n")
     (tmp_path / "bin/curl").write_text("#!/usr/bin/env bash\nexit 0\n", newline="\n")
     env = {**os.environ, "FAKE_ROOT": posix, "FAKE_BLOCK": "1" if blocked else "0", "GLOBEX_MANUAL_RELEASE": "1" if manual else "0", "GLOBEX_CATALOG": catalog}
-    result = subprocess.run([bash, "-c", 'export PATH="$FAKE_ROOT/bin:$PATH"; chmod +x "$FAKE_ROOT/bin/"*; bash "$FAKE_ROOT/globex-releases/new/scripts/update_cloud.sh"'], env=env, capture_output=True, text=True)
+    result = subprocess.run([bash, "-c", 'export PATH="$FAKE_ROOT/bin:$PATH"; chmod +x "$FAKE_ROOT/bin/"*; bash "$FAKE_ROOT/globex-releases/new/scripts/update_cloud.sh"'], env=env, capture_output=True, text=True, encoding="utf-8")
     calls = (tmp_path / "calls.log").read_text()
     assert "source=globex_restore_app_20261011T103852Z,target=/app/data,readonly" in calls
     if blocked:

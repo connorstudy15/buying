@@ -63,3 +63,9 @@ node_modules/
 # Local model request evidence: retain locally, publish only sanitized summaries.
 /eval/verification/integration-v35-v37-smoke-20261011-r5/
 /eval/verification/integration-v35-v37-smoke-20261011-r6/
+
+# Local deployment archives, assembled release trees and test scratch space.
+/release/
+/.pytest-tmp-*/
+/.test-tmp-*/
+/tmp*/
