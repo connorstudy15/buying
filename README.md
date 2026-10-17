@@ -1,6 +1,6 @@
-# EzBuying · 自进化跨境电商选购与交易multi-Agent系统
+# EzBuying · 跨境电商选购与交易multi-Agent 系统
 
-一个基于 **AgentScope、AG-UI 和 React** 的全栈电商 Agent 项目，覆盖需求理解、商品与知识检索、方案比较与交易确认。
+一个基于 **AgentScope、AG-UI 和 React** 的全栈电商 Agent Loop 项目，覆盖需求理解、商品与知识检索、方案比较与交易确认。
 
 **在线体验：[www.ezbuy.cloud](https://www.ezbuy.cloud)**
 
