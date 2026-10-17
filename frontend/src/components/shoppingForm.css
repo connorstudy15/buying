@@ -12,6 +12,9 @@
 .shopping-form { scroll-margin-top: 24px; }
 .shopping-form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 .shopping-form-question{min-width:0;overflow-wrap:anywhere}
+.requirement-status{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:9px}
+.requirement-status span{font-size:11px;padding:4px 8px;border-radius:6px;background:#edf1e8;color:#4b6246}
+.shopping-form .requirement-source{font-size:12px;margin:7px 0 0;white-space:pre-wrap}
 .shopping-form .shopping-form-choices{margin:0}
 .shopping-form-choices legend{font-size:13px;margin-bottom:9px}
 .shopping-form-choices label{flex-direction:row;align-items:center;margin:10px 0}

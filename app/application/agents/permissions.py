@@ -16,6 +16,7 @@ from agentscope.permission import PermissionBehavior, PermissionRule
 # 对话层已有确认卡语义的业务写工具 + 内置计划工具 + 调度/记忆工具
 _AUTO_ALLOWED_TOOLS = (
     "show_shopping_form",
+    "show_shopping_requirements",
     "create_order_tool",
     "cancel_order_tool",
     "task_dispatch",

@@ -21,6 +21,43 @@ function makeForm(questions: ReturnType<typeof q>[], defaults = {}, formId = "fo
 const form = makeForm([q("hours", "number", "每天佩戴多久？", {unit: "小时", minimum: 0, maximum: 24})]);
 const clone = (v: unknown): any => JSON.parse(JSON.stringify(v));
 
+it("需求卡区分提取与未知，允许修改和清空并提交确认", async () => {
+  const review = clone(makeForm([q("budget", "text", "预算"), q("size", "text", "电脑尺寸"), q("weight", "text", "重量偏好")],
+    {budget: "500元", weight: "尽量轻"}));
+  review.messages[1].updateComponents.components[0].review = [
+    {id: "budget", label: "预算", value: "500元", status: "extracted", source_quote: "预算500元", constraint_kind: "hard"},
+    {id: "size", label: "电脑尺寸", value: "", status: "unknown", source_quote: "", constraint_kind: "unspecified"},
+    {id: "weight", label: "重量偏好", value: "尽量轻", status: "inferred", source_quote: "", constraint_kind: "preference"},
+  ];
+  const applied = vi.fn(), request = vi.fn(async () => ({query: "已确认需求", run_id: "review-run"}));
+  await act(async () => root.render(<ShoppingForm form={review} busy={false} request={request} onApplied={applied}/>));
+  expect(host.textContent).toContain("购物需求 · 待你确认");
+  expect(host.textContent).toContain("依据你的表达：“预算500元”");
+  expect(host.textContent).toContain("尚未明确");
+  expect(host.textContent).toContain("AI 推测，请核对");
+  await input("budget", "300元"); await input("size", "14英寸"); await input("weight", "");
+  expect(host.textContent).toContain("已修改，待确认");
+  await submit();
+  expect(request).toHaveBeenCalledWith(expect.any(String), "POST", expect.objectContaining({
+    action: expect.objectContaining({context: {requirements: {budget: "300元", size: "14英寸"}}}),
+  }));
+  expect(applied).toHaveBeenCalledWith("已确认需求", "review-run");
+  expect(host.textContent).toContain("需求已确认");
+});
+
+it("未知需求不能整张空白确认，非法 review 协议拒绝渲染", async () => {
+  const review = clone(makeForm([q("budget", "text", "预算")]));
+  const component = review.messages[1].updateComponents.components[0];
+  component.review = [{id: "budget", label: "预算", value: "", source_quote: "", status: "unknown", constraint_kind: "unspecified"}];
+  const request = vi.fn();
+  await act(async () => root.render(<ShoppingForm form={review} busy={false} request={request} onApplied={vi.fn()}/>));
+  await submit();
+  expect(request).not.toHaveBeenCalled();
+  expect(host.textContent).toContain("请至少保留一项选购需求");
+  component.review[0].status = "confirmed";
+  expect(readShoppingForm(review)).toBeNull();
+});
+
 it("聊天只展示问答摘要，保留原始结构化输入及未回答状态", () => {
   const payload = {title: "耳机需求", agent_context: "内部背景", answers: [
     {question: "使用场景", display_value: ["通勤", "会议"], unit: ""},
@@ -68,6 +105,7 @@ it("刷新后恢复题目与答案，重复继续不再写入表单", async () =
   const saved = {...form, submission: {query: "每天佩戴3小时", run_id: "stable-run", status: "submitted", values: {hours: 3}}};
   await act(async () => root.render(<ShoppingForm form={saved} busy={false} request={request} onApplied={applied}/>));
   expect(host.textContent).toContain("每天佩戴多久？"); expect(host.textContent).toContain("3 小时");
+  expect(host.querySelector('[role="status"]')?.textContent).toContain("需求已保存");
   await act(async () => host.querySelector("button")!.click());
   expect(request).not.toHaveBeenCalled(); expect(applied).toHaveBeenCalledWith("每天佩戴3小时", "stable-run");
 });

@@ -101,7 +101,8 @@ export default function App() {
     [compared, setCompared] = useState<ProductCard[]>([]);
   const [detail, setDetail] = useState<ProductCard | null>(null),
     [showCompare, setShowCompare] = useState(false),
-    [toast, setToast] = useState("");
+    [toast, setToast] = useState(""),
+    [showJumpToLatest, setShowJumpToLatest] = useState(false);
   const [orderIntent, setOrderIntent] = useState<{
     product: ProductCard;
     skuId: string;
@@ -163,6 +164,7 @@ export default function App() {
     setDetail(null);
     setOrderIntent(null);
     setShowCompare(false);
+    setShowJumpToLatest(false);
     setMobileNavOpen(false);
   }, [agent.sessionId]);
   useEffect(() => {
@@ -173,6 +175,10 @@ export default function App() {
     }
   }, [agent.skills, agent.skillsStatus, selectedSkill]);
   useEffect(() => {
+    // 请求失败后把最近一次需求放回输入区，用户可直接修改或重试。
+    if (agent.error && lastUser?.content && !input.trim()) setInput(lastUser.content);
+  }, [agent.error, lastUser?.id]);
+  useEffect(() => {
     let previousY = window.scrollY;
     const onScroll = () => {
       const currentY = window.scrollY;
@@ -180,15 +186,21 @@ export default function App() {
         document.documentElement.scrollHeight - currentY - window.innerHeight;
       if (!programmaticScroll.current) {
         // 用户向上查看历史即暂停跟随，不要求先滚出某个距离。
-        if (currentY < previousY - 1 || distance > 240)
+        if (currentY < previousY - 1 || distance > 240) {
           autoScroll.current = false;
-        else if (currentY > previousY && distance < 28)
+          setShowJumpToLatest(true);
+        } else if (currentY > previousY && distance < 28) {
           autoScroll.current = true;
+          setShowJumpToLatest(false);
+        }
       }
       previousY = currentY;
     };
     const onWheel = (event: WheelEvent) => {
-      if (event.deltaY < 0) autoScroll.current = false;
+      if (event.deltaY < 0) {
+        autoScroll.current = false;
+        setShowJumpToLatest(true);
+      }
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("wheel", onWheel, { passive: true });
@@ -222,18 +234,27 @@ export default function App() {
     };
   }, [agent.messages, agent.products, view, detail, showCompare]);
 
+  const jumpToLatest = useCallback(() => {
+    autoScroll.current = true;
+    setShowJumpToLatest(false);
+    programmaticScroll.current = true;
+    bottomRef.current?.scrollIntoView({ block: "end", behavior: "smooth" });
+    requestAnimationFrame(() => { programmaticScroll.current = false; });
+  }, []);
+
   const submit = useCallback(
-    (query: string, selection: PublishedSkill | null = null) => {
+    (query: string, selection: PublishedSkill | null = null, preserveInput = false) => {
       if (!query.trim() || busy) return;
       submitSkillQuery(query, selection, (request, selected) => {
         setView("shopping");
         setMobileNavOpen(false);
-        setInput("");
+        if (!preserveInput) setInput("");
         setSelectedSkill(null);
         setPlanPickerOpen(false);
         setCompared([]);
         setShowCompare(false);
         autoScroll.current = true;
+        setShowJumpToLatest(false);
         void agent.submit(request, selected);
       }, (request) => {
         setView("shopping");
@@ -500,9 +521,12 @@ export default function App() {
                   ) : lastUser && (
                     <button
                       disabled={busy}
-                      onClick={() => submit(lastUser.content)}
+                      onClick={() => {
+                        setInput(lastUser.content);
+                        submit(lastUser.content, null, true);
+                      }}
                     >
-                      再试一次
+                      重试本轮
                     </button>
                   )}
                 </div>
@@ -622,6 +646,17 @@ export default function App() {
                 </div>
               )}
               {(agent.events.length > 0 || agent.skillUsages.length > 0) && <EventTimeline events={agent.events} skillUsages={agent.skillUsages} running={agentRunning} />}
+              {showJumpToLatest && view === "shopping" && (
+                <button
+                  type="button"
+                  className="jump-to-latest"
+                  onClick={jumpToLatest}
+                  aria-label="回到最新消息"
+                >
+                  <Icon name="arrow" />
+                  {agentRunning ? "有新消息，回到最新" : "回到最新"}
+                </button>
+              )}
               <div ref={bottomRef} className="scroll-anchor" />
               </div>
 
@@ -683,8 +718,8 @@ export default function App() {
               onClick={()=>submit([
                 input.trim(),
                 compared.length ? "正在比较的商品："+compared.map(p=>`${p.title}（${p.product_id}）`).join("、") : "",
-                "请根据本次选购目标，调用选购需求澄清工具，让我填写还缺少的必要条件；提交后再继续核验商品。",
-              ].filter(Boolean).join("\n"),selectedSkill)}>澄清选购需求</button>
+                "请调用 show_shopping_requirements 整理本次购物需求确认卡：列出已理解的条件及原话依据，把尚未明确的信息留空，让我修改并确认后继续选购。",
+              ].filter(Boolean).join("\n"),selectedSkill)}>整理并确认需求</button>
             <SkillQueryInput
               key={agent.sessionId}
               ref={inputRef}

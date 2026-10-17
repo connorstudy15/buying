@@ -18,6 +18,24 @@
         "title": {
           "type": "string"
         },
+        "review": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 12,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "label", "value", "status", "source_quote", "constraint_kind"],
+            "properties": {
+              "id": {"type": "string"},
+              "label": {"type": "string"},
+              "value": {"type": "string"},
+              "status": {"enum": ["extracted", "inferred", "unknown"]},
+              "source_quote": {"type": "string"},
+              "constraint_kind": {"enum": ["hard", "preference", "unspecified"]}
+            }
+          }
+        },
         "value": {
           "const": {
             "path": "/requirements"

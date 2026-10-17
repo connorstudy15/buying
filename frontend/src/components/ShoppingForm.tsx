@@ -48,10 +48,17 @@ export function readShoppingForm(value: unknown): RecordValue | null {
       || component.value?.path !== "/requirements"
       || component.action?.event?.name !== "applyShoppingRequirements") return null;
   const model = data.updateDataModel.value;
+  if (component.review !== undefined && (!Array.isArray(component.review)
+      || component.review.length !== component.questions.length
+      || !component.review.every((f: unknown, index: number) => record(f)
+        && f.id === component.questions[index].id && text(f.label, 200, true)
+        && text(f.value, 2000) && text(f.source_quote, 500)
+        && ["extracted", "inferred", "unknown"].includes(f.status)
+        && ["hard", "preference", "unspecified"].includes(f.constraint_kind)))) return null;
   if (!record(model) || !record(model.requirements) || model.revision !== value.revision
       || validateAnswers(model.requirements, component.questions, false)) return null;
   return {...value, title: component.title, context: component.context, description: component.description,
-    questions: component.questions, defaults: model.requirements};
+    questions: component.questions, defaults: model.requirements, review: component.review};
 }
 
 function validateAnswers(values: RecordValue, questions: Question[], complete = true): string {
@@ -91,7 +98,7 @@ export function displayShoppingMessage(message: {id: string; content: string}): 
         || !Array.isArray(payload.unanswered) || payload.unanswered.length > 12
         || !payload.unanswered.every((q: unknown) => record(q) && text(q.question, 200, true))) return message.content;
     return [
-      `已补充：${payload.title}`,
+      `${payload.requirements_confirmed ? "已确认需求" : "已补充"}：${payload.title}`,
       ...payload.answers.map((a: RecordValue) => `${a.question}：${Array.isArray(a.display_value) ? a.display_value.join("、") : a.display_value}${a.unit ? ` ${a.unit}` : ""}`),
       ...(payload.unanswered.length ? [`暂未填写：${payload.unanswered.map((q: RecordValue) => q.question).join("、")}`] : []),
     ].join("\n");
@@ -117,6 +124,7 @@ export default function ShoppingForm({form, busy, request, onApplied}: {
   }, [parsed?.form_id, parsed?.revision]);
   if (!parsed) return <p role="status">暂不支持这份选购表单，请通过对话补充需求。</p>;
   const questions: Question[] = parsed.questions;
+  const review: RecordValue[] | undefined = parsed.review;
   const set = (key: string, value: unknown) => {
     setValues(old => {
       const next = {...old};
@@ -131,6 +139,9 @@ export default function ShoppingForm({form, busy, request, onApplied}: {
     if (busy || submitting.current || !parsed) return;
     const invalid = validateAnswers(values, questions);
     if (invalid) {setError(invalid); return;}
+    if (review && !Object.values(values).some(v => typeof v === "string" && v.trim())) {
+      setError("请至少保留一项选购需求"); return;
+    }
     const current = generation.current;
     submitting.current = true; setSaving(true); setError("");
     try {
@@ -145,17 +156,24 @@ export default function ShoppingForm({form, busy, request, onApplied}: {
     } catch (e) {if (current === generation.current) setError(e instanceof Error ? e.message : "暂时未能提交，请重试");}
     finally {if (current === generation.current) {submitting.current = false; setSaving(false);}}
   }
-  return <section ref={surface} className="shopping-form" aria-label="本次选购条件">
-    <div className="shopping-form-heading"><span>需求澄清</span><h3>{parsed.title}</h3>
+  return <section ref={surface} className="shopping-form" aria-label="本次选购条件" aria-busy={saving}>
+    <div className="shopping-form-heading"><span>{review ? (submitted ? "需求已确认" : "购物需求 · 待你确认") : "需求澄清"}</span><h3>{parsed.title}</h3>
       {parsed.context && <p>{parsed.context}</p>}{parsed.description && <p>{parsed.description}</p>}</div>
     {submitted ? <div className="shopping-form-saved">
+      <p className="shopping-form-confirmed" role="status">需求已保存，正在继续选购。</p>
       {record(submitted.values) ? <dl>{questions.map(q => <div key={q.id}><dt>{q.label}</dt><dd>{displayAnswer(q, submitted.values[q.id])}</dd></div>)}</dl> : <p>{submitted.query}</p>}
       <button type="button" disabled={busy || saving} onClick={() => void onApplied(submitted.query, submitted.run_id)}>按已保存条件继续选购</button></div>
     : <form onSubmit={submit}><fieldset disabled={busy || saving}><div className="shopping-form-grid">
       {questions.map(q => {
         const id = `${parsed.form_id}-${q.id}`, helpId = `${id}-help`;
+        const field = review?.find(f => f.id === q.id);
+        const edited = field && (values[q.id] ?? "") !== field.value;
         const label = q.label + (q.unit ? `（${q.unit}）` : "") + (q.required ? " *" : "");
         return <div className="shopping-form-question" key={q.id}>
+          {field && <div className="requirement-status">
+            <span>{edited ? "已修改，待确认" : field.status === "extracted" ? "已提取，待确认" : field.status === "inferred" ? "AI 推测，请核对" : "尚未明确"}</span>
+            {field.constraint_kind !== "unspecified" && <span>{edited ? "原标注：" : ""}{field.constraint_kind === "hard" ? "硬性条件" : "偏好"}</span>}
+          </div>}
           {q.type === "multi_select" ? <fieldset className="shopping-form-choices" aria-describedby={q.help_text ? helpId : undefined}>
             <legend>{label}</legend>{q.options.map(option => <label key={option.value}><input type="checkbox" name={q.id} value={option.value}
               checked={(values[q.id] ?? []).includes(option.value)} onChange={e => set(q.id, e.target.checked
@@ -171,10 +189,11 @@ export default function ShoppingForm({form, busy, request, onApplied}: {
               onChange={e => set(q.id, q.type === "number" && e.target.value !== "" ? Number(e.target.value) : e.target.value)}/>}
           </label>}
           {q.help_text && <p id={helpId} className="shopping-form-help">{q.help_text}</p>}
+          {field?.source_quote && <p className="requirement-source">依据你的表达：“{field.source_quote}”</p>}
         </div>;
       })}</div>
-      <p className="shopping-form-note">答案仅用于本次选购，带 * 的问题为必填。</p>
-      <button type="submit" disabled={busy || saving}>{saving ? "正在保存…" : "提交答案并继续"}</button>
+      <p className="shopping-form-note">{review ? "可直接修改以上内容或清空不需要的条件；留空仍表示未知。确认仅用于本次选购。" : "答案仅用于本次选购，带 * 的问题为必填。"}</p>
+      <button type="submit" disabled={busy || saving}>{saving ? "正在保存…" : review ? "确认需求并继续选购" : "提交答案并继续"}</button>
     </fieldset></form>}
     {error && <p role="alert">{error}</p>}
   </section>;

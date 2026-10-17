@@ -154,10 +154,10 @@ async def test_messages_follow_official_a2ui_schema_and_local_catalog(tmp_path):
     from referencing import Registry, Resource
 
     root = Path(__file__).parent / "contracts/a2ui-v0.9"
-    catalog = json.loads((root / "catalog.json").read_text())
+    catalog = json.loads((root / "catalog.json").read_text(encoding="utf-8"))
     registry = Registry().with_resource(catalog["$id"], Resource.from_contents(catalog))
     validator = Draft202012Validator(
-        json.loads((root / "server_to_client.json").read_text()), registry=registry
+        json.loads((root / "server_to_client.json").read_text(encoding="utf-8")), registry=registry
     )
     form = await store(tmp_path / "forms.db").create(
         "b", "s", "预算与配送", ["query", "budget"], {}
@@ -172,8 +172,14 @@ async def test_messages_follow_official_a2ui_schema_and_local_catalog(tmp_path):
     ])
     for message in dynamic["messages"]:
         validator.validate(message)
+    review = await store(tmp_path / "forms.db").create_review("b", "s", "核对需求", [
+        {"id": "purpose", "label": "用途", "value": "通勤", "status": "extracted", "source_quote": "通勤用"},
+        {"id": "budget", "label": "预算", "status": "unknown"},
+    ])
+    for message in review["messages"]:
+        validator.validate(message)
     Draft202012Validator(
-        json.loads((root / "client_to_server.json").read_text())
+        json.loads((root / "client_to_server.json").read_text(encoding="utf-8"))
     ).validate(
         {
             "version": "v0.9",

@@ -175,6 +175,17 @@ class MainAgentFactory:
 
         system_prompt = prompts["system_prompt"]
         if self.shopping_form_store is not None:
+            from app.application.tools.shopping_requirements_tool import build_shopping_requirements_tool
+            from app.infrastructure.shopping_forms import RequirementReviewRequest
+            tools.append(FunctionTool(build_shopping_requirements_tool(self.shopping_form_store, self._bus),
+                                      input_schema=RequirementReviewRequest, middlewares=self._resilience()))
+            system_prompt += ("\n购物需求识别与确认：新选购目标包含多个条件（预算、用途、尺寸、重量或排除项）时，"
+                              "先用 show_shopping_requirements 整理可编辑需求卡，再结束本轮等待确认。"
+                              "买家要求整理、查看或修改本次需求时也调用。已知信息附买家原话，推测显式标记，未知留空。"
+                              "区分硬约束与偏好，金额保留币种和范围。不能把电脑尺寸当背包外尺寸，不能给轻便偏好编造公斤上限。"
+                              "用户提交 requirements_confirmed 后使用最新 answers 继续检索，不重新确认相同条件。"
+                              "最新答案优先于旧需求与摘要；unanswered 中清空的字段恢复未知，不能从旧上下文补回。"
+                              "简单单条件直接检索、纯知识问答和订单查询无需需求卡；用户明确要求直接搜索时沿用明确条件。")
             from app.application.tools.shopping_form_tool import build_shopping_form_tool
             from app.infrastructure.shopping_forms import ClarificationRequest
             tools.append(FunctionTool(build_shopping_form_tool(self.shopping_form_store, self._bus),

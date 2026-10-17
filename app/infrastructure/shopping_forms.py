@@ -87,6 +87,41 @@ class ClarificationRequest(BaseModel):
         return self
 
 
+class RequirementField(BaseModel):
+    model_config = ConfigDict(extra="forbid", strict=True, str_strip_whitespace=True)
+    id: str = Field(pattern=r"^[a-z][a-z0-9_]{0,63}$")
+    label: str = Field(min_length=1, max_length=200)
+    value: str = Field(default="", max_length=2000)
+    status: Literal["extracted", "inferred", "unknown"] = "unknown"
+    source_quote: str = Field(default="", max_length=500)
+    constraint_kind: Literal["hard", "preference", "unspecified"] = "unspecified"
+
+    @model_validator(mode="after")
+    def consistent(self):
+        if self.id in {"constructor", "prototype"}:
+            raise ValueError("不支持的需求标识")
+        if self.status == "unknown" and (self.value or self.source_quote):
+            raise ValueError("未知需求不能预填答案或来源")
+        if self.status != "unknown" and not self.value:
+            raise ValueError("已提取或推测的需求须提供内容")
+        if self.status == "extracted" and not self.source_quote:
+            raise ValueError("提取的需求须附买家原话供核对")
+        return self
+
+
+class RequirementReviewRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid", strict=True, str_strip_whitespace=True)
+    title: str = Field(min_length=1, max_length=100)
+    fields: list[RequirementField] = Field(min_length=1, max_length=12)
+    context: str = Field(default="", max_length=1000)
+
+    @model_validator(mode="after")
+    def unique_ids(self):
+        if len({f.id for f in self.fields}) != len(self.fields):
+            raise ValueError("需求标识不能重复")
+        return self
+
+
 def validate_answers(values: dict, questions: list[dict], *, complete=False) -> dict:
     definitions = {q["id"]: ClarificationQuestion.model_validate(q) for q in questions}
     if not isinstance(values, dict) or set(values) - definitions.keys():
@@ -199,6 +234,7 @@ def envelopes(form: dict) -> list[dict]:
                         "questions": form.get("questions") or legacy_questions(form),
                         "context": form.get("context", ""),
                         "description": form.get("description", ""),
+                        **({"review": form["review"]} if "review" in form else {}),
                         "value": {"path": "/requirements"},
                         "action": {
                             "event": {
@@ -270,6 +306,22 @@ class ShoppingFormStore:
             **spec.model_dump(),
             # 不自动补充业务问题，也不替买家预选答案。
             "defaults": {}, "session_id": session, "revision": 1,
+        }
+        return await self._insert(buyer, session, form)
+
+    async def create_review(self, buyer, session, title, fields, context=""):
+        if not buyer or not session:
+            raise ValueError("缺少买家会话")
+        spec = RequirementReviewRequest.model_validate({"title": title, "fields": fields, "context": context})
+        questions = [ClarificationQuestion(id=f.id, type="text", label=f.label,
+                     placeholder="尚未明确，可补充或留空").model_dump() for f in spec.fields]
+        form = {
+            "form_id": "form_" + uuid.uuid4().hex, "definition_version": 2,
+            "title": spec.title, "context": spec.context,
+            "description": "这是我对本次需求的理解。请核对或修改；未填写的条件将保持未知。",
+            "questions": questions, "review": [f.model_dump() for f in spec.fields],
+            "defaults": {f.id: f.value for f in spec.fields if f.value},
+            "session_id": session, "revision": 1,
         }
         return await self._insert(buyer, session, form)
 
@@ -403,6 +455,18 @@ class ShoppingFormStore:
                         "unanswered": [{"id": q["id"], "question": q["label"]}
                                        for q in form["questions"] if q["id"] not in clean],
                     }
+                    if "review" in form:
+                        if not clean:
+                            raise ValueError("请至少保留一项选购需求")
+                        payload["requirements_confirmed"] = True
+                        # 背景可能含被用户删除的旧条件，确认后只携带当前字段答案。
+                        payload["agent_context"] = ""
+                        payload["requirements"] = [
+                            {"id": f["id"], "label": f["label"], "value": clean[f["id"]],
+                             "constraint_kind": (f["constraint_kind"] if clean[f["id"]] == f["value"]
+                                                 else "unspecified"), "status": "confirmed"}
+                            for f in form["review"] if f["id"] in clean
+                        ]
                     query = ("买家已提交本轮澄清答案。agent_context 仅为 Agent 整理的背景；"
                              "未回答的问题仍未知，以下答案不是交易/记忆审批，也不是已核实的商品或政策事实。\n"
                              + json.dumps(payload, ensure_ascii=False))
